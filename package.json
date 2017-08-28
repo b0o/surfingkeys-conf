@@ -1,0 +1,25 @@
+{
+  "name": "surfingkeys-conf",
+  "version": "1.0.0",
+  "description": "A custom SurfingKeys configuration which adds some nice features.",
+  "main": "conf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/b0o/surfingkeys-conf"
+  },
+  "keywords": [
+    "surfingkeys",
+    "chrome-extension",
+    "configuration"
+  ],
+  "author": "Maddison Hellstrom",
+  "license": "MIT",
+  "dependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1"
+  }
+}

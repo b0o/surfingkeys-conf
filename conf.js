@@ -60,19 +60,8 @@ mapkey('=D', "Lookup all information for domain", dnsVerbose, {
 
 mapkey(';se', '#11Edit Settings', 'tabOpenLink("/pages/options.html")');
 
-mapkey(';pd', 'Toggle PDF viewer from SurfingKeys', function() {
-    chrome.storage.local.get("noPdfViewer", function(resp) {
-        if(!resp.noPdfViewer) {
-            chrome.storage.local.set({"noPdfViewer": 1}, function() {
-                Front.showBanner("PDF viewer disabled.");
-            });
-        } else {
-            chrome.storage.local.remove("noPdfViewer", function() {
-                Front.showBanner("PDF viewer enabled.");
-            });
-        }
-    })
-});
+mapkey(';pd', 'Toggle PDF viewer from SurfingKeys', togglePdfViewer);
+
 mapkey('\\fs', "Run fakespot for the current page (Amazon, Yelp)", fakeSpot, {
     repeatIgnore: true,
     domain: /(amazon\.com|yelp\.com)/i
@@ -914,4 +903,17 @@ function dnsVerbose() {
     window.open(url, '_blank').focus();
 }
 
+function togglePdfViewer() {
+    chrome.storage.local.get("noPdfViewer", function(resp) {
+        if(!resp.noPdfViewer) {
+            chrome.storage.local.set({"noPdfViewer": 1}, function() {
+                Front.showBanner("PDF viewer disabled.");
+            });
+        } else {
+            chrome.storage.local.remove("noPdfViewer", function() {
+                Front.showBanner("PDF viewer enabled.");
+            });
+        }
+    });
+}
 // vim: set ft=javascript expandtab:

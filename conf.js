@@ -26,8 +26,9 @@ Object.keys(rmSearchAliases).forEach(function(k) {
 
 // Settings
 settings.hintAlign = "left";
-settings.omnibarSuggestionTimeout = 500
-// settings.hintGroups = false
+settings.omnibarSuggestionTimeout = 500;
+settings.hintGroups = true;
+settings.hintGroupStart = "middle";
 
 // Maps
 // Left-hand aliases

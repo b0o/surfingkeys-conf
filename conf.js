@@ -1,3 +1,4 @@
+//---- Cleanup ----//
 // Unmap undesired defaults
 var unmaps = [ "sb" ,  "sw", "ob"
              , "ow" ,  "cp", ";cp"
@@ -24,13 +25,13 @@ Object.keys(rmSearchAliases).forEach(function(k) {
   });
 });
 
-// Settings
+//---- Settings ----//
 settings.hintAlign = "left";
 settings.omnibarSuggestionTimeout = 500;
 settings.hintGroups = true;
 settings.hintGroupStart = "middle";
 
-// Maps
+//---- Maps ----//
 // Left-hand aliases
 // Movement
 map('w', 'k');
@@ -46,7 +47,8 @@ map('H', 'S');
 map('L', 'D');
 
 
-// Mapkeys
+//---- Mapkeys ----//
+// Helper function to generate mapkey opts
 function rid(d) { return { repeatIgnore: true, domain: d }; }
 
 mapkey('=w',  "Lookup whois information for domain", whois,           rid());
@@ -66,7 +68,7 @@ mapkey('\\c',  "Collapse comment (HN)",                        hnCollapseComment
 mapkey('\\v',  "Cast vote (Reddit)",                           redditVote,            rid(/(reddit\.com)/i));
 mapkey('\\v',  "Cast vote (HN)",                               hnVote,                rid(/(news\.ycombinator\.com)/i));
 
-// Search & completion
+//---- Search & completion ----//
 // Search leader
 let sl = 'a';
 
@@ -792,7 +794,7 @@ for(var i = 0; i < search.length; i++) {
     mapkey(la, '#8Search ' + s.name, 'Front.openOmnibar({type: "SearchEngine", extra: "' + s.alias + '"})');
 }
 
-// Functions
+//---- Functions ----//
 function fakeSpot() {
     var url = "http://fakespot.com/analyze?url=" + window.location.href;
     window.open(url, '_blank').focus();

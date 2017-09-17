@@ -45,73 +45,26 @@ map('K', 'R');
 map('H', 'S');
 map('L', 'D');
 
+
 // Mapkeys
-mapkey('=w', "Lookup whois information for domain", whois, {
-    repeatIgnore: true
-});
+function rid(d) { return { repeatIgnore: true, domain: d }; }
 
-mapkey('=d', "Lookup dns information for domain", dns, {
-    repeatIgnore: true
-});
+mapkey('=w',  "Lookup whois information for domain", whois,           rid());
+mapkey('=d',  "Lookup dns information for domain",   dns,             rid());
+mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      rid());
+mapkey(';se', "#11Edit Settings",                    editSettings,    rid());
+mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, rid());
+mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      rid());
 
-mapkey('=D', "Lookup all information for domain", dnsVerbose, {
-    repeatIgnore: true
-});
-
-mapkey(';se', '#11Edit Settings', 'tabOpenLink("/pages/options.html")');
-
-mapkey(';pd', 'Toggle PDF viewer from SurfingKeys', togglePdfViewer);
-
-mapkey('\\fs', "Run fakespot for the current page (Amazon, Yelp)", fakeSpot, {
-    repeatIgnore: true,
-    domain: /(amazon\.com|yelp\.com)/i
-});
-
-mapkey('\\F', "Toggle fullscreen (YouTube)", ytFullscreen, {
-    repeatIgnore: true,
-    domain: /(youtube\.com)/i
-});
-
-mapkey('\\F', "Toggle fullscreen (Vimeo)", vimeoFullscreen, {
-    repeatIgnore: true,
-    domain: /(vimeo\.com)/i
-});
-
-mapkey('\\s', "Toggle Star (GitHub)", ghToggleStar, {
-    repeatIgnore: true,
-    domain: /(github\.com)/i
-});
-
-mapkey('\\s', "Toggle Star (GitLab)", glToggleStar, {
-    repeatIgnore: true,
-    domain: /(gitlab\.com)/i
-});
-
-mapkey('\\c', "Collapse comment (Reddit)", function() {
-    Hints.create('a.expand', Hints.dispatchMouseClick)
-}, {
-    domain: /(reddit\.com)/i
-});
-
-mapkey('\\c', "Collapse comment (HN)", function() {
-    Hints.create('a.togg', Hints.dispatchMouseClick)
-}, {
-    domain: /(news\.ycombinator\.com)/i
-});
-
-mapkey('\\v', "Cast vote (Reddit)", function() {
-    Hints.create('div.arrow', Hints.dispatchMouseClick)
-}, {
-    domain: /(reddit\.com)/i
-});
-
-mapkey('\\v', "Cast vote (HN)", function() {
-    Hints.create('div.votearrow', Hints.dispatchMouseClick)
-}, {
-    domain: /(news\.ycombinator\.com)/i
-});
-
-mapkey('gi', 'Edit current URL with vim editor', vimEditURL);
+mapkey('\\fs', "Run fakespot on current page (Amazon, Yelp)",  fakeSpot,              rid(/(amazon\.com|yelp\.com)/i));
+mapkey('\\F',  "Toggle fullscreen (YouTube)",                  ytFullscreen,          rid(/(youtube\.com)/i));
+mapkey('\\F',  "Toggle fullscreen (Vimeo)",                    vimeoFullscreen,       rid(/(vimeo\.com)/i));
+mapkey('\\s',  "Toggle Star (GitHub)",                         ghToggleStar,          rid(/(github\.com)/i));
+mapkey('\\s',  "Toggle Star (GitLab)",                         glToggleStar,          rid(/(gitlab\.com)/i));
+mapkey('\\c',  "Collapse comment (Reddit)",                    redditCollapseComment, rid(/(reddit\.com)/i));
+mapkey('\\c',  "Collapse comment (HN)",                        hnCollapseComment,     rid(/(news\.ycombinator\.com)/i));
+mapkey('\\v',  "Cast vote (Reddit)",                           redditVote,            rid(/(reddit\.com)/i));
+mapkey('\\v',  "Cast vote (HN)",                               hnVote,                rid(/(news\.ycombinator\.com)/i));
 
 // Search & completion
 // Search leader
@@ -173,35 +126,35 @@ var search = [
     , search: 'https://www.crunchbase.com/app/search/?q='
     , compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`
     , callback: function(response) {
-        var res = JSON.parse(response.text)["data"]["items"];
+        var res = JSON.parse(response.text).data.items;
         var orgs = [];
         res.map(function(rr){
           var r = rr.properties;
           var p = {
-            name: r["name"],
-            domain: r["domain"],
-            desc: r["short_description"],
-            role: r["primary_role"],
+            name: r.name,
+            domain: r.domain,
+            desc: r.short_description,
+            role: r.primary_role,
             img: blank,
             loc: "",
-            url: "https://www.crunchbase.com/" + r["web_path"]
+            url: "https://www.crunchbase.com/" + r.web_path
           };
 
-          p.loc += (r["city_name"] !== null)                    ?    r["city_name"] : "";
-          p.loc += (r["region_name"] !== null && p.loc !== "")  ?              ", " : "";
-          p.loc += (r["region_name"] !== null)                  ?  r["region_name"] : "";
-          p.loc += (r["country_code"] !== null && p.loc !== "") ?              ", " : "";
-          p.loc += (r["country_code"] !== null)                 ? r["country_code"] : "";
-          p.loc += (p.loc === "")                               ? "Earth"           : "";
+          p.loc += (r.city_name !== null)                    ?    r.city_name : "";
+          p.loc += (r.region_name !== null && p.loc !== "")  ?           ", " : "";
+          p.loc += (r.region_name !== null)                  ?  r.region_name : "";
+          p.loc += (r.country_code !== null && p.loc !== "") ?           ", " : "";
+          p.loc += (r.country_code !== null)                 ? r.country_code : "";
+          p.loc += (p.loc === "")                            ? "Earth"        : "";
 
-          if (r["profile_image_url"] !== null) {
-            var url  = r["profile_image_url"]
+          if (r.profile_image_url !== null) {
+            var url  = r.profile_image_url
               , path = url.split('/')
               , img  = path[path.length-1];
             p.img = "http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/" + img;
           }
 
-          orgs.push(p)
+          orgs.push(p);
         });
 
         Omnibar.listResults(orgs, function(p) {
@@ -217,7 +170,7 @@ var search = [
                 <div class="title"><em>${p.loc}</em></div>
               </div>
             </div>
-          `)
+          `);
           li.data('url', p.url);
           return li;
         });
@@ -228,38 +181,38 @@ var search = [
     , search: 'https://www.crunchbase.com/app/search/?q='
     , compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`
     , callback: function(response) {
-        var res = JSON.parse(response.text)["data"]["items"];
+        var res = JSON.parse(response.text).data.items;
         var people = [];
         res.map(function(rr){
           var r = rr.properties;
           var p = {
-            name: r["first_name"] + " " + r["last_name"],
+            name: r.first_name + " " + r.last_name,
             desc: "",
             img: blank,
             loc: "",
-            url: "https://www.crunchbase.com/" + r["web_path"]
+            url: "https://www.crunchbase.com/" + r.web_path
           };
 
-          p.desc += (r["title"] !== null)                              ? r["title"]             : "";
-          p.desc += (r["organization_name"] !== null && p.desc !== "") ?                   ", " : "";
-          p.desc += (r["organization_name"] !== null)                  ? r["organization_name"] : "";
-          p.desc += (p.desc === "")                                    ? "Human"                : "";
+          p.desc += (r.title !== null)                              ? r.title             : "";
+          p.desc += (r.organization_name !== null && p.desc !== "") ?                ", " : "";
+          p.desc += (r.organization_name !== null)                  ? r.organization_name : "";
+          p.desc += (p.desc === "")                                 ? "Human"             : "";
 
-          p.loc += (r["city_name"] !== null)                    ?    r["city_name"] : "";
-          p.loc += (r["region_name"] !== null && p.loc !== "")  ?              ", " : "";
-          p.loc += (r["region_name"] !== null)                  ?  r["region_name"] : "";
-          p.loc += (r["country_code"] !== null && p.loc !== "") ?              ", " : "";
-          p.loc += (r["country_code"] !== null)                 ? r["country_code"] : "";
-          p.loc += (p.loc === "")                               ? "Earth"           : "";
+          p.loc += (r.city_name !== null)                    ?    r.city_name : "";
+          p.loc += (r.region_name !== null && p.loc !== "")  ?           ", " : "";
+          p.loc += (r.region_name !== null)                  ?  r.region_name : "";
+          p.loc += (r.country_code !== null && p.loc !== "") ?           ", " : "";
+          p.loc += (r.country_code !== null)                 ? r.country_code : "";
+          p.loc += (p.loc === "")                            ? "Earth"        : "";
 
-          if (r["profile_image_url"] !== null) {
-            var url  = r["profile_image_url"]
+          if (r.profile_image_url !== null) {
+            var url  = r.profile_image_url
               , path = url.split('/')
               , img  = path[path.length-1];
             p.img = "http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/" + img;
           }
 
-          people.push(p)
+          people.push(p);
         });
 
         Omnibar.listResults(people, function(p) {
@@ -274,7 +227,7 @@ var search = [
                 <div class="title"><em>${p.loc}</em></div>
               </div>
             </div>
-          `)
+          `);
           li.data('url', p.url);
           return li;
         });
@@ -296,10 +249,10 @@ var search = [
         res.map(function(r){
             if (!r.defs || r.defs.length === 0) {
               defs.push([r.word, "", ""]);
-              return
+              return;
             }
             r.defs.map(function(d) {
-              d = d.split("\t")
+              d = d.split("\t");
 
               var sp  = "(" + d[0] + ")",
                   def = d[1];
@@ -308,7 +261,7 @@ var search = [
             });
         });
         Omnibar.listResults(defs, function(d) {
-          var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`)
+          var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
           li.data('url', "http://onelook.com/?w=" + d[0]);
           return li;
         });
@@ -331,21 +284,21 @@ var search = [
     , compl:  'https://hub.docker.com/v2/search/repositories/?page_size=20&query='
     , callback: function(response) {
         var res = JSON.parse(response.text);
-        Omnibar.listResults(res["results"], function(s) {
+        Omnibar.listResults(res.results, function(s) {
           var meta = ""
-            , repo = s["repo_name"];
-          meta += "[★" + s["star_count"] + "] ";
-          meta += "[↓" + s["pull_count"] + "] ";
+            , repo = s.repo_name;
+          meta += "[★" + s.star_count + "] ";
+          meta += "[↓" + s.pull_count + "] ";
           if (repo.indexOf("/") === -1) {
-            repo = "_/" + repo
+            repo = "_/" + repo;
           }
           var li = $('<li/>').html(`
             <div>
-              <div class="title"><strong>${s["repo_name"]}</strong></div>
+              <div class="title"><strong>${s.repo_name}</strong></div>
               <div>${meta}</div>
-              <div>${s["short_description"]}</div>
+              <div>${s.short_description}</div>
             </div>
-          `)
+          `);
           li.data('url', "https://hub.docker.com/r/" + repo);
           return li;
         });
@@ -356,31 +309,31 @@ var search = [
     , search: 'https://domainr.com/?q='
     , compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`
     , callback: function(response) {
-        var res = JSON.parse(response.text)["results"];
+        var res = JSON.parse(response.text).results;
         var domains = [];
         res.map(function(r){
           var d = {
-            id: r["domain"].replace('.', '-'),
-            domain: r["domain"]
+            id: r.domain.replace('.', '-'),
+            domain: r.domain
           };
           domains.push(d);
         });
 
-        var domainQuery = domains.map(function(d) { return d.domain }).join(',')
+        var domainQuery = domains.map(function(d) { return d.domain; }).join(',');
 
         runtime.command({
             action: 'request',
             method: 'get',
             url: `https://api.domainr.com/v2/status?client_id=${keys.domainr}&domain=${domainQuery}`
         }, function(sresponse) {
-          var sres = JSON.parse(sresponse.text)["status"];
+          var sres = JSON.parse(sresponse.text).status;
           sres.map(function(s) {
-            var id        = "#sk-domain-" + s["domain"].replace('.', '-')
-              , available = s["summary"] === "inactive"
+            var id        = "#sk-domain-" + s.domain.replace('.', '-')
+              , available = s.summary === "inactive"
               , color     = available ? "#23b000" : "#ff4d00"
               , symbol    = available ? "✔ " : "✘ ";
-            $(id).text(symbol + $(id).text()).css("color", color)
-          })
+            $(id).text(symbol + $(id).text()).css("color", color);
+          });
         });
 
         Omnibar.listResults(domains, function(d) {
@@ -388,7 +341,7 @@ var search = [
             <div id="sk-domain-${d.id}">
               <div class="title"><strong>${d.domain}</strong></div>
             </div>
-          `)
+          `);
           li.data('url', `https://domainr.com/${d.domain}`);
           return li;
         });
@@ -399,9 +352,9 @@ var search = [
     , search: 'https://hex.pm/packages?sort=downloads&search='
     , compl:  `https://www.googleapis.com/customsearch/v1?key=${keys.google_ex}&cx=${keys.google_ex_cx}&q=`
     , callback: function(response) {
-        var res = JSON.parse(response.text)["items"];
+        var res = JSON.parse(response.text).items;
         Omnibar.listResults(res, function(s) {
-          var snippet   = s["htmlSnippet"];
+          var snippet   = s.htmlSnippet;
           var hash = "";
 
           // Hacky way to extract the desired function's
@@ -439,30 +392,30 @@ var search = [
             }
 
             a2 += closeArgs.length;
-            var fargs = snippetEnd.slice(a1, a2)
+            var fargs = snippetEnd.slice(a1, a2);
             var fary = fargs.replace(new RegExp(openArgs + closeArgs), '').split(',').length;
             hash = fname + '/' + fary;
           })();
 
-          var moduleName = s["title"].split(' –')[0];
+          var moduleName = s.title.split(' –')[0];
 
-          var subtitle = ""
+          var subtitle = "";
           if (hash) {
-            var subtitle = `
+            subtitle = `
               <div style="font-size:1.1em; line-height:1.25em">
                 <em>${moduleName}</em>.<strong>${hash}</strong>
-              </div>`
+              </div>`;
           }
           var li = $('<li/>').html(`
             <div>
-              <div class="title"><strong>${s["htmlTitle"]}</strong></div>
+              <div class="title"><strong>${s.htmlTitle}</strong></div>
               ${subtitle}
-              <div>${s["htmlSnippet"]}</div>
+              <div>${s.htmlSnippet}</div>
             </div>
-          `)
-          li.data('url', s["link"] + "#" + hash);
+          `);
+          li.data('url', s.link + "#" + hash);
           return li;
-        })
+        });
       }
     },
     { alias:  'gd'
@@ -470,18 +423,18 @@ var search = [
     , search: 'https://godoc.org/?q='
     , compl:  'https://api.godoc.org/search?q='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["results"];
+        var res = JSON.parse(response.text).results;
         Omnibar.listResults(res, function(s) {
-          var prefix = ""
-          if (s["import_count"]) {
-            prefix += "[↓" + s["import_count"] + "] "
+          var prefix = "";
+          if (s.import_count) {
+            prefix += "[↓" + s.import_count + "] ";
           }
-          if (s["stars"]) {
-            prefix += "[★" + s["stars"] + "] "
+          if (s.stars) {
+            prefix += "[★" + s.stars + "] ";
           }
           return Omnibar.createURLItem({
-            title: prefix + s["path"],
-            url:   "https://godoc.org/" + s["path"]
+            title: prefix + s.path,
+            url:   "https://godoc.org/" + s.path
           });
         });
       }
@@ -491,15 +444,15 @@ var search = [
     , search: 'https://github.com/search?q='
     , compl:  'https://api.github.com/search/repositories?sort=stars&order=desc&q='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["items"];
+        var res = JSON.parse(response.text).items;
         Omnibar.listResults(res, function(s) {
           var prefix = "";
-          if (s["stargazers_count"]) {
-            prefix += "[★" + s["stargazers_count"] + "] "
+          if (s.stargazers_count) {
+            prefix += "[★" + s.stargazers_count + "] ";
           }
           return Omnibar.createURLItem({
-            title: prefix + s["full_name"],
-            url:   s["html_url"]
+            title: prefix + s.full_name,
+            url:   s.html_url
           });
         });
       }
@@ -517,7 +470,7 @@ var search = [
     , search: 'http://go-search.org/search?q='
     , compl:  'http://go-search.org/api?action=search&q='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["hits"]
+        var res = JSON.parse(response.text).hits
           .map(function(r){
               return r.package;
           });
@@ -548,27 +501,27 @@ var search = [
           var dls = ""
             , desc   = ""
             , liscs  = "";
-          if (s["downloads"] && s["downloads"]["all"]) {
-            dls = "[↓" + s["downloads"]["all"] + "] ";
+          if (s.downloads && s.downloads.all) {
+            dls = "[↓" + s.downloads.all + "]";
           }
-          if(s["meta"]) {
-            if (s["meta"]["description"]) {
-              desc = s["meta"]["description"];
+          if(s.meta) {
+            if (s.meta.description) {
+              desc = s.meta.description;
             }
-            if (s["meta"]["licenses"]) {
-              s["meta"]["licenses"].forEach(function(l) {
+            if (s.meta.licenses) {
+              s.meta.licenses.forEach(function(l) {
                 liscs += "[&copy;" + l + "] ";
-              })
+              });
             }
           }
           var li = $('<li/>').html(`
             <div>
-              <div class="title">${s["repository"]}/<strong>${s["name"]}</strong></div>
+              <div class="title">${s.repository}/<strong>${s.name}</strong></div>
               <div>${dls}${liscs}</div>
               <div>${desc}</div>
             </div>
-          `)
-          li.data('url', "https://hexdocs.pm/" + s["name"]);
+          `);
+          li.data('url', "https://hexdocs.pm/" + s.name);
           return li;
         });
       }
@@ -578,41 +531,41 @@ var search = [
     , search: 'https://hn.algolia.com/?query='
     , compl:  'https://hn.algolia.com/api/v1/search?tags=(story,comment)&query='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["hits"];
+        var res = JSON.parse(response.text).hits;
         Omnibar.listResults(res, function(s) {
             var title = "";
             var prefix = "";
-            if (s["points"]) {
-              prefix += "[↑" + s["points"] + "] ";
+            if (s.points) {
+              prefix += "[↑" + s.points + "] ";
             }
-            if (s["num_comments"]) {
-              prefix += "[↲" + s["num_comments"] + "] ";
+            if (s.num_comments) {
+              prefix += "[↲" + s.num_comments + "] ";
             }
             switch(s._tags[0]) {
               case "story":
-                title = s["title"];
+                title = s.title;
                 break;
               case "comment":
-                title = s["comment_text"];
+                title = s.comment_text;
                 break;
               default:
-                title = s["objectID"];
+                title = s.objectID;
             }
             return Omnibar.createURLItem({
               title: prefix + title,
-              url:   "https://news.ycombinator.com/item?id=" + s["objectID"]
+              url:   "https://news.ycombinator.com/item?id=" + s.objectID
             });
         });
       }
     },
     { alias:  'ho'
     , name:   'hoogle'
-    , search: 'https://www.haskell.org/hoogle/?hoogle='
-        + encodeURIComponent("+platform +xmonad +xmonad-contrib ") // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
-    , compl:  'https://www.haskell.org/hoogle/?mode=json&hoogle='
-        + encodeURIComponent("+platform +xmonad +xmonad-contrib ")
+    , search: 'https://www.haskell.org/hoogle/?hoogle=' +
+        encodeURIComponent("+platform +xmonad +xmonad-contrib ") // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
+    , compl:  'https://www.haskell.org/hoogle/?mode=json&hoogle=' +
+        encodeURIComponent("+platform +xmonad +xmonad-contrib ")
     , callback: function(response) {
-        var res = JSON.parse(response.text)["results"];
+        var res = JSON.parse(response.text).results;
         Omnibar.listResults(res, function(s) {
             return Omnibar.createURLItem({
               title: s.self,
@@ -639,27 +592,27 @@ var search = [
           var dls = ""
             , desc   = ""
             , liscs  = "";
-          if (s["downloads"] && s["downloads"]["all"]) {
-            dls = "[↓" + s["downloads"]["all"] + "] ";
+          if (s.downloads && s.downloads.all) {
+            dls = "[↓" + s.downloads.all + "] ";
           }
-          if(s["meta"]) {
-            if (s["meta"]["description"]) {
-              desc = s["meta"]["description"];
+          if(s.meta) {
+            if (s.meta.description) {
+              desc = s.meta.description;
             }
-            if (s["meta"]["licenses"]) {
-              s["meta"]["licenses"].forEach(function(l) {
+            if (s.meta.licenses) {
+              s.meta.licenses.forEach(function(l) {
                 liscs += "[&copy;" + l + "] ";
-              })
+              });
             }
           }
           var li = $('<li/>').html(`
             <div>
-              <div class="title">${s["repository"]}/<strong>${s["name"]}</strong></div>
+              <div class="title">${s.repository}/<strong>${s.name}</strong></div>
               <div>${dls}${liscs}</div>
               <div>${desc}</div>
             </div>
-          `)
-          li.data('url', s["html_url"]);
+          `);
+          li.data('url', s.html_url);
           return li;
         });
       }
@@ -669,7 +622,7 @@ var search = [
     , search: 'http://hayoo.fh-wedel.de/?query='
     , compl:  'http://hayoo.fh-wedel.de/json?query='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["result"];
+        var res = JSON.parse(response.text).result;
         Omnibar.listResults(res, function(s) {
             return Omnibar.createURLItem({
               title: "[" + s.resultType + "] " + s.resultName,
@@ -684,22 +637,22 @@ var search = [
     , compl:  'https://developer.mozilla.org/en-US/search.json?q='
     , callback: function(response) {
         var res = JSON.parse(response.text);
-        Omnibar.listResults(res["documents"], function(s) {
-          var excerpt = s["excerpt"]
+        Omnibar.listResults(res.documents, function(s) {
+          var excerpt = s.excerpt;
           if(excerpt.length > 240) {
             excerpt = excerpt.slice(0, 240) + '…';
           }
-          res["query"].split(" ").forEach(function(q) {
+          res.query.split(" ").forEach(function(q) {
             excerpt = excerpt.replace(new RegExp(q, 'gi'), "<strong>$&</strong>");
           });
           var li = $('<li/>').html(`
             <div>
-              <div class="title"><strong>${s["title"]}</strong></div>
-              <div style="font-size:0.8em"><em>${s["slug"]}</em></div>
+              <div class="title"><strong>${s.title}</strong></div>
+              <div style="font-size:0.8em"><em>${s.slug}</em></div>
               <div>${excerpt}</div>
             </div>
           `);
-          li.data('url', s["url"]);
+          li.data('url', s.url);
           return li;
         });
       }
@@ -714,19 +667,19 @@ var search = [
           var flags = ""
             , desc  = ""
             , stars = "";
-          if (s["package"]["description"]) {
-            desc = s["package"]["description"];
+          if (s.package.description) {
+            desc = s.package.description;
           }
-          if(s["score"]) {
-            if (s["score"]["final"]) {
-                score = Math.round(s["score"]["final"] * 5);
+          if(s.score) {
+            if (s.score.final) {
+                score = Math.round(s.score.final * 5);
                 stars = "★".repeat(score) + "☆".repeat(5-score);
             }
           }
-          if (s["flags"]) {
-            Object.keys(s["flags"]).forEach(function(f) {
+          if (s.flags) {
+            Object.keys(s.flags).forEach(function(f) {
               flags += "[<span style='color:#ff4d00'>⚑</span> " + f + "] ";
-            })
+            });
           }
           var li = $('<li/>').html(`
             <div>
@@ -735,15 +688,15 @@ var search = [
                   font-weight: bold;
                 }
               </style>
-              <div class="title">${s["highlight"]}</div>
+              <div class="title">${s.highlight}</div>
               <div>
                 <span style="font-size:2em;line-height:0.5em">${stars}</span>
                 <span>${flags}</span>
               </div>
               <div>${desc}</div>
             </div>
-          `)
-          li.data('url', s["package"]["links"]["npm"]);
+          `);
+          li.data('url', s.package.links.npm);
           return li;
         });
       }
@@ -753,12 +706,12 @@ var search = [
     , search: 'https://www.reddit.com/search?sort=relevance&t=all&q='
     , compl:  'https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["data"]["children"];
+        var res = JSON.parse(response.text).data.children;
         Omnibar.listResults(res, function(s) {
-          var d = s["data"];
+          var d = s.data;
           return Omnibar.createURLItem({
-            title: "[" + d["score"] + "] " + d["title"],
-            url:   "https://reddit.com" + d["permalink"]
+            title: "[" + d.score + "] " + d.title,
+            url:   "https://reddit.com" + d.permalink
           });
         });
       }
@@ -768,11 +721,11 @@ var search = [
     , search: 'https://stackoverflow.com/search?q='
     , compl:  'https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["items"];
+        var res = JSON.parse(response.text).items;
         Omnibar.listResults(res, function(s) {
           return Omnibar.createURLItem({
-            title: "[" + s["score"] + "] " + s["title"],
-            url:   s["link"]
+            title: "[" + s.score + "] " + s.title,
+            url:   s.link
           });
         });
       }
@@ -782,7 +735,7 @@ var search = [
     , search: 'https://en.wikipedia.org/w/index.php?search='
     , compl:  'https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["query"]["prefixsearch"]
+        var res = JSON.parse(response.text).query.prefixsearch
           .map(function(r){
             return r.title;
           });
@@ -794,11 +747,11 @@ var search = [
     , search: 'https://www.yelp.com/search?find_desc='
     , compl:  'https://www.yelp.com/search_suggest/v2/prefetch?prefix='
     , callback: function(response) {
-        var res = JSON.parse(response.text)["response"];
+        var res = JSON.parse(response.text).response;
         var words = [];
         res.map(function(r){
-          r["suggestions"].map(function(s) {
-            var w = s["query"];
+          r.suggestions.map(function(s) {
+            var w = s.query;
             if (words.indexOf(w) === -1) {
               words.push(w);
             }
@@ -812,21 +765,19 @@ var search = [
     , search: 'https://www.youtube.com/search?q='
     , compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`
     , callback: function(response) {
-        var res = JSON.parse(response.text)["items"];
+        var res = JSON.parse(response.text).items;
         Omnibar.listResults(res, function(s) {
-          switch(s["id"]["kind"]) {
+          switch(s.id.kind) {
             case "youtube#channel":
               return Omnibar.createURLItem({
-                title: s["snippet"]["channelTitle"] + ": " + s["snippet"]["description"],
-                url:   "https://youtube.com/channel/" + s["id"]["channelId"]
+                title: s.snippet.channelTitle + ": " + s.snippet.description,
+                url:   "https://youtube.com/channel/" + s.id.channelId
               });
-              break;
             case "youtube#video":
               return Omnibar.createURLItem({
-                title: " ▶ " + s["snippet"]["title"],
-                url:   "https://youtu.be/" + s["id"]["videoId"]
+                title: " ▶ " + s.snippet.title,
+                url:   "https://youtu.be/" + s.id.videoId
               });
-              break;
           }
         });
       }
@@ -864,8 +815,8 @@ function ghToggleStar() {
   var action = "starred";
   var star = "★";
   if (cur.attr("class") === "starred") {
-    action = "un" + action
-    star = "☆"
+    action = "un" + action;
+    star = "☆";
   }
 
   cur.find("button").click();
@@ -916,4 +867,25 @@ function togglePdfViewer() {
         }
     });
 }
+
+function editSettings() {
+    tabOpenLink("/pages/options.html");
+}
+
+function redditCollapseComment() {
+    Hints.create('a.expand', Hints.dispatchMouseClick);
+}
+
+function hnCollapseComment() {
+    Hints.create('a.togg', Hints.dispatchMouseClick);
+}
+
+function redditVote() {
+    Hints.create('div.arrow', Hints.dispatchMouseClick);
+}
+
+function hnVote() {
+    Hints.create('div.votearrow', Hints.dispatchMouseClick);
+}
+
 // vim: set ft=javascript expandtab:

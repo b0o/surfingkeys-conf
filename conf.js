@@ -816,12 +816,12 @@ function ghToggleStar() {
 
   var action = "starred";
   var star = "★";
-  if (cur.attr("class") === "starred") {
+  if ($(cur).attr("class").indexOf("unstarred") === -1) {
     action = "un" + action;
     star = "☆";
   }
 
-  cur.find("button").click();
+  $(cur).find("button").click();
   Front.showBanner(star + " Repository " + repo + " " + action);
 }
 

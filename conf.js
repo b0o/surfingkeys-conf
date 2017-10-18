@@ -30,6 +30,18 @@ settings.hintAlign = "left";
 settings.omnibarSuggestionTimeout = 500;
 settings.hintGroups = true;
 settings.hintGroupStart = "middle";
+settings.richHintsForKeystroke = 1;
+
+//---- Theme ----//
+settings.theme = `
+    /* Disable RichHints CSS animation */
+    .expandRichHints {
+        animation: 0s ease-in-out 1 forwards expandRichHints;
+    }
+    .collapseRichHints {
+        animation: 0s ease-in-out 1 forwards collapseRichHints;
+    }
+`;
 
 //---- Maps ----//
 // Left-hand aliases
@@ -48,25 +60,62 @@ map('L', 'D');
 
 
 //---- Mapkeys ----//
-// Helper function to generate mapkey opts
-function rid(d) { return { repeatIgnore: true, domain: d }; }
+let ri = { repeatIgnore: true };
 
-mapkey('=w',  "Lookup whois information for domain", whois,           rid());
-mapkey('=d',  "Lookup dns information for domain",   dns,             rid());
-mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      rid());
-mapkey(';se', "#11Edit Settings",                    editSettings,    rid());
-mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, rid());
-mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      rid());
+mapkey('=w',  "Lookup whois information for domain", whois,           ri);
+mapkey('=d',  "Lookup dns information for domain",   dns,             ri);
+mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      ri);
+mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
+mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
+mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
 
-mapkey('\\fs', "Run fakespot on current page (Amazon, Yelp)",  fakeSpot,              rid(/(amazon\.com|yelp\.com)/i));
-mapkey('\\F',  "Toggle fullscreen (YouTube)",                  ytFullscreen,          rid(/(youtube\.com)/i));
-mapkey('\\F',  "Toggle fullscreen (Vimeo)",                    vimeoFullscreen,       rid(/(vimeo\.com)/i));
-mapkey('\\s',  "Toggle Star (GitHub)",                         ghToggleStar,          rid(/(github\.com)/i));
-mapkey('\\s',  "Toggle Star (GitLab)",                         glToggleStar,          rid(/(gitlab\.com)/i));
-mapkey('\\c',  "Collapse comment (Reddit)",                    redditCollapseComment, rid(/(reddit\.com)/i));
-mapkey('\\c',  "Collapse comment (HN)",                        hnCollapseComment,     rid(/(news\.ycombinator\.com)/i));
-mapkey('\\v',  "Cast vote (Reddit)",                           redditVote,            rid(/(reddit\.com)/i));
-mapkey('\\v',  "Cast vote (HN)",                               hnVote,                rid(/(news\.ycombinator\.com)/i));
+
+function mapsitekey(domainRegex, key, desc, f, opts) {
+    opts = opts || {};
+    mapkey(`\\${key}`, desc,  f, Object.assign({}, opts, { domain: domainRegex }));
+}
+
+function mapsitekeys(domainRegex, maps) {
+    maps.forEach(function(map) {
+        mapsitekey(domainRegex, map[0], map[1], map[2]);
+    });
+}
+
+mapsitekeys(/(amazon\.com)/i, [
+    ['fs', "Fakespot", fakeSpot],
+    // TODO: Add to cart
+    // TODO:
+]);
+
+mapsitekeys(/(yelp\.com)/i, [
+    ['fs', "Fakespot", fakeSpot],
+]);
+
+mapsitekeys(/(youtube\.com)/i, [
+    ['F',  "Toggle fullscreen", ytFullscreen],
+]);
+
+mapsitekeys(/(vimeo\.com)/i, [
+    ['F', "Toggle fullscreen",  vimeoFullscreen],
+]);
+
+mapsitekeys(/(github\.com)/i, [
+    ['s',  "Toggle Star", ghToggleStar],
+]);
+
+mapsitekeys(/(gitlab\.com)/i, [
+    ['s',  "Toggle Star", glToggleStar],
+]);
+
+mapsitekeys(/(reddit\.com)/i, [
+    ['c',  "Collapse comment", redditCollapseComment],
+    ['v',  "Cast vote", redditVote],
+]);
+
+mapsitekeys(/(news\.ycombinator\.com)/i, [
+    ['c',  "Collapse comment", hnCollapseComment],
+    ['v',  "Cast vote", hnVote],
+]);
 
 //---- Search & completion ----//
 // Search leader
@@ -240,6 +289,34 @@ var search = [
     , search: 'https://chrome.google.com/webstore/search/'
     , compl:  ''
     , callback: function() {}
+    },
+    { alias:  'th'
+    , name:   'thesaurus'
+    , search: 'https://www.onelook.com/reverse-dictionary.shtml?s='
+    , compl:  'https://api.datamuse.com/words?md=d&ml=%s'
+    , callback: function(response) {
+        var res = JSON.parse(response.text);
+        var defs = [];
+        res.map(function(r){
+            if (!r.defs || r.defs.length === 0) {
+              defs.push([r.word, "", ""]);
+              return;
+            }
+            r.defs.map(function(d) {
+              d = d.split("\t");
+
+              var sp  = "(" + d[0] + ")",
+                  def = d[1];
+
+              defs.push([r.word, sp, def]);
+            });
+        });
+        Omnibar.listResults(defs, function(d) {
+          var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
+          li.data('url', "http://onelook.com/?w=" + d[0]);
+          return li;
+        });
+      }
     },
     { alias:  'de'
     , name:   'define'

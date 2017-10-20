@@ -155,6 +155,14 @@ var search = [
         Omnibar.listWords(JSON.parse(response.text)[1]);
       }
     },
+    { alias:  'vw'
+    , name:   'vimwikia'
+    , search: 'https://vim.wikia.com/wiki/Special:Search?query='
+    , compl:  'https://vim.wikia.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    , callback: function(response) {
+        Omnibar.listWords(JSON.parse(response.text)[1]);
+      }
+    },
     { alias:  'az'
     , name:   'amazon'
     , search: 'https://smile.amazon.com/s/?field-keywords='

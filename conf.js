@@ -180,6 +180,88 @@ var search = [
         Omnibar.listWords(JSON.parse(response.text));
       }
     },
+    { alias:  'wa'
+    , name:   'wolframalpha'
+    , search: 'http://www.wolframalpha.com/input/?i='
+    , compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`
+    , callback: function(response) {
+        var res = JSON.parse(response.text).queryresult;
+
+        if (res.error) {
+            Omnibar.listResults([""], function() {
+              var li = $('<li/>').html(`
+                <div>
+                    <div class="title"><strong>Error</strong> (Code ${res.error.code})</div>
+                    <div class="title">${res.error.msg}</div>
+                </div>
+              `);
+              return li;
+            });
+            return;
+        }
+
+        if (!res.success) {
+            if (res.tips) {
+                Omnibar.listResults([""], function() {
+                  var li = $('<li/>').html(`
+                    <div>
+                        <div class="title"><strong>No Results</strong></div>
+                        <div class="title">${res.tips.text}</div>
+                    </div>
+                  `);
+                  return li;
+                });
+            }
+            if (res.didyoumeans) {
+                Omnibar.listResults(res.didyoumeans, function(s) {
+                  var li = $('<li/>').html(`
+                    <div>
+                        <div class="title"><strong>Did you mean...?</strong></div>
+                        <div class="title">${s.val}</div>
+                    </div>
+                  `);
+                  return li;
+                });
+            }
+            return;
+        }
+
+        var results = [];
+        res.pods.map(function(p){
+            var result = {
+                title: p.title,
+                values: [],
+                url: "http://www.wolframalpha.com/input/?i=",
+            };
+            if (p.numsubpods > 0) {
+                result.url += encodeURIComponent(p.subpods[0].plaintext);
+                p.subpods.map(function(sp) {
+                    if (!sp.plaintext) return;
+                    var v = "";
+                    if (sp.title) {
+                        v += `<strong>${sp.title}</strong>: `;
+                    }
+                    v += sp.plaintext;
+                    result.values.push(`<div class="title">${v}</div>`);
+                });
+            }
+            if (result.values.length > 0) {
+                results.push(result);
+            }
+        });
+
+        Omnibar.listResults(results, function(r) {
+          var li = $('<li/>').html(`
+            <div>
+                <div class="title"><strong>${r.title}</strong></div>
+                ${r.values.join("\n")}
+            </div>
+          `);
+          li.data('url', r.url);
+          return li;
+        });
+      }
+    },
     { alias:  'co'
     , name:   'crunchbase-orgs'
     , search: 'https://www.crunchbase.com/app/search/?q='

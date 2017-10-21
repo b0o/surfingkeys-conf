@@ -21,9 +21,10 @@
 // You will need to modify the code in conf.js to work with the Mashape API if desired.
 // Open an issue if you can't figure this out and I'll help out.
 var keys =
-    { crunchbase:   "foo"  // https://about.crunchbase.com/crunchbase-basic-access/
-    , domainr:      "bar"  // https://domainr.build/docs/overview#section-try-it-for-free
-    , google_ex:    "qux"  // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
-    , google_ex_cx: "ham"  // This is the Search Engine ID (cx) from your Google Custom Search
-    , google_yt:    "spam" // https://developers.google.com/youtube/v3/docs/
+    { crunchbase:   "foo"    // https://about.crunchbase.com/crunchbase-basic-access/
+    , domainr:      "bar"    // https://domainr.build/docs/overview#section-try-it-for-free
+    , google_ex:    "qux"    // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
+    , google_ex_cx: "ham"    // This is the Search Engine ID (cx) from your Google Custom Search
+    , google_yt:    "spam"   // https://developers.google.com/youtube/v3/docs/
+    , wolframalpha: "lorem"  // https://products.wolframalpha.com/api/
     };

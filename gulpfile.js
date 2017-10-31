@@ -59,7 +59,7 @@ gulp.task('readme', function() {
       var u = new URL(c.search);
       return a + `| \`${c.alias}\` | \`${c.name}\` | \`${u.hostname}\` |\n`;
   }, "");
-  gulp.src(['./README.tmpl.md'])
+  return gulp.src(['./README.tmpl.md'])
     .pipe(replace("<!--DISCLAIMER-->", disclaimer))
     .pipe(replace("<!--COMPL_COUNT-->", compl.length))
     .pipe(replace("<!--COMPL_TABLE-->", table))

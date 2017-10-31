@@ -58,7 +58,6 @@ map('K', 'R');
 map('H', 'S');
 map('L', 'D');
 
-
 //---- Mapkeys ----//
 const ri = { repeatIgnore: true };
 
@@ -68,7 +67,6 @@ mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      ri);
 mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
 mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
 mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
-
 
 function mapsitekey(domainRegex, key, desc, f, opts) {
     opts = opts || {};

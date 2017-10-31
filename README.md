@@ -116,7 +116,7 @@ The final step is to tell SurfingKeys where to find your configuration file:
 
   - __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
 
-  - __III.__ Set __Load settings from__ option to the correct path (substituting `$USER` for your username):
+  - __III.__ Set the `Load settings from` option to the correct path (substituting `$USER` for your username):
     - __Linux, MacOS, Unix__: `file:///home/$USER/.surfingkeys`
     - __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong.)
 

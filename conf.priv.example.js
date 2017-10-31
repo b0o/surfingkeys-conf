@@ -18,7 +18,7 @@
 //
 // Note:
 // The Domainr API is configured for High-Volume usage, not Mashape.
-// You will need to modify the code in conf.js to work with the Mashape API if desired.
+// You will need to modify the code in completions.js to work with the Mashape API if desired.
 // Open an issue if you can't figure this out and I'll help out.
 var keys =
     { crunchbase:   "foo"    // https://about.crunchbase.com/crunchbase-basic-access/

@@ -642,6 +642,14 @@ var search = [
         Omnibar.listWords(JSON.parse(response.text)[1]);
       }
     },
+    { alias:  'gl'
+    , name:   'google-lucky'
+    , search: 'https://www.google.com/search?btnI=1&q='
+    , compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q='
+    , callback: function(response) {
+        Omnibar.listWords(JSON.parse(response.text)[1]);
+      }
+    },
     { alias:  'gs'
     , name:   'go-search'
     , search: 'http://go-search.org/search?q='

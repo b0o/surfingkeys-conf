@@ -155,6 +155,14 @@ var search = [
         Omnibar.listWords(JSON.parse(response.text)[1]);
       }
     },
+    { alias:  'ow'
+    , name:   'owasp'
+    , search: 'https://www.owasp.org/index.php?go=go&search='
+    , compl:  'https://www.owasp.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    , callback: function(response) {
+        Omnibar.listWords(JSON.parse(response.text)[1]);
+      }
+    },
     { alias:  'vw'
     , name:   'vimwikia'
     , search: 'https://vim.wikia.com/wiki/Special:Search?query='

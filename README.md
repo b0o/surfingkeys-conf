@@ -18,7 +18,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 There are currently 36 Search Engine auto-completions.
 
-You can a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
+You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 

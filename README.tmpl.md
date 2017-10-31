@@ -7,6 +7,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
   1. [Bundled Search Engine Completions](#bundled-search-engine-completions)
   2. [Installation Instructions](#installation)
+  3. [License](#license)
 
 #### Bundled Search Engine Completions
 

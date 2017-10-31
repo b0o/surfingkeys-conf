@@ -1,6 +1,6 @@
-var keys = keys
+var keys = keys;
 if (!keys && typeof require === 'function') {
-    keys = require("./conf.priv.js")
+    keys = require("./conf.priv.js");
 }
 
 var completions = [

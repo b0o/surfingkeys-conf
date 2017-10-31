@@ -46,20 +46,19 @@ gulp.task('install', ['build'], function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.scripts, ['build']);
+  gulp.watch([].concat(paths.scripts, paths.gulpfile), ['build']);
   gulp.watch(paths.readme,  ['readme']);
 });
 
 gulp.task('readme', function() {
-  var table = "";
-  compl.sort(function(a, b) {
+  var table = compl.sort(function(a, b) {
     if (a.alias < b.alias) return -1;
     if (a.alias > b.alias) return 1;
     return 0;
-  }).forEach(function(c) {
+  }).reduce(function(a, c) {
       var u = new URL(c.search);
-      table += `| \`${c.alias}\` | \`${c.name}\` | \`${u.hostname}\` |\n`;
-  });
+      return a + `| \`${c.alias}\` | \`${c.name}\` | \`${u.hostname}\` |\n`;
+  }, "");
   gulp.src(['./README.tmpl.md'])
     .pipe(replace("<!--DISCLAIMER-->", disclaimer))
     .pipe(replace("<!--COMPL_COUNT-->", compl.length))

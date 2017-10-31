@@ -1,10 +1,4 @@
-<!--
-
-NOTICE:
-This is an automatically generated file - Do not edit it directly.
-The source file is README.tmpl.md
-
--->
+<!--DISCLAIMER-->
 ### Maddy's SurfingKeys Configuration
 
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) Chrome Extension.
@@ -16,7 +10,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently 36 Search Engine auto-completions.
+There are currently <!--COMPL_COUNT--> Search Engine auto-completions.
 
 You can a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -24,43 +18,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 
 | Alias | Name | Domain |
 | ---- | ------ | ----- |
-| `al` | `archlinux` | `www.archlinux.org` |
-| `au` | `AUR` | `aur.archlinux.org` |
-| `aw` | `archwiki` | `wiki.archlinux.org` |
-| `az` | `amazon` | `smile.amazon.com` |
-| `cl` | `craigslist` | `craigslist.org` |
-| `co` | `crunchbase-orgs` | `www.crunchbase.com` |
-| `cp` | `crunchbase-people` | `www.crunchbase.com` |
-| `cs` | `chromestore` | `chrome.google.com` |
-| `de` | `define` | `onelook.com` |
-| `dg` | `duckduckgo` | `duckduckgo.com` |
-| `dh` | `dockerhub` | `hub.docker.com` |
-| `do` | `domainr` | `domainr.com` |
-| `ex` | `exdocs` | `hex.pm` |
-| `gd` | `godoc` | `godoc.org` |
-| `gh` | `github` | `github.com` |
-| `gl` | `google-lucky` | `www.google.com` |
-| `go` | `google` | `www.google.com` |
-| `gs` | `go-search` | `go-search.org` |
-| `ha` | `hackage` | `hackage.haskell.org` |
-| `hd` | `hexdocs` | `hex.pm` |
-| `hn` | `hackernews` | `hn.algolia.com` |
-| `ho` | `hoogle` | `www.haskell.org` |
-| `hw` | `haskellwiki` | `wiki.haskell.org` |
-| `hx` | `hex` | `hex.pm` |
-| `hy` | `hayoo` | `hayoo.fh-wedel.de` |
-| `md` | `mdn` | `developer.mozilla.org` |
-| `np` | `npm` | `www.npmjs.com` |
-| `ow` | `owasp` | `www.owasp.org` |
-| `re` | `reddit` | `www.reddit.com` |
-| `so` | `stackoverflow` | `stackoverflow.com` |
-| `th` | `thesaurus` | `www.onelook.com` |
-| `vw` | `vimwikia` | `vim.wikia.com` |
-| `wa` | `wolframalpha` | `www.wolframalpha.com` |
-| `wp` | `wikipedia` | `en.wikipedia.org` |
-| `yp` | `yelp` | `www.yelp.com` |
-| `yt` | `youtube` | `www.youtube.com` |
-
+<!--COMPL_TABLE-->
 
 #### Installation
 

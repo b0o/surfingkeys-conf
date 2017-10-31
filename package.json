@@ -22,6 +22,8 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-jshint": "^2.0.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
     "jshint": "^2.9.5",
     "jshint-stylish": "^2.2.1"
   }

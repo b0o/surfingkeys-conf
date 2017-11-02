@@ -68,9 +68,11 @@ mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
 mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
 mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
 
+const siteleader = "\\";
+
 function mapsitekey(domainRegex, key, desc, f, opts) {
     opts = opts || {};
-    mapkey(`\\${key}`, desc,  f, Object.assign({}, opts, { domain: domainRegex }));
+    mapkey(`${siteleader}${key}`, desc,  f, Object.assign({}, opts, { domain: domainRegex }));
 }
 
 function mapsitekeys(domainRegex, maps) {

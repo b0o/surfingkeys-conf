@@ -68,7 +68,7 @@ mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
 mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
 mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
 
-const siteleader = "\\";
+const siteleader = "<Space>";
 
 function mapsitekey(domainRegex, key, desc, f, opts) {
     opts = opts || {};

@@ -7,7 +7,7 @@ var unmaps = [ "sb" ,  "sw", "ob"
              , "spi", "sfr", "zQ"
              , "zz" ,  "zR", "ab"
              , "Q"  ,   "q", "ag"
-             , "af" ,  ";s"
+             , "af" ,  ";s", "yp"
              ];
 
 unmaps.forEach(function(u) {
@@ -67,6 +67,7 @@ mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      ri);
 mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
 mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
 mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
+mapkey('yp',  "Copy URL path of current page",       copyURLPath,     ri);
 
 const siteleader = "<Space>";
 
@@ -101,6 +102,8 @@ mapsitekeys(/(vimeo\.com)/i, [
 
 mapsitekeys(/(github\.com)/i, [
     ['s',  "Toggle Star", ghToggleStar],
+    ['y', "Copy Project Path", function() { return copyURLPath(2); }],
+    ['Y', "Copy Project Path (including domain)", function() { return copyURLPath(2, true); }],
 ]);
 
 mapsitekeys(/(gitlab\.com)/i, [
@@ -206,6 +209,17 @@ function togglePdfViewer() {
             });
         }
     });
+}
+
+function copyURLPath(count, domain) {
+    var path = window.location.pathname;
+    if (count) {
+        path = path.split('/').slice(1,1+count).join('/');
+    }
+    if (domain) {
+        path = window.location.hostname + '/' + path;
+    }
+    Front.writeClipboard(path);
 }
 
 function editSettings() {

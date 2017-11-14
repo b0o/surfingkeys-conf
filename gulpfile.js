@@ -46,7 +46,7 @@ gulp.task('install', ['build'], function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch([].concat(paths.scripts, paths.gulpfile), ['build']);
+  gulp.watch([].concat(paths.scripts, paths.gulpfile), ['install']);
   gulp.watch(paths.readme,  ['readme']);
 });
 

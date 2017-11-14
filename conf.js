@@ -102,16 +102,17 @@ mapsitekeys("vimeo.com", [
 ]);
 
 mapsitekeys("github.com", [
-    ['s',  "Toggle Star", ghToggleStar],
-    ['y', "Copy Project Path", function() { return copyURLPath(2); }],
-    ['Y', "Copy Project Path (including domain)", function() { return copyURLPath(2, true); }],
+    ['s',  "Toggle Star", () => ghStar(true)],
+    ['S',  "Check Star", () => ghStar(false)],
+    ['y', "Copy Project Path", () => copyURLPath(2)],
+    ['Y', "Copy Project Path (including domain)", () => copyURLPath(2, true)],
     ['D', "View GoDoc for Project", viewGodoc],
 ]);
 
 mapsitekeys("gitlab.com", [
     ['s',  "Toggle Star", glToggleStar],
-    ['y', "Copy Project Path", function() { return copyURLPath(2); }],
-    ['Y', "Copy Project Path (including domain)", function() { return copyURLPath(2, true); }],
+    ['y', "Copy Project Path", () => copyURLPath(2)],
+    ['Y', "Copy Project Path (including domain)", () => copyURLPath(2, true)],
     ['D', "View GoDoc for Project", viewGodoc],
 ]);
 
@@ -158,21 +159,28 @@ function vimeoFullscreen() {
     $('.fullscreen-icon').click();
 }
 
-function ghToggleStar() {
+function ghStar(toggle) {
   var repo = window.location.pathname.slice(1).split("/").slice(0,2).join("/");
   var cur = $('div.starring-container > form').filter(function() {
     return $(this).css("display") === "block";
   });
 
-  var action = "starred";
   var star = "★";
-  if ($(cur).attr("class").indexOf("unstarred") === -1) {
-    action = "un" + action;
+  var status = "starred";
+  var verb = "is";
+
+  var starred = $(cur).attr("class").indexOf("unstarred") === -1;
+  if ( (toggle && starred) || (!toggle && starred) ) {
+    status = "un" + status;
     star = "☆";
   }
 
-  $(cur).find("button").click();
-  Front.showBanner(star + " Repository " + repo + " " + action);
+  if (toggle) {
+    $(cur).find("button").click();
+    verb = "has been";
+  }
+
+  Front.showBanner(`${star} Repository ${repo} ${verb} ${status}!`);
 }
 
 function glToggleStar() {

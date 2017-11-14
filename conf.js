@@ -29,7 +29,7 @@ Object.keys(rmSearchAliases).forEach(function(k) {
 settings.hintAlign = "left";
 settings.omnibarSuggestionTimeout = 500;
 settings.hintGroups = true;
-settings.hintGroupStart = "middle";
+// settings.hintGroupStart = "middle";
 settings.richHintsForKeystroke = 1;
 
 //---- Theme ----//
@@ -76,46 +76,55 @@ function mapsitekey(domainRegex, key, desc, f, opts) {
     mapkey(`${siteleader}${key}`, desc,  f, Object.assign({}, opts, { domain: domainRegex }));
 }
 
-function mapsitekeys(domainRegex, maps) {
+function mapsitekeys(domain, maps) {
+    domain = domain.replace('.', '\\.');
+    var domainRegex = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${domain})(/.*)?`);
     maps.forEach(function(map) {
         mapsitekey(domainRegex, map[0], map[1], map[2]);
     });
 }
 
-mapsitekeys(/(amazon\.com)/i, [
+mapsitekeys("amazon.com", [
     ['fs', "Fakespot", fakeSpot],
     // TODO: Add to cart
-    // TODO:
 ]);
 
-mapsitekeys(/(yelp\.com)/i, [
+mapsitekeys("yelp.com", [
     ['fs', "Fakespot", fakeSpot],
 ]);
 
-mapsitekeys(/(youtube\.com)/i, [
+mapsitekeys("youtube.com", [
     ['F',  "Toggle fullscreen", ytFullscreen],
 ]);
 
-mapsitekeys(/(vimeo\.com)/i, [
+mapsitekeys("vimeo.com", [
     ['F', "Toggle fullscreen",  vimeoFullscreen],
 ]);
 
-mapsitekeys(/(github\.com)/i, [
+mapsitekeys("github.com", [
     ['s',  "Toggle Star", ghToggleStar],
     ['y', "Copy Project Path", function() { return copyURLPath(2); }],
     ['Y', "Copy Project Path (including domain)", function() { return copyURLPath(2, true); }],
+    ['D', "View GoDoc for Project", viewGodoc],
 ]);
 
-mapsitekeys(/(gitlab\.com)/i, [
+mapsitekeys("gitlab.com", [
     ['s',  "Toggle Star", glToggleStar],
+    ['y', "Copy Project Path", function() { return copyURLPath(2); }],
+    ['Y', "Copy Project Path (including domain)", function() { return copyURLPath(2, true); }],
+    ['D', "View GoDoc for Project", viewGodoc],
 ]);
 
-mapsitekeys(/(reddit\.com)/i, [
+mapsitekeys("twitter.com", [
+    ['f',  "Follow user", twitterFollowUser],
+]);
+
+mapsitekeys("reddit.com", [
     ['c',  "Collapse comment", redditCollapseComment],
     ['v',  "Cast vote", redditVote],
 ]);
 
-mapsitekeys(/(news\.ycombinator\.com)/i, [
+mapsitekeys("news.ycombinator.com", [
     ['c',  "Collapse comment", hnCollapseComment],
     ['v',  "Cast vote", hnVote],
 ]);
@@ -211,7 +220,7 @@ function togglePdfViewer() {
     });
 }
 
-function copyURLPath(count, domain) {
+function getURLPath(count, domain) {
     var path = window.location.pathname;
     if (count) {
         path = path.split('/').slice(1,1+count).join('/');
@@ -219,7 +228,16 @@ function copyURLPath(count, domain) {
     if (domain) {
         path = window.location.hostname + '/' + path;
     }
-    Front.writeClipboard(path);
+    return path;
+}
+
+function copyURLPath(count, domain) {
+    Front.writeClipboard(getURLPath(count, domain));
+}
+
+function viewGodoc() {
+    var repo = getURLPath(2, true);
+    tabOpenLink("https://godoc.org/" + repo);
 }
 
 function editSettings() {
@@ -240,6 +258,10 @@ function redditVote() {
 
 function hnVote() {
     Hints.create('div.votearrow', Hints.dispatchMouseClick);
+}
+
+function twitterFollowUser() {
+    Hints.create('.follow-button', Hints.dispatchMouseClick);
 }
 
 // vim: set ft=javascript expandtab:

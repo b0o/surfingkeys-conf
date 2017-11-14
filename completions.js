@@ -10,19 +10,19 @@ const blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZ
 var completions = {};
 
 completions.al = {
-      alias:  'al'
-    , name:   'archlinux'
-    , search: 'https://www.archlinux.org/packages/?arch=x86_64&q='
-    , compl:  ''
+    alias:  'al',
+    name:   'archlinux',
+    search: 'https://www.archlinux.org/packages/?arch=x86_64&q=',
+    compl:  '',
 };
 
 completions.al.callback = function() {};
 
 completions.au = {
-      alias:  'au'
-    , name:   'AUR'
-    , search: 'https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K='
-    , compl:  'https://aur.archlinux.org/rpc?type=suggest&arg='
+    alias:  'au',
+    name:   'AUR',
+    search: 'https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=',
+    compl:  'https://aur.archlinux.org/rpc?type=suggest&arg=',
 };
 
 completions.au.callback = function(response) {
@@ -36,10 +36,10 @@ completions.au.callback = function(response) {
 };
 
 completions.aw = {
-      alias:  'aw'
-    , name:   'archwiki'
-    , search: 'https://wiki.archlinux.org/index.php?go=go&search='
-    , compl:  'https://wiki.archlinux.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    alias:  'aw',
+    name:   'archwiki',
+    search: 'https://wiki.archlinux.org/index.php?go=go&search=',
+    compl:  'https://wiki.archlinux.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=',
 };
 
 completions.aw.callback = function(response) {
@@ -47,10 +47,10 @@ completions.aw.callback = function(response) {
 };
 
 completions.ow = {
-      alias:  'ow'
-    , name:   'owasp'
-    , search: 'https://www.owasp.org/index.php?go=go&search='
-    , compl:  'https://www.owasp.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    alias:  'ow',
+    name:   'owasp',
+    search: 'https://www.owasp.org/index.php?go=go&search=',
+    compl:  'https://www.owasp.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=',
 };
 
 completions.ow.callback = function(response) {
@@ -58,10 +58,10 @@ completions.ow.callback = function(response) {
 };
 
 completions.vw = {
-      alias:  'vw'
-    , name:   'vimwikia'
-    , search: 'https://vim.wikia.com/wiki/Special:Search?query='
-    , compl:  'https://vim.wikia.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    alias:  'vw',
+    name:   'vimwikia',
+    search: 'https://vim.wikia.com/wiki/Special:Search?query=',
+    compl:  'https://vim.wikia.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=',
 };
 
 completions.vw.callback = function(response) {
@@ -69,10 +69,10 @@ completions.vw.callback = function(response) {
 };
 
 completions.az = {
-      alias:  'az'
-    , name:   'amazon'
-    , search: 'https://smile.amazon.com/s/?field-keywords='
-    , compl:  'https://completion.amazon.com/search/complete?method=completion&mkt=1&search-alias=aps&q='
+    alias:  'az',
+    name:   'amazon',
+    search: 'https://smile.amazon.com/s/?field-keywords=',
+    compl:  'https://completion.amazon.com/search/complete?method=completion&mkt=1&search-alias=aps&q=',
 };
 
 completions.az.callback = function(response) {
@@ -81,10 +81,10 @@ completions.az.callback = function(response) {
 };
 
 completions.cl = {
-      alias:  'cl'
-    , name:   'craigslist'
-    , search: 'https://craigslist.org/search/sss?query='
-    , compl:  'https://craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term='
+    alias:  'cl',
+    name:   'craigslist',
+    search: 'https://craigslist.org/search/sss?query=',
+    compl:  'https://craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=',
 };
 
 completions.cl.callback = function(response) {
@@ -92,10 +92,10 @@ completions.cl.callback = function(response) {
 };
 
 completions.wa = {
-      alias:  'wa'
-    , name:   'wolframalpha'
-    , search: 'http://www.wolframalpha.com/input/?i='
-    , compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`
+    alias:  'wa',
+    name:   'wolframalpha',
+    search: 'http://www.wolframalpha.com/input/?i=',
+    compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
 };
 
 completions.wa.callback = function(response) {
@@ -177,10 +177,10 @@ completions.wa.callback = function(response) {
 };
 
 completions.co = {
-      alias:  'co'
-    , name:   'crunchbase-orgs'
-    , search: 'https://www.crunchbase.com/app/search/?q='
-    , compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`
+    alias:  'co',
+    name:   'crunchbase-orgs',
+    search: 'https://www.crunchbase.com/app/search/?q=',
+    compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`,
 };
 
 completions.co.callback = function(response) {
@@ -235,10 +235,10 @@ completions.co.callback = function(response) {
 };
 
 completions.cp = {
-      alias:  'cp'
-    , name:   'crunchbase-people'
-    , search: 'https://www.crunchbase.com/app/search/?q='
-    , compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`
+    alias:  'cp',
+    name:   'crunchbase-people',
+    search: 'https://www.crunchbase.com/app/search/?q=',
+    compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`,
 };
 
 completions.cp.callback = function(response) {
@@ -295,19 +295,19 @@ completions.cp.callback = function(response) {
 };
 
 completions.cs = {
-      alias:  'cs'
-    , name:   'chromestore'
-    , search: 'https://chrome.google.com/webstore/search/'
-    , compl:  ''
+    alias:  'cs',
+    name:   'chromestore',
+    search: 'https://chrome.google.com/webstore/search/',
+    compl:  '',
 };
 
 completions.cs.callback = function() {};
 
 completions.th = {
-      alias:  'th'
-    , name:   'thesaurus'
-    , search: 'https://www.onelook.com/reverse-dictionary.shtml?s='
-    , compl:  'https://api.datamuse.com/words?md=d&ml=%s'
+    alias:  'th',
+    name:   'thesaurus',
+    search: 'https://www.onelook.com/reverse-dictionary.shtml?s=',
+    compl:  'https://api.datamuse.com/words?md=d&ml=%s',
 };
 
 completions.th.callback = function(response) {
@@ -335,10 +335,10 @@ completions.th.callback = function(response) {
 };
 
 completions.de = {
-      alias:  'de'
-    , name:   'define'
-    , search: 'http://onelook.com/?w='
-    , compl:  'https://api.datamuse.com/words?md=d&sp=%s*'
+    alias:  'de',
+    name:   'define',
+    search: 'http://onelook.com/?w=',
+    compl:  'https://api.datamuse.com/words?md=d&sp=%s*',
 };
 
 completions.de.callback = function(response) {
@@ -366,10 +366,10 @@ completions.de.callback = function(response) {
 };
 
 completions.dg = {
-      alias:  'dg'
-    , name:   'duckduckgo'
-    , search: 'https://duckduckgo.com/?q='
-    , compl:  'https://duckduckgo.com/ac/?q='
+    alias:  'dg',
+    name:   'duckduckgo',
+    search: 'https://duckduckgo.com/?q=',
+    compl:  'https://duckduckgo.com/ac/?q=',
 };
 
 completions.dg.callback = function(response) {
@@ -380,10 +380,10 @@ completions.dg.callback = function(response) {
 };
 
 completions.dh = {
-      alias:  'dh'
-    , name:   'dockerhub'
-    , search: 'https://hub.docker.com/search/?page=1&q='
-    , compl:  'https://hub.docker.com/v2/search/repositories/?page_size=20&query='
+    alias:  'dh',
+    name:   'dockerhub',
+    search: 'https://hub.docker.com/search/?page=1&q=',
+    compl:  'https://hub.docker.com/v2/search/repositories/?page_size=20&query=',
 };
 
 completions.dh.callback = function(response) {
@@ -409,10 +409,10 @@ completions.dh.callback = function(response) {
 };
 
 completions.do = {
-      alias:  'do'
-    , name:   'domainr'
-    , search: 'https://domainr.com/?q='
-    , compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`
+    alias:  'do',
+    name:   'domainr',
+    search: 'https://domainr.com/?q=',
+    compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`,
 };
 
 completions.do.callback = function(response) {
@@ -455,10 +455,10 @@ completions.do.callback = function(response) {
 };
 
 completions.ex = {
-      alias:  'ex' // Similar to `hd` but searches inside docs using Google Custom Search
-    , name:   'exdocs'
-    , search: 'https://hex.pm/packages?sort=downloads&search='
-    , compl:  `https://www.googleapis.com/customsearch/v1?key=${keys.google_ex}&cx=${keys.google_ex_cx}&q=`
+    alias:  'ex', // Similar to `hd` but searches inside docs using Google Custom Search,
+    name:   'exdocs',
+    search: 'https://hex.pm/packages?sort=downloads&search=',
+    compl:  `https://www.googleapis.com/customsearch/v1?key=${keys.google_ex}&cx=${keys.google_ex_cx}&q=`,
 };
 
 completions.ex.callback = function(response) {
@@ -529,10 +529,10 @@ completions.ex.callback = function(response) {
 };
 
 completions.gd = {
-      alias:  'gd'
-    , name:   'godoc'
-    , search: 'https://godoc.org/?q='
-    , compl:  'https://api.godoc.org/search?q='
+    alias:  'gd',
+    name:   'godoc',
+    search: 'https://godoc.org/?q=',
+    compl:  'https://api.godoc.org/search?q=',
 };
 
 completions.gd.callback = function(response) {
@@ -553,10 +553,10 @@ completions.gd.callback = function(response) {
 };
 
 completions.gh = {
-      alias:  'gh'
-    , name:   'github'
-    , search: 'https://github.com/search?q='
-    , compl:  'https://api.github.com/search/repositories?sort=stars&order=desc&q='
+    alias:  'gh',
+    name:   'github',
+    search: 'https://github.com/search?q=',
+    compl:  'https://api.github.com/search/repositories?sort=stars&order=desc&q=',
 };
 
 completions.gh.callback = function(response) {
@@ -574,10 +574,10 @@ completions.gh.callback = function(response) {
 };
 
 completions.go = {
-      alias:  'go'
-    , name:   'google'
-    , search: 'https://www.google.com/search?q='
-    , compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q='
+    alias:  'go',
+    name:   'google',
+    search: 'https://www.google.com/search?q=',
+    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
 };
 
 completions.go.callback = function(response) {
@@ -585,10 +585,10 @@ completions.go.callback = function(response) {
 };
 
 completions.gl = {
-      alias:  'gl'
-    , name:   'google-lucky'
-    , search: 'https://www.google.com/search?btnI=1&q='
-    , compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q='
+    alias:  'gl',
+    name:   'google-lucky',
+    search: 'https://www.google.com/search?btnI=1&q=',
+    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
 };
 
 completions.gl.callback = function(response) {
@@ -596,10 +596,10 @@ completions.gl.callback = function(response) {
 };
 
 completions.gs = {
-      alias:  'gs'
-    , name:   'go-search'
-    , search: 'http://go-search.org/search?q='
-    , compl:  'http://go-search.org/api?action=search&q='
+    alias:  'gs',
+    name:   'go-search',
+    search: 'http://go-search.org/search?q=',
+    compl:  'http://go-search.org/api?action=search&q=',
 };
 
 completions.gs.callback = function(response) {
@@ -611,10 +611,10 @@ completions.gs.callback = function(response) {
 };
 
 completions.ha = {
-      alias:  'ha'
-    , name:   'hackage'
-    , search: 'https://hackage.haskell.org/packages/search?terms='
-    , compl:  'https://hackage.haskell.org/packages/search.json?terms='
+    alias:  'ha',
+    name:   'hackage',
+    search: 'https://hackage.haskell.org/packages/search?terms=',
+    compl:  'https://hackage.haskell.org/packages/search.json?terms=',
 };
 
 completions.ha.callback = function(response) {
@@ -628,10 +628,10 @@ completions.ha.callback = function(response) {
 };
 
 completions.hd = {
-      alias:  'hd' // Same as hex but links to documentation pages
-    , name:   'hexdocs'
-    , search: 'https://hex.pm/packages?sort=downloads&search='
-    , compl:  'https://hex.pm/api/packages?sort=downloads&search='
+    alias:  'hd', // Same as hex but links to documentation pages,
+    name:   'hexdocs',
+    search: 'https://hex.pm/packages?sort=downloads&search=',
+    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
 };
 
 completions.hd.callback = function(response) {
@@ -666,10 +666,10 @@ completions.hd.callback = function(response) {
 };
 
 completions.hn = {
-      alias:  'hn'
-    , name:   'hackernews'
-    , search: 'https://hn.algolia.com/?query='
-    , compl:  'https://hn.algolia.com/api/v1/search?tags=(story,comment)&query='
+    alias:  'hn',
+    name:   'hackernews',
+    search: 'https://hn.algolia.com/?query=',
+    compl:  'https://hn.algolia.com/api/v1/search?tags=(story,comment)&query=',
 };
 
 completions.hn.callback = function(response) {
@@ -701,12 +701,12 @@ completions.hn.callback = function(response) {
 };
 
 completions.ho = {
-      alias:  'ho'
-    , name:   'hoogle'
-    , search: 'https://www.haskell.org/hoogle/?hoogle=' +
-        encodeURIComponent("+platform +xmonad +xmonad-contrib ") // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
-    , compl:  'https://www.haskell.org/hoogle/?mode=json&hoogle=' +
-        encodeURIComponent("+platform +xmonad +xmonad-contrib ")
+    alias:  'ho',
+    name:   'hoogle',
+    search: 'https://www.haskell.org/hoogle/?hoogle=' +
+      encodeURIComponent("+platform +xmonad +xmonad-contrib "), // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
+    compl:  'https://www.haskell.org/hoogle/?mode=json&hoogle=' +
+      encodeURIComponent("+platform +xmonad +xmonad-contrib "),
 };
 
 completions.ho.callback = function(response) {
@@ -720,10 +720,10 @@ completions.ho.callback = function(response) {
 };
 
 completions.hw = {
-      alias:  'hw'
-    , name:   'haskellwiki'
-    , search: 'https://wiki.haskell.org/index.php?go=go&search='
-    , compl:  'https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search='
+    alias:  'hw',
+    name:   'haskellwiki',
+    search: 'https://wiki.haskell.org/index.php?go=go&search=',
+    compl:  'https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=',
 };
 
 completions.hw.callback = function(response) {
@@ -731,10 +731,10 @@ completions.hw.callback = function(response) {
 };
 
 completions.hx = {
-      alias:  'hx'
-    , name:   'hex'
-    , search: 'https://hex.pm/packages?sort=downloads&search='
-    , compl:  'https://hex.pm/api/packages?sort=downloads&search='
+    alias:  'hx',
+    name:   'hex',
+    search: 'https://hex.pm/packages?sort=downloads&search=',
+    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
 };
 
 completions.hx.callback = function(response) {
@@ -769,10 +769,10 @@ completions.hx.callback = function(response) {
 };
 
 completions.hy = {
-      alias:  'hy'
-    , name:   'hayoo'
-    , search: 'http://hayoo.fh-wedel.de/?query='
-    , compl:  'http://hayoo.fh-wedel.de/json?query='
+    alias:  'hy',
+    name:   'hayoo',
+    search: 'http://hayoo.fh-wedel.de/?query=',
+    compl:  'http://hayoo.fh-wedel.de/json?query=',
 };
 
 completions.hy.callback = function(response) {
@@ -786,10 +786,10 @@ completions.hy.callback = function(response) {
 };
 
 completions.md = {
-      alias:  'md'
-    , name:   'mdn'
-    , search: 'https://developer.mozilla.org/en-US/search?q='
-    , compl:  'https://developer.mozilla.org/en-US/search.json?q='
+    alias:  'md',
+    name:   'mdn',
+    search: 'https://developer.mozilla.org/en-US/search?q=',
+    compl:  'https://developer.mozilla.org/en-US/search.json?q=',
 };
 
 completions.md.callback = function(response) {
@@ -815,10 +815,10 @@ completions.md.callback = function(response) {
 };
 
 completions.np = {
-      alias:  'np'
-    , name:   'npm'
-    , search: 'https://www.npmjs.com/search?q='
-    , compl:  'https://api.npms.io/v2/search/suggestions?size=20&q='
+    alias:  'np',
+    name:   'npm',
+    search: 'https://www.npmjs.com/search?q=',
+    compl:  'https://api.npms.io/v2/search/suggestions?size=20&q=',
 };
 
 completions.np.callback = function(response) {
@@ -862,10 +862,10 @@ completions.np.callback = function(response) {
 };
 
 completions.re = {
-      alias:  're'
-    , name:   'reddit'
-    , search: 'https://www.reddit.com/search?sort=relevance&t=all&q='
-    , compl:  'https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q='
+    alias:  're',
+    name:   'reddit',
+    search: 'https://www.reddit.com/search?sort=relevance&t=all&q=',
+    compl:  'https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q=',
 };
 
 completions.re.callback = function(response) {
@@ -880,10 +880,10 @@ completions.re.callback = function(response) {
 };
 
 completions.so = {
-      alias:  'so'
-    , name:   'stackoverflow'
-    , search: 'https://stackoverflow.com/search?q='
-    , compl:  'https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q='
+    alias:  'so',
+    name:   'stackoverflow',
+    search: 'https://stackoverflow.com/search?q=',
+    compl:  'https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=',
 };
 
 completions.so.callback = function(response) {
@@ -897,10 +897,10 @@ completions.so.callback = function(response) {
 };
 
 completions.wp = {
-      alias:  'wp'
-    , name:   'wikipedia'
-    , search: 'https://en.wikipedia.org/w/index.php?search='
-    , compl:  'https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch='
+    alias:  'wp',
+    name:   'wikipedia',
+    search: 'https://en.wikipedia.org/w/index.php?search=',
+    compl:  'https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch=',
 };
 
 completions.wp.callback = function(response) {
@@ -912,10 +912,10 @@ completions.wp.callback = function(response) {
 };
 
 completions.yp = {
-      alias:  'yp'
-    , name:   'yelp'
-    , search: 'https://www.yelp.com/search?find_desc='
-    , compl:  'https://www.yelp.com/search_suggest/v2/prefetch?prefix='
+    alias:  'yp',
+    name:   'yelp',
+    search: 'https://www.yelp.com/search?find_desc=',
+    compl:  'https://www.yelp.com/search_suggest/v2/prefetch?prefix=',
 };
 
 completions.yp.callback = function(response) {
@@ -933,10 +933,10 @@ completions.yp.callback = function(response) {
 };
 
 completions.yt = {
-      alias:  'yt'
-    , name:   'youtube'
-    , search: 'https://www.youtube.com/search?q='
-    , compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`
+    alias:  'yt',
+    name:   'youtube',
+    search: 'https://www.youtube.com/search?q=',
+    compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`,
 };
 
 completions.yt.callback = function(response) {

@@ -136,13 +136,13 @@ const sl = 'a';
 // Register Search Engine Completions
 // The `completions` variable is defined in `completions.js` and
 // is prepended to this file by gulp-concat.
-for(var i = 0; i < completions.length; i++) {
-    var s  = completions[i], // Search Engine object
+Object.keys(completions).map(function(k) {
+    var s  = completions[k], // Search Engine object
         la = sl + s.alias;   // Search leader + alias
 
     addSearchAliasX(s.alias, s.name, s.search, sl, s.compl, s.callback);
     mapkey(la, '#8Search ' + s.name, 'Front.openOmnibar({type: "SearchEngine", extra: "' + s.alias + '"})');
-}
+});
 
 //---- Functions ----//
 function fakeSpot() {

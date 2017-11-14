@@ -51,17 +51,18 @@ gulp.task('watch', function() {
 });
 
 gulp.task('readme', function() {
-  var table = compl.sort(function(a, b) {
-    if (a.alias < b.alias) return -1;
-    if (a.alias > b.alias) return 1;
+  var table = Object.keys(compl).sort(function(a, b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
     return 0;
-  }).reduce(function(a, c) {
+  }).reduce(function(a, k) {
+      var c = compl[k];
       var u = new URL(c.search);
       return a + `| \`${c.alias}\` | \`${c.name}\` | \`${u.hostname}\` |\n`;
   }, "");
   return gulp.src(['./README.tmpl.md'])
     .pipe(replace("<!--DISCLAIMER-->", disclaimer))
-    .pipe(replace("<!--COMPL_COUNT-->", compl.length))
+    .pipe(replace("<!--COMPL_COUNT-->", Object.keys(compl).length))
     .pipe(replace("<!--COMPL_TABLE-->", table))
     .pipe(rename('README.md'))
     .pipe(gulp.dest('.'));

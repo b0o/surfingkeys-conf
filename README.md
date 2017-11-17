@@ -18,7 +18,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently 38 Search Engine auto-completions.
+There are currently 39 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -52,6 +52,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | `hw` | `haskellwiki` | `wiki.haskell.org` |  |
 | `hx` | `hex` | `hex.pm` |  |
 | `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
+| `jq` | `jquery` | `Google Custom Search` |  |
 | `md` | `mdn` | `developer.mozilla.org` | [\[1\]](#mdn)  |
 | `no` | `node` | `Google Custom Search` |  |
 | `np` | `npm` | `www.npmjs.com` | [\[1\]](#npm)  |
@@ -167,6 +168,14 @@ If you ever make a change to any of your configuration files in the future, simp
 ![youtube screenshot](./assets/screenshots/yt.png)
 
 
+
+#### Todo
+
+- [ ] Simplify installation process
+- [ ] Improve code organization
+- [ ] Ensure screenshots have a plain white background
+- [ ] Add additional screenshots
+- [x] Feed the kittens
 
 ### License
 &copy;2017 Maddison Hellstrom - MIT License

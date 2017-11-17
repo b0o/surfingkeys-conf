@@ -85,5 +85,13 @@ If you ever make a change to any of your configuration files in the future, simp
 #### Screenshots
 <!--SCREENSHOTS-->
 
+#### Todo
+
+- [ ] Simplify installation process
+- [ ] Improve code organization
+- [ ] Ensure screenshots have a plain white background
+- [ ] Add additional screenshots
+- [x] Feed the kittens
+
 ### License
 &copy;2017 Maddison Hellstrom - MIT License

@@ -3,8 +3,10 @@ const concat  = require('gulp-concat');
 const replace = require('gulp-replace');
 const rename  = require('gulp-rename');
 const jshint  = require('gulp-jshint');
+const path    = require('path');
 const del     = require('del');
 const os      = require('os');
+const fs      = require('fs');
 const spawn   = require('child_process').spawn;
 const { URL } = require('url');
 const compl   = require('./completions');
@@ -13,6 +15,7 @@ var paths = {
   scripts: ['conf.priv.js', 'completions.js', 'conf.js'],
   gulpfile: ['gulpfile.js'],
   readme: ['README.tmpl.md'],
+  screenshots: 'assets/screenshots',
 };
 
 // This notice will be injected into the generated README.md file
@@ -73,6 +76,16 @@ gulp.task('watch-nogulpfile', function() {
 });
 
 gulp.task('readme', function() {
+  var screens = {};
+  var screenshotList = "";
+  fs.readdirSync(path.join(__dirname, paths.screenshots)).forEach(function(s) {
+      var file = path.basename(s, '.png').split('-');
+      var alias = file[0];
+      if (!screens[alias]) {
+          screens[alias] = [];
+      }
+      screens[alias].push(path.join(paths.screenshots, path.basename(s)));
+  });
   var table = Object.keys(compl).sort(function(a, b) {
     if (a < b) return -1;
     if (a > b) return 1;
@@ -80,12 +93,23 @@ gulp.task('readme', function() {
   }).reduce(function(a, k) {
       var c = compl[k];
       var u = new URL(c.search);
-      return a + `| \`${c.alias}\` | \`${c.name}\` | \`${u.hostname}\` |\n`;
+      var domain = (u.hostname === "cse.google.com") ? "Google Custom Search" : u.hostname;
+      var s = "";
+      if (screens[c.alias]) {
+          screens[c.alias].forEach(function(url, i) {
+              var num = (i > 0) ? ` ${i+1}` : "";
+              s += `[\\[${i+1}\\]](#${c.name}${num.replace(' ', '-')}) `;
+              screenshotList += `##### ${c.name}${num}\n`;
+              screenshotList += `![${c.name} screenshot](./${url})\n\n`;
+          });
+      }
+      return a + `| \`${c.alias}\` | \`${c.name}\` | \`${domain}\` | ${s} |\n`;
   }, "");
   return gulp.src(['./README.tmpl.md'])
     .pipe(replace("<!--DISCLAIMER-->", disclaimer))
     .pipe(replace("<!--COMPL_COUNT-->", Object.keys(compl).length))
     .pipe(replace("<!--COMPL_TABLE-->", table))
+    .pipe(replace("<!--SCREENSHOTS-->", screenshotList))
     .pipe(rename('README.md'))
     .pipe(gulp.dest('.'));
 });

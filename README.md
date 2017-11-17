@@ -18,50 +18,52 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently 36 Search Engine auto-completions.
+There are currently 38 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 
-| Alias | Name | Domain |
-| ---- | ------ | ----- |
-| `al` | `archlinux` | `www.archlinux.org` |
-| `au` | `AUR` | `aur.archlinux.org` |
-| `aw` | `archwiki` | `wiki.archlinux.org` |
-| `az` | `amazon` | `smile.amazon.com` |
-| `cl` | `craigslist` | `craigslist.org` |
-| `co` | `crunchbase-orgs` | `www.crunchbase.com` |
-| `cp` | `crunchbase-people` | `www.crunchbase.com` |
-| `cs` | `chromestore` | `chrome.google.com` |
-| `de` | `define` | `onelook.com` |
-| `dg` | `duckduckgo` | `duckduckgo.com` |
-| `dh` | `dockerhub` | `hub.docker.com` |
-| `do` | `domainr` | `domainr.com` |
-| `ex` | `exdocs` | `hex.pm` |
-| `gd` | `godoc` | `godoc.org` |
-| `gh` | `github` | `github.com` |
-| `gl` | `google-lucky` | `www.google.com` |
-| `go` | `google` | `www.google.com` |
-| `gs` | `go-search` | `go-search.org` |
-| `ha` | `hackage` | `hackage.haskell.org` |
-| `hd` | `hexdocs` | `hex.pm` |
-| `hn` | `hackernews` | `hn.algolia.com` |
-| `ho` | `hoogle` | `www.haskell.org` |
-| `hw` | `haskellwiki` | `wiki.haskell.org` |
-| `hx` | `hex` | `hex.pm` |
-| `hy` | `hayoo` | `hayoo.fh-wedel.de` |
-| `md` | `mdn` | `developer.mozilla.org` |
-| `np` | `npm` | `www.npmjs.com` |
-| `ow` | `owasp` | `www.owasp.org` |
-| `re` | `reddit` | `www.reddit.com` |
-| `so` | `stackoverflow` | `stackoverflow.com` |
-| `th` | `thesaurus` | `www.onelook.com` |
-| `vw` | `vimwikia` | `vim.wikia.com` |
-| `wa` | `wolframalpha` | `www.wolframalpha.com` |
-| `wp` | `wikipedia` | `en.wikipedia.org` |
-| `yp` | `yelp` | `www.yelp.com` |
-| `yt` | `youtube` | `www.youtube.com` |
+| Alias | Name | Domain | Screenshots |
+| ---- | ------ | ----- | ----- |
+| `af` | `archforums` | `Google Custom Search` |  |
+| `al` | `archlinux` | `www.archlinux.org` |  |
+| `au` | `AUR` | `aur.archlinux.org` |  |
+| `aw` | `archwiki` | `wiki.archlinux.org` |  |
+| `az` | `amazon` | `smile.amazon.com` |  |
+| `cl` | `craigslist` | `craigslist.org` |  |
+| `co` | `crunchbase-orgs` | `www.crunchbase.com` |  |
+| `cp` | `crunchbase-people` | `www.crunchbase.com` | [\[1\]](#crunchbase-people)  |
+| `cs` | `chromestore` | `chrome.google.com` |  |
+| `de` | `define` | `onelook.com` | [\[1\]](#define)  |
+| `dg` | `duckduckgo` | `duckduckgo.com` |  |
+| `dh` | `dockerhub` | `hub.docker.com` | [\[1\]](#dockerhub)  |
+| `do` | `domainr` | `domainr.com` | [\[1\]](#domainr)  |
+| `ex` | `exdocs` | `hex.pm` |  |
+| `gd` | `godoc` | `godoc.org` |  |
+| `gh` | `github` | `github.com` | [\[1\]](#github)  |
+| `gl` | `google-lucky` | `www.google.com` |  |
+| `go` | `google` | `www.google.com` |  |
+| `gs` | `go-search` | `go-search.org` |  |
+| `ha` | `hackage` | `hackage.haskell.org` |  |
+| `hd` | `hexdocs` | `hex.pm` |  |
+| `hn` | `hackernews` | `hn.algolia.com` | [\[1\]](#hackernews)  |
+| `ho` | `hoogle` | `www.haskell.org` | [\[1\]](#hoogle)  |
+| `hw` | `haskellwiki` | `wiki.haskell.org` |  |
+| `hx` | `hex` | `hex.pm` |  |
+| `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
+| `md` | `mdn` | `developer.mozilla.org` | [\[1\]](#mdn)  |
+| `no` | `node` | `Google Custom Search` |  |
+| `np` | `npm` | `www.npmjs.com` | [\[1\]](#npm)  |
+| `ow` | `owasp` | `www.owasp.org` |  |
+| `re` | `reddit` | `www.reddit.com` |  |
+| `so` | `stackoverflow` | `stackoverflow.com` |  |
+| `th` | `thesaurus` | `www.onelook.com` | [\[1\]](#thesaurus)  |
+| `vw` | `vimwikia` | `vim.wikia.com` |  |
+| `wa` | `wolframalpha` | `www.wolframalpha.com` | [\[1\]](#wolframalpha) [\[2\]](#wolframalpha-2)  |
+| `wp` | `wikipedia` | `en.wikipedia.org` |  |
+| `yp` | `yelp` | `www.yelp.com` |  |
+| `yt` | `youtube` | `www.youtube.com` | [\[1\]](#youtube)  |
 
 
 #### Installation
@@ -125,45 +127,46 @@ The final step is to tell SurfingKeys where to find your configuration file:
 If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your settings will be immediately updated.
 
 #### Screenshots
-
 ##### crunchbase-people
-![crunchbase-people](./assets/crunchbase-people.png)
+![crunchbase-people screenshot](./assets/screenshots/cp.png)
 
 ##### define
-![define](./assets/define.png)
+![define screenshot](./assets/screenshots/de.png)
 
 ##### dockerhub
-![dockerhub](./assets/dockerhub.png)
+![dockerhub screenshot](./assets/screenshots/dh.png)
 
 ##### domainr
-![domainr](./assets/domainr.png)
+![domainr screenshot](./assets/screenshots/do.png)
 
 ##### github
-![github](./assets/github.png)
+![github screenshot](./assets/screenshots/gh.png)
 
 ##### hackernews
-![hackernews](./assets/hackernews.png)
+![hackernews screenshot](./assets/screenshots/hn.png)
 
 ##### hoogle
-![hoogle](./assets/hoogle.png)
+![hoogle screenshot](./assets/screenshots/ho.png)
 
 ##### mdn
-![mdn](./assets/mdn.png)
+![mdn screenshot](./assets/screenshots/md.png)
 
 ##### npm
-![npm](./assets/npm.png)
+![npm screenshot](./assets/screenshots/np.png)
 
 ##### thesaurus
-![thesaurus](./assets/thesaurus.png)
+![thesaurus screenshot](./assets/screenshots/th.png)
 
 ##### wolframalpha
-![wolframalpha-01](./assets/wolframalpha-01.png)
+![wolframalpha screenshot](./assets/screenshots/wa-01.png)
 
-##### wolframalpha
-![wolframalpha-02](./assets/wolframalpha-02.png)
+##### wolframalpha 2
+![wolframalpha screenshot](./assets/screenshots/wa-02.png)
 
 ##### youtube
-![youtube](./assets/youtube.png)
+![youtube screenshot](./assets/screenshots/yt.png)
+
+
 
 ### License
 &copy;2017 Maddison Hellstrom - MIT License

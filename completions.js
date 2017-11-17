@@ -9,15 +9,18 @@ const blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZ
 
 var completions = {};
 
+// ****** Arch Linux ****** //
+
+// Arch Linux official repos
 completions.al = {
-    alias:  'al',
-    name:   'archlinux',
-    search: 'https://www.archlinux.org/packages/?arch=x86_64&q=',
-    compl:  '',
+    alias:    'al',
+    name:     'archlinux',
+    search:   'https://www.archlinux.org/packages/?arch=x86_64&q=',
+    compl:    google_cx_url('al'),
+    callback: google_cx_callback,
 };
 
-completions.al.callback = function() {};
-
+// Arch Linux AUR
 completions.au = {
     alias:  'au',
     name:   'AUR',
@@ -35,6 +38,7 @@ completions.au.callback = function(response) {
   });
 };
 
+// Arch Linux Wiki
 completions.aw = {
     alias:  'aw',
     name:   'archwiki',
@@ -46,6 +50,27 @@ completions.aw.callback = function(response) {
   Omnibar.listWords(JSON.parse(response.text)[1]);
 };
 
+// Arch Linux Forums
+completions.af = {
+    alias:    'af',
+    name:     'archforums',
+    search:   google_cx_publicurl('af'),
+    compl:    google_cx_url('af'),
+    callback: google_cx_callback,
+};
+
+// ****** Technical Resources ****** //
+
+// Chrome Webstore
+completions.cs = {
+    alias:    'cs',
+    name:     'chromestore',
+    search:   'https://chrome.google.com/webstore/search/',
+    compl:    google_cx_url('cs'),
+    callback: google_cx_callback,
+};
+
+// OWASP Wiki
 completions.ow = {
     alias:  'ow',
     name:   'owasp',
@@ -57,6 +82,124 @@ completions.ow.callback = function(response) {
   Omnibar.listWords(JSON.parse(response.text)[1]);
 };
 
+// StackOverflow
+completions.so = {
+    alias:  'so',
+    name:   'stackoverflow',
+    search: 'https://stackoverflow.com/search?q=',
+    compl:  'https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=',
+};
+
+completions.so.callback = function(response) {
+  var res = JSON.parse(response.text).items;
+  Omnibar.listResults(res, function(s) {
+    return Omnibar.createURLItem({
+      title: "[" + s.score + "] " + s.title,
+      url:   s.link
+    });
+  });
+};
+
+// DockerHub repo search
+completions.dh = {
+    alias:  'dh',
+    name:   'dockerhub',
+    search: 'https://hub.docker.com/search/?page=1&q=',
+    compl:  'https://hub.docker.com/v2/search/repositories/?page_size=20&query=',
+};
+
+completions.dh.callback = function(response) {
+  var res = JSON.parse(response.text);
+  Omnibar.listResults(res.results, function(s) {
+    var meta = ""
+      , repo = s.repo_name;
+    meta += "[★" + s.star_count + "] ";
+    meta += "[↓" + s.pull_count + "] ";
+    if (repo.indexOf("/") === -1) {
+      repo = "_/" + repo;
+    }
+    var li = $('<li/>').html(`
+      <div>
+        <div class="title"><strong>${s.repo_name}</strong></div>
+        <div>${meta}</div>
+        <div>${s.short_description}</div>
+      </div>
+    `);
+    li.data('url', "https://hub.docker.com/r/" + repo);
+    return li;
+  });
+};
+
+// GitHub
+completions.gh = {
+    alias:  'gh',
+    name:   'github',
+    search: 'https://github.com/search?q=',
+    compl:  'https://api.github.com/search/repositories?sort=stars&order=desc&q=',
+};
+
+completions.gh.callback = function(response) {
+  var res = JSON.parse(response.text).items;
+  Omnibar.listResults(res, function(s) {
+    var prefix = "";
+    if (s.stargazers_count) {
+      prefix += "[★" + s.stargazers_count + "] ";
+    }
+    return Omnibar.createURLItem({
+      title: prefix + s.full_name,
+      url:   s.html_url
+    });
+  });
+};
+
+// Domainr domain search
+completions.do = {
+    alias:  'do',
+    name:   'domainr',
+    search: 'https://domainr.com/?q=',
+    compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`,
+};
+
+completions.do.callback = function(response) {
+  var res = JSON.parse(response.text).results;
+  var domains = [];
+  res.map(function(r){
+    var d = {
+      id: r.domain.replace('.', '-'),
+      domain: r.domain
+    };
+    domains.push(d);
+  });
+
+  var domainQuery = domains.map(function(d) { return d.domain; }).join(',');
+
+  runtime.command({
+      action: 'request',
+      method: 'get',
+      url: `https://api.domainr.com/v2/status?client_id=${keys.domainr}&domain=${domainQuery}`
+  }, function(sresponse) {
+    var sres = JSON.parse(sresponse.text).status;
+    sres.map(function(s) {
+      var id        = "#sk-domain-" + s.domain.replace('.', '-')
+        , available = s.summary === "inactive"
+        , color     = available ? "#23b000" : "#ff4d00"
+        , symbol    = available ? "✔ " : "✘ ";
+      $(id).text(symbol + $(id).text()).css("color", color);
+    });
+  });
+
+  Omnibar.listResults(domains, function(d) {
+    var li = $('<li/>').html(`
+      <div id="sk-domain-${d.id}">
+        <div class="title"><strong>${d.domain}</strong></div>
+      </div>
+    `);
+    li.data('url', `https://domainr.com/${d.domain}`);
+    return li;
+  });
+};
+
+// Vim Wiki
 completions.vw = {
     alias:  'vw',
     name:   'vimwikia',
@@ -68,6 +211,9 @@ completions.vw.callback = function(response) {
   Omnibar.listWords(JSON.parse(response.text)[1]);
 };
 
+// ****** Shopping & Food ****** //
+
+// Amazon
 completions.az = {
     alias:  'az',
     name:   'amazon',
@@ -80,6 +226,7 @@ completions.az.callback = function(response) {
   Omnibar.listWords(res);
 };
 
+// Craigslist
 completions.cl = {
     alias:  'cl',
     name:   'craigslist',
@@ -91,6 +238,112 @@ completions.cl.callback = function(response) {
   Omnibar.listWords(JSON.parse(response.text));
 };
 
+// Yelp
+completions.yp = {
+    alias:  'yp',
+    name:   'yelp',
+    search: 'https://www.yelp.com/search?find_desc=',
+    compl:  'https://www.yelp.com/search_suggest/v2/prefetch?prefix=',
+};
+
+completions.yp.callback = function(response) {
+  var res = JSON.parse(response.text).response;
+  var words = [];
+  res.map(function(r){
+    r.suggestions.map(function(s) {
+      var w = s.query;
+      if (words.indexOf(w) === -1) {
+        words.push(w);
+      }
+    });
+  });
+  Omnibar.listWords(words);
+};
+
+// ****** General References, Calculators & Utilities ****** //
+
+// Dictionary
+completions.de = {
+    alias:  'de',
+    name:   'define',
+    search: 'http://onelook.com/?w=',
+    compl:  'https://api.datamuse.com/words?md=d&sp=%s*',
+};
+
+completions.de.callback = function(response) {
+  var res = JSON.parse(response.text);
+  var defs = [];
+  res.map(function(r){
+      if (!r.defs || r.defs.length === 0) {
+        defs.push([r.word, "", ""]);
+        return;
+      }
+      r.defs.map(function(d) {
+        d = d.split("\t");
+
+        var sp  = "(" + d[0] + ")",
+            def = d[1];
+
+        defs.push([r.word, sp, def]);
+      });
+  });
+  Omnibar.listResults(defs, function(d) {
+    var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
+    li.data('url', "http://onelook.com/?w=" + d[0]);
+    return li;
+  });
+};
+
+// Thesaurus
+completions.th = {
+    alias:  'th',
+    name:   'thesaurus',
+    search: 'https://www.onelook.com/reverse-dictionary.shtml?s=',
+    compl:  'https://api.datamuse.com/words?md=d&ml=%s',
+};
+
+completions.th.callback = function(response) {
+  var res = JSON.parse(response.text);
+  var defs = [];
+  res.map(function(r){
+      if (!r.defs || r.defs.length === 0) {
+        defs.push([r.word, "", ""]);
+        return;
+      }
+      r.defs.map(function(d) {
+        d = d.split("\t");
+
+        var sp  = "(" + d[0] + ")",
+            def = d[1];
+
+        defs.push([r.word, sp, def]);
+      });
+  });
+  Omnibar.listResults(defs, function(d) {
+    var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
+    li.data('url', "http://onelook.com/?w=" + d[0]);
+    return li;
+  });
+};
+
+// Wikipedia
+completions.wp = {
+    alias:  'wp',
+    name:   'wikipedia',
+    search: 'https://en.wikipedia.org/w/index.php?search=',
+    compl:  'https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch=',
+};
+
+completions.wp.callback = function(response) {
+  var res = JSON.parse(response.text).query.prefixsearch
+    .map(function(r){
+      return r.title;
+    });
+  Omnibar.listWords(res);
+};
+
+
+// WolframAlpha
 completions.wa = {
     alias:  'wa',
     name:   'wolframalpha',
@@ -176,6 +429,9 @@ completions.wa.callback = function(response) {
   });
 };
 
+// ****** Business Utilities & References ****** //
+
+// Crunchbase Organization Search
 completions.co = {
     alias:  'co',
     name:   'crunchbase-orgs',
@@ -234,6 +490,7 @@ completions.co.callback = function(response) {
   });
 };
 
+// Crunchbase People Search
 completions.cp = {
     alias:  'cp',
     name:   'crunchbase-people',
@@ -294,77 +551,9 @@ completions.cp.callback = function(response) {
   });
 };
 
-completions.cs = {
-    alias:  'cs',
-    name:   'chromestore',
-    search: 'https://chrome.google.com/webstore/search/',
-    compl:  '',
-};
+// ****** Search Engines ****** //
 
-completions.cs.callback = function() {};
-
-completions.th = {
-    alias:  'th',
-    name:   'thesaurus',
-    search: 'https://www.onelook.com/reverse-dictionary.shtml?s=',
-    compl:  'https://api.datamuse.com/words?md=d&ml=%s',
-};
-
-completions.th.callback = function(response) {
-  var res = JSON.parse(response.text);
-  var defs = [];
-  res.map(function(r){
-      if (!r.defs || r.defs.length === 0) {
-        defs.push([r.word, "", ""]);
-        return;
-      }
-      r.defs.map(function(d) {
-        d = d.split("\t");
-
-        var sp  = "(" + d[0] + ")",
-            def = d[1];
-
-        defs.push([r.word, sp, def]);
-      });
-  });
-  Omnibar.listResults(defs, function(d) {
-    var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
-    li.data('url', "http://onelook.com/?w=" + d[0]);
-    return li;
-  });
-};
-
-completions.de = {
-    alias:  'de',
-    name:   'define',
-    search: 'http://onelook.com/?w=',
-    compl:  'https://api.datamuse.com/words?md=d&sp=%s*',
-};
-
-completions.de.callback = function(response) {
-  var res = JSON.parse(response.text);
-  var defs = [];
-  res.map(function(r){
-      if (!r.defs || r.defs.length === 0) {
-        defs.push([r.word, "", ""]);
-        return;
-      }
-      r.defs.map(function(d) {
-        d = d.split("\t");
-
-        var sp  = "(" + d[0] + ")",
-            def = d[1];
-
-        defs.push([r.word, sp, def]);
-      });
-  });
-  Omnibar.listResults(defs, function(d) {
-    var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
-    li.data('url', "http://onelook.com/?w=" + d[0]);
-    return li;
-  });
-};
-
+// DuckDuckGo
 completions.dg = {
     alias:  'dg',
     name:   'duckduckgo',
@@ -379,86 +568,118 @@ completions.dg.callback = function(response) {
   Omnibar.listWords(res);
 };
 
-completions.dh = {
-    alias:  'dh',
-    name:   'dockerhub',
-    search: 'https://hub.docker.com/search/?page=1&q=',
-    compl:  'https://hub.docker.com/v2/search/repositories/?page_size=20&query=',
+// Google
+completions.go = {
+    alias:  'go',
+    name:   'google',
+    search: 'https://www.google.com/search?q=',
+    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
 };
 
-completions.dh.callback = function(response) {
+completions.go.callback = function(response) {
+  Omnibar.listWords(JSON.parse(response.text)[1]);
+};
+
+// Google - I'm Feeling Lucky
+completions.gl = {
+    alias:  'gl',
+    name:   'google-lucky',
+    search: 'https://www.google.com/search?btnI=1&q=',
+    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
+};
+
+completions.gl.callback = function(response) {
+  Omnibar.listWords(JSON.parse(response.text)[1]);
+};
+
+//  ****** Elixir ****** //
+
+// Hex.pm
+completions.hx = {
+    alias:  'hx',
+    name:   'hex',
+    search: 'https://hex.pm/packages?sort=downloads&search=',
+    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
+};
+
+completions.hx.callback = function(response) {
   var res = JSON.parse(response.text);
-  Omnibar.listResults(res.results, function(s) {
-    var meta = ""
-      , repo = s.repo_name;
-    meta += "[★" + s.star_count + "] ";
-    meta += "[↓" + s.pull_count + "] ";
-    if (repo.indexOf("/") === -1) {
-      repo = "_/" + repo;
+  Omnibar.listResults(res, function(s) {
+    var dls = ""
+      , desc   = ""
+      , liscs  = "";
+    if (s.downloads && s.downloads.all) {
+      dls = "[↓" + s.downloads.all + "] ";
+    }
+    if(s.meta) {
+      if (s.meta.description) {
+        desc = s.meta.description;
+      }
+      if (s.meta.licenses) {
+        s.meta.licenses.forEach(function(l) {
+          liscs += "[&copy;" + l + "] ";
+        });
+      }
     }
     var li = $('<li/>').html(`
       <div>
-        <div class="title"><strong>${s.repo_name}</strong></div>
-        <div>${meta}</div>
-        <div>${s.short_description}</div>
+        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+        <div>${dls}${liscs}</div>
+        <div>${desc}</div>
       </div>
     `);
-    li.data('url', "https://hub.docker.com/r/" + repo);
+    li.data('url', s.html_url);
     return li;
   });
 };
 
-completions.do = {
-    alias:  'do',
-    name:   'domainr',
-    search: 'https://domainr.com/?q=',
-    compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`,
+// hexdocs
+// Same as hex but links to documentation pages
+completions.hd = {
+    alias:  'hd',
+    name:   'hexdocs',
+    search: 'https://hex.pm/packages?sort=downloads&search=',
+    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
 };
 
-completions.do.callback = function(response) {
-  var res = JSON.parse(response.text).results;
-  var domains = [];
-  res.map(function(r){
-    var d = {
-      id: r.domain.replace('.', '-'),
-      domain: r.domain
-    };
-    domains.push(d);
-  });
-
-  var domainQuery = domains.map(function(d) { return d.domain; }).join(',');
-
-  runtime.command({
-      action: 'request',
-      method: 'get',
-      url: `https://api.domainr.com/v2/status?client_id=${keys.domainr}&domain=${domainQuery}`
-  }, function(sresponse) {
-    var sres = JSON.parse(sresponse.text).status;
-    sres.map(function(s) {
-      var id        = "#sk-domain-" + s.domain.replace('.', '-')
-        , available = s.summary === "inactive"
-        , color     = available ? "#23b000" : "#ff4d00"
-        , symbol    = available ? "✔ " : "✘ ";
-      $(id).text(symbol + $(id).text()).css("color", color);
-    });
-  });
-
-  Omnibar.listResults(domains, function(d) {
+completions.hd.callback = function(response) {
+  var res = JSON.parse(response.text);
+  Omnibar.listResults(res, function(s) {
+    var dls = ""
+      , desc   = ""
+      , liscs  = "";
+    if (s.downloads && s.downloads.all) {
+      dls = "[↓" + s.downloads.all + "]";
+    }
+    if(s.meta) {
+      if (s.meta.description) {
+        desc = s.meta.description;
+      }
+      if (s.meta.licenses) {
+        s.meta.licenses.forEach(function(l) {
+          liscs += "[&copy;" + l + "] ";
+        });
+      }
+    }
     var li = $('<li/>').html(`
-      <div id="sk-domain-${d.id}">
-        <div class="title"><strong>${d.domain}</strong></div>
+      <div>
+        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+        <div>${dls}${liscs}</div>
+        <div>${desc}</div>
       </div>
     `);
-    li.data('url', `https://domainr.com/${d.domain}`);
+    li.data('url', "https://hexdocs.pm/" + s.name);
     return li;
   });
 };
 
+// Exdocs
+// Similar to `hd` but searches inside docs using Google Custom Search
 completions.ex = {
-    alias:  'ex', // Similar to `hd` but searches inside docs using Google Custom Search,
+    alias:  'ex',
     name:   'exdocs',
     search: 'https://hex.pm/packages?sort=downloads&search=',
-    compl:  `https://www.googleapis.com/customsearch/v1?key=${keys.google_ex}&cx=${keys.google_ex_cx}&q=`,
+    compl:  google_cx_url('ex'),
 };
 
 completions.ex.callback = function(response) {
@@ -528,6 +749,9 @@ completions.ex.callback = function(response) {
   });
 };
 
+// ****** Golang ****** //
+
+// Godoc
 completions.gd = {
     alias:  'gd',
     name:   'godoc',
@@ -552,49 +776,7 @@ completions.gd.callback = function(response) {
   });
 };
 
-completions.gh = {
-    alias:  'gh',
-    name:   'github',
-    search: 'https://github.com/search?q=',
-    compl:  'https://api.github.com/search/repositories?sort=stars&order=desc&q=',
-};
-
-completions.gh.callback = function(response) {
-  var res = JSON.parse(response.text).items;
-  Omnibar.listResults(res, function(s) {
-    var prefix = "";
-    if (s.stargazers_count) {
-      prefix += "[★" + s.stargazers_count + "] ";
-    }
-    return Omnibar.createURLItem({
-      title: prefix + s.full_name,
-      url:   s.html_url
-    });
-  });
-};
-
-completions.go = {
-    alias:  'go',
-    name:   'google',
-    search: 'https://www.google.com/search?q=',
-    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
-};
-
-completions.go.callback = function(response) {
-  Omnibar.listWords(JSON.parse(response.text)[1]);
-};
-
-completions.gl = {
-    alias:  'gl',
-    name:   'google-lucky',
-    search: 'https://www.google.com/search?btnI=1&q=',
-    compl:  'https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=',
-};
-
-completions.gl.callback = function(response) {
-  Omnibar.listWords(JSON.parse(response.text)[1]);
-};
-
+// Go-Search
 completions.gs = {
     alias:  'gs',
     name:   'go-search',
@@ -610,6 +792,9 @@ completions.gs.callback = function(response) {
   Omnibar.listWords(res);
 };
 
+// ****** Haskell ****** //
+
+// Hackage
 completions.ha = {
     alias:  'ha',
     name:   'hackage',
@@ -627,79 +812,7 @@ completions.ha.callback = function(response) {
   });
 };
 
-completions.hd = {
-    alias:  'hd', // Same as hex but links to documentation pages,
-    name:   'hexdocs',
-    search: 'https://hex.pm/packages?sort=downloads&search=',
-    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
-};
-
-completions.hd.callback = function(response) {
-  var res = JSON.parse(response.text);
-  Omnibar.listResults(res, function(s) {
-    var dls = ""
-      , desc   = ""
-      , liscs  = "";
-    if (s.downloads && s.downloads.all) {
-      dls = "[↓" + s.downloads.all + "]";
-    }
-    if(s.meta) {
-      if (s.meta.description) {
-        desc = s.meta.description;
-      }
-      if (s.meta.licenses) {
-        s.meta.licenses.forEach(function(l) {
-          liscs += "[&copy;" + l + "] ";
-        });
-      }
-    }
-    var li = $('<li/>').html(`
-      <div>
-        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
-        <div>${dls}${liscs}</div>
-        <div>${desc}</div>
-      </div>
-    `);
-    li.data('url', "https://hexdocs.pm/" + s.name);
-    return li;
-  });
-};
-
-completions.hn = {
-    alias:  'hn',
-    name:   'hackernews',
-    search: 'https://hn.algolia.com/?query=',
-    compl:  'https://hn.algolia.com/api/v1/search?tags=(story,comment)&query=',
-};
-
-completions.hn.callback = function(response) {
-  var res = JSON.parse(response.text).hits;
-  Omnibar.listResults(res, function(s) {
-      var title = "";
-      var prefix = "";
-      if (s.points) {
-        prefix += "[↑" + s.points + "] ";
-      }
-      if (s.num_comments) {
-        prefix += "[↲" + s.num_comments + "] ";
-      }
-      switch(s._tags[0]) {
-        case "story":
-          title = s.title;
-          break;
-        case "comment":
-          title = s.comment_text;
-          break;
-        default:
-          title = s.objectID;
-      }
-      return Omnibar.createURLItem({
-        title: prefix + title,
-        url:   "https://news.ycombinator.com/item?id=" + s.objectID
-      });
-  });
-};
-
+// Hoogle
 completions.ho = {
     alias:  'ho',
     name:   'hoogle',
@@ -719,6 +832,7 @@ completions.ho.callback = function(response) {
   });
 };
 
+// Haskell Wiki
 completions.hw = {
     alias:  'hw',
     name:   'haskellwiki',
@@ -730,44 +844,7 @@ completions.hw.callback = function(response) {
   Omnibar.listWords(JSON.parse(response.text)[1]);
 };
 
-completions.hx = {
-    alias:  'hx',
-    name:   'hex',
-    search: 'https://hex.pm/packages?sort=downloads&search=',
-    compl:  'https://hex.pm/api/packages?sort=downloads&search=',
-};
-
-completions.hx.callback = function(response) {
-  var res = JSON.parse(response.text);
-  Omnibar.listResults(res, function(s) {
-    var dls = ""
-      , desc   = ""
-      , liscs  = "";
-    if (s.downloads && s.downloads.all) {
-      dls = "[↓" + s.downloads.all + "] ";
-    }
-    if(s.meta) {
-      if (s.meta.description) {
-        desc = s.meta.description;
-      }
-      if (s.meta.licenses) {
-        s.meta.licenses.forEach(function(l) {
-          liscs += "[&copy;" + l + "] ";
-        });
-      }
-    }
-    var li = $('<li/>').html(`
-      <div>
-        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
-        <div>${dls}${liscs}</div>
-        <div>${desc}</div>
-      </div>
-    `);
-    li.data('url', s.html_url);
-    return li;
-  });
-};
-
+// Hayoo
 completions.hy = {
     alias:  'hy',
     name:   'hayoo',
@@ -785,6 +862,18 @@ completions.hy.callback = function(response) {
   });
 };
 
+// ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
+
+// NodeJS standard library documentation
+completions.no = {
+    alias:    'no',
+    name:     'node',
+    search:   google_cx_publicurl('no'),
+    compl:    google_cx_url('no'),
+    callback: google_cx_callback,
+};
+
+// Mozilla Developer Network (MDN)
 completions.md = {
     alias:  'md',
     name:   'mdn',
@@ -814,6 +903,7 @@ completions.md.callback = function(response) {
   });
 };
 
+// NPM registry search
 completions.np = {
     alias:  'np',
     name:   'npm',
@@ -861,6 +951,45 @@ completions.np.callback = function(response) {
   });
 };
 
+// ****** Social Media & Entertainment ****** //
+
+// Hacker News (YCombinator)
+completions.hn = {
+    alias:  'hn',
+    name:   'hackernews',
+    search: 'https://hn.algolia.com/?query=',
+    compl:  'https://hn.algolia.com/api/v1/search?tags=(story,comment)&query=',
+};
+
+completions.hn.callback = function(response) {
+  var res = JSON.parse(response.text).hits;
+  Omnibar.listResults(res, function(s) {
+      var title = "";
+      var prefix = "";
+      if (s.points) {
+        prefix += "[↑" + s.points + "] ";
+      }
+      if (s.num_comments) {
+        prefix += "[↲" + s.num_comments + "] ";
+      }
+      switch(s._tags[0]) {
+        case "story":
+          title = s.title;
+          break;
+        case "comment":
+          title = s.comment_text;
+          break;
+        default:
+          title = s.objectID;
+      }
+      return Omnibar.createURLItem({
+        title: prefix + title,
+        url:   "https://news.ycombinator.com/item?id=" + s.objectID
+      });
+  });
+};
+
+// Reddit
 completions.re = {
     alias:  're',
     name:   'reddit',
@@ -879,59 +1008,7 @@ completions.re.callback = function(response) {
   });
 };
 
-completions.so = {
-    alias:  'so',
-    name:   'stackoverflow',
-    search: 'https://stackoverflow.com/search?q=',
-    compl:  'https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=',
-};
-
-completions.so.callback = function(response) {
-  var res = JSON.parse(response.text).items;
-  Omnibar.listResults(res, function(s) {
-    return Omnibar.createURLItem({
-      title: "[" + s.score + "] " + s.title,
-      url:   s.link
-    });
-  });
-};
-
-completions.wp = {
-    alias:  'wp',
-    name:   'wikipedia',
-    search: 'https://en.wikipedia.org/w/index.php?search=',
-    compl:  'https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch=',
-};
-
-completions.wp.callback = function(response) {
-  var res = JSON.parse(response.text).query.prefixsearch
-    .map(function(r){
-      return r.title;
-    });
-  Omnibar.listWords(res);
-};
-
-completions.yp = {
-    alias:  'yp',
-    name:   'yelp',
-    search: 'https://www.yelp.com/search?find_desc=',
-    compl:  'https://www.yelp.com/search_suggest/v2/prefetch?prefix=',
-};
-
-completions.yp.callback = function(response) {
-  var res = JSON.parse(response.text).response;
-  var words = [];
-  res.map(function(r){
-    r.suggestions.map(function(s) {
-      var w = s.query;
-      if (words.indexOf(w) === -1) {
-        words.push(w);
-      }
-    });
-  });
-  Omnibar.listWords(words);
-};
-
+// YouTube
 completions.yt = {
     alias:  'yt',
     name:   'youtube',
@@ -956,6 +1033,32 @@ completions.yt.callback = function(response) {
     }
   });
 };
+
+// ****** Helper Functions ****** //
+
+function google_cx_callback(response) {
+  var res = JSON.parse(response.text).items;
+  Omnibar.listResults(res, function(s) {
+    var li = $('<li/>').html(`
+      <div>
+        <div class="title"><strong>${s.htmlTitle}</strong></div>
+        <div>${s.htmlSnippet}</div>
+      </div>
+    `);
+    li.data('url', s.link);
+    return li;
+  });
+}
+
+function google_cx_url(alias) {
+    var key = `google_cx_${alias}`;
+    return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`;
+}
+
+function google_cx_publicurl(alias) {
+    var key = `google_cx_${alias}`;
+    return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`;
+}
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = completions;

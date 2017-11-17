@@ -31,8 +31,9 @@ var keys = {
     google_cx_ex: "", // hexdocs.pm/*/master/*.html
     google_cx_af: "", // bbs.archlinux.org/*
     google_cx_al: "", // www.archlinux.org/packages/*/x86_64/*
-    google_cx_no: "", // nodejs.org/dist/latest-v9.x/docs/api/*
+    google_cx_no: "", // nodejs.org/api/*
     google_cx_cs: "", // chrome.google.com/webstore/*
+    google_cx_jq: "", // api.jquery.com/*
 };
 
 // You can place any additional private/sensitive variables here and they will

@@ -864,6 +864,15 @@ completions.hy.callback = function(response) {
 
 // ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
 
+// jQuery API documentation
+completions.jq = {
+    alias:    'jq',
+    name:     'jquery',
+    search:   google_cx_publicurl('jq'),
+    compl:    google_cx_url('jq'),
+    callback: google_cx_callback,
+};
+
 // NodeJS standard library documentation
 completions.no = {
     alias:    'no',

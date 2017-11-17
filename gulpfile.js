@@ -5,6 +5,7 @@ const rename  = require('gulp-rename');
 const jshint  = require('gulp-jshint');
 const del     = require('del');
 const os      = require('os');
+const spawn   = require('child_process').spawn;
 const { URL } = require('url');
 const compl   = require('./completions');
 
@@ -24,12 +25,28 @@ The source file is README.tmpl.md
 
 -->`;
 
+gulp.task('gulp-autoreload', function() {
+  var p;
+  var spawnChildren = function() {
+    if (p) p.kill();
+    p = spawn('gulp', ['lint-gulpfile', 'install', 'watch-nogulpfile'], {stdio: 'inherit'});
+  };
+  gulp.watch('gulpfile.js', spawnChildren);
+  spawnChildren();
+});
+
 gulp.task('clean', function() {
   return del(['build']);
 });
 
 gulp.task('lint', function() {
   return gulp.src([].concat(paths.scripts, paths.gulpfile))
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('lint-gulpfile', function() {
+  return gulp.src([].concat(paths.gulpfile))
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'));
 });
@@ -46,7 +63,12 @@ gulp.task('install', ['build'], function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch([].concat(paths.scripts, paths.gulpfile), ['install']);
+  gulp.watch([].concat(paths.scripts, paths.gulpfile), ['readme', 'install']);
+  gulp.watch(paths.readme,  ['readme']);
+});
+
+gulp.task('watch-nogulpfile', function() {
+  gulp.watch([].concat(paths.scripts), ['readme', 'install']);
   gulp.watch(paths.readme,  ['readme']);
 });
 

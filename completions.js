@@ -112,17 +112,17 @@ completions.dh.callback = function(response) {
   var res = JSON.parse(response.text);
   Omnibar.listResults(res.results, function(s) {
     var meta = ""
-      , repo = s.repo_name;
-    meta += "[★" + s.star_count + "] ";
-    meta += "[↓" + s.pull_count + "] ";
+      , repo = escape(s.repo_name);
+    meta += "[★" + escape(s.star_count) + "] ";
+    meta += "[↓" + escape(s.pull_count) + "] ";
     if (repo.indexOf("/") === -1) {
       repo = "_/" + repo;
     }
     var li = $('<li/>').html(`
       <div>
-        <div class="title"><strong>${s.repo_name}</strong></div>
+        <div class="title"><strong>${escape(s.repo_name)}</strong></div>
         <div>${meta}</div>
-        <div>${s.short_description}</div>
+        <div>${escape(s.short_description)}</div>
       </div>
     `);
     li.data('url', "https://hub.docker.com/r/" + repo);
@@ -165,8 +165,8 @@ completions.do.callback = function(response) {
   var domains = [];
   res.map(function(r){
     var d = {
-      id: r.domain.replace('.', '-'),
-      domain: r.domain
+      id: escape(r.domain).replace('.', '-'),
+      domain: escape(r.domain)
     };
     domains.push(d);
   });
@@ -180,7 +180,7 @@ completions.do.callback = function(response) {
   }, function(sresponse) {
     var sres = JSON.parse(sresponse.text).status;
     sres.map(function(s) {
-      var id        = "#sk-domain-" + s.domain.replace('.', '-')
+      var id        = "#sk-domain-" + escape(s.domain).replace('.', '-')
         , available = s.summary === "inactive"
         , color     = available ? "#23b000" : "#ff4d00"
         , symbol    = available ? "✔ " : "✘ ";
@@ -288,8 +288,11 @@ completions.de.callback = function(response) {
       });
   });
   Omnibar.listResults(defs, function(d) {
-    var li = $('<li/>').html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`);
-    li.data('url', "http://onelook.com/?w=" + d[0]);
+    var word = escape(d[0]);
+    var pos  = escape(d[1]);
+    var def  = escape(d[2]);
+    var li = $('<li/>').html(`<div class="title"><strong>${word}</strong> <em>${pos}</em> ${def}</div>`);
+    li.data('url', "http://onelook.com/?w=" + encodeURIComponent(d[0]));
     return li;
   });
 };
@@ -307,16 +310,14 @@ completions.th.callback = function(response) {
   var defs = [];
   res.map(function(r){
       if (!r.defs || r.defs.length === 0) {
-        defs.push([r.word, "", ""]);
+        defs.push([escape(r.word), "", ""]);
         return;
       }
       r.defs.map(function(d) {
         d = d.split("\t");
-
-        var sp  = "(" + d[0] + ")",
-            def = d[1];
-
-        defs.push([r.word, sp, def]);
+        var sp  = "(" + escape(d[0]) + ")";
+        var def = escape(d[1]);
+        defs.push([escape(r.word), sp, def]);
       });
   });
   Omnibar.listResults(defs, function(d) {
@@ -358,8 +359,8 @@ completions.wa.callback = function(response) {
       Omnibar.listResults([""], function() {
         var li = $('<li/>').html(`
           <div>
-              <div class="title"><strong>Error</strong> (Code ${res.error.code})</div>
-              <div class="title">${res.error.msg}</div>
+              <div class="title"><strong>Error</strong> (Code ${escape(res.error.code)})</div>
+              <div class="title">${escape(res.error.msg)}</div>
           </div>
         `);
         return li;
@@ -373,7 +374,7 @@ completions.wa.callback = function(response) {
             var li = $('<li/>').html(`
               <div>
                   <div class="title"><strong>No Results</strong></div>
-                  <div class="title">${res.tips.text}</div>
+                  <div class="title">${escape(res.tips.text)}</div>
               </div>
             `);
             return li;
@@ -384,7 +385,7 @@ completions.wa.callback = function(response) {
             var li = $('<li/>').html(`
               <div>
                   <div class="title"><strong>Did you mean...?</strong></div>
-                  <div class="title">${s.val}</div>
+                  <div class="title">${escape(s.val)}</div>
               </div>
             `);
             return li;
@@ -396,7 +397,7 @@ completions.wa.callback = function(response) {
   var results = [];
   res.pods.map(function(p){
       var result = {
-          title: p.title,
+          title: escape(p.title),
           values: [],
           url: "http://www.wolframalpha.com/input/?i=",
       };
@@ -406,9 +407,9 @@ completions.wa.callback = function(response) {
               if (!sp.plaintext) return;
               var v = "";
               if (sp.title) {
-                  v += `<strong>${sp.title}</strong>: `;
+                  v += `<strong>${escape(sp.title)}</strong>: `;
               }
-              v += sp.plaintext;
+              v += escape(sp.plaintext);
               result.values.push(`<div class="title">${v}</div>`);
           });
       }
@@ -445,24 +446,24 @@ completions.co.callback = function(response) {
   res.map(function(rr){
     var r = rr.properties;
     var p = {
-      name: r.name,
-      domain: r.domain,
-      desc: r.short_description,
-      role: r.primary_role,
+      name:   escape(r.name),
+      domain: escape(r.domain),
+      desc:   escape(r.short_description),
+      role:   escape(r.primary_role),
       img: blank,
       loc: "",
-      url: "https://www.crunchbase.com/" + r.web_path
+      url: "https://www.crunchbase.com/" + encodeURIComponent(r.web_path)
     };
 
-    p.loc += (r.city_name !== null)                    ?    r.city_name : "";
-    p.loc += (r.region_name !== null && p.loc !== "")  ?           ", " : "";
-    p.loc += (r.region_name !== null)                  ?  r.region_name : "";
-    p.loc += (r.country_code !== null && p.loc !== "") ?           ", " : "";
-    p.loc += (r.country_code !== null)                 ? r.country_code : "";
-    p.loc += (p.loc === "")                            ? "Earth"        : "";
+    p.loc += (r.city_name !== null)                    ?    escape(r.city_name) : "";
+    p.loc += (r.region_name !== null && p.loc !== "")  ?                   ", " : "";
+    p.loc += (r.region_name !== null)                  ?  escape(r.region_name) : "";
+    p.loc += (r.country_code !== null && p.loc !== "") ?                   ", " : "";
+    p.loc += (r.country_code !== null)                 ? escape(r.country_code) : "";
+    p.loc += (p.loc === "")                            ?                "Earth" : "";
 
     if (r.profile_image_url !== null) {
-      var url  = r.profile_image_url
+      var url  = encodeURIComponent(r.profile_image_url)
         , path = url.split('/')
         , img  = path[path.length-1];
       p.img = "http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/" + img;
@@ -504,29 +505,29 @@ completions.cp.callback = function(response) {
   res.map(function(rr){
     var r = rr.properties;
     var p = {
-      name: r.first_name + " " + r.last_name,
+      name: escape(r.first_name) + " " + escape(r.last_name),
       desc: "",
       img: blank,
       loc: "",
-      url: "https://www.crunchbase.com/" + r.web_path
+      url: "https://www.crunchbase.com/" + encodeURIComponent(r.web_path)
     };
 
-    p.desc += (r.title !== null)                              ? r.title             : "";
-    p.desc += (r.organization_name !== null && p.desc !== "") ?                ", " : "";
-    p.desc += (r.organization_name !== null)                  ? r.organization_name : "";
-    p.desc += (p.desc === "")                                 ? "Human"             : "";
+    p.desc += (r.title !== null)                              ?             escape(r.title) : "";
+    p.desc += (r.organization_name !== null && p.desc !== "") ?                        ", " : "";
+    p.desc += (r.organization_name !== null)                  ? escape(r.organization_name) : "";
+    p.desc += (p.desc === "")                                 ?                     "Human" : "";
 
-    p.loc += (r.city_name !== null)                    ?    r.city_name : "";
-    p.loc += (r.region_name !== null && p.loc !== "")  ?           ", " : "";
-    p.loc += (r.region_name !== null)                  ?  r.region_name : "";
-    p.loc += (r.country_code !== null && p.loc !== "") ?           ", " : "";
-    p.loc += (r.country_code !== null)                 ? r.country_code : "";
-    p.loc += (p.loc === "")                            ? "Earth"        : "";
+    p.loc += (r.city_name !== null)                    ?    escape(r.city_name) : "";
+    p.loc += (r.region_name !== null && p.loc !== "")  ?                   ", " : "";
+    p.loc += (r.region_name !== null)                  ?  escape(r.region_name) : "";
+    p.loc += (r.country_code !== null && p.loc !== "") ?                   ", " : "";
+    p.loc += (r.country_code !== null)                 ? escape(r.country_code) : "";
+    p.loc += (p.loc === "")                            ?                "Earth" : "";
 
     if (r.profile_image_url !== null) {
       var url  = r.profile_image_url
         , path = url.split('/')
-        , img  = path[path.length-1];
+        , img  = encodeURIComponent(path[path.length-1]);
       p.img = "http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/" + img;
     }
 
@@ -605,25 +606,25 @@ completions.hx = {
 completions.hx.callback = function(response) {
   var res = JSON.parse(response.text);
   Omnibar.listResults(res, function(s) {
-    var dls = ""
-      , desc   = ""
-      , liscs  = "";
+    var dls   = ""
+      , desc  = ""
+      , liscs = "";
     if (s.downloads && s.downloads.all) {
-      dls = "[↓" + s.downloads.all + "] ";
+      dls = "[↓" + escape(s.downloads.all) + "] ";
     }
     if(s.meta) {
       if (s.meta.description) {
-        desc = s.meta.description;
+        desc = escape(s.meta.description);
       }
       if (s.meta.licenses) {
         s.meta.licenses.forEach(function(l) {
-          liscs += "[&copy;" + l + "] ";
+          liscs += "[&copy;" + escape(l) + "] ";
         });
       }
     }
     var li = $('<li/>').html(`
       <div>
-        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+        <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong></div>
         <div>${dls}${liscs}</div>
         <div>${desc}</div>
       </div>
@@ -649,26 +650,26 @@ completions.hd.callback = function(response) {
       , desc   = ""
       , liscs  = "";
     if (s.downloads && s.downloads.all) {
-      dls = "[↓" + s.downloads.all + "]";
+      dls = "[↓" + escape(s.downloads.all) + "]";
     }
     if(s.meta) {
       if (s.meta.description) {
-        desc = s.meta.description;
+        desc = escape(s.meta.description);
       }
       if (s.meta.licenses) {
         s.meta.licenses.forEach(function(l) {
-          liscs += "[&copy;" + l + "] ";
+          liscs += "[&copy;" + escape(l) + "] ";
         });
       }
     }
     var li = $('<li/>').html(`
       <div>
-        <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+        <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong></div>
         <div>${dls}${liscs}</div>
         <div>${desc}</div>
       </div>
     `);
-    li.data('url', "https://hexdocs.pm/" + s.name);
+    li.data('url', "https://hexdocs.pm/" + encodeURIComponent(s.name));
     return li;
   });
 };
@@ -685,7 +686,7 @@ completions.ex = {
 completions.ex.callback = function(response) {
   var res = JSON.parse(response.text).items;
   Omnibar.listResults(res, function(s) {
-    var snippet   = s.htmlSnippet;
+    var snippet = s.htmlSnippet;
     var hash = "";
 
     // Hacky way to extract the desired function's
@@ -725,10 +726,10 @@ completions.ex.callback = function(response) {
       a2 += closeArgs.length;
       var fargs = snippetEnd.slice(a1, a2);
       var fary = fargs.replace(new RegExp(openArgs + closeArgs), '').split(',').length;
-      hash = fname + '/' + fary;
+      hash = escape(fname + '/' + fary);
     })();
 
-    var moduleName = s.title.split(' –')[0];
+    var moduleName = escape(s.title).split(' –')[0];
 
     var subtitle = "";
     if (hash) {
@@ -893,17 +894,19 @@ completions.md = {
 completions.md.callback = function(response) {
   var res = JSON.parse(response.text);
   Omnibar.listResults(res.documents, function(s) {
-    var excerpt = s.excerpt;
+    var excerpt = escape(s.excerpt);
     if(excerpt.length > 240) {
       excerpt = excerpt.slice(0, 240) + '…';
     }
     res.query.split(" ").forEach(function(q) {
       excerpt = excerpt.replace(new RegExp(q, 'gi'), "<strong>$&</strong>");
     });
+    var title = escape(s.title);
+    var slug = escape(s.slug);
     var li = $('<li/>').html(`
       <div>
-        <div class="title"><strong>${s.title}</strong></div>
-        <div style="font-size:0.8em"><em>${s.slug}</em></div>
+        <div class="title"><strong>${title}</strong></div>
+        <div style="font-size:0.8em"><em>${slug}</em></div>
         <div>${excerpt}</div>
       </div>
     `);
@@ -927,17 +930,17 @@ completions.np.callback = function(response) {
       , desc  = ""
       , stars = "";
     if (s.package.description) {
-      desc = s.package.description;
+      desc = escape(s.package.description);
     }
     if(s.score) {
       if (s.score.final) {
-          score = Math.round(s.score.final * 5);
+          score = Math.round(Number(s.score.final) * 5);
           stars = "★".repeat(score) + "☆".repeat(5-score);
       }
     }
     if (s.flags) {
       Object.keys(s.flags).forEach(function(f) {
-        flags += "[<span style='color:#ff4d00'>⚑</span> " + f + "] ";
+        flags += "[<span style='color:#ff4d00'>⚑</span> " + escape(f) + "] ";
       });
     }
     var li = $('<li/>').html(`
@@ -947,7 +950,7 @@ completions.np.callback = function(response) {
             font-weight: bold;
           }
         </style>
-        <div class="title">${s.highlight}</div>
+        <div class="title">${escape(s.highlight)}</div>
         <div>
           <span style="font-size:2em;line-height:0.5em">${stars}</span>
           <span>${flags}</span>
@@ -1067,6 +1070,21 @@ function google_cx_url(alias) {
 function google_cx_publicurl(alias) {
     var key = `google_cx_${alias}`;
     return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`;
+}
+
+function escape(str) {
+  return String(str).replace(/[&<>"'`=\/]/g, function(s) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+      '/': '&#x2F;',
+      '`': '&#x60;',
+      '=': '&#x3D;'
+    }[s];
+  });
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

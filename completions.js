@@ -777,6 +777,31 @@ completions.gd.callback = function(response) {
   });
 };
 
+// Gowalker
+completions.gw = {
+    alias:  'gw',
+    name:   'gowalker',
+    search: 'https://gowalker.org/search?auto_redirect=true&q=',
+    compl:  'https://gowalker.org/search/json?q=',
+};
+
+completions.gw.callback = function(response) {
+  var res = JSON.parse(response.text).results;
+  Omnibar.listResults(res, function(s) {
+    var title = escape(s.title);
+    var desc = escape(s.description);
+    var li = $('<li/>').html(`
+      <div>
+        <div class="title"><strong>${title}</strong></div>
+        <div>${desc}</div>
+      </div>
+    `);
+    li.data('url', 'https://golang.org/doc/' + encodeURIComponent(s.url));
+    return li;
+  });
+};
+
+
 // Go-Search
 completions.gs = {
     alias:  'gs',

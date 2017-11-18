@@ -157,7 +157,7 @@ completions.do = {
     alias:  'do',
     name:   'domainr',
     search: 'https://domainr.com/?q=',
-    compl:  `https://api.domainr.com/v2/search?client_id=${keys.domainr}&query=%s`,
+    compl:  `https://domainr.p.mashape.com/v2/search?mashape-key=${keys.domainr}&query=%s`,
 };
 
 completions.do.callback = function(response) {
@@ -176,7 +176,7 @@ completions.do.callback = function(response) {
   runtime.command({
       action: 'request',
       method: 'get',
-      url: `https://api.domainr.com/v2/status?client_id=${keys.domainr}&domain=${domainQuery}`
+      url: `https://domainr.p.mashape.com/v2/status?mashape-key=${keys.domainr}&domain=${domainQuery}`
   }, function(sresponse) {
     var sres = JSON.parse(sresponse.text).status;
     sres.map(function(s) {

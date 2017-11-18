@@ -15,12 +15,7 @@ var keys = {
     google_cs:    "", // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
     google_yt:    "", // https://developers.google.com/youtube/v3/docs/
     wolframalpha: "", // https://products.wolframalpha.com/api/
-
-    // Note:
-    // The Domainr API is configured for High-Volume usage, not Mashape.
-    // You will need to modify the code in completions.js to work with the Mashape API if desired.
-    // Open an issue if you can't figure this out and I'd be happy to help.
-    domainr:      "", // https://domainr.build/docs/overview#section-try-it-for-free
+    domainr:      "", // https://market.mashape.com/domainr/domainr
 
     //*** Google Custom Search Engines ***//
     // Can be created at https://cse.google.com/cse

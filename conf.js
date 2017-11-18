@@ -67,7 +67,7 @@ mapkey('=D',  "Lookup all information for domain",   dnsVerbose,      ri);
 mapkey(';se', "#11Edit Settings",                    editSettings,    ri);
 mapkey(';pd', "Toggle PDF viewer from SurfingKeys",  togglePdfViewer, ri);
 mapkey('gi',  "Edit current URL with vim editor",    vimEditURL,      ri);
-mapkey('yp',  "Copy URL path of current page",       copyURLPath,     ri);
+mapkey('yp',  "Copy URL path of current page",       () => copyURLPath(),     ri);
 
 const siteleader = "<Space>";
 
@@ -229,9 +229,9 @@ function togglePdfViewer() {
 }
 
 function getURLPath(count, domain) {
-    var path = window.location.pathname;
+    var path = window.location.pathname.slice(1);
     if (count) {
-        path = path.split('/').slice(1,1+count).join('/');
+        path = path.split('/').slice(0, count).join('/');
     }
     if (domain) {
         path = window.location.hostname + '/' + path;

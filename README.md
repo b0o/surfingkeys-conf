@@ -18,7 +18,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently 39 Search Engine auto-completions.
+There are currently 40 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -45,6 +45,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | `gl` | `google-lucky` | `www.google.com` |  |
 | `go` | `google` | `www.google.com` |  |
 | `gs` | `go-search` | `go-search.org` |  |
+| `gw` | `gowalker` | `gowalker.org` |  |
 | `ha` | `hackage` | `hackage.haskell.org` |  |
 | `hd` | `hexdocs` | `hex.pm` |  |
 | `hn` | `hackernews` | `hn.algolia.com` | [\[1\]](#hackernews)  |

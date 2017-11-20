@@ -170,7 +170,7 @@ function ghStar(toggle) {
   var verb = "is";
 
   var starred = $(cur).attr("class").indexOf("unstarred") === -1;
-  if (starred) {
+  if (starred && toggle) {
     status = "un" + status;
     star = "☆";
   }

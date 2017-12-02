@@ -1,4 +1,3 @@
-/* eslint-env node, browser, jquery */
 /* global keys:true */
 
 if (typeof keys === "undefined" && typeof require === "function") {

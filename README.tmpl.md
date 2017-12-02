@@ -1,4 +1,4 @@
-<!--DISCLAIMER-->
+<!--{{DISCLAIMER}}-->
 ### Maddy's SurfingKeys Configuration
 
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) Chrome Extension.
@@ -12,7 +12,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently <!--COMPL_COUNT--> Search Engine auto-completions.
+There are currently <!--{{COMPL_COUNT}}--> Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -20,7 +20,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 
 | Alias | Name | Domain | Screenshots |
 | ---- | ------ | ----- | ----- |
-<!--COMPL_TABLE-->
+<!--{{COMPL_TABLE}}-->
 
 #### Installation
 
@@ -83,7 +83,7 @@ The final step is to tell SurfingKeys where to find your configuration file:
 If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your settings will be immediately updated.
 
 #### Screenshots
-<!--SCREENSHOTS-->
+<!--{{SCREENSHOTS}}-->
 
 #### Todo
 

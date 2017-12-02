@@ -485,7 +485,7 @@ completions.co.callback = (response) => {
       role:   escape(r.primary_role),
       img:    blank,
       loc:    "",
-      url:    `https://www.crunchbase.com/${encodeURIComponent(r.web_path)}`,
+      url:    `https://www.crunchbase.com/${r.web_path}`,
     }
 
     p.loc += (r.city_name !== null) ? escape(r.city_name) : ""
@@ -542,7 +542,7 @@ completions.cp.callback = (response) => {
       desc: "",
       img:  blank,
       loc:  "",
-      url:  `https://www.crunchbase.com/${encodeURIComponent(r.web_path)}`,
+      url:  `https://www.crunchbase.com/${r.web_path}`,
     }
 
     p.desc += (r.title !== null) ? escape(r.title) : ""

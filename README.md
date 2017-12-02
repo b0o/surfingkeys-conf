@@ -33,39 +33,39 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | `az` | `amazon` | `smile.amazon.com` |  |
 | `cl` | `craigslist` | `craigslist.org` |  |
 | `co` | `crunchbase-orgs` | `www.crunchbase.com` |  |
-| `cp` | `crunchbase-people` | `www.crunchbase.com` | [\[1\]](#crunchbase-people)  |
+| `cp` | `crunchbase-people` | `www.crunchbase.com` | [:framed_picture:](#crunchbase-people)  |
 | `cs` | `chromestore` | `chrome.google.com` |  |
-| `de` | `define` | `onelook.com` | [\[1\]](#define)  |
+| `de` | `define` | `onelook.com` | [:framed_picture:](#define)  |
 | `dg` | `duckduckgo` | `duckduckgo.com` |  |
-| `dh` | `dockerhub` | `hub.docker.com` | [\[1\]](#dockerhub)  |
-| `do` | `domainr` | `domainr.com` | [\[1\]](#domainr)  |
+| `dh` | `dockerhub` | `hub.docker.com` | [:framed_picture:](#dockerhub)  |
+| `do` | `domainr` | `domainr.com` | [:framed_picture:](#domainr)  |
 | `ex` | `exdocs` | `hex.pm` |  |
 | `gd` | `godoc` | `godoc.org` |  |
-| `gh` | `github` | `github.com` | [\[1\]](#github)  |
+| `gh` | `github` | `github.com` | [:framed_picture:](#github)  |
 | `gl` | `google-lucky` | `www.google.com` |  |
 | `go` | `google` | `www.google.com` |  |
 | `gs` | `go-search` | `go-search.org` |  |
 | `gw` | `gowalker` | `gowalker.org` |  |
 | `ha` | `hackage` | `hackage.haskell.org` |  |
 | `hd` | `hexdocs` | `hex.pm` |  |
-| `hn` | `hackernews` | `hn.algolia.com` | [\[1\]](#hackernews)  |
-| `ho` | `hoogle` | `www.haskell.org` | [\[1\]](#hoogle)  |
+| `hn` | `hackernews` | `hn.algolia.com` | [:framed_picture:](#hackernews)  |
+| `ho` | `hoogle` | `www.haskell.org` | [:framed_picture:](#hoogle)  |
 | `hw` | `haskellwiki` | `wiki.haskell.org` |  |
 | `hx` | `hex` | `hex.pm` |  |
 | `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
 | `jq` | `jquery` | `Google Custom Search` |  |
-| `md` | `mdn` | `developer.mozilla.org` | [\[1\]](#mdn)  |
+| `md` | `mdn` | `developer.mozilla.org` | [:framed_picture:](#mdn)  |
 | `no` | `node` | `Google Custom Search` |  |
-| `np` | `npm` | `www.npmjs.com` | [\[1\]](#npm)  |
+| `np` | `npm` | `www.npmjs.com` | [:framed_picture:](#npm)  |
 | `ow` | `owasp` | `www.owasp.org` |  |
 | `re` | `reddit` | `www.reddit.com` |  |
 | `so` | `stackoverflow` | `stackoverflow.com` |  |
-| `th` | `thesaurus` | `www.onelook.com` | [\[1\]](#thesaurus)  |
+| `th` | `thesaurus` | `www.onelook.com` | [:framed_picture:](#thesaurus)  |
 | `vw` | `vimwikia` | `vim.wikia.com` |  |
-| `wa` | `wolframalpha` | `www.wolframalpha.com` | [\[1\]](#wolframalpha) [\[2\]](#wolframalpha-2)  |
+| `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
 | `wp` | `wikipedia` | `en.wikipedia.org` |  |
 | `yp` | `yelp` | `www.yelp.com` |  |
-| `yt` | `youtube` | `www.youtube.com` | [\[1\]](#youtube)  |
+| `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
 
 
 #### Installation

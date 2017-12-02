@@ -92,7 +92,7 @@ gulp.task("readme", () => {
     if (screens[c.alias]) {
       screens[c.alias].forEach((url, i) => {
         const num = (i > 0) ? ` ${i + 1}` : ""
-        s += `[\\[${i + 1}\\]](#${c.name}${num.replace(" ", "-")}) `
+        s += `[:framed_picture:](#${c.name}${num.replace(" ", "-")}) `
         screenshotList += `##### ${c.name}${num}\n`
         screenshotList += `![${c.name} screenshot](./${url})\n\n`
       })

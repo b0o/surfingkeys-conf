@@ -1,5 +1,5 @@
 const gulp = require("gulp")
-const concat = require("gulp-concat")
+const concat = require("gulp-concat") // TODO: Use webpack instead of concat
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
 const eslint = require("gulp-eslint")

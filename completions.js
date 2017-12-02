@@ -1,6 +1,7 @@
 /* eslint-env node, browser, jquery */
-let keys = keys // eslint-disable-line no-use-before-define
-if (!keys && typeof require === "function") {
+/* global keys:true */
+
+if (typeof keys === "undefined" && typeof require === "function") {
   keys = require("./conf.priv.js") // eslint-disable-line global-require
 }
 

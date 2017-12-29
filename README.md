@@ -7,6 +7,8 @@ The source file is README.tmpl.md
 -->
 ### Maddy's SurfingKeys Configuration
 
+#### Note: This configuration currently only supports SurfingKeys 0.9.14 and below.
+
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) Chrome Extension.
 
 #### Table of Contents

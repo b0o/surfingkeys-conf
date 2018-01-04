@@ -612,6 +612,18 @@ completions.go.callback = (response) => {
   Omnibar.listWords(JSON.parse(response.text)[1])
 }
 
+// Google Images
+completions.gi = {
+  alias:  "gi",
+  name:   "google-images",
+  search: "https://www.google.com/search?tbm=isch&q=",
+  compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&ds=i&q=",
+}
+
+completions.gi.callback = (response) => {
+  Omnibar.listWords(JSON.parse(response.text)[1])
+}
+
 // Google - I'm Feeling Lucky
 completions.gl = {
   alias:  "gl",

@@ -1028,8 +1028,8 @@ completions.hn = {
 }
 
 completions.hn.callback = (response) => {
-  const res = JSON.parse(response.text).hits
-  Omnibar.listResults(res, (s) => {
+  const res = JSON.parse(response.text)
+  Omnibar.listResults(res.hits, (s) => {
     let title = ""
     let prefix = ""
     if (s.points) {
@@ -1048,10 +1048,16 @@ completions.hn.callback = (response) => {
     default:
       title = s.objectID
     }
-    return Omnibar.createURLItem({
-      title: prefix + title,
-      url:   `https://news.ycombinator.com/item?id=${s.objectID}`,
-    })
+    const re = new RegExp(`(${res.query.split(" ").join("|")})`, "ig")
+    title = title.replace(re, "<strong>$&</strong>")
+    const li = $("<li/>").html(`
+      <div>
+        <div class="title">${prefix + title}</div>
+        <div class="url">https://news.ycombinator.com/item?id=${s.objectID}</div>
+      </div>
+    `)
+    li.data("url", s.link)
+    return li
   })
 }
 

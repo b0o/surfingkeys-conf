@@ -217,6 +217,12 @@ function twitterFollowUser() {
   Hints.create(".follow-button", Hints.dispatchMouseClick)
 }
 
+function hnGoParent() {
+  const par = $(".par>a")
+  if (par.length <= 0) return
+  window.location.href = par[0].href
+}
+
 // ---- Mapkeys ----//
 const ri = { repeatIgnore: true }
 
@@ -287,6 +293,7 @@ mapsitekeys("reddit.com", [
 mapsitekeys("news.ycombinator.com", [
   ["c", "Collapse comment", hnCollapseComment],
   ["v", "Cast vote", hnVote],
+  ["p", "Go to parent", hnGoParent],
 ])
 
 // ---- Search & completion ----//

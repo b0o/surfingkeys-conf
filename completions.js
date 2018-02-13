@@ -1040,7 +1040,7 @@ completions.hn.callback = (response) => {
     }
     switch (s._tags[0]) { // eslint-disable-line no-underscore-dangle
     case "story":
-      title = s.title
+      title = s.title // eslint-disable-line prefer-destructuring
       break
     case "comment":
       title = s.comment_text

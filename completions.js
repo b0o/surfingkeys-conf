@@ -274,6 +274,18 @@ completions.cl.callback = (response) => {
   Omnibar.listWords(JSON.parse(response.text))
 }
 
+// EBay
+completions.eb = {
+  alias:  "eb",
+  name:   "ebay",
+  search: "https://www.ebay.com/sch/i.html?_nkw=",
+  compl:  "https://autosug.ebay.com/autosug?callback=0&sId=0&kwd=",
+}
+
+completions.eb.callback = (response) => {
+  Omnibar.listWords(JSON.parse(response.text).res.sug)
+}
+
 // Yelp
 completions.yp = {
   alias:  "yp",

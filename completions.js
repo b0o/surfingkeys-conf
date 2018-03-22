@@ -800,6 +800,15 @@ completions.ex.callback = (response) => {
 
 // ****** Golang ****** //
 
+// Golang Docs (Google CSE)
+completions.gg = {
+  alias:    "gg",
+  name:     "golang",
+  search:   googleCxPublicURL("gg"),
+  compl:    googleCxURL("gg"),
+  callback: googleCxCallback,
+}
+
 // Godoc
 completions.gd = {
   alias:  "gd",

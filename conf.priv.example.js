@@ -22,7 +22,7 @@ const keys = {
   //* ** Google Custom Search Engines ***//
   // Can be created at https://cse.google.com/cse
   // Simply create a separate Custom Search Engine for each of the following entries,
-  // pasting the provided URL string in the "Sites to Search" field.
+  // pasting the provided URL string(s) in the "Sites to Search" field.
   // Then, after creation, go to the control panel for the new Search Engine and copy the
   // Search Engine ID (cx) into the appropriate configuration variable below:
   google_cx_ex: "", // hexdocs.pm/*/master/*.html
@@ -31,6 +31,7 @@ const keys = {
   google_cx_no: "", // nodejs.org/api/*
   google_cx_cs: "", // chrome.google.com/webstore/*
   google_cx_jq: "", // api.jquery.com/*
+  google_cx_gg: "", // godoc.org/*, golang.org/pkg/*
 }
 
 // You can place any additional private/sensitive variables here and they will

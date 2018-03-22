@@ -19,7 +19,7 @@ const keys = {
   wolframalpha: "", // https://products.wolframalpha.com/api/
   domainr:      "", // https://market.mashape.com/domainr/domainr
 
-  //* ** Google Custom Search Engines ***//
+  //*** Google Custom Search Engines ***//
   // Can be created at https://cse.google.com/cse
   // Simply create a separate Custom Search Engine for each of the following entries,
   // pasting the provided URL string(s) in the "Sites to Search" field.

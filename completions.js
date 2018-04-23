@@ -1071,13 +1071,14 @@ completions.hn.callback = (response) => {
     }
     const re = new RegExp(`(${res.query.split(" ").join("|")})`, "ig")
     title = title.replace(re, "<strong>$&</strong>")
+    const url = `https://news.ycombinator.com/item?id=${s.objectID}`
     const li = $("<li/>").html(`
       <div>
         <div class="title">${prefix + title}</div>
-        <div class="url">https://news.ycombinator.com/item?id=${s.objectID}</div>
+        <div class="url">${url}</div>
       </div>
     `)
-    li.data("url", s.link)
+    li.data("url", url)
     return li
   })
 }

@@ -223,6 +223,10 @@ function hnGoParent() {
   window.location.href = par[0].href
 }
 
+function dribbleHeartShot() {
+  Hints.create(".toggle-fav, .like-shot", Hints.dispatchMouseClick)
+}
+
 // ---- Mapkeys ----//
 const ri = { repeatIgnore: true }
 
@@ -294,6 +298,10 @@ mapsitekeys("news.ycombinator.com", [
   ["c", "Collapse comment", hnCollapseComment],
   ["v", "Cast vote", hnVote],
   ["p", "Go to parent", hnGoParent],
+])
+
+mapsitekeys("dribbble.com", [
+  ["s", "Heart Shot", dribbleHeartShot],
 ])
 
 // ---- Search & completion ----//

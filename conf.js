@@ -105,27 +105,29 @@ function vimeoFullscreen() {
 }
 
 function ghStar(toggle) {
-  const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
-  const cur = $("div.starring-container > form").filter(function filter() {
-    return $(this).css("display") === "block"
-  })
+  return () => {
+    const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
+    const cur = $("div.starring-container > form").filter(function filter() {
+      return $(this).css("display") === "block"
+    })
 
-  let star = "★"
-  let status = "starred"
-  let verb = "is"
+    let star = "★"
+    let status = "starred"
+    let verb = "is"
 
-  const starred = $(cur).attr("class").indexOf("unstarred") === -1
-  if (starred && toggle) {
-    status = `un${status}`
-    star = "☆"
+    const starred = $(cur).attr("class").indexOf("unstarred") === -1
+    if (starred && toggle) {
+      status = `un${status}`
+      star = "☆"
+    }
+
+    if (toggle) {
+      $(cur).find("button").click()
+      verb = "has been"
+    }
+
+    Front.showBanner(`${star} Repository ${repo} ${verb} ${status}!`)
   }
-
-  if (toggle) {
-    $(cur).find("button").click()
-    verb = "has been"
-  }
-
-  Front.showBanner(`${star} Repository ${repo} ${verb} ${status}!`)
 }
 
 function glToggleStar() {
@@ -136,6 +138,12 @@ function glToggleStar() {
     star = "★"
   }
   Front.showBanner(`${star} Repository ${repo} ${action}`)
+}
+
+function hnGoParent() {
+  const par = $(".par>a")
+  if (par.length <= 0) return
+  window.location.href = par[0].href
 }
 
 function vimEditURL() {
@@ -174,18 +182,20 @@ function togglePdfViewer() {
 }
 
 function getURLPath(count, domain) {
-  let path = window.location.pathname.slice(1)
-  if (count) {
-    path = path.split("/").slice(0, count).join("/")
+  return () => {
+    let path = window.location.pathname.slice(1)
+    if (count) {
+      path = path.split("/").slice(0, count).join("/")
+    }
+    if (domain) {
+      path = `${window.location.hostname}/${path}`
+    }
+    return path
   }
-  if (domain) {
-    path = `${window.location.hostname}/${path}`
-  }
-  return path
 }
 
 function copyURLPath(count, domain) {
-  Front.writeClipboard(getURLPath(count, domain))
+  return () => Front.writeClipboard(getURLPath(count, domain))
 }
 
 function viewGodoc() {
@@ -197,98 +207,8 @@ function editSettings() {
   tabOpenLink("/pages/options.html")
 }
 
-function redditCollapseComment() {
-  Hints.create(".expand", Hints.dispatchMouseClick)
-}
-
-function redditCollapseNextComment() {
-  Hints.create(".expand:visible:not(:contains('[+]')):nth(0)", Hints.dispatchMouseClick)
-}
-
-function redditExpando() {
-  Hints.create(".expando-button", Hints.dispatchMouseClick)
-}
-
-function redditUpvote() {
-  Hints.create(".arrow.up", Hints.dispatchMouseClick)
-}
-
-function redditDownvote() {
-  Hints.create(".arrow.down", Hints.dispatchMouseClick)
-}
-
-function redditViewLink() {
-  Hints.create(".title", Hints.dispatchMouseClick)
-}
-
-function redditViewComments() {
-  Hints.create(".comments", Hints.dispatchMouseClick)
-}
-
-function hnCollapseComment() {
-  Hints.create(".togg", Hints.dispatchMouseClick)
-}
-
-function hnCollapseNextComment() {
-  Hints.create(".togg:visible:contains('[-]'):nth(0)", Hints.dispatchMouseClick)
-}
-
-function hnUpvote() {
-  Hints.create(".votearrow[title='upvote']", Hints.dispatchMouseClick)
-}
-
-function hnDownvote() {
-  Hints.create(".votearrow[title='downvote']", Hints.dispatchMouseClick)
-}
-
-function hnViewLink() {
-  Hints.create(".storylink", Hints.dispatchMouseClick)
-}
-
-function hnViewComments() {
-  Hints.create("td > a[href*='item']:not(.storylink)", Hints.dispatchMouseClick)
-}
-
-function twitterFollowUser() {
-  Hints.create(".follow-button", Hints.dispatchMouseClick)
-}
-
-function twitterLikeTweet() {
-  Hints.create(".js-actionFavorite", Hints.dispatchMouseClick)
-}
-
-function twitterRetweet() {
-  Hints.create(".js-actionRetweet", Hints.dispatchMouseClick)
-}
-
-function twitterReply() {
-  Hints.create(".js-actionReply", Hints.dispatchMouseClick)
-}
-
-function twitterTweet() {
-  Hints.create(".js-global-new-tweet", Hints.dispatchMouseClick)
-}
-
-function twitterTweetTo() {
-  Hints.create(".NewTweetButton", Hints.dispatchMouseClick)
-}
-
-function twitterReload() {
-  Hints.create(".new-tweets-bar", Hints.dispatchMouseClick)
-}
-
-function twitterGotoUser() {
-  Hints.create(".js-user-profile-link", Hints.dispatchMouseClick)
-}
-
-function hnGoParent() {
-  const par = $(".par>a")
-  if (par.length <= 0) return
-  window.location.href = par[0].href
-}
-
-function dribbleHeartShot() {
-  Hints.create(".toggle-fav, .like-shot", Hints.dispatchMouseClick)
+function Hint(selector, action = Hints.dispatchMouseClick) {
+  return () => Hints.create(selector, action)
 }
 
 // ---- Mapkeys ----//
@@ -300,26 +220,27 @@ mapkey("=D", "Lookup all information for domain", dnsVerbose, ri)
 mapkey(";se", "#11Edit Settings", editSettings, ri)
 mapkey(";pd", "Toggle PDF viewer from SurfingKeys", togglePdfViewer, ri)
 mapkey("gi", "Edit current URL with vim editor", vimEditURL, ri)
-mapkey("yp", "Copy URL path of current page", () => copyURLPath(), ri)
+mapkey("yp", "Copy URL path of current page", copyURLPath(), ri)
 
 const siteleader = "<Space>"
 
-function mapsitekey(domainRegex, key, desc, f, o) {
-  const opts = o || {}
-  mapkey(`${siteleader}${key}`, desc, f, Object.assign({}, opts, { domain: domainRegex }))
+function mapsitekey(domainRegex, key, desc, f, opts = {}) {
+  const o = Object.assign({}, {
+    leader: siteleader,
+  }, opts)
+  mapkey(`${o.leader}${key}`, desc, f, { domain: domainRegex })
 }
 
 function mapsitekeys(d, maps) {
   const domain = d.replace(".", "\\.")
   const domainRegex = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${domain})(/.*)?`)
   maps.forEach((map) => {
-    mapsitekey(domainRegex, map[0], map[1], map[2])
+    mapsitekey(domainRegex, ...map)
   })
 }
 
 mapsitekeys("amazon.com", [
   ["fs", "Fakespot", fakeSpot],
-  // TODO: Add to cart
 ])
 
 mapsitekeys("yelp.com", [
@@ -327,7 +248,11 @@ mapsitekeys("yelp.com", [
 ])
 
 mapsitekeys("youtube.com", [
-  ["F", "Toggle fullscreen", ytFullscreen],
+  ["a", "Open video", Hint("a[id='video-title']")],
+])
+mapsitekeys("youtube.com/watch", [
+  ["F", "Toggle fullscreen", ytFullscreen, { leader: "" }],
+  ["<Space>", "Play/pause", Hint(".ytp-play-button"), { leader: "" }],
 ])
 
 mapsitekeys("vimeo.com", [
@@ -335,53 +260,53 @@ mapsitekeys("vimeo.com", [
 ])
 
 mapsitekeys("github.com", [
-  ["s", "Toggle Star", () => ghStar(true)],
-  ["S", "Check Star", () => ghStar(false)],
-  ["y", "Copy Project Path", () => copyURLPath(2)],
-  ["Y", "Copy Project Path (including domain)", () => copyURLPath(2, true)],
+  ["s", "Toggle Star", ghStar(true)],
+  ["S", "Check Star", ghStar(false)],
+  ["y", "Copy Project Path", copyURLPath(2)],
+  ["Y", "Copy Project Path (including domain)", copyURLPath(2, true)],
   ["D", "View GoDoc for Project", viewGodoc],
 ])
 
 mapsitekeys("gitlab.com", [
   ["s", "Toggle Star", glToggleStar],
-  ["y", "Copy Project Path", () => copyURLPath(2)],
-  ["Y", "Copy Project Path (including domain)", () => copyURLPath(2, true)],
+  ["y", "Copy Project Path", copyURLPath(2)],
+  ["Y", "Copy Project Path (including domain)", copyURLPath(2, true)],
   ["D", "View GoDoc for Project", viewGodoc],
 ])
 
 mapsitekeys("twitter.com", [
-  ["t", "New tweet", twitterTweet],
-  ["f", "Follow user", twitterFollowUser],
-  ["g", "Goto user", twitterGotoUser],
-  ["s", "Like tweet", twitterLikeTweet],
-  ["r", "Retweet", twitterRetweet],
-  ["c", "Comment/Reply", twitterReply],
-  ["T", "Tweet to", twitterTweetTo],
-  ["R", "Load new tweets", twitterReload],
+  ["f", "Follow user", Hint(".follow-button")],
+  ["s", "Like tweet", Hint(".js-actionFavorite")],
+  ["r", "Retweet", Hint(".js-actionRetweet")],
+  ["c", "Comment/Reply", Hint(".js-actionReply")],
+  ["t", "New tweet", Hint(".js-global-new-tweet")],
+  ["T", "Tweet to", Hint(".NewTweetButton")],
+  ["R", "Load new tweets", Hint(".new-tweets-bar")],
+  ["g", "Goto user", Hint(".js-user-profile-link")],
 ])
 
 mapsitekeys("reddit.com", [
-  ["x", "Collapse comment", redditCollapseComment],
-  ["X", "Collapse next comment", redditCollapseNextComment],
-  ["s", "Upvote", redditUpvote],
-  ["S", "Downvote", redditDownvote],
-  ["e", "Expand expando", redditExpando],
-  ["a", "View post (link)", redditViewLink],
-  ["c", "View post (comments)", redditViewComments],
+  ["x", "Collapse comment", Hint(".expand")],
+  ["X", "Collapse next comment", Hint(".expand:visible:not(:contains('[+]')):nth(0)")],
+  ["s", "Upvote", Hint(".arrow.up")],
+  ["S", "Downvote", Hint(".arrow.down")],
+  ["e", "Expand expando", Hint(".expando-button")],
+  ["a", "View post (link)", Hint(".title")],
+  ["c", "View post (comments)", Hint(".comments")],
 ])
 
 mapsitekeys("news.ycombinator.com", [
-  ["x", "Collapse comment", hnCollapseComment],
-  ["X", "Collapse next comment", hnCollapseNextComment],
-  ["s", "Upvote", hnUpvote],
-  ["S", "Downvote", hnDownvote],
+  ["x", "Collapse comment", Hint(".togg")],
+  ["X", "Collapse next comment", Hint(".togg:visible:contains('[-]'):nth(0)")],
+  ["s", "Upvote", Hint(".votearrow[title='upvote']")],
+  ["S", "Downvote", Hint(".votearrow[title='downvote']")],
+  ["a", "View post (link)", Hint(".storylink")],
+  ["c", "View post (comments)", Hint("td > a[href*='item']:not(.storylink)")],
   ["p", "Go to parent", hnGoParent],
-  ["a", "View post (link)", hnViewLink],
-  ["c", "View post (comments)", hnViewComments],
 ])
 
 mapsitekeys("dribbble.com", [
-  ["s", "Heart Shot", dribbleHeartShot],
+  ["s", "Heart Shot", Hint(".toggle-fav, .like-shot")],
 ])
 
 // ---- Search & completion ----//

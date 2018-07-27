@@ -277,11 +277,11 @@ mapsitekeys("gitlab.com", [
 mapsitekeys("twitter.com", [
   ["f", "Follow user", Hint(".follow-button")],
   ["s", "Like tweet", Hint(".js-actionFavorite")],
-  ["r", "Retweet", Hint(".js-actionRetweet")],
+  ["R", "Retweet", Hint(".js-actionRetweet")],
   ["c", "Comment/Reply", Hint(".js-actionReply")],
   ["t", "New tweet", Hint(".js-global-new-tweet")],
   ["T", "Tweet to", Hint(".NewTweetButton")],
-  ["R", "Load new tweets", Hint(".new-tweets-bar")],
+  ["r", "Load new tweets", Hint(".new-tweets-bar")],
   ["g", "Goto user", Hint(".js-user-profile-link")],
 ])
 

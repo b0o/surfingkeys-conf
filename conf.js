@@ -198,23 +198,87 @@ function editSettings() {
 }
 
 function redditCollapseComment() {
-  Hints.create("a.expand", Hints.dispatchMouseClick)
+  Hints.create(".expand", Hints.dispatchMouseClick)
+}
+
+function redditCollapseNextComment() {
+  Hints.create(".expand:visible:not(:contains('[+]')):nth(0)", Hints.dispatchMouseClick)
+}
+
+function redditExpando() {
+  Hints.create(".expando-button", Hints.dispatchMouseClick)
+}
+
+function redditUpvote() {
+  Hints.create(".arrow.up", Hints.dispatchMouseClick)
+}
+
+function redditDownvote() {
+  Hints.create(".arrow.down", Hints.dispatchMouseClick)
+}
+
+function redditViewLink() {
+  Hints.create(".title", Hints.dispatchMouseClick)
+}
+
+function redditViewComments() {
+  Hints.create(".comments", Hints.dispatchMouseClick)
 }
 
 function hnCollapseComment() {
-  Hints.create("a.togg", Hints.dispatchMouseClick)
+  Hints.create(".togg", Hints.dispatchMouseClick)
 }
 
-function redditVote() {
-  Hints.create("div.arrow", Hints.dispatchMouseClick)
+function hnCollapseNextComment() {
+  Hints.create(".togg:visible:contains('[-]'):nth(0)", Hints.dispatchMouseClick)
 }
 
-function hnVote() {
-  Hints.create("div.votearrow", Hints.dispatchMouseClick)
+function hnUpvote() {
+  Hints.create(".votearrow[title='upvote']", Hints.dispatchMouseClick)
+}
+
+function hnDownvote() {
+  Hints.create(".votearrow[title='downvote']", Hints.dispatchMouseClick)
+}
+
+function hnViewLink() {
+  Hints.create(".storylink", Hints.dispatchMouseClick)
+}
+
+function hnViewComments() {
+  Hints.create("td > a[href*='item']:not(.storylink)", Hints.dispatchMouseClick)
 }
 
 function twitterFollowUser() {
   Hints.create(".follow-button", Hints.dispatchMouseClick)
+}
+
+function twitterLikeTweet() {
+  Hints.create(".js-actionFavorite", Hints.dispatchMouseClick)
+}
+
+function twitterRetweet() {
+  Hints.create(".js-actionRetweet", Hints.dispatchMouseClick)
+}
+
+function twitterReply() {
+  Hints.create(".js-actionReply", Hints.dispatchMouseClick)
+}
+
+function twitterTweet() {
+  Hints.create(".js-global-new-tweet", Hints.dispatchMouseClick)
+}
+
+function twitterTweetTo() {
+  Hints.create(".NewTweetButton", Hints.dispatchMouseClick)
+}
+
+function twitterReload() {
+  Hints.create(".new-tweets-bar", Hints.dispatchMouseClick)
+}
+
+function twitterGotoUser() {
+  Hints.create(".js-user-profile-link", Hints.dispatchMouseClick)
 }
 
 function hnGoParent() {
@@ -286,18 +350,34 @@ mapsitekeys("gitlab.com", [
 ])
 
 mapsitekeys("twitter.com", [
+  ["t", "New tweet", twitterTweet],
   ["f", "Follow user", twitterFollowUser],
+  ["g", "Goto user", twitterGotoUser],
+  ["s", "Like tweet", twitterLikeTweet],
+  ["r", "Retweet", twitterRetweet],
+  ["c", "Comment/Reply", twitterReply],
+  ["T", "Tweet to", twitterTweetTo],
+  ["R", "Load new tweets", twitterReload],
 ])
 
 mapsitekeys("reddit.com", [
-  ["c", "Collapse comment", redditCollapseComment],
-  ["v", "Cast vote", redditVote],
+  ["x", "Collapse comment", redditCollapseComment],
+  ["X", "Collapse next comment", redditCollapseNextComment],
+  ["s", "Upvote", redditUpvote],
+  ["S", "Downvote", redditDownvote],
+  ["e", "Expand expando", redditExpando],
+  ["a", "View post (link)", redditViewLink],
+  ["c", "View post (comments)", redditViewComments],
 ])
 
 mapsitekeys("news.ycombinator.com", [
-  ["c", "Collapse comment", hnCollapseComment],
-  ["v", "Cast vote", hnVote],
+  ["x", "Collapse comment", hnCollapseComment],
+  ["X", "Collapse next comment", hnCollapseNextComment],
+  ["s", "Upvote", hnUpvote],
+  ["S", "Downvote", hnDownvote],
   ["p", "Go to parent", hnGoParent],
+  ["a", "View post (link)", hnViewLink],
+  ["c", "View post (comments)", hnViewComments],
 ])
 
 mapsitekeys("dribbble.com", [

@@ -231,11 +231,17 @@ function mapsitekey(domainRegex, key, desc, f, opts = {}) {
   mapkey(`${o.leader}${key}`, desc, f, { domain: domainRegex })
 }
 
-function mapsitekeys(d, maps) {
+function mapsitekeys(d, maps, opts = {}) {
   const domain = d.replace(".", "\\.")
   const domainRegex = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${domain})(/.*)?`)
   maps.forEach((map) => {
-    mapsitekey(domainRegex, ...map)
+    const [
+      key,
+      desc,
+      f,
+      subOpts = {},
+    ] = map
+    mapsitekey(domainRegex, key, desc, f, Object.assign({}, opts, subOpts))
   })
 }
 
@@ -248,12 +254,12 @@ mapsitekeys("yelp.com", [
 ])
 
 mapsitekeys("youtube.com", [
-  ["a", "Open video", Hint("a[id='video-title']")],
-])
-mapsitekeys("youtube.com/watch", [
-  ["F", "Toggle fullscreen", ytFullscreen, { leader: "" }],
-  ["<Space>", "Play/pause", Hint(".ytp-play-button"), { leader: "" }],
-])
+  ["A", "Open video", Hint("*[id='video-title']")],
+  ["C", "Open channel", Hint("*[id='byline']")],
+  ["gH", "Goto homepage", () => window.location.assign("https://www.youtube.com/feed/subscriptions?flow=2")],
+  ["F", "Toggle fullscreen", ytFullscreen],
+  ["<Space>", "Play/pause", Hint(".ytp-play-button")],
+], { leader: "" })
 
 mapsitekeys("vimeo.com", [
   ["F", "Toggle fullscreen", vimeoFullscreen],

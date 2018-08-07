@@ -9,9 +9,9 @@ Here are a few helpful tips, depending on what type of issue you are creating:
 -->
 
 - Surfingkeys Version:
-- Surfingkeys-conf Version (git hash): 
-- Operating System: ___
-- Browser Version: ___
+- Surfingkeys-conf Version (git hash):
+- Operating System:
+- Browser Version:
 
 ## Details
 

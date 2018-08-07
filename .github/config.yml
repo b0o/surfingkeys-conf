@@ -1,0 +1,24 @@
+# Comment to be posted to on first time issues
+newIssueWelcomeComment: |
+    👋 Thanks for opening your first issue! If you're reporting a 🐞 bug, please make sure
+    you include steps to reproduce it. If you're requesting a feature 🎁, please provide real
+    use cases that would benefit. 👪
+
+    Please use proper text formatting to make your issue easy to read and
+    understand. See the
+    [GitHub Markdown Guide](https://guides.github.com/features/mastering-markdown/)
+    for help.
+
+# Comment to be posted to on PRs from first time contributors in your repository
+newPRWelcomeComment: |
+    💖 Thanks for opening this pull request! 💖
+
+    Please use proper text formatting to make your pull request description easy
+    to read and understand. See the
+    [GitHub Markdown Guide](https://guides.github.com/features/mastering-markdown/)
+    for help.
+
+# Comment to be posted to on pull requests merged by a first time user
+firstPRMergeComment: >
+    Congrats on merging your first pull request! 🎉🎉🎉 Great moves, keep it up. Proud of you 💖
+

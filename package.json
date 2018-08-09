@@ -17,7 +17,8 @@
   ],
   "author": "Maddison Hellstrom",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "del": "^3.0.0",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -27,6 +28,7 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^4.0.0",
+    "gulp-parcel": "b0o/gulp-parcel#fix-g_options-undefined",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1"
   }

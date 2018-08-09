@@ -1,4 +1,5 @@
-// ---- Cleanup ----//
+const completions = require("./completions")
+
 // Unmap undesired defaults
 const unmaps = [
   "sb", "sw", "ob",
@@ -327,7 +328,7 @@ Object.keys(completions).forEach((k) => {
   const la = sl + s.alias // Search leader + alias
 
   addSearchAliasX(s.alias, s.name, s.search, sl, s.compl, s.callback)
-  mapkey(la, `#8Search ${s.name}`, `Front.openOmnibar({type: "SearchEngine", extra: "${s.alias}"})`)
+  mapkey(la, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
 })
 
 // vim: set ft=javascript expandtab:

@@ -1,33 +1,4 @@
-/* global keys:true */
-
-if (typeof keys === "undefined" && typeof require === "function") {
-  keys = require("./conf.priv.js") // eslint-disable-line global-require
-}
-
-// ****** Helper Functions ****** //
-function googleCxCallback(response) {
-  const res = JSON.parse(response.text).items
-  Omnibar.listResults(res, (s) => {
-    const li = $("<li/>").html(`
-      <div>
-        <div class="title"><strong>${s.htmlTitle}</strong></div>
-        <div>${s.htmlSnippet}</div>
-      </div>
-    `)
-    li.data("url", s.link)
-    return li
-  })
-}
-
-function googleCxURL(alias) {
-  const key = `google_cx_${alias}`
-  return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`
-}
-
-function googleCxPublicURL(alias) {
-  const key = `google_cx_${alias}`
-  return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`
-}
+const { keys } = require("./conf.priv.js")
 
 function escape(str) {
   return String(str).replace(/[&<>"'`=/]/g, s => ({
@@ -42,9 +13,45 @@ function escape(str) {
   }[s]))
 }
 
-// This is a base64-encoded image used as a placeholder for
-// the crunchbase Omnibar results if they don't have an image
-const blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
+function createSuggestionItem(html, props = {}) {
+  const li = document.createElement("li")
+  li.innerHTML = html
+  return { html: li.outerHTML, props }
+}
+
+function createURLItem(title, url, sanitize = true) {
+  let t = title
+  let u = url
+  if (sanitize) {
+    t = escape(t)
+    u = new URL(u).toString()
+  }
+  return createSuggestionItem(`
+      <div class="title">${t}</div>
+      <div class="url">${u}</div>
+    `, { url: u })
+}
+
+// ****** Helper Functions ****** //
+function googleCxCallback(response) {
+  const res = JSON.parse(response.text).items
+  return res.map(s => createSuggestionItem(`
+      <div>
+        <div class="title"><strong>${s.htmlTitle}</strong></div>
+        <div>${s.htmlSnippet}</div>
+      </div>
+    `, { url: s.link }))
+}
+
+function googleCxURL(alias) {
+  const key = `google_cx_${alias}`
+  return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`
+}
+
+function googleCxPublicURL(alias) {
+  const key = `google_cx_${alias}`
+  return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`
+}
 
 // ****** Completions ****** //
 const completions = {}
@@ -70,7 +77,7 @@ completions.au = {
 
 completions.au.callback = (response) => {
   const res = JSON.parse(response.text)
-  Omnibar.listResults(res, s => Omnibar.createURLItem({
+  return res.map(s => createURLItem({
     title: s,
     url:   `https://aur.archlinux.org/packages/${s}`,
   }))
@@ -84,9 +91,7 @@ completions.aw = {
   compl:  "https://wiki.archlinux.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.aw.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.aw.callback = response => JSON.parse(response.text)[1]
 
 // Arch Linux Forums
 completions.af = {
@@ -116,9 +121,7 @@ completions.ow = {
   compl:  "https://www.owasp.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.ow.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.ow.callback = response => JSON.parse(response.text)[1]
 
 // StackOverflow
 completions.so = {
@@ -128,13 +131,8 @@ completions.so = {
   compl:  "https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=",
 }
 
-completions.so.callback = (response) => {
-  const res = JSON.parse(response.text).items
-  Omnibar.listResults(res, s => Omnibar.createURLItem({
-    title: `[${s.score}] ${s.title}`,
-    url:   s.link,
-  }))
-}
+completions.so.callback = response =>
+  JSON.parse(response.text).items.map(s => createURLItem(`[${s.score}] ${s.title}`, s.link))
 
 // DockerHub repo search
 completions.dh = {
@@ -144,27 +142,22 @@ completions.dh = {
   compl:  "https://hub.docker.com/v2/search/repositories/?page_size=20&query=",
 }
 
-completions.dh.callback = (response) => {
-  const res = JSON.parse(response.text)
-  Omnibar.listResults(res.results, (s) => {
-    let meta = ""
-    let repo = escape(s.repo_name)
-    meta += `[★${escape(s.star_count)}] `
-    meta += `[↓${escape(s.pull_count)}] `
-    if (repo.indexOf("/") === -1) {
-      repo = `_/${repo}`
-    }
-    const li = $("<li/>").html(`
+completions.dh.callback = response => JSON.parse(response.text).results.map((s) => {
+  let meta = ""
+  let repo = escape(s.repo_name)
+  meta += `[★${escape(s.star_count)}] `
+  meta += `[↓${escape(s.pull_count)}] `
+  if (repo.indexOf("/") === -1) {
+    repo = `_/${repo}`
+  }
+  return createSuggestionItem(`
       <div>
         <div class="title"><strong>${escape(s.repo_name)}</strong></div>
         <div>${meta}</div>
         <div>${escape(s.short_description)}</div>
       </div>
-    `)
-    li.data("url", `https://hub.docker.com/r/${repo}`)
-    return li
-  })
-}
+    `, { url: `https://hub.docker.com/r/${repo}` })
+})
 
 // GitHub
 completions.gh = {
@@ -174,19 +167,13 @@ completions.gh = {
   compl:  "https://api.github.com/search/repositories?sort=stars&order=desc&q=",
 }
 
-completions.gh.callback = (response) => {
-  const res = JSON.parse(response.text).items
-  Omnibar.listResults(res, (s) => {
-    let prefix = ""
-    if (s.stargazers_count) {
-      prefix += `[★${s.stargazers_count}] `
-    }
-    return Omnibar.createURLItem({
-      title: prefix + s.full_name,
-      url:   s.html_url,
-    })
-  })
-}
+completions.gh.callback = response => JSON.parse(response.text).items.map((s) => {
+  let prefix = ""
+  if (s.stargazers_count) {
+    prefix += `[★${s.stargazers_count}] `
+  }
+  return createURLItem(prefix + s.full_name, s.html_url)
+})
 
 // Domainr domain search
 completions.do = {
@@ -196,44 +183,11 @@ completions.do = {
   compl:  `https://domainr.p.mashape.com/v2/search?mashape-key=${keys.domainr}&query=%s`,
 }
 
-completions.do.callback = (response) => {
-  const res = JSON.parse(response.text).results
-  const domains = []
-  res.forEach((r) => {
-    const d = {
-      id:     escape(r.domain).replace(".", "-"),
-      domain: escape(r.domain),
-    }
-    domains.push(d)
-  })
-
-  const domainQuery = domains.map(d => d.domain).join(",")
-
-  runtime.command({
-    action: "request",
-    method: "get",
-    url:    `https://domainr.p.mashape.com/v2/status?mashape-key=${keys.domainr}&domain=${domainQuery}`,
-  }, (sresponse) => {
-    const sres = JSON.parse(sresponse.text).status
-    sres.forEach((s) => {
-      const id = `#sk-domain-${escape(s.domain).replace(".", "-")}`
-      const available = s.summary === "inactive"
-      const color = available ? "#23b000" : "#ff4d00"
-      const symbol = available ? "✔ " : "✘ "
-      $(id).text(symbol + $(id).text()).css("color", color)
-    })
-  })
-
-  Omnibar.listResults(domains, (d) => {
-    const li = $("<li/>").html(`
-      <div id="sk-domain-${d.id}">
-        <div class="title"><strong>${d.domain}</strong></div>
-      </div>
-    `)
-    li.data("url", `https://domainr.com/${d.domain}`)
-    return li
-  })
-}
+completions.do.callback = response => JSON.parse(response.text).results
+  .map(d => createSuggestionItem(
+    `<div><div class="title"><strong>${escape(d.domain)}</strong></div></div>`,
+    { url: `https://domainr.com/${d.domain}` }
+  ))
 
 // Vim Wiki
 completions.vw = {
@@ -243,9 +197,8 @@ completions.vw = {
   compl:  "https://vim.wikia.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.vw.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.vw.callback = response => JSON.parse(response.text)[1]
+  .map(r => createURLItem(r, `https://vim.wikia.com/wiki/${r}`))
 
 // ****** Shopping & Food ****** //
 
@@ -257,10 +210,7 @@ completions.az = {
   compl:  "https://completion.amazon.com/search/complete?method=completion&mkt=1&search-alias=aps&q=",
 }
 
-completions.az.callback = (response) => {
-  const res = JSON.parse(response.text)[1]
-  Omnibar.listWords(res)
-}
+completions.az.callback = response => JSON.parse(response.text)[1]
 
 // Craigslist
 completions.cl = {
@@ -270,9 +220,7 @@ completions.cl = {
   compl:  "https://craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
 }
 
-completions.cl.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text))
-}
+completions.cl.callback = response => JSON.parse(response.text)
 
 // EBay
 completions.eb = {
@@ -282,9 +230,7 @@ completions.eb = {
   compl:  "https://autosug.ebay.com/autosug?callback=0&sId=0&kwd=",
 }
 
-completions.eb.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text).res.sug)
-}
+completions.eb.callback = response => JSON.parse(response.text).res.sug
 
 // Yelp
 completions.yp = {
@@ -305,7 +251,7 @@ completions.yp.callback = (response) => {
       }
     })
   })
-  Omnibar.listWords(words)
+  return words
 }
 
 // ****** General References, Calculators & Utilities ****** //
@@ -334,13 +280,14 @@ completions.de.callback = (response) => {
       defs.push([r.word, sp, def])
     })
   })
-  Omnibar.listResults(defs, (d) => {
+  return defs.map((d) => {
     const word = escape(d[0])
     const pos = escape(d[1])
     const def = escape(d[2])
-    const li = $("<li/>").html(`<div class="title"><strong>${word}</strong> <em>${pos}</em> ${def}</div>`)
-    li.data("url", `http://onelook.com/?w=${encodeURIComponent(d[0])}`)
-    return li
+    return createSuggestionItem(
+      `<div class="title"><strong>${word}</strong> <em>${pos}</em> ${def}</div>`,
+      { url: `http://onelook.com/?w=${encodeURIComponent(d[0])}` }
+    )
   })
 }
 
@@ -348,7 +295,7 @@ completions.de.callback = (response) => {
 completions.th = {
   alias:  "th",
   name:   "thesaurus",
-  search: "https://www.onelook.com/reverse-dictionary.shtml?s=",
+  search: "https://www.onelook.com/thesaurus/?s=",
   compl:  "https://api.datamuse.com/words?md=d&ml=%s",
 }
 
@@ -367,11 +314,10 @@ completions.th.callback = (response) => {
       defs.push([escape(r.word), sp, def])
     })
   })
-  Omnibar.listResults(defs, (d) => {
-    const li = $("<li/>").html(`<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`)
-    li.data("url", `http://onelook.com/?w=${d[0]}`)
-    return li
-  })
+  return defs.map(d => createSuggestionItem(
+    `<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`,
+    { url: `http://onelook.com/thesaurus/?s=${d[0]}` }
+  ))
 }
 
 // Wikipedia
@@ -379,14 +325,27 @@ completions.wp = {
   alias:  "wp",
   name:   "wikipedia",
   search: "https://en.wikipedia.org/w/index.php?search=",
-  compl:  "https://en.wikipedia.org/w/api.php?action=query&format=json&list=prefixsearch&utf8&pssearch=",
+  compl:  "https://en.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&prop=info|pageprops%7Cpageimages%7Cdescription&redirects=&ppprop=displaytitle&piprop=thumbnail&pithumbsize=100&pilimit=6&inprop=url&gpssearch=",
 }
 
-completions.wp.callback = (response) => {
-  const res = JSON.parse(response.text).query.prefixsearch
-    .map(r => r.title)
-  Omnibar.listWords(res)
-}
+const wpNoimg = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2056%2056%22%20enable-background%3D%22new%200%200%2056%2056%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23eee%22%20d%3D%22M0%200h56v56h-56z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23999%22%20d%3D%22M36.4%2013.5h-18.6v24.9c0%201.4.9%202.3%202.3%202.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2%203.5h5.1v6.4h-5.1v-6.4zm-8.8%200h6v1.8h-6v-1.8zm0%204.6h6v1.8h-6v-1.8zm0%2015.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
+
+completions.wp.callback = response => Object.values(JSON.parse(response.text).query.pages)
+  .map((p) => {
+    const img = p.thumbnail ? p.thumbnail.source : wpNoimg
+    return createSuggestionItem(
+      `
+      <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
+        <img style="width:60px" src="${img}" alt="${p.title}">
+        <div>
+          <div class="title"><strong>${p.title}</strong></div>
+          <div class="title">${p.description}</div>
+        </div>
+      </div>
+    `,
+      { url: p.fullurl }
+    )
+  })
 
 
 // WolframAlpha
@@ -401,42 +360,33 @@ completions.wa.callback = (response) => {
   const res = JSON.parse(response.text).queryresult
 
   if (res.error) {
-    Omnibar.listResults([""], () => {
-      const li = $("<li/>").html(`
-          <div>
-              <div class="title"><strong>Error</strong> (Code ${escape(res.error.code)})</div>
-              <div class="title">${escape(res.error.msg)}</div>
-          </div>
-        `)
-      return li
-    })
-    return
+    return [createSuggestionItem(`
+      <div>
+        <div class="title"><strong>Error</strong> (Code ${escape(res.error.code)})</div>
+        <div class="title">${escape(res.error.msg)}</div>
+      </div>`, { url: "https://www.wolframalpha.com/" })]
   }
 
   if (!res.success) {
     if (res.tips) {
-      Omnibar.listResults([""], () => {
-        const li = $("<li/>").html(`
-              <div>
-                  <div class="title"><strong>No Results</strong></div>
-                  <div class="title">${escape(res.tips.text)}</div>
-              </div>
-            `)
-        return li
-      })
+      return [createSuggestionItem(`
+        <div>
+          <div class="title"><strong>No Results</strong></div>
+          <div class="title">${escape(res.tips.text)}</div>
+        </div>`, { url: "https://www.wolframalpha.com/" })]
     }
     if (res.didyoumeans) {
-      Omnibar.listResults(res.didyoumeans, (s) => {
-        const li = $("<li/>").html(`
-              <div>
-                  <div class="title"><strong>Did you mean...?</strong></div>
-                  <div class="title">${escape(s.val)}</div>
-              </div>
-            `)
-        return li
-      })
+      return res.didyoumeans.map(s => createSuggestionItem(`
+        <div>
+            <div class="title"><strong>Did you mean...?</strong></div>
+            <div class="title">${escape(s.val)}</div>
+        </div>`, { url: "https://www.wolframalpha.com/" }))
     }
-    return
+    return [createSuggestionItem(`
+      <div>
+        <div class="title"><strong>Error</strong></div>
+        <div class="title">An unknown error occurred.</div>
+      </div>`, { url: "https://www.wolframalpha.com/" })]
   }
 
   const results = []
@@ -463,78 +413,78 @@ completions.wa.callback = (response) => {
     }
   })
 
-  Omnibar.listResults(results, (r) => {
-    const li = $("<li/>").html(`
-      <div>
-          <div class="title"><strong>${r.title}</strong></div>
-          ${r.values.join("\n")}
-      </div>
-    `)
-    li.data("url", r.url)
-    return li
-  })
+  return results.map(r => createSuggestionItem(`
+    <div>
+      <div class="title"><strong>${r.title}</strong></div>
+      ${r.values.join("\n")}
+    </div>`, { url: r.url }))
 }
 
 // ****** Business Utilities & References ****** //
+
+// This is a base64-encoded image used as a placeholder for
+// the crunchbase Omnibar results if they don't have an image
+const blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
+
+const parseCrunchbase = (response, parse) => {
+  const res = JSON.parse(response.text).data.items
+  if (res.length === 0) {
+    return [createSuggestionItem(`
+      <div>
+        <div class="title"><strong>No Results</strong></div>
+        <div class="title">Nothing matched your query</div>
+      </div>`, { url: "https://www.crunchbase.com/" })]
+  }
+  const objs = res.map(obj => parse(obj))
+  return objs.map((p) => {
+    const domain = p.domain ? ` | <a href="https://${p.domain}" target="_blank">${p.domain}</a>` : ""
+    const location = p.loc ? ` located in <em>${p.loc}</em>` : ""
+    return createSuggestionItem(`
+      <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
+        <img style="width:60px" src="${p.img}" alt="${p.name}">
+        <div style="display:grid;grid-template-rows:1fr 1fr 0.8fr">
+          <div class="title"><strong style="font-size: 1.2em">${p.name}</strong></div>
+          <div class="title" style="font-size: 1.2em">${p.desc}</div>
+          <div class="title"><em>${p.role}</em>${location}${domain}</div>
+        </div>
+      </div>`, { url: p.url })
+  })
+}
 
 // Crunchbase Organization Search
 completions.co = {
   alias:  "co",
   name:   "crunchbase-orgs",
-  search: "https://www.crunchbase.com/app/search/?q=",
+  search: "https://www.crunchbase.com/textsearch?q=",
   compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`,
 }
 
-completions.co.callback = (response) => {
-  const res = JSON.parse(response.text).data.items
-  const orgs = []
-  res.forEach((rr) => {
-    const r = rr.properties
-    const p = {
-      name:   escape(r.name),
-      domain: escape(r.domain),
-      desc:   escape(r.short_description),
-      role:   escape(r.primary_role),
-      img:    blank,
-      loc:    "",
-      url:    `https://www.crunchbase.com/${r.web_path}`,
-    }
+completions.co.callback = response => parseCrunchbase(response, (org) => {
+  const r = org.properties
+  const p = {
+    name:   escape(r.name),
+    domain: r.domain !== null ? escape(r.domain).replace(/\/$/, "") : null,
+    desc:   escape(r.short_description),
+    role:   escape(r.primary_role),
+    img:    blank,
+    loc:    "",
+    url:    `https://www.crunchbase.com/${r.web_path}`,
+  }
 
-    p.loc += (r.city_name !== null) ? escape(r.city_name) : ""
-    p.loc += (r.region_name !== null && p.loc !== "") ? ", " : ""
-    p.loc += (r.region_name !== null) ? escape(r.region_name) : ""
-    p.loc += (r.country_code !== null && p.loc !== "") ? ", " : ""
-    p.loc += (r.country_code !== null) ? escape(r.country_code) : ""
-    p.loc += (p.loc === "") ? "Earth" : ""
+  p.loc += (r.city_name !== null) ? escape(r.city_name) : ""
+  p.loc += (r.region_name !== null && p.loc !== "") ? ", " : ""
+  p.loc += (r.region_name !== null) ? escape(r.region_name) : ""
+  p.loc += (r.country_code !== null && p.loc !== "") ? ", " : ""
+  p.loc += (r.country_code !== null) ? escape(r.country_code) : ""
 
-    if (r.profile_image_url !== null) {
-      const url = encodeURIComponent(r.profile_image_url)
-      const path = url.split("/")
-      const img = path[path.length - 1]
-      p.img = `http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/${img}`
-    }
+  if (r.profile_image_url !== null) {
+    const u = r.profile_image_url
+    const img = u.slice(u.indexOf("t_api_images") + "t_api_images".length + 1)
+    p.img = `https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_100,w_100,f_auto,b_white,q_auto:eco/${img}`
+  }
 
-    orgs.push(p)
-  })
-
-  Omnibar.listResults(orgs, (p) => {
-    const li = $("<li/>").html(`
-      <div style="width:100%;height:6em;display:block;">
-        <div style="float:left;">
-          <img style="width:4em;height:4em;max-width:4em;max-height:4em;overflow:hidden;" src="${p.img}" alt="${p.name}">
-        </div>
-        <div style="float:left;height:100%;margin-left:10px;">
-          <div class="title"><strong>${p.name}</strong></div>
-          <div class="title">Type: <em>${p.role}</em>, Domain: <em>${p.domain}</em></div>
-          <div class="title">${p.desc}</div>
-          <div class="title"><em>${p.loc}</em></div>
-        </div>
-      </div>
-    `)
-    li.data("url", p.url)
-    return li
-  })
-}
+  return p
+})
 
 // Crunchbase People Search
 completions.cp = {
@@ -544,58 +494,36 @@ completions.cp = {
   compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`,
 }
 
-completions.cp.callback = (response) => {
-  const res = JSON.parse(response.text).data.items
-  const people = []
-  res.forEach((rr) => {
-    const r = rr.properties
-    const p = {
-      name: `${escape(r.first_name)} ${escape(r.last_name)}`,
-      desc: "",
-      img:  blank,
-      loc:  "",
-      url:  `https://www.crunchbase.com/${r.web_path}`,
-    }
+completions.cp.callback = response => parseCrunchbase(response, (person) => {
+  const r = person.properties
+  const p = {
+    name: `${escape(r.first_name)} ${escape(r.last_name)}`,
+    desc: "",
+    img:  blank,
+    role: "",
+    loc:  "",
+    url:  `https://www.crunchbase.com/${r.web_path}`,
+  }
 
-    p.desc += (r.title !== null) ? escape(r.title) : ""
-    p.desc += (r.organization_name !== null && p.desc !== "") ? ", " : ""
-    p.desc += (r.organization_name !== null) ? escape(r.organization_name) : ""
-    p.desc += (p.desc === "") ? "Human" : ""
+  p.desc += (r.title !== null) ? escape(r.title) : ""
+  p.desc += (r.organization_name !== null && p.desc !== "") ? ", " : ""
+  p.desc += (r.organization_name !== null) ? escape(r.organization_name) : ""
 
-    p.loc += (r.city_name !== null) ? escape(r.city_name) : ""
-    p.loc += (r.region_name !== null && p.loc !== "") ? ", " : ""
-    p.loc += (r.region_name !== null) ? escape(r.region_name) : ""
-    p.loc += (r.country_code !== null && p.loc !== "") ? ", " : ""
-    p.loc += (r.country_code !== null) ? escape(r.country_code) : ""
-    p.loc += (p.loc === "") ? "Earth" : ""
+  p.loc += (r.city_name !== null) ? escape(r.city_name) : ""
+  p.loc += (r.region_name !== null && p.loc !== "") ? ", " : ""
+  p.loc += (r.region_name !== null) ? escape(r.region_name) : ""
+  p.loc += (r.country_code !== null && p.loc !== "") ? ", " : ""
+  p.loc += (r.country_code !== null) ? escape(r.country_code) : ""
 
-    if (r.profile_image_url !== null) {
-      const url = r.profile_image_url
-      const path = url.split("/")
-      const img = encodeURIComponent(path[path.length - 1])
-      p.img = `http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/${img}`
-    }
+  if (r.profile_image_url !== null) {
+    const url = r.profile_image_url
+    const path = url.split("/")
+    const img = encodeURIComponent(path[path.length - 1])
+    p.img = `http://public.crunchbase.com/t_api_images/v1402944794/c_pad,h_50,w_50/${img}`
+  }
 
-    people.push(p)
-  })
-
-  Omnibar.listResults(people, (p) => {
-    const li = $("<li/>").html(`
-      <div style="width:100%;height:6em;display:block;">
-        <div style="float:left;">
-          <img style="width:4em;height:4em;max-width:4em;max-height:4em;overflow:hidden;" src="${p.img}" alt="${p.name}">
-        </div>
-        <div style="float:left;height:100%;margin-left:10px;">
-          <div class="title"><strong>${p.name}</strong></div>
-          <div class="title">${p.desc}</div>
-          <div class="title"><em>${p.loc}</em></div>
-        </div>
-      </div>
-    `)
-    li.data("url", p.url)
-    return li
-  })
-}
+  return p
+})
 
 // ****** Search Engines ****** //
 
@@ -607,10 +535,7 @@ completions.dg = {
   compl:  "https://duckduckgo.com/ac/?q=",
 }
 
-completions.dg.callback = (response) => {
-  const res = JSON.parse(response.text).map(r => r.phrase)
-  Omnibar.listWords(res)
-}
+completions.dg.callback = response => JSON.parse(response.text).map(r => r.phrase)
 
 // Google
 completions.go = {
@@ -620,9 +545,7 @@ completions.go = {
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
 }
 
-completions.go.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.go.callback = response => JSON.parse(response.text)[1]
 
 // Google Images
 completions.gi = {
@@ -632,9 +555,7 @@ completions.gi = {
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&ds=i&q=",
 }
 
-completions.gi.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.gi.callback = response => JSON.parse(response.text)[1]
 
 // Google - I'm Feeling Lucky
 completions.gl = {
@@ -644,9 +565,7 @@ completions.gl = {
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
 }
 
-completions.gl.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.gl.callback = response => JSON.parse(response.text)[1]
 
 //  ****** Elixir ****** //
 
@@ -655,39 +574,34 @@ completions.hx = {
   alias:  "hx",
   name:   "hex",
   search: "https://hex.pm/packages?sort=downloads&search=",
-  compl:  "https://hex.pm/api/packages?sort=downloads&search=",
+  compl:  "https://hex.pm/api/packages?sort=downloads&hx&search=",
 }
 
-completions.hx.callback = (response) => {
-  const res = JSON.parse(response.text)
-  Omnibar.listResults(res, (s) => {
-    let dls = ""
-    let desc = ""
-    let liscs = ""
-    if (s.downloads && s.downloads.all) {
-      dls = `[↓${escape(s.downloads.all)}] `
+completions.hx.callback = response => JSON.parse(response.text).map((s) => {
+  let dls = ""
+  let desc = ""
+  let liscs = ""
+  if (s.downloads && s.downloads.all) {
+    dls = `[↓${escape(s.downloads.all)}] `
+  }
+  if (s.meta) {
+    if (s.meta.description) {
+      desc = escape(s.meta.description)
     }
-    if (s.meta) {
-      if (s.meta.description) {
-        desc = escape(s.meta.description)
-      }
-      if (s.meta.licenses) {
-        s.meta.licenses.forEach((l) => {
-          liscs += `[&copy;${escape(l)}] `
-        })
-      }
+    if (s.meta.licenses) {
+      s.meta.licenses.forEach((l) => {
+        liscs += `[&copy;${escape(l)}] `
+      })
     }
-    const li = $("<li/>").html(`
-      <div>
-        <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong></div>
-        <div>${dls}${liscs}</div>
-        <div>${desc}</div>
-      </div>
-    `)
-    li.data("url", s.html_url)
-    return li
-  })
-}
+  }
+  return createSuggestionItem(`
+    <div>
+      <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong></div>
+      <div>${dls}${liscs}</div>
+      <div>${desc}</div>
+    </div>
+  `, { url: s.html_url })
+})
 
 // hexdocs
 // Same as hex but links to documentation pages
@@ -695,108 +609,92 @@ completions.hd = {
   alias:  "hd",
   name:   "hexdocs",
   search: "https://hex.pm/packages?sort=downloads&search=",
-  compl:  "https://hex.pm/api/packages?sort=downloads&search=",
+  compl:  "https://hex.pm/api/packages?sort=downloads&hd&search=",
 }
 
-completions.hd.callback = (response) => {
-  const res = JSON.parse(response.text)
-  Omnibar.listResults(res, (s) => {
-    let dls = ""
-    let desc = ""
-    let liscs = ""
-    if (s.downloads && s.downloads.all) {
-      dls = `[↓${escape(s.downloads.all)}]`
+completions.hd.callback = response => JSON.parse(response.text).map((s) => {
+  let dls = ""
+  let desc = ""
+  if (s.downloads && s.downloads.all) {
+    dls = `[↓${escape(s.downloads.all)}]`
+  }
+  if (s.meta) {
+    if (s.meta.description) {
+      desc = escape(s.meta.description)
     }
-    if (s.meta) {
-      if (s.meta.description) {
-        desc = escape(s.meta.description)
-      }
-      if (s.meta.licenses) {
-        s.meta.licenses.forEach((l) => {
-          liscs += `[&copy;${escape(l)}] `
-        })
-      }
-    }
-    const li = $("<li/>").html(`
+  }
+  return createSuggestionItem(`
       <div>
-        <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong></div>
-        <div>${dls}${liscs}</div>
+        <div class="title">${escape(s.repository)}/<strong>${escape(s.name)}</strong>${dls}</div>
+        <div></div>
         <div>${desc}</div>
       </div>
-    `)
-    li.data("url", `https://hexdocs.pm/${encodeURIComponent(s.name)}`)
-    return li
-  })
-}
+    `, { url: `https://hexdocs.pm/${encodeURIComponent(s.name)}` })
+})
 
 // Exdocs
 // Similar to `hd` but searches inside docs using Google Custom Search
 completions.ex = {
   alias:  "ex",
   name:   "exdocs",
-  search: "https://hex.pm/packages?sort=downloads&search=",
+  search: "https://hex.pm/packages?sort=downloads&ex&search=",
   compl:  googleCxURL("ex"),
 }
 
-completions.ex.callback = (response) => {
-  const res = JSON.parse(response.text).items
-  Omnibar.listResults(res, (s) => {
-    let hash = ""
+completions.ex.callback = response => JSON.parse(response.text).items.map((s) => {
+  let hash = ""
 
-    const snippet = s.htmlSnippet
-    const openTag = "<b>"
-    const closeTag = "</b>"
-    const openArgs = "("
-    const closeArgs = ")"
+  const snippet = s.htmlSnippet
+  const openTag = "<b>"
+  const closeTag = "</b>"
+  const openArgs = "("
+  const closeArgs = ")"
 
-    let f1 = snippet.indexOf(openTag)
-    if (f1 === -1) {
-      return
-    }
-    const f2 = snippet.indexOf(closeTag)
-    if (f2 === -1) {
-      return
-    }
+  let f1 = snippet.indexOf(openTag)
+  if (f1 === -1) {
+    return null
+  }
+  const f2 = snippet.indexOf(closeTag)
+  if (f2 === -1) {
+    return null
+  }
 
-    f1 += openTag.length
-    const f3 = f2 + closeTag.length
-    const fname = snippet.slice(f1, f2)
-    const snippetEnd = snippet.slice(f3)
+  f1 += openTag.length
+  const f3 = f2 + closeTag.length
+  const fname = snippet.slice(f1, f2)
+  const snippetEnd = snippet.slice(f3)
 
-    const a1 = snippetEnd.indexOf(openArgs)
-    if (a1 !== 0) {
-      return
-    }
-    let a2 = snippetEnd.indexOf(closeArgs)
-    if (a2 === -1) {
-      return
-    }
+  const a1 = snippetEnd.indexOf(openArgs)
+  if (a1 !== 0) {
+    return null
+  }
+  let a2 = snippetEnd.indexOf(closeArgs)
+  if (a2 === -1) {
+    return null
+  }
 
-    a2 += closeArgs.length
-    const fargs = snippetEnd.slice(a1, a2)
-    const fary = fargs.replace(new RegExp(openArgs + closeArgs), "").split(",").length
-    hash = escape(`${fname}/${fary}`)
+  a2 += closeArgs.length
+  const fargs = snippetEnd.slice(a1, a2)
+  const fary = fargs.replace(new RegExp(openArgs + closeArgs), "").split(",").length
+  hash = escape(`${fname}/${fary}`)
 
-    const moduleName = escape(s.title).split(" –")[0]
+  const moduleName = escape(s.title).split(" –")[0]
 
-    let subtitle = ""
-    if (hash) {
-      subtitle = `
+  let subtitle = ""
+  if (hash) {
+    subtitle = `
         <div style="font-size:1.1em; line-height:1.25em">
           <em>${moduleName}</em>.<strong>${hash}</strong>
         </div>`
-    }
-    const li = $("<li/>").html(`
+  }
+  return createSuggestionItem(`
       <div>
         <div class="title"><strong>${s.htmlTitle}</strong></div>
         ${subtitle}
         <div>${s.htmlSnippet}</div>
       </div>
-    `)
-    li.data("url", `${s.link}#${hash}`)
-    return li // eslint-disable-line consistent-return
-  })
-}
+    `, { url: `${s.link}#${hash}` })
+}).filter(s => s !== null)
 
 // ****** Golang ****** //
 
@@ -817,22 +715,16 @@ completions.gd = {
   compl:  "https://api.godoc.org/search?q=",
 }
 
-completions.gd.callback = (response) => {
-  const res = JSON.parse(response.text).results
-  Omnibar.listResults(res, (s) => {
-    let prefix = ""
-    if (s.import_count) {
-      prefix += `[↓${s.import_count}] `
-    }
-    if (s.stars) {
-      prefix += `[★${s.stars}] `
-    }
-    return Omnibar.createURLItem({
-      title: prefix + s.path,
-      url:   `https://godoc.org/${s.path}`,
-    })
-  })
-}
+completions.gd.callback = response => JSON.parse(response.text).results.map((s) => {
+  let prefix = ""
+  if (s.import_count) {
+    prefix += `[↓${s.import_count}] `
+  }
+  if (s.stars) {
+    prefix += `[★${s.stars}] `
+  }
+  return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
+})
 
 // Gowalker
 completions.gw = {
@@ -842,21 +734,16 @@ completions.gw = {
   compl:  "https://gowalker.org/search/json?q=",
 }
 
-completions.gw.callback = (response) => {
-  const res = JSON.parse(response.text).results
-  Omnibar.listResults(res, (s) => {
-    const title = escape(s.title)
-    const desc = escape(s.description)
-    const li = $("<li/>").html(`
-      <div>
-        <div class="title"><strong>${title}</strong></div>
-        <div>${desc}</div>
-      </div>
-    `)
-    li.data("url", `https://golang.org/doc/${encodeURIComponent(s.url)}`)
-    return li
-  })
-}
+completions.gw.callback = response => JSON.parse(response.text).results.map((s) => {
+  const title = escape(s.title)
+  const desc = escape(s.description)
+  return createSuggestionItem(`
+    <div>
+      <div class="title"><strong>${title}</strong></div>
+      <div>${desc}</div>
+    </div>
+  `, { url: `https://golang.org/doc/${encodeURIComponent(s.url)}` })
+})
 
 
 // Go-Search
@@ -867,11 +754,9 @@ completions.gs = {
   compl:  "http://go-search.org/api?action=search&q=",
 }
 
-completions.gs.callback = (response) => {
-  const res = JSON.parse(response.text).hits
-    .map(r => r.package)
-  Omnibar.listWords(res)
-}
+completions.gs.callback = response => JSON.parse(response.text).hits
+  .map(r => r.package)
+
 
 // ****** Haskell ****** //
 
@@ -883,13 +768,8 @@ completions.ha = {
   compl:  "https://hackage.haskell.org/packages/search.json?terms=",
 }
 
-completions.ha.callback = (response) => {
-  const res = JSON.parse(response.text)
-  Omnibar.listResults(res, s => Omnibar.createURLItem({
-    title: s.name,
-    url:   `https://hackage.haskell.org/package/${s.name}`,
-  }))
-}
+completions.ha.callback = response => JSON.parse(response.text)
+  .map(s => createURLItem(s.name, `https://hackage.haskell.org/package/${s.name}`))
 
 // Hoogle
 completions.ho = {
@@ -901,13 +781,8 @@ completions.ho = {
     encodeURIComponent("+platform +xmonad +xmonad-contrib ")}`,
 }
 
-completions.ho.callback = (response) => {
-  const res = JSON.parse(response.text).results
-  Omnibar.listResults(res, s => Omnibar.createURLItem({
-    title: s.self,
-    url:   s.location,
-  }))
-}
+completions.ho.callback = response => JSON.parse(response.text).results
+  .map(s => createURLItem(s.self, s.location))
 
 // Haskell Wiki
 completions.hw = {
@@ -917,9 +792,7 @@ completions.hw = {
   compl:  "https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.hw.callback = (response) => {
-  Omnibar.listWords(JSON.parse(response.text)[1])
-}
+completions.hw.callback = response => JSON.parse(response.text)[1]
 
 // Hayoo
 completions.hy = {
@@ -929,13 +802,8 @@ completions.hy = {
   compl:  "http://hayoo.fh-wedel.de/json?query=",
 }
 
-completions.hy.callback = (response) => {
-  const res = JSON.parse(response.text).result
-  Omnibar.listResults(res, s => Omnibar.createURLItem({
-    title: `[${s.resultType}] ${s.resultName}`,
-    url:   s.resultUri,
-  }))
-}
+completions.hy.callback = response => JSON.parse(response.text).result
+  .map(s => createURLItem(`[${s.resultType}] ${s.resultName}`, s.resultUri))
 
 // ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
 
@@ -967,7 +835,7 @@ completions.md = {
 
 completions.md.callback = (response) => {
   const res = JSON.parse(response.text)
-  Omnibar.listResults(res.documents, (s) => {
+  return res.documents.map((s) => {
     let excerpt = escape(s.excerpt)
     if (excerpt.length > 240) {
       excerpt = `${excerpt.slice(0, 240)}…`
@@ -977,15 +845,13 @@ completions.md.callback = (response) => {
     })
     const title = escape(s.title)
     const slug = escape(s.slug)
-    const li = $("<li/>").html(`
+    return createSuggestionItem(`
       <div>
         <div class="title"><strong>${title}</strong></div>
         <div style="font-size:0.8em"><em>${slug}</em></div>
         <div>${excerpt}</div>
       </div>
-    `)
-    li.data("url", s.url)
-    return li
+    `, { url: s.url })
   })
 }
 
@@ -997,9 +863,8 @@ completions.np = {
   compl:  "https://api.npms.io/v2/search/suggestions?size=20&q=",
 }
 
-completions.np.callback = (response) => {
-  const res = JSON.parse(response.text)
-  Omnibar.listResults(res, (s) => {
+completions.np.callback = response => JSON.parse(response.text)
+  .map((s) => {
     let flags = ""
     let desc = ""
     let stars = ""
@@ -1018,7 +883,7 @@ completions.np.callback = (response) => {
         flags += `[<span style='color:#ff4d00'>⚑</span> ${escape(f)}] `
       })
     }
-    const li = $("<li/>").html(`
+    return createSuggestionItem(`
       <div>
         <style>
           .title>em {
@@ -1032,11 +897,8 @@ completions.np.callback = (response) => {
         </div>
         <div>${desc}</div>
       </div>
-    `)
-    li.data("url", s.package.links.npm)
-    return li
+    `, { url: s.package.links.npm })
   })
-}
 
 // ****** Social Media & Entertainment ****** //
 
@@ -1050,7 +912,7 @@ completions.hn = {
 
 completions.hn.callback = (response) => {
   const res = JSON.parse(response.text)
-  Omnibar.listResults(res.hits, (s) => {
+  return res.hits.map((s) => {
     let title = ""
     let prefix = ""
     if (s.points) {
@@ -1072,14 +934,12 @@ completions.hn.callback = (response) => {
     const re = new RegExp(`(${res.query.split(" ").join("|")})`, "ig")
     title = title.replace(re, "<strong>$&</strong>")
     const url = `https://news.ycombinator.com/item?id=${s.objectID}`
-    const li = $("<li/>").html(`
+    return createSuggestionItem(`
       <div>
         <div class="title">${prefix + title}</div>
         <div class="url">${url}</div>
       </div>
-    `)
-    li.data("url", url)
-    return li
+    `, { url })
   })
 }
 
@@ -1091,16 +951,8 @@ completions.re = {
   compl:  "https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q=",
 }
 
-completions.re.callback = (response) => {
-  const res = JSON.parse(response.text).data.children
-  Omnibar.listResults(res, (s) => {
-    const d = s.data
-    return Omnibar.createURLItem({
-      title: `[${d.score}] ${d.title}`,
-      url:   `https://reddit.com${d.permalink}`,
-    })
-  })
-}
+completions.re.callback = response => JSON.parse(response.text).data.children
+  .map(s => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://reddit.com${s.data.permalink}`))
 
 // YouTube
 completions.yt = {
@@ -1110,27 +962,22 @@ completions.yt = {
   compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`,
 }
 
-completions.yt.callback = (response) => {
-  const res = JSON.parse(response.text).items
-  Omnibar.listResults(res, (s) => {
+completions.yt.callback = response => JSON.parse(response.text).items
+  .map((s) => {
     switch (s.id.kind) {
     case "youtube#channel":
-      return Omnibar.createURLItem({
-        title: `${s.snippet.channelTitle}: ${s.snippet.description}`,
-        url:   `https://youtube.com/channel/${s.id.channelId}`,
-      })
+      return createURLItem(
+        `${s.snippet.channelTitle}: ${s.snippet.description}`,
+        `https://youtube.com/channel/${s.id.channelId}`,
+      )
     case "youtube#video":
-      return Omnibar.createURLItem({
-        title: ` ▶ ${s.snippet.title}`,
-        url:   `https://youtu.be/${s.id.videoId}`,
-      })
+      return createURLItem(
+        ` ▶ ${s.snippet.title}`,
+        `https://youtu.be/${s.id.videoId}`,
+      )
     default:
-      return ""
+      return null
     }
-  })
-}
+  }).filter(s => s !== null)
 
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = completions
-}
-
+module.exports = completions

@@ -7,9 +7,10 @@ The source file is README.tmpl.md
 -->
 ### Maddy's SurfingKeys Configuration
 
-#### Note: This configuration currently only supports SurfingKeys 0.9.14 and below.
+<!-- TODO: Determine minimum SK version -->
+<!-- #### Note: This configuration currently only supports SurfingKeys 0.9.14 and below. -->
 
-This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) Chrome Extension.
+This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 #### Table of Contents
 
@@ -184,4 +185,4 @@ If you ever make a change to any of your configuration files in the future, simp
 - [x] Feed the kittens
 
 ### License
-&copy;2017 Maddison Hellstrom - MIT License
+&copy;2017-2018 Maddison Hellstrom - MIT License

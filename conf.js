@@ -46,36 +46,6 @@ settings.theme = `
     }
 `
 
-// ---- Site-Specific Settings ----//
-if (/github\.com/.test(window.location.hostname)) {
-  settings.theme += `
-sk_theme {
-    background: #000;
-    color: #fff;
-}
-.sk_theme tbody {
-    color: #fff;
-}
-.sk_theme input {
-    color: #d9dce0;
-}
-.sk_theme .url {
-    color: #2173c5;
-}
-.sk_theme .annotation {
-    color: #38f;
-}
-.sk_theme .omnibar_highlight {
-    color: #fbd60a;
-}
-.sk_theme ul>li:nth-child(odd) {
-    background: #1e211d;
-}
-.sk_theme ul>li.focused {
-    background: #4ec10d;
-}`
-}
-
 // ---- Maps ----//
 // Left-hand aliases
 // Movement
@@ -91,6 +61,7 @@ map("K", "R")
 map("H", "S")
 map("L", "D")
 
+
 // ---- Functions ----//
 function fakeSpot() {
   const url = `http://fakespot.com/analyze?url=${window.location.href}`
@@ -98,42 +69,46 @@ function fakeSpot() {
 }
 
 function ytFullscreen() {
-  $(".ytp-fullscreen-button.ytp-button").click()
+  document.querySelector(".ytp-fullscreen-button.ytp-button").click()
 }
 
 function vimeoFullscreen() {
-  $(".fullscreen-icon").click()
+  document.querySelector(".fullscreen-icon").click()
 }
 
 function ghStar(toggle) {
   return () => {
     const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
-    const cur = $("div.starring-container > form").filter(function filter() {
-      return $(this).css("display") === "block"
-    })
+    const container = document.querySelector("div.starring-container")
+    const status = container.classList.contains("on")
 
     let star = "★"
-    let status = "starred"
+    let statusMsg = "starred"
     let verb = "is"
 
-    const starred = $(cur).attr("class").indexOf("unstarred") === -1
-    if (starred && toggle) {
-      status = `un${status}`
+    if ((status && toggle) || (!status && !toggle)) {
+      statusMsg = `un${statusMsg}`
       star = "☆"
     }
 
     if (toggle) {
-      $(cur).find("button").click()
       verb = "has been"
+      if (status) {
+        container.querySelector(".starred>button").click()
+      } else {
+        container.querySelector(".unstarred>button").click()
+      }
     }
 
-    Front.showBanner(`${star} Repository ${repo} ${verb} ${status}!`)
+    Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
   }
 }
 
 function glToggleStar() {
   const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
-  const action = `${$(".btn.star-btn > span").click().text().toLowerCase()}red`
+  const btn = document.querySelector(".btn.star-btn > span")
+  btn.click()
+  const action = `${btn.textContent.toLowerCase()}red`
   let star = "☆"
   if (action === "starred") {
     star = "★"
@@ -142,9 +117,11 @@ function glToggleStar() {
 }
 
 function hnGoParent() {
-  const par = $(".par>a")
-  if (par.length <= 0) return
-  window.location.href = par[0].href
+  const par = document.querySelector(".par>a")
+  if (!par) {
+    return
+  }
+  window.location.href = par.href
 }
 
 function vimEditURL() {
@@ -294,7 +271,8 @@ mapsitekeys("twitter.com", [
 
 mapsitekeys("reddit.com", [
   ["x", "Collapse comment", Hint(".expand")],
-  ["X", "Collapse next comment", Hint(".expand:visible:not(:contains('[+]')):nth(0)")],
+  // Not supported by the QuerySelector API
+  // ["X", "Collapse next comment", Hint(".expand:visible:not(:contains('[+]')):nth(0)")],
   ["s", "Upvote", Hint(".arrow.up")],
   ["S", "Downvote", Hint(".arrow.down")],
   ["e", "Expand expando", Hint(".expando-button")],
@@ -304,7 +282,8 @@ mapsitekeys("reddit.com", [
 
 mapsitekeys("news.ycombinator.com", [
   ["x", "Collapse comment", Hint(".togg")],
-  ["X", "Collapse next comment", Hint(".togg:visible:contains('[-]'):nth(0)")],
+  // Not supported by the QuerySelector API
+  // ["X", "Collapse next comment", Hint(".togg:visible:contains('[-]'):nth(0)")],
   ["s", "Upvote", Hint(".votearrow[title='upvote']")],
   ["S", "Downvote", Hint(".votearrow[title='downvote']")],
   ["a", "View post (link)", Hint(".storylink")],

@@ -1,5 +1,5 @@
 const gulp = require("gulp")
-const concat = require("gulp-concat") // TODO: Use webpack instead of concat
+const parcel = require("gulp-parcel")
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
 const eslint = require("gulp-eslint")
@@ -13,6 +13,7 @@ const compl = require("./completions")
 
 const paths = {
   scripts:     ["conf.priv.js", "completions.js", "conf.js"],
+  entry:       "conf.js",
   gulpfile:    ["gulpfile.js"],
   readme:      ["README.tmpl.md"],
   screenshots: "assets/screenshots",
@@ -38,7 +39,7 @@ gulp.task("gulp-autoreload", () => {
   spawnChildren()
 })
 
-gulp.task("clean", () => del(["build"]))
+gulp.task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
 
 gulp.task("lint", () =>
   gulp
@@ -52,8 +53,9 @@ gulp.task("lint", () =>
     .pipe(eslint())
     .pipe(eslint.format()))
 
-gulp.task("build", ["clean", "lint", "readme"], () => gulp.src(paths.scripts)
-  .pipe(concat(".surfingkeys"))
+gulp.task("build", ["clean", "lint", "readme"], () => gulp.src(paths.entry, { read: false })
+  .pipe(parcel())
+  .pipe(rename(".surfingkeys"))
   .pipe(gulp.dest("build")))
 
 gulp.task("install", ["build"], () => gulp.src("build/.surfingkeys")

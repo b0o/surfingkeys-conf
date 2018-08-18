@@ -3,6 +3,7 @@ module.exports = {
   globals: {
     Omnibar:            false,
     Front:              false,
+    Clipboard:          false,
     runtime:            false,
     chrome:             false,
     tabOpenLink:        false,

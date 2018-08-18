@@ -160,20 +160,18 @@ function togglePdfViewer() {
 }
 
 function getURLPath(count, domain) {
-  return () => {
-    let path = window.location.pathname.slice(1)
-    if (count) {
-      path = path.split("/").slice(0, count).join("/")
-    }
-    if (domain) {
-      path = `${window.location.hostname}/${path}`
-    }
-    return path
+  let path = window.location.pathname.slice(1)
+  if (count) {
+    path = path.split("/").slice(0, count).join("/")
   }
+  if (domain) {
+    path = `${window.location.hostname}/${path}`
+  }
+  return path
 }
 
 function copyURLPath(count, domain) {
-  return () => Front.writeClipboard(getURLPath(count, domain))
+  return () => Clipboard.write(getURLPath(count, domain))
 }
 
 function viewGodoc() {

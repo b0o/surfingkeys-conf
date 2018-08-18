@@ -112,27 +112,31 @@ $ vim ./conf.priv.js
 ##### 4. Gulp Build/Install
 
 ```shell
-$ gulp install
+$ gulp install # OR "gulp build" to build to ./build/.surfingkeys without installing
 ```
 
-This will build the final configuration file and place it in `~/.surfingkeys`.
+This will build the final configuration file and place it at `~/.surfingkeys`.
 If you already have a file in that location, make sure you back it up first!
 
 ##### 5. Load your configuration in the SurfingKeys Extension
 
-The final step is to tell SurfingKeys where to find your configuration file:
-
+###### Option A _(recommended)_: Configure SurfingKeys to automatically load configuration file from disk
   - __I.__ Visit [`chrome://extensions/`](chrome://extensions/) and enable `Allow access to file URLs` for the Surfingkeys extension
 
   - __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
 
-  - __III.__ Set the `Load settings from` option to the correct path (substituting `$USER` for your username):
-    - __Linux, MacOS, Unix__: `file:///home/$USER/.surfingkeys`
+  - __III.__ Set the `Load settings from` option to point to the configuration file _(Note: you must specify the full, absolute path; environment variables like '$HOME' or the tilde `~` won't work)_:
+    - __Linux__: `file:///home/$USER/.surfingkeys`
+    - __macOS__: `file:///Users/$USER/.surfingkeys`
     - __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong.)
 
-##### 6. Hack Away!
+  - __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your new configuration will automatically be loaded by SurfingKeys.
 
-If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your settings will be immediately updated.
+###### Option B: Manually copy/paste into the SurfingKeys configuration form
+  - __I.__ Copy the contents of `./build/.surfingkeys` (or `$HOME/.surfingkeys` if you ran `gulp install`)
+  - __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
+  - __III.__ Paste into the text box, then press `save`
+  - __IV.__ Repeat steps 4 & 5 after any changes you make to any of your configuration files.
 
 #### Screenshots
 ##### crunchbase-people

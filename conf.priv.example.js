@@ -34,7 +34,4 @@ const keys = {
   google_cx_gg: "", // godoc.org/*, golang.org/pkg/*
 }
 
-// You can place any additional private/sensitive variables here and they will
-// be included before the rest of your configuration scripts.
-// Running `gulp build` will generate the final configuration by concatenating
-// this file with your main configuration files.
+module.exports = { keys }

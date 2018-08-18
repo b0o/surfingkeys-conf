@@ -125,10 +125,13 @@ If you already have a file in that location, make sure you back it up first!
 
   - __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
 
-  - __III.__ Set the `Load settings from` option to point to the configuration file _(Note: you must specify the full, absolute path; environment variables like '$HOME' or the tilde `~` won't work)_:
-    - __Linux__: `file:///home/$USER/.surfingkeys`
-    - __macOS__: `file:///Users/$USER/.surfingkeys`
-    - __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong.)
+  - __III.__ Set the `Load settings from` option to point to the configuration file.
+
+    _Note: you must specify the full, absolute path; environment variables like `$HOME` or the tilde `~` won't work_:
+
+    - __Linux__: `file:///home/{USERNAME}/.surfingkeys` (replace `{USERNAME}` with your username) 
+    - __macOS__: `file:///Users/{USERNAME}/.surfingkeys` (replace `{USERNAME}` with your username) 
+    - __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong)
 
   - __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your new configuration will automatically be loaded by SurfingKeys.
 

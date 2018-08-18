@@ -197,6 +197,7 @@ mapkey(";se", "#11Edit Settings", editSettings, ri)
 mapkey(";pd", "Toggle PDF viewer from SurfingKeys", togglePdfViewer, ri)
 mapkey("gi", "Edit current URL with vim editor", vimEditURL, ri)
 mapkey("yp", "Copy URL path of current page", copyURLPath(), ri)
+mapkey("gS", "#12Open Chrome settings", () => tabOpenLink("chrome://settings/"))
 
 const siteleader = "<Space>"
 

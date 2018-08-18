@@ -190,15 +190,33 @@ function Hint(selector, action = Hints.dispatchMouseClick) {
 // ---- Mapkeys ----//
 const ri = { repeatIgnore: true }
 
-mapkey("=w", "Lookup whois information for domain", whois, ri)
-mapkey("=d", "Lookup dns information for domain", dns, ri)
-mapkey("=D", "Lookup all information for domain", dnsVerbose, ri)
+// --- Global mappings ---//
+//  0: Help
+//  1: Mouse Click
+//  2: Scroll Page / Element
+//  3: Tabs
+//  4: Page Navigation
+mapkey("gi", "#4Edit current URL with vim editor", vimEditURL, ri)
+//  5: Sessions
+//  6: Search selected with
+//  7: Clipboard
+mapkey("yp", "#7Copy URL path of current page", copyURLPath(), ri)
+//  8: Omnibar
+//  9: Visual Mode
+// 10: vim-like marks
+// 11: Settings
 mapkey(";se", "#11Edit Settings", editSettings, ri)
-mapkey(";pd", "Toggle PDF viewer from SurfingKeys", togglePdfViewer, ri)
-mapkey("gi", "Edit current URL with vim editor", vimEditURL, ri)
-mapkey("yp", "Copy URL path of current page", copyURLPath(), ri)
+// 12: Chrome URLs
 mapkey("gS", "#12Open Chrome settings", () => tabOpenLink("chrome://settings/"))
+// 13: Proxy
+// 14: Misc
+mapkey("=w", "#14Lookup whois information for domain", whois, ri)
+mapkey("=d", "#14Lookup dns information for domain", dns, ri)
+mapkey("=D", "#14Lookup all information for domain", dnsVerbose, ri)
+mapkey(";pd", "#14Toggle PDF viewer from SurfingKeys", togglePdfViewer, ri)
+// 15: Insert Mode
 
+// --- Site-specific mappings ---//
 const siteleader = "<Space>"
 
 function mapsitekey(domainRegex, key, desc, f, opts = {}) {

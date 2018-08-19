@@ -63,89 +63,24 @@ map("L", "D")
 
 
 // ---- Functions ----//
-function fakeSpot() {
-  const url = `http://fakespot.com/analyze?url=${window.location.href}`
-  window.open(url, "_blank").focus()
-}
 
-function ytFullscreen() {
-  document.querySelector(".ytp-fullscreen-button.ytp-button").click()
-}
-
-function vimeoFullscreen() {
-  document.querySelector(".fullscreen-icon").click()
-}
-
-function ghStar(toggle) {
-  return () => {
-    const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
-    const container = document.querySelector("div.starring-container")
-    const status = container.classList.contains("on")
-
-    let star = "★"
-    let statusMsg = "starred"
-    let verb = "is"
-
-    if ((status && toggle) || (!status && !toggle)) {
-      statusMsg = `un${statusMsg}`
-      star = "☆"
-    }
-
-    if (toggle) {
-      verb = "has been"
-      if (status) {
-        container.querySelector(".starred>button").click()
-      } else {
-        container.querySelector(".unstarred>button").click()
-      }
-    }
-
-    Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
-  }
-}
-
-function glToggleStar() {
-  const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
-  const btn = document.querySelector(".btn.star-btn > span")
-  btn.click()
-  const action = `${btn.textContent.toLowerCase()}red`
-  let star = "☆"
-  if (action === "starred") {
-    star = "★"
-  }
-  Front.showBanner(`${star} Repository ${repo} ${action}`)
-}
-
-function hnGoParent() {
-  const par = document.querySelector(".par>a")
-  if (!par) {
-    return
-  }
-  window.location.href = par.href
-}
-
-function vimEditURL() {
-  Front.showEditor(window.location.href, (data) => {
+const vimEditURL = () => Front
+  .showEditor(window.location.href, (data) => {
     window.location.href = data
   }, "url")
-}
 
-function whois() {
-  const url = `http://centralops.net/co/DomainDossier.aspx?dom_whois=true&addr=${window.location.hostname}`
-  window.open(url, "_blank").focus()
-}
+const domainDossier = "http://centralops.net/co/DomainDossier.aspx"
 
-function dns() {
-  const url = `http://centralops.net/co/DomainDossier.aspx?dom_dns=true&addr=${window.location.hostname}`
-  window.open(url, "_blank").focus()
-}
+const whois = () =>
+  tabOpenLink(`${domainDossier}?dom_whois=true&addr=${window.location.hostname}`)
 
-function dnsVerbose() {
-  const url = `http://centralops.net/co/DomainDossier.aspx?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${window.location.hostname}`
-  window.open(url, "_blank").focus()
-}
+const dns = () =>
+  tabOpenLink(`${domainDossier}?dom_dns=true&addr=${window.location.hostname}`)
 
-function togglePdfViewer() {
+const dnsVerbose = () =>
+  tabOpenLink(`${domainDossier}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${window.location.hostname}`)
+
+const togglePdfViewer = () =>
   chrome.storage.local.get("noPdfViewer", (resp) => {
     if (!resp.noPdfViewer) {
       chrome.storage.local.set({ noPdfViewer: 1 }, () => {
@@ -157,9 +92,8 @@ function togglePdfViewer() {
       })
     }
   })
-}
 
-function getURLPath(count, domain) {
+const getURLPath = (count, domain) => {
   let path = window.location.pathname.slice(1)
   if (count) {
     path = path.split("/").slice(0, count).join("/")
@@ -170,22 +104,11 @@ function getURLPath(count, domain) {
   return path
 }
 
-function copyURLPath(count, domain) {
-  return () => Clipboard.write(getURLPath(count, domain))
-}
+const copyURLPath = (count, domain) => () => Clipboard.write(getURLPath(count, domain))
 
-function viewGodoc() {
-  const repo = getURLPath(2, true)
-  tabOpenLink(`https://godoc.org/${repo}`)
-}
+const editSettings = () => tabOpenLink("/pages/options.html")
 
-function editSettings() {
-  tabOpenLink("/pages/options.html")
-}
-
-function Hint(selector, action = Hints.dispatchMouseClick) {
-  return () => Hints.create(selector, action)
-}
+const Hint = (selector, action = Hints.dispatchMouseClick) => () => Hints.create(selector, action)
 
 // ---- Mapkeys ----//
 const ri = { repeatIgnore: true }
@@ -242,6 +165,10 @@ function mapsitekeys(d, maps, opts = {}) {
   })
 }
 
+const fakeSpot = () => window
+  .open(`http://fakespot.com/analyze?url=${window.location.href}`, "_blank")
+  .focus()
+
 mapsitekeys("amazon.com", [
   ["fs", "Fakespot", fakeSpot],
 ])
@@ -249,6 +176,10 @@ mapsitekeys("amazon.com", [
 mapsitekeys("yelp.com", [
   ["fs", "Fakespot", fakeSpot],
 ])
+
+const ytFullscreen = () => document
+  .querySelector(".ytp-fullscreen-button.ytp-button")
+  .click()
 
 mapsitekeys("youtube.com", [
   ["A", "Open video", Hint("*[id='video-title']")],
@@ -258,9 +189,42 @@ mapsitekeys("youtube.com", [
   ["<Space>", "Play/pause", Hint(".ytp-play-button")],
 ], { leader: "" })
 
+
+const vimeoFullscreen = () => document
+  .querySelector(".fullscreen-icon")
+  .click()
+
 mapsitekeys("vimeo.com", [
   ["F", "Toggle fullscreen", vimeoFullscreen],
 ])
+
+const ghStar = toggle => () => {
+  const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
+  const container = document.querySelector("div.starring-container")
+  const status = container.classList.contains("on")
+
+  let star = "★"
+  let statusMsg = "starred"
+  let verb = "is"
+
+  if ((status && toggle) || (!status && !toggle)) {
+    statusMsg = `un${statusMsg}`
+    star = "☆"
+  }
+
+  if (toggle) {
+    verb = "has been"
+    if (status) {
+      container.querySelector(".starred>button").click()
+    } else {
+      container.querySelector(".unstarred>button").click()
+    }
+  }
+
+  Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
+}
+
+const viewGodoc = () => tabOpenLink(`https://godoc.org/${getURLPath(2, true)}`)
 
 mapsitekeys("github.com", [
   ["s", "Toggle Star", ghStar(true)],
@@ -269,6 +233,18 @@ mapsitekeys("github.com", [
   ["Y", "Copy Project Path (including domain)", copyURLPath(2, true)],
   ["D", "View GoDoc for Project", viewGodoc],
 ])
+
+const glToggleStar = () => {
+  const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
+  const btn = document.querySelector(".btn.star-btn > span")
+  btn.click()
+  const action = `${btn.textContent.toLowerCase()}red`
+  let star = "☆"
+  if (action === "starred") {
+    star = "★"
+  }
+  Front.showBanner(`${star} Repository ${repo} ${action}`)
+}
 
 mapsitekeys("gitlab.com", [
   ["s", "Toggle Star", glToggleStar],
@@ -298,6 +274,14 @@ mapsitekeys("reddit.com", [
   ["a", "View post (link)", Hint(".title")],
   ["c", "View post (comments)", Hint(".comments")],
 ])
+
+const hnGoParent = () => {
+  const par = document.querySelector(".par>a")
+  if (!par) {
+    return
+  }
+  window.location.assign(par.href)
+}
 
 mapsitekeys("news.ycombinator.com", [
   ["x", "Collapse comment", Hint(".togg")],

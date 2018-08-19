@@ -165,9 +165,7 @@ function mapsitekeys(d, maps, opts = {}) {
   })
 }
 
-const fakeSpot = () => window
-  .open(`http://fakespot.com/analyze?url=${window.location.href}`, "_blank")
-  .focus()
+const fakeSpot = () => tabOpenLink(`http://fakespot.com/analyze?url=${window.location.href}`)
 
 mapsitekeys("amazon.com", [
   ["fs", "Fakespot", fakeSpot],

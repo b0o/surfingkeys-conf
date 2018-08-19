@@ -197,10 +197,12 @@ const ri = { repeatIgnore: true }
 //  3: Tabs
 //  4: Page Navigation
 mapkey("gi", "#4Edit current URL with vim editor", vimEditURL, ri)
+mapkey("gI", "#4View image in new tab", Hint("img", i => tabOpenLink(i.src)), ri)
 //  5: Sessions
 //  6: Search selected with
 //  7: Clipboard
 mapkey("yp", "#7Copy URL path of current page", copyURLPath(), ri)
+mapkey("yI", "#7Copy Image URL", Hint("img", i => Clipboard.write(i.src)), ri)
 //  8: Omnibar
 //  9: Visual Mode
 // 10: vim-like marks
@@ -308,8 +310,13 @@ mapsitekeys("news.ycombinator.com", [
   ["p", "Go to parent", hnGoParent],
 ])
 
+const dribbbleAttachment = cb =>
+  Hint(".attachments .thumb", a => cb(a.src.replace("/thumbnail/", "/")))
+
 mapsitekeys("dribbble.com", [
   ["s", "Heart Shot", Hint(".toggle-fav, .like-shot")],
+  ["a", "View attachment image", dribbbleAttachment(a => tabOpenLink(a))],
+  ["A", "Yank attachment image source URL", dribbbleAttachment(a => Clipboard.write(a))],
 ])
 
 // ---- Search & completion ----//

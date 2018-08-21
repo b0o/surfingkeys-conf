@@ -31,8 +31,6 @@ Object.keys(rmSearchAliases).forEach((k) => {
 // ---- Settings ----//
 settings.hintAlign = "left"
 settings.omnibarSuggestionTimeout = 500
-settings.hintGroups = true
-// settings.hintGroupStart = "middle";
 settings.richHintsForKeystroke = 1
 
 // ---- Theme ----//

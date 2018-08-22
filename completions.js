@@ -77,10 +77,7 @@ completions.au = {
 
 completions.au.callback = (response) => {
   const res = JSON.parse(response.text)
-  return res.map(s => createURLItem({
-    title: s,
-    url:   `https://aur.archlinux.org/packages/${s}`,
-  }))
+  return res.map(s => createURLItem(s, `https://aur.archlinux.org/packages/${s}`))
 }
 
 // Arch Linux Wiki

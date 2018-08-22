@@ -295,8 +295,10 @@ const dribbbleAttachment = cb =>
 
 mapsitekeys("dribbble.com", [
   ["s", "Heart Shot", Hint(".toggle-fav, .like-shot")],
-  ["a", "View attachment image", dribbbleAttachment(a => tabOpenLink(a))],
-  ["A", "Yank attachment image source URL", dribbbleAttachment(a => Clipboard.write(a))],
+  ["a", "View shot", Hint(".dribbble-over, .gif-target, .more-thumbs a")],
+  ["A", "View shot", Hint(".dribbble-over, .gif-target, .more-thumbs a")],
+  ["v", "View attachment image", dribbbleAttachment(a => tabOpenLink(a))],
+  ["V", "Yank attachment image source URL", dribbbleAttachment(a => Clipboard.write(a))],
 ])
 
 // ---- Search & completion ----//

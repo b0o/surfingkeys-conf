@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0",
     "del": "^3.0.0",
     "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
@@ -30,5 +31,10 @@
     "gulp-parcel": "b0o/gulp-parcel#fix-g_options-undefined",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

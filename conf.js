@@ -299,6 +299,7 @@ mapsitekeys("dribbble.com", [
   ["A", "View shot", Hint(".dribbble-over, .gif-target, .more-thumbs a")],
   ["v", "View attachment image", dribbbleAttachment(a => tabOpenLink(a))],
   ["V", "Yank attachment image source URL", dribbbleAttachment(a => Clipboard.write(a))],
+  ["z", "Zoom shot", Hint(".single-img picture, .detail-shot img")],
 ])
 
 // ---- Search & completion ----//

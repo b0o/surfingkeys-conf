@@ -302,6 +302,20 @@ mapsitekeys("dribbble.com", [
   ["z", "Zoom shot", Hint(".single-img picture, .detail-shot img")],
 ])
 
+const wpToggleSimple = () => {
+  window.location.hostname = window.location.hostname.split(".")
+    .map((s, i) => {
+      if (i === 0) {
+        return s === "simple" ? "" : "simple"
+      }
+      return s
+    }).filter(s => s !== "").join(".")
+}
+
+mapsitekeys("wikipedia.org", [
+  ["s", "Toggle simple version of current article", wpToggleSimple],
+])
+
 // ---- Search & completion ----//
 // Search leader
 const sl = "a"

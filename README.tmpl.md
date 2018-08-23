@@ -15,8 +15,8 @@ sites, as well OmniBar support for [auto-completing searches](#bundled-search-en
 Table of Contents
 -----------------
 
-1. [Bundled Search Engine Completions](#bundled-search-engine-completions)
-2. [Site-Specific Key Mappings](#site-specific-key-mappings)
+1. [Site-Specific Key Mappings](#site-specific-key-mappings)
+2. [Bundled Search Engine Completions](#bundled-search-engine-completions)
 3. [Installation Instructions](#installation)
 4. [Screenshots](#screenshots)
 5. [Todo](#todo)

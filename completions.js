@@ -344,6 +344,14 @@ completions.wp.callback = response => Object.values(JSON.parse(response.text).qu
     )
   })
 
+// Wikipedia - Simple English version
+completions.ws = {
+  alias:    "ws",
+  name:     "wikipedia-simple",
+  search:   "https://simple.wikipedia.org/w/index.php?search=",
+  compl:    "https://simple.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&prop=info|pageprops%7Cpageimages%7Cdescription&redirects=&ppprop=displaytitle&piprop=thumbnail&pithumbsize=100&pilimit=6&inprop=url&gpssearch=",
+  callback: completions.wp.callback,
+}
 
 // WolframAlpha
 completions.wa = {

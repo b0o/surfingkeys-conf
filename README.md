@@ -23,7 +23,7 @@ This is my personal configuration for the wonderful [SurfingKeys](https://github
 
 #### Bundled Search Engine Completions
 
-There are currently 43 Search Engine auto-completions.
+There are currently 44 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -72,6 +72,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | `vw` | `vimwikia` | `vim.wikia.com` |  |
 | `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
 | `wp` | `wikipedia` | `en.wikipedia.org` |  |
+| `ws` | `wikipedia-simple` | `simple.wikipedia.org` |  |
 | `yp` | `yelp` | `www.yelp.com` |  |
 | `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
 

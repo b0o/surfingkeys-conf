@@ -99,6 +99,7 @@ If you already have a file in that location, make sure you back it up first!
 
 #### Todo
 
+- [ ] Add `CHANGELOG.md` using [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
 - [ ] Simplify installation process
 - [ ] Improve code organization
 - [ ] Ensure screenshots have a plain white background

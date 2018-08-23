@@ -5,23 +5,50 @@ This is an automatically generated file - Do not edit it directly.
 The source file is README.tmpl.md
 
 -->
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+Maddy's SurfingKeys Configuration
+=================================
 
-### Maddy's SurfingKeys Configuration
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 <!-- TODO: Determine minimum SK version -->
 <!-- #### Note: This configuration currently only supports SurfingKeys 0.9.14 and below. -->
 
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
-#### Table of Contents
+Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
+sites, as well OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within 44 sites (and growing)!
 
-  1. [Bundled Search Engine Completions](#bundled-search-engine-completions)
-  2. [Installation Instructions](#installation)
-  3. [Screenshots](#screenshots)
-  4. [License](#license)
+Table of Contents
+-----------------
 
-#### Bundled Search Engine Completions
+1. [Bundled Search Engine Completions](#bundled-search-engine-completions)
+2. [Installation Instructions](#installation)
+3. [Site-Specific Key Mappings](#site-specific-key-mappings)
+4. [Screenshots](#screenshots)
+5. [License](#license)
+
+Features
+--------------------------
+
+### Site-Specific Key Mappings
+
+Key mappings have been included which can help you perform some common actions
+on many popular sites.
+
+Some examples of these mappings are:
+- Star the current GitHub/GitLab repository: `<site-leader>s`
+- Follow a user on Twitter: `<site-leader>f`
+- Upvote a post/comment on Reddit/HackerNews `<site-leader>s`
+- Analyze the current Amazon Product using Fakespot `<site-leader>fs`
+
+The mappings are activated by typing the `<site-leader>` (`<space>` by default),
+followed by the key sequence.
+
+See [conf.js](./conf.js) for all of the mappings.
+
+<!--TODO: Autogenerate list of site mappings-->
+
+### Bundled Search Engine Completions
 
 There are currently 44 Search Engine auto-completions.
 
@@ -83,7 +110,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 
   - `git`
   - `node`
-  - `gulp`. 
+  - `gulp`
 
 ##### 1. Clone
 
@@ -98,7 +125,12 @@ $ cd surfingkeys-conf
 $ npm install
 ```
 
-##### 3. Private API Key Configuration
+##### 3. (Optional) Private API Key Configuration
+
+Some Search Engine Auto-Completions require private API keys for access. These
+keys are defined in `conf.priv.js`, which is not itself included in this repository.
+An example configuration containing instructions on how to generate each API key
+can be found in [conf.priv.example.js](./conf.priv.example.js).
 
 Copy the example private configuration:
 

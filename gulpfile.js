@@ -9,7 +9,6 @@ const os = require("os")
 const fs = require("fs")
 const { spawn } = require("child_process")
 const { URL } = require("url")
-const compl = require("./completions")
 
 const paths = {
   scripts:     ["conf.priv.js", "completions.js", "conf.js"],
@@ -53,7 +52,17 @@ gulp.task("lint", () =>
     .pipe(eslint())
     .pipe(eslint.format()))
 
-gulp.task("build", ["clean", "lint", "readme"], () => gulp.src(paths.entry, { read: false })
+gulp.task("check-priv", () => {
+  try {
+    fs.statSync("./conf.priv.js")
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Creating ./conf.priv.js based on ./conf.priv.example.js")
+    fs.copyFileSync("./conf.priv.example.js", "./conf.priv.js", fs.constants.COPYFILE_EXCL)
+  }
+})
+
+gulp.task("build", ["check-priv", "clean", "lint", "readme"], () => gulp.src(paths.entry, { read: false })
   .pipe(parcel())
   .pipe(rename(".surfingkeys"))
   .pipe(gulp.dest("build")))
@@ -72,6 +81,7 @@ gulp.task("watch-nogulpfile", () => {
 })
 
 gulp.task("readme", () => {
+  const compl = require("./completions") // eslint-disable-line global-require
   const screens = {}
   let screenshotList = ""
   fs.readdirSync(path.join(__dirname, paths.screenshots)).forEach((s) => {

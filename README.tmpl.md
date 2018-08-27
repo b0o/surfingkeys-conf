@@ -110,8 +110,11 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 
 	<details>
 	<summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load configuration file from disk</summary>
+
 	- __I.__ Visit [`chrome://extensions/`](chrome://extensions/) and enable `Allow access to file URLs` for the Surfingkeys extension
+
 	- __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
+
 	- __III.__ Set the `Load settings from` option to point to the configuration file.
 
 		_Note: you must specify the full, absolute path; environment variables like `$HOME` or the tilde `~` won't work_:
@@ -120,14 +123,20 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 		- __macOS__: `file:///Users/{USERNAME}/.surfingkeys` (replace `{USERNAME}` with your username) 
 		- __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong)
 	- __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your new configuration will automatically be loaded by SurfingKeys.
+
 	</details>
 
 	<details>
 	<summary><strong>Option B</strong>: Manually copy/paste into the SurfingKeys configuration form</summary>
+
 	- __I.__ Copy the contents of `./build/.surfingkeys` (or `$HOME/.surfingkeys` if you ran `gulp install`)
+
 	- __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
+
 	- __III.__ Paste into the text box, then press `save`
+
 	- __IV.__ Repeat steps 4 & 5 after any changes you make to any of your configuration files.
+
 	</details>
 
 Screenshots

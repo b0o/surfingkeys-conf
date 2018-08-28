@@ -1,4 +1,5 @@
 const completions = require("./completions")
+const { isElementInViewport } = require("./util")
 
 // Unmap undesired defaults
 const unmaps = [
@@ -260,10 +261,17 @@ mapsitekeys("twitter.com", [
   ["g", "Goto user", Hint(".js-user-profile-link")],
 ])
 
+const redditCollapseNextComment = () => {
+  const vis = Array.from(document.querySelectorAll(".noncollapsed.comment"))
+    .filter(e => isElementInViewport(e))
+  if (vis.length > 0) {
+    vis[0].querySelector(".expand").click()
+  }
+}
+
 mapsitekeys("reddit.com", [
   ["x", "Collapse comment", Hint(".expand")],
-  // Not supported by the QuerySelector API
-  // ["X", "Collapse next comment", Hint(".expand:visible:not(:contains('[+]')):nth(0)")],
+  ["X", "Collapse next comment", redditCollapseNextComment],
   ["s", "Upvote", Hint(".arrow.up")],
   ["S", "Downvote", Hint(".arrow.down")],
   ["e", "Expand expando", Hint(".expando-button")],
@@ -279,10 +287,17 @@ const hnGoParent = () => {
   window.location.assign(par.href)
 }
 
+const hnCollapseNextComment = () => {
+  const vis = Array.from(document.querySelectorAll("a.togg"))
+    .filter(e => e.innerText === "[-]" && isElementInViewport(e))
+  if (vis.length > 0) {
+    vis[0].click()
+  }
+}
+
 mapsitekeys("news.ycombinator.com", [
   ["x", "Collapse comment", Hint(".togg")],
-  // Not supported by the QuerySelector API
-  // ["X", "Collapse next comment", Hint(".togg:visible:contains('[-]'):nth(0)")],
+  ["X", "Collapse next comment", hnCollapseNextComment],
   ["s", "Upvote", Hint(".votearrow[title='upvote']")],
   ["S", "Downvote", Hint(".votearrow[title='downvote']")],
   ["a", "View post (link)", Hint(".storylink")],

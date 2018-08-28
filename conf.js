@@ -317,6 +317,15 @@ mapsitekeys("dribbble.com", [
   ["z", "Zoom shot", Hint(".single-img picture, .detail-shot img")],
 ])
 
+const behanceAddToCollection = () => document.querySelector(".qa-action-collection").click()
+
+mapsitekeys("behance.net", [
+  ["s", "Appreciate project", Hint(".appreciation-button")],
+  ["b", "Add project to collection", behanceAddToCollection],
+  ["a", "View project", Hint(".rf-project-cover__title")],
+  ["A", "View project", Hint(".rf-project-cover__title")],
+])
+
 const wpToggleSimple = () => {
   window.location.hostname = window.location.hostname.split(".")
     .map((s, i) => {

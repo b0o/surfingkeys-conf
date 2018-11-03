@@ -165,6 +165,14 @@ actions.hn.collapseNextComment = () => {
   }
 }
 
+// ProductHunt
+// -----------
+actions.ph = {}
+actions.ph.openExternal = () => {
+  Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", p =>
+    tabOpenLink(p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href))
+}
+
 // Dribbble
 // --------
 actions.dr = {}

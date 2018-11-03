@@ -361,6 +361,24 @@ const maps = {
     },
   ],
 
+  "producthunt.com": [
+    {
+      alias:       "a",
+      description: "View product (external)",
+      callback:    actions.ph.openExternal,
+    },
+    {
+      alias:       "v",
+      description: "View product",
+      callback:    actions.createHint("ul[class^='postsList_'] > li > div[class^='item_'] > a"),
+    },
+    {
+      alias:       "s",
+      description: "Upvote product",
+      callback:    actions.createHint("button[data-test='vote-button']"),
+    },
+  ],
+
   "dribbble.com": [
     {
       alias:       "s",

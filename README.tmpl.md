@@ -4,9 +4,6 @@ Maddy's SurfingKeys Configuration
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-<!-- TODO: Determine minimum SK version -->
-<!-- #### Note: This configuration currently only supports SurfingKeys 0.9.14 and below. -->
-
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
@@ -62,9 +59,10 @@ Installation
 
 Building `surfingkeys-conf` requires a few dependencies to be installed:
 
-- `git`
-- `node`
-- `gulp`
+- __Surfingkeys__ `^0.9.38`
+- __git__
+- __node__
+- __gulp__
 
 ### Building & Installing
 

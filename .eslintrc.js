@@ -19,7 +19,6 @@ module.exports = {
   env: {
     browser: true,
     node:    true,
-    jquery:  true,
   },
   rules: {
     semi:           ["error", "never"],

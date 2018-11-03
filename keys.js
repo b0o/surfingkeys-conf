@@ -78,7 +78,7 @@ const maps = {
       alias:       "=w",
       category:    categories.misc,
       description: "Lookup whois information for domain",
-      callback:    actions.showWhois,
+      callback:    actions.showWhois(),
     },
     {
       alias:       "=d",

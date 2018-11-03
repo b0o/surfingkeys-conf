@@ -11,7 +11,7 @@ const { spawn } = require("child_process")
 const { URL } = require("url")
 
 const paths = {
-  scripts:     ["conf.priv.js", "completions.js", "conf.js"],
+  scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
   entry:       "conf.js",
   gulpfile:    ["gulpfile.js"],
   readme:      ["README.tmpl.md"],

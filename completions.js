@@ -1,39 +1,20 @@
 const { keys } = require("./conf.priv.js")
+const { escape, createSuggestionItem, createURLItem } = require("./util")
 
-function escape(str) {
-  return String(str).replace(/[&<>"'`=/]/g, s => ({
-    "&":  "&amp;",
-    "<":  "&lt;",
-    ">":  "&gt;",
-    "\"": "&quot;",
-    "'":  "&#39;",
-    "/":  "&#x2F;",
-    "`":  "&#x60;",
-    "=":  "&#x3D;",
-  }[s]))
+const completions = {}
+
+// Helper functions for Google Custom Search Engine completions
+const googleCxURL = (alias) => {
+  const key = `google_cx_${alias}`
+  return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`
 }
 
-function createSuggestionItem(html, props = {}) {
-  const li = document.createElement("li")
-  li.innerHTML = html
-  return { html: li.outerHTML, props }
+const googleCxPublicURL = (alias) => {
+  const key = `google_cx_${alias}`
+  return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`
 }
 
-function createURLItem(title, url, sanitize = true) {
-  let t = title
-  let u = url
-  if (sanitize) {
-    t = escape(t)
-    u = new URL(u).toString()
-  }
-  return createSuggestionItem(`
-      <div class="title">${t}</div>
-      <div class="url">${u}</div>
-    `, { url: u })
-}
-
-// ****** Helper Functions ****** //
-function googleCxCallback(response) {
+const googleCxCallback = (response) => {
   const res = JSON.parse(response.text).items
   return res.map(s => createSuggestionItem(`
       <div>
@@ -42,19 +23,6 @@ function googleCxCallback(response) {
       </div>
     `, { url: s.link }))
 }
-
-function googleCxURL(alias) {
-  const key = `google_cx_${alias}`
-  return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`
-}
-
-function googleCxPublicURL(alias) {
-  const key = `google_cx_${alias}`
-  return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`
-}
-
-// ****** Completions ****** //
-const completions = {}
 
 // ****** Arch Linux ****** //
 
@@ -330,13 +298,14 @@ const wpNoimg = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3
 completions.wp.callback = response => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => {
     const img = p.thumbnail ? p.thumbnail.source : wpNoimg
+    const desc = p.description ? p.description : ""
     return createSuggestionItem(
       `
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
         <img style="width:60px" src="${img}" alt="${p.title}">
         <div>
           <div class="title"><strong>${p.title}</strong></div>
-          <div class="title">${p.description}</div>
+          <div class="title">${desc}</div>
         </div>
       </div>
     `,

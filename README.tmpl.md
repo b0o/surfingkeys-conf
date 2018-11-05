@@ -7,7 +7,7 @@ Maddy's SurfingKeys Configuration
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
-sites, as well OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within <!--{{COMPL_COUNT}}--> sites (and growing)!
+sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within <!--{{COMPL_COUNT}}--> sites (and growing)!
 
 Table of Contents
 -----------------

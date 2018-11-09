@@ -36,7 +36,7 @@ Some examples of these mappings are:
 The mappings are activated by typing the `<site-leader>` (`<space>` by default),
 followed by the key sequence.
 
-See [conf.js](./conf.js) for all of the mappings.
+See [keys.js](./keys.js) for all of the mappings.
 
 <!--TODO: Autogenerate list of site mappings-->
 

@@ -1,3 +1,5 @@
+const ghReservedNames = require("github-reserved-names")
+
 const util = require("./util")
 
 const actions = {}
@@ -103,6 +105,92 @@ actions.gh.star = ({ toggle = false } = {}) => () => {
   }
 
   Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
+}
+
+actions.gh.openRepo = () => {
+  const elements = [...document.querySelectorAll("a[href]")]
+    .filter(a => {
+      const u = new URL(a.href)
+      const [user, repo, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      return (
+        u.origin === window.location.origin &&
+        u.hash === "" &&
+        u.search === "" &&
+        typeof user === "string" &&
+        typeof repo === "string" &&
+        rest.length === 0 &&
+        repo.length >= 1 &&
+        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
+        !ghReservedNames.check(user)
+      )
+    })
+  Hints.create(elements, Hints.dispatchMouseClick)
+}
+
+actions.gh.openUser = () => {
+  const elements = [...document.querySelectorAll("a[href]")]
+    .filter(a => {
+      const u = new URL(a.href)
+      const [user, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      return (
+        u.origin === window.location.origin &&
+        u.hash === "" &&
+        u.search === "" &&
+        typeof user === "string" &&
+        rest.length === 0 &&
+        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
+        !ghReservedNames.check(user)
+      )
+    })
+  Hints.create(elements, Hints.dispatchMouseClick)
+}
+
+actions.gh.openFile = () => {
+  const elements = [...document.querySelectorAll("a[href]")]
+    .filter(a => {
+      const u = new URL(a.href)
+      const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      return (
+        u.origin === window.location.origin &&
+        u.hash === "" &&
+        u.search === "" &&
+        typeof user === "string" &&
+        typeof maybeBlob === "string" &&
+        ( maybeBlob === "blob" || maybeBlob === "tree" ) &&
+        rest.length !== 0 &&
+        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
+        !ghReservedNames.check(user)
+      )
+    })
+  Hints.create(elements, Hints.dispatchMouseClick)
+}
+
+actions.gh.goParent = () => {
+  const segments = window.location.pathname
+    .split("/").filter(s => s !== "")
+  const newPath = (() => {
+    const [user, repo, maybeBlob] = segments
+    switch(segments.length) {
+      case 0:
+        return false
+      case 4:
+        switch(maybeBlob) {
+          case "blob":
+          case "tree":
+            return [user, repo]
+          case "pull":
+            return [user, repo, "pulls"]
+        }
+      case 5:
+        if (maybeBlob === "blob") {
+          return [user, repo]
+        }
+    }
+    return segments.slice(0, segments.length - 1)
+  })()
+  if(newPath !== false) {
+    window.location.assign(`${window.location.origin}/${newPath.join("/")}`)
+  }
 }
 
 // GitLab

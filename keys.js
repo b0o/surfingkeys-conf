@@ -173,6 +173,31 @@ const maps = {
 
   "github.com": [
     {
+      alias:       "a",
+      description: "View Repository",
+      callback:    actions.gh.openRepo,
+    },
+    {
+      alias:       "u",
+      description: "View User",
+      callback:    actions.gh.openUser,
+    },
+    {
+      alias:       "f",
+      description: "View File",
+      callback:    actions.gh.openFile,
+    },
+    {
+      alias:       "i",
+      description: "View Issue",
+      callback:    actions.gh.openIssue,
+    },
+    {
+      alias:       "gp",
+      description: "Go to parent",
+      callback:    actions.gh.goParent,
+    },
+    {
       alias:       "s",
       description: "Toggle Star",
       callback:    actions.gh.star({ toggle: true }),

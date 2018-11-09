@@ -17,7 +17,9 @@
   ],
   "author": "Maddison Hellstrom",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "github-reserved-names": "^1.1.3"
+  },
   "devDependencies": {
     "cz-conventional-changelog": "^2.1.0",
     "del": "^3.0.0",

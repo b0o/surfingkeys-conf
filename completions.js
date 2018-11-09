@@ -109,7 +109,7 @@ completions.dh = {
 
 completions.dh.callback = response => JSON.parse(response.text).results.map((s) => {
   let meta = ""
-  let repo = escape(s.repo_name)
+  let repo = s.repo_name
   meta += `[★${escape(s.star_count)}] `
   meta += `[↓${escape(s.pull_count)}] `
   if (repo.indexOf("/") === -1) {
@@ -117,7 +117,7 @@ completions.dh.callback = response => JSON.parse(response.text).results.map((s) 
   }
   return createSuggestionItem(`
       <div>
-        <div class="title"><strong>${escape(s.repo_name)}</strong></div>
+        <div class="title"><strong>${escape(repo)}</strong></div>
         <div>${meta}</div>
         <div>${escape(s.short_description)}</div>
       </div>

@@ -129,7 +129,6 @@ gulp.task("readme", () => {
     const maps = c.reduce((acc2, map) => {
       const leader = typeof map.leader !== "undefined"  ? map.leader : domain === "global" ? "" : conf.siteleader
       const mapStr = util.escape(`${leader}${map.alias}`.replace(" ", "<space>"))
-      console.log({leader, mapStr, sl: conf.siteleader, ml: map.leader })
       return `${acc2}<tr><td><code>${mapStr}</code></td><td>${map.description}</td></tr>\n`
     }, "")
     const domainStr = domain === "global" ? "<strong>global</strong>" : `<a href="//${domain}">${domain}</a>`

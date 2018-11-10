@@ -24,21 +24,14 @@ Features
 
 ### Site-Specific Key Mappings
 
-Key mappings have been included which can help you perform some common actions
-on many popular sites.
+<!--{{KEYS_MAPS_COUNT}}--> key mappings for <!--{{KEYS_SITES_COUNT}}--> unique
+sites have been included which can help you perform some common actions:
 
-Some examples of these mappings are:
-- Star the current GitHub/GitLab repository: `<site-leader>s`
-- Follow a user on Twitter: `<site-leader>f`
-- Upvote a post/comment on Reddit/HackerNews `<site-leader>s`
-- Analyze the current Amazon Product using Fakespot `<site-leader>fs`
-
-The mappings are activated by typing the `<site-leader>` (`<space>` by default),
-followed by the key sequence.
-
-See [keys.js](./keys.js) for all of the mappings.
-
-<!--TODO: Autogenerate list of site mappings-->
+<table>
+<tbody>
+<!--{{KEYS_TABLE}}-->
+</tbody>
+</table>
 
 ### Bundled Search Engine Completions
 
@@ -49,7 +42,7 @@ You can access a Search Engine auto-completion by pressing the search leader key
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 
 | Alias | Name | Domain | Screenshots |
-| ---- | ------ | ----- | ----- |
+| ----- | ---- | ------ | ----------- |
 <!--{{COMPL_TABLE}}-->
 
 Installation

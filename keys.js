@@ -49,7 +49,7 @@ const maps = {
       alias:       "gI",
       category:    categories.pageNav,
       description: "View image in new tab",
-      callback:    actions.createHint("img", i => tabOpenLink(i.src)),
+      callback:    actions.createHint("img", i => actions.openLink(i.src)()),
     },
     {
       alias:       "yp",
@@ -117,7 +117,7 @@ const maps = {
     {
       alias:       "A",
       description: "Open search result (new tab)",
-      callback:    actions.createHint(".r>a", actions.open({ newTab: true })),
+      callback:    actions.createHint(".r>a", actions.openAnchor({ newTab: true })),
     },
   ],
 
@@ -135,7 +135,7 @@ const maps = {
       leader:      "",
       alias:       "A",
       description: "Open video",
-      callback:    actions.createHint("*[id='video-title']", actions.open({ newTab: true })),
+      callback:    actions.createHint("*[id='video-title']", actions.openAnchor({ newTab: true })),
     },
     {
       leader:      "",
@@ -147,7 +147,7 @@ const maps = {
       leader:      "",
       alias:       "gH",
       description: "Goto homepage",
-      callback:    () => window.location.assign("https://www.youtube.com/feed/subscriptions?flow=2"),
+      callback:    actions.openLink("https://www.youtube.com/feed/subscriptions?flow=2"),
     },
     {
       leader:      "",
@@ -324,7 +324,7 @@ const maps = {
     {
       alias:       "A",
       description: "View post (link) (new tab)",
-      callback:    actions.createHint(".title", actions.open({ newTab: true })),
+      callback:    actions.createHint(".title", actions.openAnchor({ newTab: true })),
     },
     {
       alias:       "c",
@@ -334,7 +334,7 @@ const maps = {
     {
       alias:       "C",
       description: "View post (comments) (new tab)",
-      callback:    actions.createHint(".comments", actions.open({ newTab: true })),
+      callback:    actions.createHint(".comments", actions.openAnchor({ newTab: true })),
     },
   ],
 
@@ -367,7 +367,7 @@ const maps = {
     {
       alias:       "A",
       description: "View post (link) (new tab)",
-      callback:    actions.createHint(".storylink", actions.open({ newTab: true })),
+      callback:    actions.createHint(".storylink", actions.openAnchor({ newTab: true })),
     },
     {
       alias:       "c",
@@ -377,7 +377,7 @@ const maps = {
     {
       alias:       "C",
       description: "View post (comments) (new tab)",
-      callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.open({ newTab: true })),
+      callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.openAnchor({ newTab: true })),
     },
     {
       alias:       "p",
@@ -418,7 +418,7 @@ const maps = {
     {
       alias:       "A",
       description: "View shot (new tab)",
-      callback:    actions.createHint(".dribbble-over, .gif-target, .more-thumbs a", actions.open({ newTab: true })),
+      callback:    actions.createHint(".dribbble-over, .gif-target, .more-thumbs a", actions.openAnchor({ newTab: true })),
     },
     {
       alias:       "v",
@@ -456,7 +456,7 @@ const maps = {
     {
       alias:       "A",
       description: "View project (new tab)",
-      callback:    actions.createHint(".rf-project-cover__title", actions.open({ newTab: true })),
+      callback:    actions.createHint(".rf-project-cover__title", actions.openAnchor({ newTab: true })),
     },
   ],
 

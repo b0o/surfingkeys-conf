@@ -10,6 +10,11 @@ const fs = require("fs")
 const { spawn } = require("child_process")
 const { URL } = require("url")
 
+const compl = require("./completions")
+const conf = require("./conf")
+const keys = require("./keys")
+const util = require("./util")
+
 const paths = {
   scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
   entry:       "conf.js",
@@ -81,7 +86,6 @@ gulp.task("watch-nogulpfile", () => {
 })
 
 gulp.task("readme", () => {
-  const compl = require("./completions") // eslint-disable-line global-require
   const screens = {}
   let screenshotList = ""
   fs.readdirSync(path.join(__dirname, paths.screenshots)).forEach((s) => {
@@ -92,7 +96,8 @@ gulp.task("readme", () => {
     }
     screens[alias].push(path.join(paths.screenshots, path.basename(s)))
   })
-  const table = Object.keys(compl).sort((a, b) => {
+
+  const complTable = Object.keys(compl).sort((a, b) => {
     if (a < b) return -1
     if (a > b) return 1
     return 0
@@ -109,12 +114,35 @@ gulp.task("readme", () => {
         screenshotList += `![${c.name} screenshot](./${url})\n\n`
       })
     }
-    return `${a}| \`${c.alias}\` | \`${c.name}\` | \`${domain}\` | ${s} |\n`
+    return `${a} | \`${c.alias}\` | \`${c.name}\` | \`${domain}\` | ${s} |\n`
   }, "")
+
+  const keysTable = Object.keys(keys.maps).sort((a, b) => {
+    if (a === "global") return -1
+    if (b === "global") return 1
+    if (a < b) return -1
+    if (a > b) return 1
+    return 0
+  }).reduce((acc1, domain) => {
+    const header = "<tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>"
+    const c = keys.maps[domain]
+    const maps = c.reduce((acc2, map) => {
+      const leader = typeof map.leader !== "undefined"  ? map.leader : domain === "global" ? "" : conf.siteleader
+      const mapStr = util.escape(`${leader}${map.alias}`.replace(" ", "<space>"))
+      console.log({leader, mapStr, sl: conf.siteleader, ml: map.leader })
+      return `${acc2}<tr><td><code>${mapStr}</code></td><td>${map.description}</td></tr>\n`
+    }, "")
+    const domainStr = domain === "global" ? "<strong>global</strong>" : `<a href="//${domain}">${domain}</a>`
+    return `${acc1}<tr><th colspan="2">${domainStr}</th></tr>${header}\n${maps}`
+  }, "")
+
   return gulp.src(["./README.tmpl.md"])
     .pipe(replace("<!--{{DISCLAIMER}}-->", disclaimer))
     .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(compl).length))
-    .pipe(replace("<!--{{COMPL_TABLE}}-->", table))
+    .pipe(replace("<!--{{COMPL_TABLE}}-->", complTable))
+    .pipe(replace("<!--{{KEYS_MAPS_COUNT}}-->", Object.keys(keys.maps).reduce((acc, m) => acc + m.length, 0)))
+    .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
+    .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))
     .pipe(rename("README.md"))
     .pipe(gulp.dest("."))

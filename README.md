@@ -30,21 +30,109 @@ Features
 
 ### Site-Specific Key Mappings
 
-Key mappings have been included which can help you perform some common actions
-on many popular sites.
+181 key mappings for 16 unique
+sites have been included which can help you perform some common actions:
 
-Some examples of these mappings are:
-- Star the current GitHub/GitLab repository: `<site-leader>s`
-- Follow a user on Twitter: `<site-leader>f`
-- Upvote a post/comment on Reddit/HackerNews `<site-leader>s`
-- Analyze the current Amazon Product using Fakespot `<site-leader>fs`
+<table>
+<tbody>
+<tr><th colspan="2"><strong>global</strong></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>w</code></td><td>Scroll up</td></tr>
+<tr><td><code>s</code></td><td>Scroll down</td></tr>
+<tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
+<tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
+<tr><td><code>gI</code></td><td>View image in new tab</td></tr>
+<tr><td><code>yp</code></td><td>Copy URL path of current page</td></tr>
+<tr><td><code>yI</code></td><td>Copy Image URL</td></tr>
+<tr><td><code>;se</code></td><td>Edit Settings</td></tr>
+<tr><td><code>gS</code></td><td>Open Chrome settings</td></tr>
+<tr><td><code>&#x3D;w</code></td><td>Lookup whois information for domain</td></tr>
+<tr><td><code>&#x3D;d</code></td><td>Lookup dns information for domain</td></tr>
+<tr><td><code>&#x3D;D</code></td><td>Lookup all information for domain</td></tr>
+<tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
+<tr><th colspan="2"><a href="//amazon.com">amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
+<tr><th colspan="2"><a href="//behance.net">behance.net</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Appreciate project</td></tr>
+<tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View project</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View project (new tab)</td></tr>
+<tr><th colspan="2"><a href="//dribbble.com">dribbble.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Heart Shot</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View shot</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View shot (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;v</code></td><td>View attachment image</td></tr>
+<tr><td><code>&lt;Space&gt;V</code></td><td>Yank attachment image source URL</td></tr>
+<tr><td><code>&lt;Space&gt;z</code></td><td>Zoom shot</td></tr>
+<tr><th colspan="2"><a href="//fonts.adobe.com">fonts.adobe.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Activate font</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Favorite font</td></tr>
+<tr><th colspan="2"><a href="//github.com">github.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View Repository</td></tr>
+<tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
+<tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
+<tr><td><code>&lt;Space&gt;i</code></td><td>View Issue</td></tr>
+<tr><td><code>&lt;Space&gt;gp</code></td><td>Go to parent</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
+<tr><td><code>&lt;Space&gt;S</code></td><td>Check Star</td></tr>
+<tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
+<tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
+<tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
+<tr><th colspan="2"><a href="//gitlab.com">gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
+<tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
+<tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
+<tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
+<tr><th colspan="2"><a href="//google.com">google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
+<tr><th colspan="2"><a href="//news.ycombinator.com">news.ycombinator.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;x</code></td><td>Collapse comment</td></tr>
+<tr><td><code>&lt;Space&gt;X</code></td><td>Collapse next comment</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Upvote</td></tr>
+<tr><td><code>&lt;Space&gt;S</code></td><td>Downvote</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View post (link)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
+<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;p</code></td><td>Go to parent</td></tr>
+<tr><th colspan="2"><a href="//producthunt.com">producthunt.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View product (external)</td></tr>
+<tr><td><code>&lt;Space&gt;v</code></td><td>View product</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Upvote product</td></tr>
+<tr><th colspan="2"><a href="//reddit.com">reddit.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;x</code></td><td>Collapse comment</td></tr>
+<tr><td><code>&lt;Space&gt;X</code></td><td>Collapse next comment</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Upvote</td></tr>
+<tr><td><code>&lt;Space&gt;S</code></td><td>Downvote</td></tr>
+<tr><td><code>&lt;Space&gt;e</code></td><td>Expand expando</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View post (link)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
+<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
+<tr><th colspan="2"><a href="//twitter.com">twitter.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;f</code></td><td>Follow user</td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Like tweet</td></tr>
+<tr><td><code>&lt;Space&gt;R</code></td><td>Retweet</td></tr>
+<tr><td><code>&lt;Space&gt;c</code></td><td>Comment/Reply</td></tr>
+<tr><td><code>&lt;Space&gt;t</code></td><td>New tweet</td></tr>
+<tr><td><code>&lt;Space&gt;T</code></td><td>Tweet to</td></tr>
+<tr><td><code>&lt;Space&gt;r</code></td><td>Load new tweets</td></tr>
+<tr><td><code>&lt;Space&gt;g</code></td><td>Goto user</td></tr>
+<tr><th colspan="2"><a href="//vimeo.com">vimeo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;F</code></td><td>Toggle fullscreen</td></tr>
+<tr><th colspan="2"><a href="//wikipedia.org">wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
+<tr><th colspan="2"><a href="//yelp.com">yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
+<tr><th colspan="2"><a href="//youtube.com">youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>A</code></td><td>Open video</td></tr>
+<tr><td><code>C</code></td><td>Open channel</td></tr>
+<tr><td><code>gH</code></td><td>Goto homepage</td></tr>
+<tr><td><code>F</code></td><td>Toggle fullscreen</td></tr>
+<tr><td><code>&lt;Space&gt;</code></td><td>Play/pause</td></tr>
 
-The mappings are activated by typing the `<site-leader>` (`<space>` by default),
-followed by the key sequence.
-
-See [keys.js](./keys.js) for all of the mappings.
-
-<!--TODO: Autogenerate list of site mappings-->
+</tbody>
+</table>
 
 ### Bundled Search Engine Completions
 
@@ -55,51 +143,51 @@ You can access a Search Engine auto-completion by pressing the search leader key
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 
 | Alias | Name | Domain | Screenshots |
-| ---- | ------ | ----- | ----- |
-| `af` | `archforums` | `Google Custom Search` |  |
-| `al` | `archlinux` | `www.archlinux.org` |  |
-| `au` | `AUR` | `aur.archlinux.org` |  |
-| `aw` | `archwiki` | `wiki.archlinux.org` |  |
-| `az` | `amazon` | `smile.amazon.com` |  |
-| `cl` | `craigslist` | `craigslist.org` |  |
-| `co` | `crunchbase-orgs` | `www.crunchbase.com` |  |
-| `cp` | `crunchbase-people` | `www.crunchbase.com` | [:framed_picture:](#crunchbase-people)  |
-| `cs` | `chromestore` | `chrome.google.com` |  |
-| `de` | `define` | `onelook.com` | [:framed_picture:](#define)  |
-| `dg` | `duckduckgo` | `duckduckgo.com` |  |
-| `dh` | `dockerhub` | `hub.docker.com` | [:framed_picture:](#dockerhub)  |
-| `do` | `domainr` | `domainr.com` | [:framed_picture:](#domainr)  |
-| `eb` | `ebay` | `www.ebay.com` |  |
-| `ex` | `exdocs` | `hex.pm` |  |
-| `gd` | `godoc` | `godoc.org` |  |
-| `gg` | `golang` | `Google Custom Search` |  |
-| `gh` | `github` | `github.com` | [:framed_picture:](#github)  |
-| `gi` | `google-images` | `www.google.com` |  |
-| `gl` | `google-lucky` | `www.google.com` |  |
-| `go` | `google` | `www.google.com` |  |
-| `gs` | `go-search` | `go-search.org` |  |
-| `gw` | `gowalker` | `gowalker.org` |  |
-| `ha` | `hackage` | `hackage.haskell.org` |  |
-| `hd` | `hexdocs` | `hex.pm` |  |
-| `hn` | `hackernews` | `hn.algolia.com` | [:framed_picture:](#hackernews)  |
-| `ho` | `hoogle` | `www.haskell.org` | [:framed_picture:](#hoogle)  |
-| `hw` | `haskellwiki` | `wiki.haskell.org` |  |
-| `hx` | `hex` | `hex.pm` |  |
-| `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
-| `jq` | `jquery` | `Google Custom Search` |  |
-| `md` | `mdn` | `developer.mozilla.org` | [:framed_picture:](#mdn)  |
-| `no` | `node` | `Google Custom Search` |  |
-| `np` | `npm` | `www.npmjs.com` | [:framed_picture:](#npm)  |
-| `ow` | `owasp` | `www.owasp.org` |  |
-| `re` | `reddit` | `www.reddit.com` |  |
-| `so` | `stackoverflow` | `stackoverflow.com` |  |
-| `th` | `thesaurus` | `www.onelook.com` | [:framed_picture:](#thesaurus)  |
-| `vw` | `vimwikia` | `vim.wikia.com` |  |
-| `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
-| `wp` | `wikipedia` | `en.wikipedia.org` |  |
-| `ws` | `wikipedia-simple` | `simple.wikipedia.org` |  |
-| `yp` | `yelp` | `www.yelp.com` |  |
-| `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
+| ----- | ---- | ------ | ----------- |
+ | `af` | `archforums` | `Google Custom Search` |  |
+ | `al` | `archlinux` | `www.archlinux.org` |  |
+ | `au` | `AUR` | `aur.archlinux.org` |  |
+ | `aw` | `archwiki` | `wiki.archlinux.org` |  |
+ | `az` | `amazon` | `smile.amazon.com` |  |
+ | `cl` | `craigslist` | `craigslist.org` |  |
+ | `co` | `crunchbase-orgs` | `www.crunchbase.com` |  |
+ | `cp` | `crunchbase-people` | `www.crunchbase.com` | [:framed_picture:](#crunchbase-people)  |
+ | `cs` | `chromestore` | `chrome.google.com` |  |
+ | `de` | `define` | `onelook.com` | [:framed_picture:](#define)  |
+ | `dg` | `duckduckgo` | `duckduckgo.com` |  |
+ | `dh` | `dockerhub` | `hub.docker.com` | [:framed_picture:](#dockerhub)  |
+ | `do` | `domainr` | `domainr.com` | [:framed_picture:](#domainr)  |
+ | `eb` | `ebay` | `www.ebay.com` |  |
+ | `ex` | `exdocs` | `hex.pm` |  |
+ | `gd` | `godoc` | `godoc.org` |  |
+ | `gg` | `golang` | `Google Custom Search` |  |
+ | `gh` | `github` | `github.com` | [:framed_picture:](#github)  |
+ | `gi` | `google-images` | `www.google.com` |  |
+ | `gl` | `google-lucky` | `www.google.com` |  |
+ | `go` | `google` | `www.google.com` |  |
+ | `gs` | `go-search` | `go-search.org` |  |
+ | `gw` | `gowalker` | `gowalker.org` |  |
+ | `ha` | `hackage` | `hackage.haskell.org` |  |
+ | `hd` | `hexdocs` | `hex.pm` |  |
+ | `hn` | `hackernews` | `hn.algolia.com` | [:framed_picture:](#hackernews)  |
+ | `ho` | `hoogle` | `www.haskell.org` | [:framed_picture:](#hoogle)  |
+ | `hw` | `haskellwiki` | `wiki.haskell.org` |  |
+ | `hx` | `hex` | `hex.pm` |  |
+ | `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
+ | `jq` | `jquery` | `Google Custom Search` |  |
+ | `md` | `mdn` | `developer.mozilla.org` | [:framed_picture:](#mdn)  |
+ | `no` | `node` | `Google Custom Search` |  |
+ | `np` | `npm` | `www.npmjs.com` | [:framed_picture:](#npm)  |
+ | `ow` | `owasp` | `www.owasp.org` |  |
+ | `re` | `reddit` | `www.reddit.com` |  |
+ | `so` | `stackoverflow` | `stackoverflow.com` |  |
+ | `th` | `thesaurus` | `www.onelook.com` | [:framed_picture:](#thesaurus)  |
+ | `vw` | `vimwikia` | `vim.wikia.com` |  |
+ | `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
+ | `wp` | `wikipedia` | `en.wikipedia.org` |  |
+ | `ws` | `wikipedia-simple` | `simple.wikipedia.org` |  |
+ | `yp` | `yelp` | `www.yelp.com` |  |
+ | `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
 
 
 Installation

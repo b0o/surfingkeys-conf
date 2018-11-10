@@ -2,6 +2,13 @@ const { categories } = require("./help")
 
 const util = {}
 
+util.getCurrentLocation = (prop = "href") => {
+  if (typeof window === "undefined") {
+    return ""
+  }
+  return window.location[prop]
+}
+
 util.escape = str => String(str).replace(/[&<>"'`=/]/g, s => ({
   "&":  "&amp;",
   "<":  "&lt;",
@@ -46,14 +53,27 @@ util.isRectVisibleInViewport = rect => (
 util.isElementInViewport = e => util.isRectVisibleInViewport(e.getBoundingClientRect())
 
 // Process Unmaps
-util.rmMaps = a => a.forEach(u => unmap(u))
+util.rmMaps = a => {
+  if (typeof unmap === "undefined") {
+    return
+  }
+  a.forEach(u => unmap(u))
+}
 
-util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) =>
+util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) =>{
+    if (typeof removeSearchAliasX === "undefined") {
+      return
+    }
   items.forEach(v =>
-    removeSearchAliasX(v, leader)))
+    removeSearchAliasX(v, leader)
+  )
+})
 
 // Process Mappings
-util.processMaps = (maps, siteleader) =>
+util.processMaps = (maps, siteleader) => {
+  if (typeof map === "undefined" || typeof mapkey === "undefined") {
+    return
+  }
   Object.entries(maps).forEach(([domain, domainMaps]) =>
     domainMaps.forEach(((mapObj) => {
       const {
@@ -82,11 +102,22 @@ util.processMaps = (maps, siteleader) =>
         mapkey(key, fullDescription, callback, opts)
       }
     })))
+}
 
 // process completions
 util.processCompletions = (completions, searchleader) => Object.values(completions).forEach((s) => {
+  if (typeof Front === "undefined" || typeof addSearchAliasX === "undefined" || typeof mapkey === "undefined") {
+    return
+  }
   addSearchAliasX(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
   mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
 })
+
+util.addSettings = (s) => {
+  if (typeof settings === "undefined") {
+    return
+  }
+  Object.assign(settings, s)
+}
 
 module.exports = util

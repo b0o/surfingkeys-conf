@@ -3,12 +3,11 @@ const keys = require("./keys")
 const completions = require("./completions")
 
 // ---- Settings ----//
-settings.hintAlign = "left"
-settings.omnibarSuggestionTimeout = 500
-settings.richHintsForKeystroke = 1
-
-// ---- Theme ----//
-settings.theme = `
+util.addSettings({
+  hintAlign : "left",
+  omnibarSuggestionTimeout : 500,
+  richHintsForKeystroke : 1,
+  theme: `
     /* Disable RichHints CSS animation */
     .expandRichHints {
         animation: 0s ease-in-out 1 forwards expandRichHints;
@@ -16,7 +15,8 @@ settings.theme = `
     .collapseRichHints {
         animation: 0s ease-in-out 1 forwards collapseRichHints;
     }
-`
+  `
+})
 
 // Leader for site-specific mappings
 const siteleader = "<Space>"
@@ -30,3 +30,5 @@ util.rmMaps(keys.unmaps.mappings)
 util.rmSearchAliases(keys.unmaps.searchAliases)
 util.processMaps(keys.maps, siteleader)
 util.processCompletions(completions, searchleader)
+
+module.exports = { siteleader, searchleader }

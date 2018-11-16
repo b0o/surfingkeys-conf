@@ -122,7 +122,7 @@ actions.gh.star = ({ toggle = false } = {}) => () => {
 
 actions.gh.openRepo = () => {
   const elements = [...document.querySelectorAll("a[href]")]
-    .filter(a => {
+    .filter((a) => {
       const u = new URL(a.href)
       const [user, repo, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
@@ -143,7 +143,7 @@ actions.gh.openRepo = () => {
 
 actions.gh.openUser = () => {
   const elements = [...document.querySelectorAll("a[href]")]
-    .filter(a => {
+    .filter((a) => {
       const u = new URL(a.href)
       const [user, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
@@ -162,7 +162,7 @@ actions.gh.openUser = () => {
 
 actions.gh.openFile = () => {
   const elements = [...document.querySelectorAll("a[href]")]
-    .filter(a => {
+    .filter((a) => {
       const u = new URL(a.href)
       const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
@@ -174,7 +174,7 @@ actions.gh.openFile = () => {
         typeof repo === "string" &&
         repo.length > 0 &&
         typeof maybeBlob === "string" &&
-        ( maybeBlob === "blob" || maybeBlob === "tree" ) &&
+        (maybeBlob === "blob" || maybeBlob === "tree") &&
         rest.length !== 0 &&
         /^([a-zA-Z0-9]+-?)+$/.test(user) &&
         !ghReservedNames.check(user)
@@ -185,9 +185,9 @@ actions.gh.openFile = () => {
 
 actions.gh.openIssue = () => {
   const elements = [...document.querySelectorAll("a[href]")]
-    .filter(a => {
+    .filter((a) => {
       const u = new URL(a.href)
-      const [user, repo, maybeIssues, maybeIssueNum, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      const [user, repo, maybeIssues] = u.pathname.split("/").filter(s => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin") &&
         u.hash === "" &&
@@ -197,8 +197,6 @@ actions.gh.openIssue = () => {
         typeof repo === "string" &&
         repo.length > 0 &&
         maybeIssues === "issues" &&
-        typeof maybeIssueNum === "string" &&
-        maybeIssueNum.length > 0 &&
         /^([a-zA-Z0-9]+-?)+$/.test(user) &&
         !ghReservedNames.check(user)
       )
@@ -212,26 +210,26 @@ actions.gh.goParent = () => {
   console.log(`goParent: ${segments}`)
   const newPath = (() => {
     const [user, repo, maybeBlob] = segments
-    switch(segments.length) {
-      case 0:
-        return false
-      case 4:
-        switch(maybeBlob) {
-          case "blob":
-          case "tree":
-            return [user, repo]
-          case "pull":
-            return [user, repo, "pulls"]
-        }
-      case 5:
-        if (maybeBlob === "blob") {
-          return [user, repo]
-        }
+    switch (segments.length) {
+    case 0:
+      return false
+    case 4:
+      switch (maybeBlob) {
+      case "blob":
+      case "tree":
+        return [user, repo]
+      case "pull":
+        return [user, repo, "pulls"]
+      }
+    case 5:
+      if (maybeBlob === "blob") {
+        return [user, repo]
+      }
     }
     return segments.slice(0, segments.length - 1)
   })()
   console.log(`newPath: ${newPath}`)
-  if(newPath !== false) {
+  if (newPath !== false) {
     const u = `${util.getCurrentLocation("origin")}/${newPath.join("/")}`
     console.log(`newPath u: ${u}`)
     actions.openLink(u)()
@@ -306,8 +304,7 @@ actions.ph.openExternal = () => {
     actions.openLink(
       p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href
       , { newTab: true }
-    )()
-  )
+    )())
 }
 
 // Dribbble

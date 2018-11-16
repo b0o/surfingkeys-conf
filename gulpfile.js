@@ -127,7 +127,14 @@ gulp.task("readme", () => {
     const header = "<tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>"
     const c = keys.maps[domain]
     const maps = c.reduce((acc2, map) => {
-      const leader = typeof map.leader !== "undefined"  ? map.leader : domain === "global" ? "" : conf.siteleader
+      let leader = ""
+      if (typeof map.leader !== "undefined") {
+        leader = map.leader // eslint-disable-line prefer-destructuring
+      } else if (domain === "global") {
+        leader = ""
+      } else {
+        leader = conf.siteleader
+      }
       const mapStr = util.escape(`${leader}${map.alias}`.replace(" ", "<space>"))
       return `${acc2}<tr><td><code>${mapStr}</code></td><td>${map.description}</td></tr>\n`
     }, "")

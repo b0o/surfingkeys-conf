@@ -221,39 +221,52 @@ completions.yp.callback = (response) => {
 
 // ****** General References, Calculators & Utilities ****** //
 
+const parseDatamuseRes = (res, o = {}) => {
+  const opts = Object.assign({}, {
+    maxDefs:  -1,
+    ellipsis: false,
+  }, o)
+
+  return res.map((r) => {
+    const defs = []
+    let defsHtml = ""
+    if ((opts.maxDefs <= -1 || opts.maxDefs > 0) && r.defs && r.defs.length > 0) {
+      for (const d of r.defs.slice(0, opts.maxDefs <= -1 ? undefined : opts.maxDefs)) {
+        const ds = d.split("\t")
+        const partOfSpeech = `(${escape(ds[0])})`
+        const def = escape(ds[1])
+        defs.push(`<span><em>${partOfSpeech}</em> ${def}</span>`)
+      }
+      if (opts.ellipsis && r.defs.length > opts.maxDefs) {
+        defs.push("<span><em>&hellip;</em></span>")
+      }
+      defsHtml = `<div>${defs.join("<br />")}</div>`
+    }
+    return createSuggestionItem(`
+        <div>
+          <div class="title"><strong>${escape(r.word)}</strong></div>
+          ${defsHtml}
+        </div>
+    `, { url: `${opts.wordBaseURL}${r.word}` })
+  })
+}
+
 // Dictionary
 completions.de = {
   alias:  "de",
   name:   "define",
   search: "http://onelook.com/?w=",
   compl:  "https://api.datamuse.com/words?md=d&sp=%s*",
+  opts:   {
+    maxDefs:     16,
+    ellipsis:    true,
+    wordBaseURL: "http://onelook.com/?w=",
+  },
 }
 
 completions.de.callback = (response) => {
   const res = JSON.parse(response.text)
-  const defs = []
-  res.forEach((r) => {
-    if (!r.defs || r.defs.length === 0) {
-      defs.push([r.word, "", ""])
-      return
-    }
-    r.defs.forEach((d) => {
-      const ds = d.split("\t")
-      const sp = `(${ds[0]})`
-      const def = ds[1]
-
-      defs.push([r.word, sp, def])
-    })
-  })
-  return defs.map((d) => {
-    const word = escape(d[0])
-    const pos = escape(d[1])
-    const def = escape(d[2])
-    return createSuggestionItem(
-      `<div class="title"><strong>${word}</strong> <em>${pos}</em> ${def}</div>`,
-      { url: `http://onelook.com/?w=${encodeURIComponent(d[0])}` }
-    )
-  })
+  return parseDatamuseRes(res, completions.de.opts)
 }
 
 // Thesaurus
@@ -262,27 +275,16 @@ completions.th = {
   name:   "thesaurus",
   search: "https://www.onelook.com/thesaurus/?s=",
   compl:  "https://api.datamuse.com/words?md=d&ml=%s",
+  opts:   {
+    maxDefs:     3,
+    ellipsis:    true,
+    wordBaseURL: "http://onelook.com/thesaurus/?s=",
+  },
 }
 
 completions.th.callback = (response) => {
   const res = JSON.parse(response.text)
-  const defs = []
-  res.forEach((r) => {
-    if (!r.defs || r.defs.length === 0) {
-      defs.push([escape(r.word), "", ""])
-      return
-    }
-    r.defs.forEach((d) => {
-      const ds = d.split("\t")
-      const sp = `(${escape(ds[0])})`
-      const def = escape(ds[1])
-      defs.push([escape(r.word), sp, def])
-    })
-  })
-  return defs.map(d => createSuggestionItem(
-    `<div class="title"><strong>${d[0]}</strong> <em>${d[1]}</em> ${d[2]}</div>`,
-    { url: `http://onelook.com/thesaurus/?s=${d[0]}` }
-  ))
+  return parseDatamuseRes(res, completions.th.opts)
 }
 
 // Wikipedia

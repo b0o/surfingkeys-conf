@@ -26,6 +26,7 @@ module.exports = {
     quotes:         ["warn", "double"],
 
     "newline-per-chained-call": "off",
+    "no-restricted-syntax":     "off",
 
     "key-spacing": [
       "warn",

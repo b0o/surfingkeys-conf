@@ -197,7 +197,7 @@ Installation
 
 Building `surfingkeys-conf` requires a few dependencies to be installed:
 
-- __Surfingkeys__ `^0.9.38`
+- __Surfingkeys__ `^0.9.40`
 - __git__
 - __node__
 - __gulp__

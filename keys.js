@@ -193,6 +193,7 @@ const maps = {
       callback:    actions.gh.openIssue,
     },
     {
+      leader:      "",
       alias:       "gp",
       description: "Go to parent",
       callback:    actions.gh.goParent,
@@ -380,7 +381,8 @@ const maps = {
       callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.openAnchor({ newTab: true })),
     },
     {
-      alias:       "p",
+      leader:      "",
+      alias:       "gp",
       description: "Go to parent",
       callback:    actions.hn.goParent,
     },

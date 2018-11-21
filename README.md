@@ -71,7 +71,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
 <tr><td><code>&lt;Space&gt;i</code></td><td>View Issue</td></tr>
-<tr><td><code>&lt;Space&gt;gp</code></td><td>Go to parent</td></tr>
+<tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;S</code></td><td>Check Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
@@ -94,7 +94,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
-<tr><td><code>&lt;Space&gt;p</code></td><td>Go to parent</td></tr>
+<tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><th colspan="2"><a href="//producthunt.com">producthunt.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View product (external)</td></tr>
 <tr><td><code>&lt;Space&gt;v</code></td><td>View product</td></tr>

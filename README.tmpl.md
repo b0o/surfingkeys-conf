@@ -1,8 +1,10 @@
 <!--{{DISCLAIMER}}-->
-Maddy's SurfingKeys Configuration
-=================================
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Liberapay contributions](https://img.shields.io/liberapay/receives/b0o.svg?logo=liberapay)](https://liberapay.com/b0o/donate)
+
+Maddy's SurfingKeys Configuration
+=================================
 
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 

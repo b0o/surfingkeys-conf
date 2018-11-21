@@ -1,3 +1,6 @@
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Liberapay contributions](https://img.shields.io/liberapay/receives/b0o.svg?logo=liberapay)](https://liberapay.com/b0o/donate)
+
 sk-proxy
 ========
 

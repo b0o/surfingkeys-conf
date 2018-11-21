@@ -1,0 +1,7 @@
+{
+  "lambda": {
+    "role": "role_sk-proxy",
+    "name": "sk-proxy",
+    "region": "us-west-1"
+  }
+}

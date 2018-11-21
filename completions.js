@@ -145,14 +145,29 @@ completions.do = {
   alias:  "do",
   name:   "domainr",
   search: "https://domainr.com/?q=",
-  compl:  `https://domainr.p.mashape.com/v2/search?mashape-key=${keys.domainr}&query=%s`,
+  compl:  "https://5jmgqstc3m.execute-api.us-west-1.amazonaws.com/v1/domainr?q=",
 }
 
-completions.do.callback = response => JSON.parse(response.text).results
-  .map(d => createSuggestionItem(
-    `<div><div class="title"><strong>${escape(d.domain)}</strong></div></div>`,
-    { url: `https://domainr.com/${d.domain}` }
-  ))
+completions.do.callback = response => Object.entries(JSON.parse(response.text))
+  .map(([domain, data]) => {
+    let color = "inherit"
+    let symbol = "<strong>?</strong> "
+    switch (data.summary) {
+    case "inactive":
+      color = "#23b000"
+      symbol = "✔ "
+      break
+    case "unknown":
+      break
+    default:
+      color = "#ff4d00"
+      symbol = "✘ "
+    }
+    return createSuggestionItem(
+      `<div><div class="title" style="color:${color}"><strong>${symbol}${escape(domain)}</strong></div></div>`,
+      { url: `https://domainr.com/${domain}` }
+    )
+  })
 
 // Vim Wiki
 completions.vw = {

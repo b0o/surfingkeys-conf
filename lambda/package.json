@@ -1,0 +1,21 @@
+{
+  "name": "sk-proxy",
+  "version": "1.0.0",
+  "description": "proxy for authenticated requests to external APIs",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./index.js",
+    "create": "claudia create --name sk-proxy --region us-west-1 --handler lambda.handler",
+    "deploy": "node ./scripts/deploy.js"
+  },
+  "devDependencies": {
+    "claudia": "^5.2.0"
+  },
+  "dependencies": {
+    "aws-serverless-express": "^3.3.5",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "node-fetch": "^2.3.0"
+  }
+}

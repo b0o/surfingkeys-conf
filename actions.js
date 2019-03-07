@@ -296,6 +296,29 @@ actions.hn.collapseNextComment = () => {
   }
 }
 
+actions.hn.goPage = (dist = 1) => {
+  let u
+  try {
+    u = new URL(util.getCurrentLocation())
+  } catch (e) {
+    return
+  }
+  let page = u.searchParams.get("p")
+  if (page === null || page === "") {
+    page = "1"
+  }
+  const cur = parseInt(page, 10)
+  if (Number.isNaN(cur)) {
+    return
+  }
+  const dest = cur + dist
+  if (dest < 1) {
+    return
+  }
+  u.searchParams.set("p", dest)
+  actions.openLink(u.href)()
+}
+
 // ProductHunt
 // -----------
 actions.ph = {}

@@ -386,6 +386,18 @@ const maps = {
       description: "Go to parent",
       callback:    actions.hn.goParent,
     },
+    {
+      leader:      "",
+      alias:       "]]",
+      description: "Next page",
+      callback:    () => actions.hn.goPage(1),
+    },
+    {
+      leader:      "",
+      alias:       "[[",
+      description: "Prev page",
+      callback:    () => actions.hn.goPage(-1),
+    },
   ],
 
   "producthunt.com": [

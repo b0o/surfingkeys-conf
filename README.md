@@ -15,7 +15,7 @@ Maddy's SurfingKeys Configuration
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
-sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within 44 sites (and growing)!
+sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within 47 sites (and growing)!
 
 Table of Contents
 -----------------
@@ -32,7 +32,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-181 key mappings for 16 unique
+195 key mappings for 17 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -50,6 +50,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&#x3D;w</code></td><td>Lookup whois information for domain</td></tr>
 <tr><td><code>&#x3D;d</code></td><td>Lookup dns information for domain</td></tr>
 <tr><td><code>&#x3D;D</code></td><td>Lookup all information for domain</td></tr>
+<tr><td><code>&#x3D;c</code></td><td>Show Google's cached version of page</td></tr>
+<tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
 <tr><th colspan="2"><a href="//amazon.com">amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
@@ -73,11 +75,13 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
 <tr><td><code>&lt;Space&gt;i</code></td><td>View Issue</td></tr>
+<tr><td><code>&lt;Space&gt;p</code></td><td>View Pull Request</td></tr>
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;S</code></td><td>Check Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
+<tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
 <tr><th colspan="2"><a href="//gitlab.com">gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
@@ -97,6 +101,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>
+<tr><td><code>]]</code></td><td>Next page</td></tr>
+<tr><td><code>[[</code></td><td>Prev page</td></tr>
 <tr><th colspan="2"><a href="//producthunt.com">producthunt.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View product (external)</td></tr>
 <tr><td><code>&lt;Space&gt;v</code></td><td>View product</td></tr>
@@ -124,6 +130,10 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;F</code></td><td>Toggle fullscreen</td></tr>
 <tr><th colspan="2"><a href="//wikipedia.org">wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
+<tr><th colspan="2"><a href="//wiktionary.org">wiktionary.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
 <tr><th colspan="2"><a href="//yelp.com">yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
 <tr><th colspan="2"><a href="//youtube.com">youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
@@ -138,7 +148,7 @@ sites have been included which can help you perform some common actions:
 
 ### Bundled Search Engine Completions
 
-There are currently 44 Search Engine auto-completions.
+There are currently 47 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -148,6 +158,8 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | ----- | ---- | ------ | ----------- |
  | `af` | `archforums` | `Google Custom Search` |  |
  | `al` | `archlinux` | `www.archlinux.org` |  |
+ | `as` | `aws` | `google.com` |  |
+ | `at` | `alternativeTo` | `alternativeto.net` |  |
  | `au` | `AUR` | `aur.archlinux.org` |  |
  | `aw` | `archwiki` | `wiki.archlinux.org` |  |
  | `az` | `amazon` | `smile.amazon.com` |  |
@@ -188,6 +200,7 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
  | `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
  | `wp` | `wikipedia` | `en.wikipedia.org` |  |
  | `ws` | `wikipedia-simple` | `simple.wikipedia.org` |  |
+ | `wt` | `wiktionary` | `en.wiktionary.org` |  |
  | `yp` | `yelp` | `www.yelp.com` |  |
  | `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
 

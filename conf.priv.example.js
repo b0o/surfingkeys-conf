@@ -13,11 +13,12 @@
 // These are private API keys which are required for certain search completions.
 // You can obtain them all for free at the supplied links.
 const keys = {
-  crunchbase:   "", // https://about.crunchbase.com/crunchbase-basic-access/
-  google_cs:    "", // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
-  google_yt:    "", // https://developers.google.com/youtube/v3/docs/
-  wolframalpha: "", // https://products.wolframalpha.com/api/
-  domainr:      "", // https://market.mashape.com/domainr/domainr
+  crunchbase:    "", // https://about.crunchbase.com/crunchbase-basic-access/
+  google_cs:     "", // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
+  google_yt:     "", // https://developers.google.com/youtube/v3/docs/
+  wolframalpha:  "", // https://products.wolframalpha.com/api/
+  domainr:       "", // https://market.mashape.com/domainr/domainr
+  alternativeTo: "", // Extract the x-algolia-api-key sent with requests when typing in search box on alternativeto.net
 
   // ****** Google Custom Search Engines ****** //
   // Can be created at https://cse.google.com/cse

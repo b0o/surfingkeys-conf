@@ -12,6 +12,7 @@ const unmaps = {
     "zz", "zR", "ab",
     "Q", "q", "ag",
     "af", ";s", "yp",
+    "<Ctrl-j>", "<Ctrl-h>",
   ],
   searchAliases: {
     s: ["g", "d", "b",
@@ -93,6 +94,18 @@ const maps = {
       callback:    actions.showDns({ verbose: true }),
     },
     {
+      alias:       "=c",
+      category:    categories.misc,
+      description: "Show Google's cached version of page",
+      callback:    actions.showGoogleCache(),
+    },
+    {
+      alias:       "=a",
+      category:    categories.misc,
+      description: "Show Archive.org Wayback Machine for page",
+      callback:    actions.showWayback(),
+    },
+    {
       alias:       ";pd",
       category:    categories.misc,
       description: "Toggle PDF viewer from SurfingKeys",
@@ -112,12 +125,12 @@ const maps = {
     {
       alias:       "a",
       description: "Open search result",
-      callback:    actions.createHint(".r>a"),
+      callback:    actions.createHint("a.fl, .r>a"),
     },
     {
       alias:       "A",
       description: "Open search result (new tab)",
-      callback:    actions.createHint(".r>a", actions.openAnchor({ newTab: true })),
+      callback:    actions.createHint("a.fl, .r>a", actions.openAnchor({ newTab: true })),
     },
   ],
 
@@ -193,6 +206,11 @@ const maps = {
       callback:    actions.gh.openIssue,
     },
     {
+      alias:       "p",
+      description: "View Pull Request",
+      callback:    actions.gh.openPull,
+    },
+    {
       leader:      "",
       alias:       "gp",
       description: "Go to parent",
@@ -217,6 +235,11 @@ const maps = {
       alias:       "Y",
       description: "Copy Project Path (including domain)",
       callback:    actions.copyURLPath({ count: 2, domain: true }),
+    },
+    {
+      alias:       "l",
+      description: "Toggle repo language stats",
+      callback:    actions.gh.toggleLangStats,
     },
     {
       alias:       "D",
@@ -493,7 +516,15 @@ const maps = {
       description: "Toggle simple version of current article",
       callback:    actions.wp.toggleSimple,
     },
+    {
+      alias:       "a",
+      description: "View page",
+      callback:    actions.createHint("#bodyContent :not(sup):not(.mw-editsection) > a"),
+    },
   ],
 }
+
+// Aliases
+maps["wiktionary.org"] = maps["wikipedia.org"]
 
 module.exports = { unmaps, maps }

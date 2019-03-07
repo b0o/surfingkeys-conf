@@ -26,70 +26,71 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
   return path
 }
 
-actions.copyURLPath = ({ count, domain } = {}) =>
-  () => Clipboard.write(actions.getURLPath({ count, domain }))
+actions.copyURLPath = ({ count, domain } = {}) => () => Clipboard
+  .write(actions.getURLPath({ count, domain }))
 
-// Whois/DNS lookup
-// ----------------
+// Site/Page Information
+// ---------------------
 const domainDossierUrl = "http://centralops.net/co/DomainDossier.aspx"
 
-actions.showWhois = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
-  () => actions.openLink(`${domainDossierUrl}?dom_whois=true&addr=${hostname}`, { newTab: true })()
+actions.showWhois = ({ hostname = util.getCurrentLocation("hostname") } = {}) => () => actions.openLink(`${domainDossierUrl}?dom_whois=true&addr=${hostname}`, { newTab: true })()
 
-actions.showDns = ({ hostname = util.getCurrentLocation("hostname"), verbose = false } = {}) =>
-  () => {
-    let u = ""
-    if (verbose) {
-      u = `${domainDossierUrl}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${hostname}`
-    } else {
-      u = `${domainDossierUrl}?dom_dns=true&addr=${hostname}`
-    }
-    actions.openLink(u, { newTab: true })()
+actions.showDns = ({ hostname = util.getCurrentLocation("hostname"), verbose = false } = {}) => () => {
+  let u = ""
+  if (verbose) {
+    u = `${domainDossierUrl}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${hostname}`
+  } else {
+    u = `${domainDossierUrl}?dom_dns=true&addr=${hostname}`
   }
+  actions.openLink(u, { newTab: true })()
+}
+
+const googleCacheUrl = "https://webcache.googleusercontent.com/search?q=cache:"
+
+actions.showGoogleCache = ({ href = util.getCurrentLocation("href") } = {}) => () => actions.openLink(`${googleCacheUrl}${href}`, { newTab: true })()
+
+const waybackUrl = "https://web.archive.org/web/*/"
+
+actions.showWayback = ({ href = util.getCurrentLocation("href") } = {}) => () => actions.openLink(`${waybackUrl}${href}`, { newTab: true })()
 
 // Surfingkeys-specific actions
 // ----------------------------
-actions.createHint = (selector, action = Hints.dispatchMouseClick) =>
-  () => Hints.create(selector, action)
+actions.createHint = (selector, action = Hints.dispatchMouseClick) => () => Hints
+  .create(selector, action)
 
-actions.openAnchor = ({ newTab = false, prop = "href" } = {}) =>
-  a => actions.openLink(a[prop], { newTab })()
+actions.openAnchor = ({ newTab = false, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab })()
 
-actions.openLink = (u, { newTab = false } = {}) =>
-  () => {
-    if (window === undefined) {
-      return
-    }
-    window.open(u, newTab ? "_blank" : "_self")
+actions.openLink = (u, { newTab = false } = {}) => () => {
+  if (window === undefined) {
+    return
   }
+  window.open(u, newTab ? "_blank" : "_self")
+}
 
 actions.editSettings = actions.openLink("/pages/options.html", { newTab: true })
 
-actions.togglePdfViewer = () =>
-  chrome.storage.local.get("noPdfViewer", (resp) => {
-    if (!resp.noPdfViewer) {
-      chrome.storage.local.set({ noPdfViewer: 1 }, () => {
-        Front.showBanner("PDF viewer disabled.")
-      })
-    } else {
-      chrome.storage.local.remove("noPdfViewer", () => {
-        Front.showBanner("PDF viewer enabled.")
-      })
-    }
-  })
+actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) => {
+  if (!resp.noPdfViewer) {
+    chrome.storage.local.set({ noPdfViewer: 1 }, () => {
+      Front.showBanner("PDF viewer disabled.")
+    })
+  } else {
+    chrome.storage.local.remove("noPdfViewer", () => {
+      Front.showBanner("PDF viewer enabled.")
+    })
+  }
+})
 
 // Site-specific actions
 // =====================
 
 // FakeSpot
 // --------
-actions.fakeSpot =
-  (url = util.getCurrentLocation("href")) => actions.openLink(`http://fakespot.com/analyze?url=${url}`, { newTab: true })()
+actions.fakeSpot = (url = util.getCurrentLocation("href")) => actions.openLink(`http://fakespot.com/analyze?url=${url}`, { newTab: true })()
 
 // Godoc
 // -----
-actions.viewGodoc = () =>
-  actions.openLink(`https://godoc.org/${actions.getURLPath({ count: 2, domain: true })}`, { newTab: true })()
+actions.viewGodoc = () => actions.openLink(`https://godoc.org/${actions.getURLPath({ count: 2, domain: true })}`, { newTab: true })()
 
 // GitHub
 // ------
@@ -126,16 +127,14 @@ actions.gh.openRepo = () => {
       const u = new URL(a.href)
       const [user, repo, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
-        u.origin === util.getCurrentLocation("origin") &&
-        u.hash === "" &&
-        u.search === "" &&
-        typeof user === "string" &&
-        user.length > 0 &&
-        typeof repo === "string" &&
-        repo.length > 0 &&
-        rest.length === 0 &&
-        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
-        !ghReservedNames.check(user)
+        u.origin === util.getCurrentLocation("origin")
+        && typeof user === "string"
+        && user.length > 0
+        && typeof repo === "string"
+        && repo.length > 0
+        && rest.length === 0
+        && /^([a-zA-Z0-9]+-?)+$/.test(user)
+        && !ghReservedNames.check(user)
       )
     })
   Hints.create(elements, Hints.dispatchMouseClick)
@@ -147,14 +146,12 @@ actions.gh.openUser = () => {
       const u = new URL(a.href)
       const [user, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
-        u.origin === util.getCurrentLocation("origin") &&
-        u.hash === "" &&
-        u.search === "" &&
-        typeof user === "string" &&
-        user.length > 0 &&
-        rest.length === 0 &&
-        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
-        !ghReservedNames.check(user)
+        u.origin === util.getCurrentLocation("origin")
+        && typeof user === "string"
+        && user.length > 0
+        && rest.length === 0
+        && /^([a-zA-Z0-9]+-?)+$/.test(user)
+        && !ghReservedNames.check(user)
       )
     })
   Hints.create(elements, Hints.dispatchMouseClick)
@@ -166,18 +163,16 @@ actions.gh.openFile = () => {
       const u = new URL(a.href)
       const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter(s => s !== "")
       return (
-        u.origin === util.getCurrentLocation("origin") &&
-        u.hash === "" &&
-        u.search === "" &&
-        typeof user === "string" &&
-        user.length > 0 &&
-        typeof repo === "string" &&
-        repo.length > 0 &&
-        typeof maybeBlob === "string" &&
-        (maybeBlob === "blob" || maybeBlob === "tree") &&
-        rest.length !== 0 &&
-        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
-        !ghReservedNames.check(user)
+        u.origin === util.getCurrentLocation("origin")
+        && typeof user === "string"
+        && user.length > 0
+        && typeof repo === "string"
+        && repo.length > 0
+        && typeof maybeBlob === "string"
+        && (maybeBlob === "blob" || maybeBlob === "tree")
+        && rest.length !== 0
+        && /^([a-zA-Z0-9]+-?)+$/.test(user)
+        && !ghReservedNames.check(user)
       )
     })
   Hints.create(elements, Hints.dispatchMouseClick)
@@ -189,25 +184,43 @@ actions.gh.openIssue = () => {
       const u = new URL(a.href)
       const [user, repo, maybeIssues] = u.pathname.split("/").filter(s => s !== "")
       return (
-        u.origin === util.getCurrentLocation("origin") &&
-        u.hash === "" &&
-        u.search === "" &&
-        typeof user === "string" &&
-        user.length > 0 &&
-        typeof repo === "string" &&
-        repo.length > 0 &&
-        maybeIssues === "issues" &&
-        /^([a-zA-Z0-9]+-?)+$/.test(user) &&
-        !ghReservedNames.check(user)
+        u.origin === util.getCurrentLocation("origin")
+        && typeof user === "string"
+        && user.length > 0
+        && typeof repo === "string"
+        && repo.length > 0
+        && maybeIssues === "issues"
+        && /^([a-zA-Z0-9]+-?)+$/.test(user)
+        && !ghReservedNames.check(user)
       )
     })
   Hints.create(elements, Hints.dispatchMouseClick)
 }
 
+actions.gh.openPull = () => {
+  const elements = [...document.querySelectorAll("a[href]")]
+    .filter((a) => {
+      const u = new URL(a.href)
+      const [user, repo, maybePulls] = u.pathname.split("/").filter(s => s !== "")
+      return (
+        u.origin === util.getCurrentLocation("origin")
+        && typeof user === "string"
+        && user.length > 0
+        && typeof repo === "string"
+        && repo.length > 0
+        && /^pulls?$/.test(maybePulls)
+        && /^([a-zA-Z0-9]+-?)+$/.test(user)
+        && !ghReservedNames.check(user)
+      )
+    })
+  Hints.create(elements, Hints.dispatchMouseClick)
+}
+
+actions.gh.toggleLangStats = () => document.querySelector("button.js-toggle-lang-stats").click()
+
 actions.gh.goParent = () => {
   const segments = util.getCurrentLocation("pathname")
     .split("/").filter(s => s !== "")
-  console.log(`goParent: ${segments}`)
   const newPath = (() => {
     const [user, repo, maybeBlob] = segments
     switch (segments.length) {
@@ -220,18 +233,22 @@ actions.gh.goParent = () => {
         return [user, repo]
       case "pull":
         return [user, repo, "pulls"]
+      default:
+        break
       }
+      break
     case 5:
       if (maybeBlob === "blob") {
         return [user, repo]
       }
+      break
+    default:
+      break
     }
     return segments.slice(0, segments.length - 1)
   })()
-  console.log(`newPath: ${newPath}`)
   if (newPath !== false) {
     const u = `${util.getCurrentLocation("origin")}/${newPath.join("/")}`
-    console.log(`newPath u: ${u}`)
     actions.openLink(u)()
   }
 }
@@ -271,7 +288,6 @@ actions.re.toggleVisibleExpandos = (dir = 0) => () => {
   } else if (dir === 1) {
     sel += ".collapsed"
   }
-  console.log(sel)
   Array.from(document.querySelectorAll(sel))
     .filter(e => util.isElementInViewport(e))
     .forEach(e => e.click())
@@ -323,18 +339,16 @@ actions.hn.goPage = (dist = 1) => {
 // -----------
 actions.ph = {}
 actions.ph.openExternal = () => {
-  Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", p =>
-    actions.openLink(
-      p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href
-      , { newTab: true }
-    )())
+  Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", p => actions.openLink(
+    p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href,
+    { newTab: true }
+  )())
 }
 
 // Dribbble
 // --------
 actions.dr = {}
-actions.dr.attachment = (cb = a => actions.openLink(a, { newTab: true })()) =>
-  actions.createHint(".attachments .thumb", a => cb(a.src.replace("/thumbnail/", "/")))
+actions.dr.attachment = (cb = a => actions.openLink(a, { newTab: true })()) => actions.createHint(".attachments .thumb", a => cb(a.src.replace("/thumbnail/", "/")))
 
 // Wikipedia
 // ---------
@@ -348,6 +362,7 @@ actions.wp.toggleSimple = () => {
       }
       return s
     }).filter(s => s !== "").join(".")
+  actions.openLink(u.href)()
 }
 
 module.exports = actions

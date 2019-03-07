@@ -15,7 +15,7 @@ Maddy's SurfingKeys Configuration
 This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
-sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within 47 sites (and growing)!
+sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within 46 sites (and growing)!
 
 Table of Contents
 -----------------
@@ -148,7 +148,7 @@ sites have been included which can help you perform some common actions:
 
 ### Bundled Search Engine Completions
 
-There are currently 47 Search Engine auto-completions.
+There are currently 46 Search Engine auto-completions.
 
 You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -158,7 +158,6 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
 | ----- | ---- | ------ | ----------- |
  | `af` | `archforums` | `Google Custom Search` |  |
  | `al` | `archlinux` | `www.archlinux.org` |  |
- | `as` | `aws` | `google.com` |  |
  | `at` | `alternativeTo` | `alternativeto.net` |  |
  | `au` | `AUR` | `aur.archlinux.org` |  |
  | `aw` | `archwiki` | `wiki.archlinux.org` |  |

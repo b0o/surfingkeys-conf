@@ -41,32 +41,30 @@ util.createURLItem = (title, url, sanitize = true) => {
 
 // Determine if the given rect is visible in the viewport
 util.isRectVisibleInViewport = rect => (
-  rect.height > 0 &&
-  rect.width > 0 &&
-  rect.bottom >= 0 &&
-    rect.right >= 0 &&
-    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+  rect.height > 0
+  && rect.width > 0
+  && rect.bottom >= 0
+  && rect.right >= 0
+  && rect.top <= (window.innerHeight || document.documentElement.clientHeight)
+  && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
 )
 
 // Determine if the given element is visible in the viewport
 util.isElementInViewport = e => util.isRectVisibleInViewport(e.getBoundingClientRect())
 
 // Process Unmaps
-util.rmMaps = a => {
+util.rmMaps = (a) => {
   if (typeof unmap === "undefined") {
     return
   }
   a.forEach(u => unmap(u))
 }
 
-util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) =>{
-    if (typeof removeSearchAliasX === "undefined") {
-      return
-    }
-  items.forEach(v =>
-    removeSearchAliasX(v, leader)
-  )
+util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) => {
+  if (typeof removeSearchAliasX === "undefined") {
+    return
+  }
+  items.forEach(v => removeSearchAliasX(v, leader))
 })
 
 // Process Mappings
@@ -74,34 +72,33 @@ util.processMaps = (maps, siteleader) => {
   if (typeof map === "undefined" || typeof mapkey === "undefined") {
     return
   }
-  Object.entries(maps).forEach(([domain, domainMaps]) =>
-    domainMaps.forEach(((mapObj) => {
-      const {
-        alias,
-        callback,
-        leader = (domain === "global") ? "" : siteleader,
-        category = categories.misc,
-        description = "",
-      } = mapObj
-      const opts = {}
+  Object.entries(maps).forEach(([domain, domainMaps]) => domainMaps.forEach(((mapObj) => {
+    const {
+      alias,
+      callback,
+      leader = (domain === "global") ? "" : siteleader,
+      category = categories.misc,
+      description = "",
+    } = mapObj
+    const opts = {}
 
 
-      const key = `${leader}${alias}`
+    const key = `${leader}${alias}`
 
-      // Determine if it's a site-specific mapping
-      if (domain !== "global") {
-        const d = domain.replace(".", "\\.")
-        opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})(/.*)?`)
-      }
+    // Determine if it's a site-specific mapping
+    if (domain !== "global") {
+      const d = domain.replace(".", "\\.")
+      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})(/.*)?`)
+    }
 
-      const fullDescription = `#${category} ${description}`
+    const fullDescription = `#${category} ${description}`
 
-      if (mapObj.map !== undefined) {
-        map(alias, mapObj.map)
-      } else {
-        mapkey(key, fullDescription, callback, opts)
-      }
-    })))
+    if (mapObj.map !== undefined) {
+      map(alias, mapObj.map)
+    } else {
+      mapkey(key, fullDescription, callback, opts)
+    }
+  })))
 }
 
 // process completions
@@ -111,6 +108,11 @@ util.processCompletions = (completions, searchleader) => Object.values(completio
   }
   addSearchAliasX(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
   mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
+  mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
+    Clipboard.read((c) => {
+      Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
+    })
+  })
 })
 
 util.addSettings = (s) => {

@@ -4,10 +4,10 @@ const completions = require("./completions")
 
 // ---- Settings ----//
 util.addSettings({
-  hintAlign : "left",
-  omnibarSuggestionTimeout : 500,
-  richHintsForKeystroke : 1,
-  theme: `
+  hintAlign:                "left",
+  omnibarSuggestionTimeout: 500,
+  richHintsForKeystroke:    1,
+  theme:                    `
     /* Disable RichHints CSS animation */
     .expandRichHints {
         animation: 0s ease-in-out 1 forwards expandRichHints;
@@ -15,7 +15,7 @@ util.addSettings({
     .collapseRichHints {
         animation: 0s ease-in-out 1 forwards collapseRichHints;
     }
-  `
+  `,
 })
 
 // Leader for site-specific mappings

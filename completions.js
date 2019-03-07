@@ -1,6 +1,10 @@
 const { keys } = require("./conf.priv.js")
 const { escape, createSuggestionItem, createURLItem } = require("./util")
 
+const wpDefaultIcon = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2056%2056%22%20enable-background%3D%22new%200%200%2056%2056%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23eee%22%20d%3D%22M0%200h56v56h-56z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23999%22%20d%3D%22M36.4%2013.5h-18.6v24.9c0%201.4.9%202.3%202.3%202.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2%203.5h5.1v6.4h-5.1v-6.4zm-8.8%200h6v1.8h-6v-1.8zm0%204.6h6v1.8h-6v-1.8zm0%2015.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
+
+const cbDefaultIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
+
 const completions = {}
 
 // Helper functions for Google Custom Search Engine completions
@@ -69,6 +73,55 @@ completions.af = {
 
 // ****** Technical Resources ****** //
 
+// AlternativeTo
+completions.at = {
+  alias:  "at",
+  name:   "alternativeTo",
+  search: "https://alternativeto.net/browse/search/?q=",
+  compl:  `https://zidpns2vb0-dsn.algolia.net/1/indexes/fullitems?x-algolia-application-id=ZIDPNS2VB0&x-algolia-api-key=${keys.alternativeTo}&attributesToRetrieve=Name,UrlName,TagLine,Description,Likes,HasIcon,IconId,IconExtension,InternalUrl&query=`,
+}
+
+completions.at.callback = (response) => {
+  const res = JSON.parse(response.text)
+  return res.hits.map((s) => {
+    const name = escape(s.Name)
+    let title = name
+    let prefix = ""
+    if (s._highlightResult) { // eslint-disable-line no-underscore-dangle
+      if (s._highlightResult.Name) { // eslint-disable-line no-underscore-dangle
+        title = s._highlightResult.Name.value // eslint-disable-line no-underscore-dangle
+      }
+    }
+    if (s.Likes) {
+      prefix += `[↑${s.Likes}] `
+    }
+    let tagline = ""
+    if (s.TagLine) {
+      tagline = escape(s.TagLine)
+    }
+    const desc = s.Description ? `<div class="title">${escape(s.Description)}</div>` : ""
+    const url = `https://alternativeto.net/${s.InternalUrl}`
+
+    let icUrl = wpDefaultIcon
+    if (s.HasIcon) {
+      const icBase = "https://d2.alternativeto.net/dist/icons/"
+      const icQuery = "?width=100&height=100&mode=crop&upscale=false"
+      const icName = s.UrlName
+      icUrl = encodeURI(`${icBase}${icName}_${s.IconId}${s.IconExtension}${icQuery}`)
+    }
+
+    return createSuggestionItem(`
+      <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
+        <img style="width:60px" src="${icUrl}" alt="${escape(s.Name)}">
+        <div>
+          <div class="title"><strong>${prefix}${title}</strong> ${tagline}</div>
+          ${desc}
+        </div>
+      </div>
+    `, { url })
+  })
+}
+
 // Chrome Webstore
 completions.cs = {
   alias:    "cs",
@@ -96,8 +149,7 @@ completions.so = {
   compl:  "https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=",
 }
 
-completions.so.callback = response =>
-  JSON.parse(response.text).items.map(s => createURLItem(`[${s.score}] ${s.title}`, s.link))
+completions.so.callback = response => JSON.parse(response.text).items.map(s => createURLItem(`[${s.score}] ${s.title}`, s.link))
 
 // DockerHub repo search
 completions.dh = {
@@ -310,11 +362,9 @@ completions.wp = {
   compl:  "https://en.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&prop=info|pageprops%7Cpageimages%7Cdescription&redirects=&ppprop=displaytitle&piprop=thumbnail&pithumbsize=100&pilimit=6&inprop=url&gpssearch=",
 }
 
-const wpNoimg = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2056%2056%22%20enable-background%3D%22new%200%200%2056%2056%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23eee%22%20d%3D%22M0%200h56v56h-56z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23999%22%20d%3D%22M36.4%2013.5h-18.6v24.9c0%201.4.9%202.3%202.3%202.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2%203.5h5.1v6.4h-5.1v-6.4zm-8.8%200h6v1.8h-6v-1.8zm0%204.6h6v1.8h-6v-1.8zm0%2015.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
-
 completions.wp.callback = response => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => {
-    const img = p.thumbnail ? p.thumbnail.source : wpNoimg
+    const img = p.thumbnail ? p.thumbnail.source : wpDefaultIcon
     const desc = p.description ? p.description : ""
     return createSuggestionItem(
       `
@@ -338,6 +388,17 @@ completions.ws = {
   compl:    "https://simple.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&prop=info|pageprops%7Cpageimages%7Cdescription&redirects=&ppprop=displaytitle&piprop=thumbnail&pithumbsize=100&pilimit=6&inprop=url&gpssearch=",
   callback: completions.wp.callback,
 }
+
+// Wiktionary
+completions.wt = {
+  alias:  "wt",
+  name:   "wiktionary",
+  search: "https://en.wiktionary.org/w/index.php?search=",
+  compl:  "https://en.wiktionary.org/w/api.php?action=query&format=json&generator=prefixsearch&gpssearch=",
+}
+
+completions.wt.callback = response => Object.values(JSON.parse(response.text).query.pages)
+  .map(p => p.title)
 
 // WolframAlpha
 completions.wa = {
@@ -413,10 +474,6 @@ completions.wa.callback = (response) => {
 
 // ****** Business Utilities & References ****** //
 
-// This is a base64-encoded image used as a placeholder for
-// the crunchbase Omnibar results if they don't have an image
-const blank = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
-
 const parseCrunchbase = (response, parse) => {
   const res = JSON.parse(response.text).data.items
   if (res.length === 0) {
@@ -457,7 +514,7 @@ completions.co.callback = response => parseCrunchbase(response, (org) => {
     domain: r.domain !== null ? escape(r.domain).replace(/\/$/, "") : null,
     desc:   escape(r.short_description),
     role:   escape(r.primary_role),
-    img:    blank,
+    img:    cbDefaultIcon,
     loc:    "",
     url:    `https://www.crunchbase.com/${r.web_path}`,
   }
@@ -490,7 +547,7 @@ completions.cp.callback = response => parseCrunchbase(response, (person) => {
   const p = {
     name: `${escape(r.first_name)} ${escape(r.last_name)}`,
     desc: "",
-    img:  blank,
+    img:  cbDefaultIcon,
     role: "",
     loc:  "",
     url:  `https://www.crunchbase.com/${r.web_path}`,

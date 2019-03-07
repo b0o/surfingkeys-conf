@@ -1,4 +1,5 @@
 const gulp = require("gulp")
+const { parallel, series } = require("gulp")
 const parcel = require("gulp-parcel")
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
@@ -45,45 +46,25 @@ gulp.task("gulp-autoreload", () => {
 
 gulp.task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
 
-gulp.task("lint", () =>
-  gulp
-    .src([].concat(paths.scripts, paths.gulpfile))
-    .pipe(eslint())
-    .pipe(eslint.format()))
+gulp.task("lint", () => gulp
+  .src([].concat(paths.scripts, paths.gulpfile))
+  .pipe(eslint())
+  .pipe(eslint.format()))
 
-gulp.task("lint", () =>
-  gulp
-    .src(paths.gulpfile)
-    .pipe(eslint())
-    .pipe(eslint.format()))
+gulp.task("lint-gulpfile", () => gulp
+  .src(paths.gulpfile)
+  .pipe(eslint())
+  .pipe(eslint.format()))
 
-gulp.task("check-priv", () => {
-  try {
-    fs.statSync("./conf.priv.js")
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("Creating ./conf.priv.js based on ./conf.priv.example.js")
-    fs.copyFileSync("./conf.priv.example.js", "./conf.priv.js", fs.constants.COPYFILE_EXCL)
-  }
-})
-
-gulp.task("build", ["check-priv", "clean", "lint", "readme"], () => gulp.src(paths.entry, { read: false })
-  .pipe(parcel())
-  .pipe(rename(".surfingkeys"))
-  .pipe(gulp.dest("build")))
-
-gulp.task("install", ["build"], () => gulp.src("build/.surfingkeys")
-  .pipe(gulp.dest(os.homedir())))
-
-gulp.task("watch", () => {
-  gulp.watch([].concat(paths.scripts, paths.gulpfile), ["readme", "install"])
-  gulp.watch(paths.readme, ["readme"])
-})
-
-gulp.task("watch-nogulpfile", () => {
-  gulp.watch([].concat(paths.scripts), ["readme", "install"])
-  gulp.watch(paths.readme, ["readme"])
-})
+// gulp.task("check-priv", async () => {
+//   try {
+//     fs.statSync("./conf.priv.js")
+//   } catch (e) {
+//     // eslint-disable-next-line no-console
+//     console.log("Creating ./conf.priv.js based on ./conf.priv.example.js")
+//     fs.copyFileSync("./conf.priv.example.js", "./conf.priv.js", fs.constants.COPYFILE_EXCL)
+//   }
+// })
 
 gulp.task("readme", () => {
   const screens = {}
@@ -154,4 +135,28 @@ gulp.task("readme", () => {
     .pipe(gulp.dest("."))
 })
 
-gulp.task("default", ["build"])
+gulp.task("build",
+  series(
+    parallel(/* "check-priv", */"clean", "lint", "lint-gulpfile", "readme"),
+    () => gulp
+      .src(paths.entry, { read: false })
+      .pipe(parcel())
+      .pipe(rename(".surfingkeys"))
+      .pipe(gulp.dest("build"))
+  ))
+
+gulp.task("install",
+  series("build",
+    () => gulp.src("build/.surfingkeys").pipe(gulp.dest(os.homedir()))))
+
+gulp.task("watch", () => {
+  gulp.watch([].concat(paths.scripts, paths.gulpfile), parallel("install"))
+  // gulp.watch(paths.readme, parallel("readme"))
+})
+
+gulp.task("watch-nogulpfile", async () => parallel(
+  gulp.watch([].concat(paths.scripts), parallel("readme", "install")),
+  gulp.watch(paths.readme, parallel("readme"))
+))
+
+gulp.task("default", parallel("build"))

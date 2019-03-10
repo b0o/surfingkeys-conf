@@ -174,6 +174,7 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
     }
     data = await res.buffer()
   } catch (e) {
+    process.stdout.write(`no favicon found for ${url}: ${e}\n`)
     // transparent pixel
     data = Buffer.from(
       "AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",

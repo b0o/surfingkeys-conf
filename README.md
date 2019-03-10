@@ -97,7 +97,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;s</code></td><td>Upvote</td></tr>
 <tr><td><code>&lt;Space&gt;S</code></td><td>Downvote</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View post (link)</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link and comments)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>

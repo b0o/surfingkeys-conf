@@ -390,8 +390,8 @@ const maps = {
     },
     {
       alias:       "A",
-      description: "View post (link) (new tab)",
-      callback:    actions.createHint(".storylink", actions.openAnchor({ newTab: true })),
+      description: "View post (link and comments)",
+      callback:    actions.createHint(".athing", actions.hn.openLinkAndComments),
     },
     {
       alias:       "c",

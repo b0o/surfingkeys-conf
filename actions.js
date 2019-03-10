@@ -335,6 +335,13 @@ actions.hn.goPage = (dist = 1) => {
   actions.openLink(u.href)()
 }
 
+actions.hn.openLinkAndComments = (e) => {
+  const linkUrl = e.querySelector("a.storylink").href
+  const commentsUrl = e.nextElementSibling.querySelector("td > a[href*='item']:not(.storylink)").href
+  actions.openLink(commentsUrl, { newTab: true })()
+  actions.openLink(linkUrl, { newTab: true })()
+}
+
 // ProductHunt
 // -----------
 actions.ph = {}

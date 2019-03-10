@@ -43,9 +43,22 @@ You can access a Search Engine auto-completion by pressing the search leader key
 
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 
+<table>
+<thead>
+<th colspan=2>Alias</th>
+<th>Name</th>
+<th>Domain</th>
+<th>Screenshots</th>
+</thead>
+<tbody>
+<!--{{COMPL_TABLE}}-->
+</tbody>
+</table>
+
+<!--
 | Alias | Name | Domain | Screenshots |
 | ----- | ---- | ------ | ----------- |
-<!--{{COMPL_TABLE}}-->
+-->
 
 Installation
 ------------

@@ -32,7 +32,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-195 key mappings for 17 unique
+202 key mappings for 17 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -53,24 +53,27 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&#x3D;c</code></td><td>Show Google's cached version of page</td></tr>
 <tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
-<tr><th colspan="2"><a href="//amazon.com">amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//amazon.com"><img src="./assets/favicons/amazon.com.ico" width="16px"> amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
-<tr><th colspan="2"><a href="//behance.net">behance.net</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//behance.net"><img src="./assets/favicons/behance.net.ico" width="16px"> behance.net</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Appreciate project</td></tr>
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View project</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>View project (new tab)</td></tr>
-<tr><th colspan="2"><a href="//dribbble.com">dribbble.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//dribbble.com"><img src="./assets/favicons/dribbble.com.ico" width="16px"> dribbble.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Heart Shot</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View shot</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>View shot (new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;v</code></td><td>View attachment image</td></tr>
 <tr><td><code>&lt;Space&gt;V</code></td><td>Yank attachment image source URL</td></tr>
 <tr><td><code>&lt;Space&gt;z</code></td><td>Zoom shot</td></tr>
-<tr><th colspan="2"><a href="//fonts.adobe.com">fonts.adobe.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//en.wiktionary.org"><img src="./assets/favicons/en.wiktionary.org.ico" width="16px"> en.wiktionary.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
+<tr><th colspan="2"><a href="//fonts.adobe.com"><img src="./assets/favicons/fonts.adobe.com.ico" width="16px"> fonts.adobe.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Activate font</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Favorite font</td></tr>
-<tr><th colspan="2"><a href="//github.com">github.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//github.com"><img src="./assets/favicons/github.com.ico" width="16px"> github.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View Repository</td></tr>
 <tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
@@ -83,15 +86,12 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
-<tr><th colspan="2"><a href="//gitlab.com">gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//gitlab.com"><img src="./assets/favicons/gitlab.com.ico" width="16px"> gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
-<tr><th colspan="2"><a href="//google.com">google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
-<tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
-<tr><th colspan="2"><a href="//news.ycombinator.com">news.ycombinator.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//news.ycombinator.com"><img src="./assets/favicons/news.ycombinator.com.ico" width="16px"> news.ycombinator.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;x</code></td><td>Collapse comment</td></tr>
 <tr><td><code>&lt;Space&gt;X</code></td><td>Collapse next comment</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Upvote</td></tr>
@@ -103,11 +103,11 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><td><code>]]</code></td><td>Next page</td></tr>
 <tr><td><code>[[</code></td><td>Prev page</td></tr>
-<tr><th colspan="2"><a href="//producthunt.com">producthunt.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//producthunt.com"><img src="./assets/favicons/producthunt.com.ico" width="16px"> producthunt.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View product (external)</td></tr>
 <tr><td><code>&lt;Space&gt;v</code></td><td>View product</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Upvote product</td></tr>
-<tr><th colspan="2"><a href="//reddit.com">reddit.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//reddit.com"><img src="./assets/favicons/reddit.com.ico" width="16px"> reddit.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;x</code></td><td>Collapse comment</td></tr>
 <tr><td><code>&lt;Space&gt;X</code></td><td>Collapse next comment</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Upvote</td></tr>
@@ -117,7 +117,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
-<tr><th colspan="2"><a href="//twitter.com">twitter.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//twitter.com"><img src="./assets/favicons/twitter.com.ico" width="16px"> twitter.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>Follow user</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Like tweet</td></tr>
 <tr><td><code>&lt;Space&gt;R</code></td><td>Retweet</td></tr>
@@ -126,17 +126,17 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;T</code></td><td>Tweet to</td></tr>
 <tr><td><code>&lt;Space&gt;r</code></td><td>Load new tweets</td></tr>
 <tr><td><code>&lt;Space&gt;g</code></td><td>Goto user</td></tr>
-<tr><th colspan="2"><a href="//vimeo.com">vimeo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//vimeo.com"><img src="./assets/favicons/vimeo.com.ico" width="16px"> vimeo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;F</code></td><td>Toggle fullscreen</td></tr>
-<tr><th colspan="2"><a href="//wikipedia.org">wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//wikipedia.org"><img src="./assets/favicons/wikipedia.org.ico" width="16px"> wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
-<tr><th colspan="2"><a href="//wiktionary.org">wiktionary.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
-<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
-<tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
-<tr><th colspan="2"><a href="//yelp.com">yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> www.google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
+<tr><th colspan="2"><a href="//yelp.com"><img src="./assets/favicons/yelp.com.ico" width="16px"> yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
-<tr><th colspan="2"><a href="//youtube.com">youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//youtube.com"><img src="./assets/favicons/youtube.com.ico" width="16px"> youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>A</code></td><td>Open video</td></tr>
 <tr><td><code>C</code></td><td>Open channel</td></tr>
 <tr><td><code>gH</code></td><td>Goto homepage</td></tr>
@@ -154,55 +154,344 @@ You can access a Search Engine auto-completion by pressing the search leader key
 
 For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
 
+<table>
+<thead>
+<th colspan=2>Alias</th>
+<th>Name</th>
+<th>Domain</th>
+<th>Screenshots</th>
+</thead>
+<tbody>
+
+  <tr>
+    <td><a href="https://bbs.archlinux.org"><img src="./assets/favicons/bbs.archlinux.org.ico" width="16px"> </a></td>
+    <td><code>af</code></td>
+    <td>archforums</td>
+    <td><a href="https://bbs.archlinux.org">bbs.archlinux.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.archlinux.org"><img src="./assets/favicons/www.archlinux.org.ico" width="16px"> </a></td>
+    <td><code>al</code></td>
+    <td>archlinux</td>
+    <td><a href="https://www.archlinux.org">www.archlinux.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://alternativeto.net"><img src="./assets/favicons/alternativeto.net.ico" width="16px"> </a></td>
+    <td><code>at</code></td>
+    <td>alternativeTo</td>
+    <td><a href="https://alternativeto.net">alternativeto.net</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://aur.archlinux.org"><img src="./assets/favicons/aur.archlinux.org.ico" width="16px"> </a></td>
+    <td><code>au</code></td>
+    <td>AUR</td>
+    <td><a href="https://aur.archlinux.org">aur.archlinux.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://wiki.archlinux.org"><img src="./assets/favicons/wiki.archlinux.org.ico" width="16px"> </a></td>
+    <td><code>aw</code></td>
+    <td>archwiki</td>
+    <td><a href="https://wiki.archlinux.org">wiki.archlinux.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://smile.amazon.com"><img src="./assets/favicons/smile.amazon.com.ico" width="16px"> </a></td>
+    <td><code>az</code></td>
+    <td>amazon</td>
+    <td><a href="https://smile.amazon.com">smile.amazon.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://craigslist.org"><img src="./assets/favicons/craigslist.org.ico" width="16px"> </a></td>
+    <td><code>cl</code></td>
+    <td>craigslist</td>
+    <td><a href="https://craigslist.org">craigslist.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.crunchbase.com"><img src="./assets/favicons/www.crunchbase.com.ico" width="16px"> </a></td>
+    <td><code>co</code></td>
+    <td>crunchbase-orgs</td>
+    <td><a href="https://www.crunchbase.com">www.crunchbase.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.crunchbase.com"><img src="./assets/favicons/www.crunchbase.com.ico" width="16px"> </a></td>
+    <td><code>cp</code></td>
+    <td>crunchbase-people</td>
+    <td><a href="https://www.crunchbase.com">www.crunchbase.com</a></td>
+    <td><a href="#crunchbase-people">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://chrome.google.com"><img src="./assets/favicons/chrome.google.com.png" width="16px"> </a></td>
+    <td><code>cs</code></td>
+    <td>chromestore</td>
+    <td><a href="https://chrome.google.com">chrome.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="http://onelook.com"><img src="./assets/favicons/onelook.com.ico" width="16px"> </a></td>
+    <td><code>de</code></td>
+    <td>define</td>
+    <td><a href="http://onelook.com">onelook.com</a></td>
+    <td><a href="#define">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>dg</code></td>
+    <td>duckduckgo</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://hub.docker.com"><img src="./assets/favicons/hub.docker.com.ico" width="16px"> </a></td>
+    <td><code>dh</code></td>
+    <td>dockerhub</td>
+    <td><a href="https://hub.docker.com">hub.docker.com</a></td>
+    <td><a href="#dockerhub">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://domainr.com"><img src="./assets/favicons/domainr.com.ico" width="16px"> </a></td>
+    <td><code>do</code></td>
+    <td>domainr</td>
+    <td><a href="https://domainr.com">domainr.com</a></td>
+    <td><a href="#domainr">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.ebay.com"><img src="./assets/favicons/www.ebay.com.ico" width="16px"> </a></td>
+    <td><code>eb</code></td>
+    <td>ebay</td>
+    <td><a href="https://www.ebay.com">www.ebay.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://hex.pm"><img src="./assets/favicons/hex.pm.ico" width="16px"> </a></td>
+    <td><code>ex</code></td>
+    <td>exdocs</td>
+    <td><a href="https://hex.pm">hex.pm</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://godoc.org"><img src="./assets/favicons/godoc.org.ico" width="16px"> </a></td>
+    <td><code>gd</code></td>
+    <td>godoc</td>
+    <td><a href="https://godoc.org">godoc.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://golang.org"><img src="./assets/favicons/golang.org.ico" width="16px"> </a></td>
+    <td><code>gg</code></td>
+    <td>golang</td>
+    <td><a href="https://golang.org">golang.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com"><img src="./assets/favicons/github.com.ico" width="16px"> </a></td>
+    <td><code>gh</code></td>
+    <td>github</td>
+    <td><a href="https://github.com">github.com</a></td>
+    <td><a href="#github">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
+    <td><code>gi</code></td>
+    <td>google-images</td>
+    <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
+    <td><code>gl</code></td>
+    <td>google-lucky</td>
+    <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
+    <td><code>go</code></td>
+    <td>google</td>
+    <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="http://go-search.org"><img src="./assets/favicons/go-search.org.png" width="16px"> </a></td>
+    <td><code>gs</code></td>
+    <td>go-search</td>
+    <td><a href="http://go-search.org">go-search.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://gowalker.org"><img src="./assets/favicons/gowalker.org.png" width="16px"> </a></td>
+    <td><code>gw</code></td>
+    <td>gowalker</td>
+    <td><a href="https://gowalker.org">gowalker.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://hackage.haskell.org"><img src="./assets/favicons/hackage.haskell.org.png" width="16px"> </a></td>
+    <td><code>ha</code></td>
+    <td>hackage</td>
+    <td><a href="https://hackage.haskell.org">hackage.haskell.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://hex.pm"><img src="./assets/favicons/hex.pm.ico" width="16px"> </a></td>
+    <td><code>hd</code></td>
+    <td>hexdocs</td>
+    <td><a href="https://hex.pm">hex.pm</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://news.ycombinator.com"><img src="./assets/favicons/news.ycombinator.com.ico" width="16px"> </a></td>
+    <td><code>hn</code></td>
+    <td>hackernews</td>
+    <td><a href="https://news.ycombinator.com">news.ycombinator.com</a></td>
+    <td><a href="#hackernews">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.haskell.org"><img src="./assets/favicons/www.haskell.org.ico" width="16px"> </a></td>
+    <td><code>ho</code></td>
+    <td>hoogle</td>
+    <td><a href="https://www.haskell.org">www.haskell.org</a></td>
+    <td><a href="#hoogle">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://wiki.haskell.org"><img src="./assets/favicons/wiki.haskell.org.ico" width="16px"> </a></td>
+    <td><code>hw</code></td>
+    <td>haskellwiki</td>
+    <td><a href="https://wiki.haskell.org">wiki.haskell.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://hex.pm"><img src="./assets/favicons/hex.pm.ico" width="16px"> </a></td>
+    <td><code>hx</code></td>
+    <td>hex</td>
+    <td><a href="https://hex.pm">hex.pm</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="http://hayoo.fh-wedel.de"><img src="./assets/favicons/hayoo.fh-wedel.de.ico" width="16px"> </a></td>
+    <td><code>hy</code></td>
+    <td>hayoo</td>
+    <td><a href="http://hayoo.fh-wedel.de">hayoo.fh-wedel.de</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://jquery.com"><img src="./assets/favicons/jquery.com.ico" width="16px"> </a></td>
+    <td><code>jq</code></td>
+    <td>jquery</td>
+    <td><a href="https://jquery.com">jquery.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://developer.mozilla.org"><img src="./assets/favicons/developer.mozilla.org.ico" width="16px"> </a></td>
+    <td><code>md</code></td>
+    <td>mdn</td>
+    <td><a href="https://developer.mozilla.org">developer.mozilla.org</a></td>
+    <td><a href="#mdn">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://nodejs.org"><img src="./assets/favicons/nodejs.org.ico" width="16px"> </a></td>
+    <td><code>no</code></td>
+    <td>node</td>
+    <td><a href="https://nodejs.org">nodejs.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.npmjs.com"><img src="./assets/favicons/www.npmjs.com.png" width="16px"> </a></td>
+    <td><code>np</code></td>
+    <td>npm</td>
+    <td><a href="https://www.npmjs.com">www.npmjs.com</a></td>
+    <td><a href="#npm">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.owasp.org"><img src="./assets/favicons/www.owasp.org.ico" width="16px"> </a></td>
+    <td><code>ow</code></td>
+    <td>owasp</td>
+    <td><a href="https://www.owasp.org">www.owasp.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.reddit.com"><img src="./assets/favicons/www.reddit.com.ico" width="16px"> </a></td>
+    <td><code>re</code></td>
+    <td>reddit</td>
+    <td><a href="https://www.reddit.com">www.reddit.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://stackoverflow.com"><img src="./assets/favicons/stackoverflow.com.ico" width="16px"> </a></td>
+    <td><code>so</code></td>
+    <td>stackoverflow</td>
+    <td><a href="https://stackoverflow.com">stackoverflow.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.onelook.com"><img src="./assets/favicons/www.onelook.com.ico" width="16px"> </a></td>
+    <td><code>th</code></td>
+    <td>thesaurus</td>
+    <td><a href="https://www.onelook.com">www.onelook.com</a></td>
+    <td><a href="#thesaurus">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://vim.wikia.com"><img src="./assets/favicons/vim.wikia.com.ico" width="16px"> </a></td>
+    <td><code>vw</code></td>
+    <td>vimwikia</td>
+    <td><a href="https://vim.wikia.com">vim.wikia.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="http://www.wolframalpha.com"><img src="./assets/favicons/www.wolframalpha.com.ico" width="16px"> </a></td>
+    <td><code>wa</code></td>
+    <td>wolframalpha</td>
+    <td><a href="http://www.wolframalpha.com">www.wolframalpha.com</a></td>
+    <td><a href="#wolframalpha">:framed_picture:</a><a href="#wolframalpha-2">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://en.wikipedia.org"><img src="./assets/favicons/en.wikipedia.org.ico" width="16px"> </a></td>
+    <td><code>wp</code></td>
+    <td>wikipedia</td>
+    <td><a href="https://en.wikipedia.org">en.wikipedia.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://simple.wikipedia.org"><img src="./assets/favicons/simple.wikipedia.org.ico" width="16px"> </a></td>
+    <td><code>ws</code></td>
+    <td>wikipedia-simple</td>
+    <td><a href="https://simple.wikipedia.org">simple.wikipedia.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://en.wiktionary.org"><img src="./assets/favicons/en.wiktionary.org.ico" width="16px"> </a></td>
+    <td><code>wt</code></td>
+    <td>wiktionary</td>
+    <td><a href="https://en.wiktionary.org">en.wiktionary.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.yelp.com"><img src="./assets/favicons/www.yelp.com.ico" width="16px"> </a></td>
+    <td><code>yp</code></td>
+    <td>yelp</td>
+    <td><a href="https://www.yelp.com">www.yelp.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.youtube.com"><img src="./assets/favicons/www.youtube.com.ico" width="16px"> </a></td>
+    <td><code>yt</code></td>
+    <td>youtube</td>
+    <td><a href="https://www.youtube.com">www.youtube.com</a></td>
+    <td><a href="#youtube">:framed_picture:</a></td>
+  </tr>
+</tbody>
+</table>
+
+<!--
 | Alias | Name | Domain | Screenshots |
 | ----- | ---- | ------ | ----------- |
- | `af` | `archforums` | `Google Custom Search` |  |
- | `al` | `archlinux` | `www.archlinux.org` |  |
- | `at` | `alternativeTo` | `alternativeto.net` |  |
- | `au` | `AUR` | `aur.archlinux.org` |  |
- | `aw` | `archwiki` | `wiki.archlinux.org` |  |
- | `az` | `amazon` | `smile.amazon.com` |  |
- | `cl` | `craigslist` | `craigslist.org` |  |
- | `co` | `crunchbase-orgs` | `www.crunchbase.com` |  |
- | `cp` | `crunchbase-people` | `www.crunchbase.com` | [:framed_picture:](#crunchbase-people)  |
- | `cs` | `chromestore` | `chrome.google.com` |  |
- | `de` | `define` | `onelook.com` | [:framed_picture:](#define)  |
- | `dg` | `duckduckgo` | `duckduckgo.com` |  |
- | `dh` | `dockerhub` | `hub.docker.com` | [:framed_picture:](#dockerhub)  |
- | `do` | `domainr` | `domainr.com` | [:framed_picture:](#domainr)  |
- | `eb` | `ebay` | `www.ebay.com` |  |
- | `ex` | `exdocs` | `hex.pm` |  |
- | `gd` | `godoc` | `godoc.org` |  |
- | `gg` | `golang` | `Google Custom Search` |  |
- | `gh` | `github` | `github.com` | [:framed_picture:](#github)  |
- | `gi` | `google-images` | `www.google.com` |  |
- | `gl` | `google-lucky` | `www.google.com` |  |
- | `go` | `google` | `www.google.com` |  |
- | `gs` | `go-search` | `go-search.org` |  |
- | `gw` | `gowalker` | `gowalker.org` |  |
- | `ha` | `hackage` | `hackage.haskell.org` |  |
- | `hd` | `hexdocs` | `hex.pm` |  |
- | `hn` | `hackernews` | `hn.algolia.com` | [:framed_picture:](#hackernews)  |
- | `ho` | `hoogle` | `www.haskell.org` | [:framed_picture:](#hoogle)  |
- | `hw` | `haskellwiki` | `wiki.haskell.org` |  |
- | `hx` | `hex` | `hex.pm` |  |
- | `hy` | `hayoo` | `hayoo.fh-wedel.de` |  |
- | `jq` | `jquery` | `Google Custom Search` |  |
- | `md` | `mdn` | `developer.mozilla.org` | [:framed_picture:](#mdn)  |
- | `no` | `node` | `Google Custom Search` |  |
- | `np` | `npm` | `www.npmjs.com` | [:framed_picture:](#npm)  |
- | `ow` | `owasp` | `www.owasp.org` |  |
- | `re` | `reddit` | `www.reddit.com` |  |
- | `so` | `stackoverflow` | `stackoverflow.com` |  |
- | `th` | `thesaurus` | `www.onelook.com` | [:framed_picture:](#thesaurus)  |
- | `vw` | `vimwikia` | `vim.wikia.com` |  |
- | `wa` | `wolframalpha` | `www.wolframalpha.com` | [:framed_picture:](#wolframalpha) [:framed_picture:](#wolframalpha-2)  |
- | `wp` | `wikipedia` | `en.wikipedia.org` |  |
- | `ws` | `wikipedia-simple` | `simple.wikipedia.org` |  |
- | `wt` | `wiktionary` | `en.wiktionary.org` |  |
- | `yp` | `yelp` | `www.yelp.com` |  |
- | `yt` | `youtube` | `www.youtube.com` | [:framed_picture:](#youtube)  |
-
+-->
 
 Installation
 ------------

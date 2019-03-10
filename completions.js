@@ -43,6 +43,7 @@ completions.al = {
 completions.au = {
   alias:  "au",
   name:   "AUR",
+  favicon:  "https://aur.archlinux.org/images/favicon.ico",
   search: "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
   compl:  "https://aur.archlinux.org/rpc?type=suggest&arg=",
 }
@@ -66,6 +67,7 @@ completions.aw.callback = response => JSON.parse(response.text)[1]
 completions.af = {
   alias:    "af",
   name:     "archforums",
+  domain:   "bbs.archlinux.org",
   search:   googleCxPublicURL("af"),
   compl:    googleCxURL("af"),
   callback: googleCxCallback,
@@ -126,6 +128,7 @@ completions.at.callback = (response) => {
 completions.cs = {
   alias:    "cs",
   name:     "chromestore",
+  favicon:  "https://www.google.com/images/icons/product/chrome_web_store-32.png",
   search:   "https://chrome.google.com/webstore/search/",
   compl:    googleCxURL("cs"),
   callback: googleCxCallback,
@@ -750,6 +753,7 @@ completions.ex.callback = response => JSON.parse(response.text).items.map((s) =>
 completions.gg = {
   alias:    "gg",
   name:     "golang",
+  domain:   "golang.org",
   search:   googleCxPublicURL("gg"),
   compl:    googleCxURL("gg"),
   callback: googleCxCallback,
@@ -778,6 +782,7 @@ completions.gd.callback = response => JSON.parse(response.text).results.map((s) 
 completions.gw = {
   alias:  "gw",
   name:   "gowalker",
+  favicon: "https://gowalker.org/img/favicon.png",
   search: "https://gowalker.org/search?auto_redirect=true&q=",
   compl:  "https://gowalker.org/search/json?q=",
 }
@@ -798,6 +803,7 @@ completions.gw.callback = response => JSON.parse(response.text).results.map((s) 
 completions.gs = {
   alias:  "gs",
   name:   "go-search",
+  favicon: "https://go-search.org/images/logo-16.png",
   search: "http://go-search.org/search?q=",
   compl:  "http://go-search.org/api?action=search&q=",
 }
@@ -812,6 +818,7 @@ completions.gs.callback = response => JSON.parse(response.text).hits
 completions.ha = {
   alias:  "ha",
   name:   "hackage",
+  favicon: "https://hackage.haskell.org/static/favicon.png",
   search: "https://hackage.haskell.org/packages/search?terms=",
   compl:  "https://hackage.haskell.org/packages/search.json?terms=",
 }
@@ -823,6 +830,7 @@ completions.ha.callback = response => JSON.parse(response.text)
 completions.ho = {
   alias:  "ho",
   name:   "hoogle",
+  favicon: "https://www.haskell.org/img/favicon.ico",
   search: `https://www.haskell.org/hoogle/?hoogle=${
     encodeURIComponent("+platform +xmonad +xmonad-contrib ")}`, // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
   compl:  `https://www.haskell.org/hoogle/?mode=json&hoogle=${
@@ -836,6 +844,7 @@ completions.ho.callback = response => JSON.parse(response.text).results
 completions.hw = {
   alias:  "hw",
   name:   "haskellwiki",
+  favicon: "https://www.haskell.org/img/favicon.ico",
   search: "https://wiki.haskell.org/index.php?go=go&search=",
   compl:  "https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
@@ -846,6 +855,7 @@ completions.hw.callback = response => JSON.parse(response.text)[1]
 completions.hy = {
   alias:  "hy",
   name:   "hayoo",
+  favicon: "https://www.haskell.org/img/favicon.ico",
   search: "http://hayoo.fh-wedel.de/?query=",
   compl:  "http://hayoo.fh-wedel.de/json?query=",
 }
@@ -859,6 +869,7 @@ completions.hy.callback = response => JSON.parse(response.text).result
 completions.jq = {
   alias:    "jq",
   name:     "jquery",
+  domain:   "jquery.com",
   search:   googleCxPublicURL("jq"),
   compl:    googleCxURL("jq"),
   callback: googleCxCallback,
@@ -868,6 +879,7 @@ completions.jq = {
 completions.no = {
   alias:    "no",
   name:     "node",
+  domain:   "nodejs.org",
   search:   googleCxPublicURL("no"),
   compl:    googleCxURL("no"),
   callback: googleCxCallback,
@@ -907,6 +919,7 @@ completions.md.callback = (response) => {
 completions.np = {
   alias:  "np",
   name:   "npm",
+  favicon: "https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png",
   search: "https://www.npmjs.com/search?q=",
   compl:  "https://api.npms.io/v2/search/suggestions?size=20&q=",
 }
@@ -954,6 +967,7 @@ completions.np.callback = response => JSON.parse(response.text)
 completions.hn = {
   alias:  "hn",
   name:   "hackernews",
+  domain: "news.ycombinator.com",
   search: "https://hn.algolia.com/?query=",
   compl:  "https://hn.algolia.com/api/v1/search?tags=(story,comment)&query=",
 }

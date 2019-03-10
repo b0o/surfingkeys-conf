@@ -121,7 +121,7 @@ const maps = {
     },
   ],
 
-  "google.com": [
+  "www.google.com": [
     {
       alias:       "a",
       description: "Open search result",
@@ -525,6 +525,6 @@ const maps = {
 }
 
 // Aliases
-maps["wiktionary.org"] = maps["wikipedia.org"]
+maps["en.wiktionary.org"] = maps["wikipedia.org"]
 
 module.exports = { unmaps, maps }

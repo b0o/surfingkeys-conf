@@ -215,13 +215,15 @@ gulp.task("docs-full", parallel("docs", "favicons"))
 
 gulp.task("build",
   series(
-    parallel(/* "check-priv", */"clean", "lint", "lint-gulpfile", "docs-full"),
-    () => gulp
+    parallel(/* "check-priv", */"clean"),
+    parallel("lint", "lint-gulpfile", () => gulp
       .src(paths.entry, { read: false })
       .pipe(parcel())
       .pipe(rename(".surfingkeys"))
-      .pipe(gulp.dest("build"))
+      .pipe(gulp.dest("build")))
   ))
+
+gulp.task("dist", parallel("docs-full", "build"))
 
 gulp.task("install",
   series("build",

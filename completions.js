@@ -102,7 +102,6 @@ completions.at.callback = (response) => {
       tagline = escape(s.TagLine)
     }
     const desc = s.Description ? `<div class="title">${escape(s.Description)}</div>` : ""
-    const url = `https://alternativeto.net/${s.InternalUrl}`
 
     let icUrl = wpDefaultIcon
     if (s.HasIcon) {
@@ -120,7 +119,7 @@ completions.at.callback = (response) => {
           ${desc}
         </div>
       </div>
-    `, { url })
+    `, { url: `https://${s.InternalUrl}` })
   })
 }
 

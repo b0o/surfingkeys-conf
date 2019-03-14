@@ -48,7 +48,9 @@ gulp.task("gulp-autoreload", () => {
   spawnChildren()
 })
 
-gulp.task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*", paths.favicons]))
+gulp.task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
+
+gulp.task("clean-favicons", () => del([paths.favicons]))
 
 gulp.task("lint", () => gulp
   .src([].concat(paths.scripts, paths.gulpfile))
@@ -187,7 +189,7 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   }
 }
 
-gulp.task("favicons", async () => {
+gulp.task("favicons", series("clean-favicons", async () => {
   const sites = [].concat(
     // search engine completions
     Object.entries(compl)
@@ -210,7 +212,7 @@ gulp.task("favicons", async () => {
     .filter(e => e !== undefined)
   return file(favicons, { src: true })
     .pipe(gulp.dest(paths.favicons))
-})
+}))
 
 gulp.task("docs-full", parallel("docs", "favicons"))
 

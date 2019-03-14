@@ -437,10 +437,10 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
     <td><a href="#thesaurus">:framed_picture:</a></td>
   </tr>
   <tr>
-    <td><a href="https://vim.wikia.com"><img src="./assets/favicons/vim.wikia.com.ico" width="16px"> </a></td>
+    <td><a href="https://vim.fandom.com"><img src="./assets/favicons/vim.fandom.com.ico" width="16px"> </a></td>
     <td><code>vw</code></td>
-    <td>vimwikia</td>
-    <td><a href="https://vim.wikia.com">vim.wikia.com</a></td>
+    <td>vimwiki</td>
+    <td><a href="https://vim.fandom.com">vim.fandom.com</a></td>
     <td></td>
   </tr>
   <tr>

@@ -225,14 +225,15 @@ completions.do.callback = response => Object.entries(JSON.parse(response.text))
 
 // Vim Wiki
 completions.vw = {
-  alias:  "vw",
-  name:   "vimwikia",
-  search: "https://vim.wikia.com/wiki/Special:Search?query=",
-  compl:  "https://vim.wikia.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
+  alias:   "vw",
+  name:    "vimwiki",
+  favicon: "https://vignette.wikia.nocookie.net/vim/images/6/64/Favicon.ico",
+  search:  "https://vim.fandom.com/wiki/Special:Search?query=",
+  compl:   "https://vim.fandom.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
 completions.vw.callback = response => JSON.parse(response.text)[1]
-  .map(r => createURLItem(r, `https://vim.wikia.com/wiki/${r}`))
+  .map(r => createURLItem(r, `https://vim.fandom.com/wiki/${r}`))
 
 // ****** Shopping & Food ****** //
 

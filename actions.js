@@ -67,7 +67,7 @@ actions.openLink = (u, { newTab = false } = {}) => () => {
   window.open(u, newTab ? "_blank" : "_self")
 }
 
-actions.editSettings = actions.openLink("/pages/options.html", { newTab: true })
+actions.editSettings = () => tabOpenLink(chrome.extension.getURL("/pages/options.html"))
 
 actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) => {
   if (!resp.noPdfViewer) {

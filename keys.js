@@ -23,6 +23,12 @@ const unmaps = {
 const maps = {
   global: [
     {
+      alias:       "F",
+      map:         "gf",
+      category:    categories.mouseClick,
+      description: "Open a link in non-active new tab",
+    },
+    {
       alias:       "w",
       map:         "k",
       category:    categories.scroll,

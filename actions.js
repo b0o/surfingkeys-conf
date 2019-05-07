@@ -60,11 +60,12 @@ actions.createHint = (selector, action = Hints.dispatchMouseClick) => () => Hint
 
 actions.openAnchor = ({ newTab = false, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab })()
 
-actions.openLink = (u, { newTab = false } = {}) => () => {
-  if (window === undefined) {
+actions.openLink = (url, { newTab = false, active = true } = {}) => () => {
+  if (newTab) {
+    RUNTIME("openLink", { tab: { tabbed: true, active }, url })
     return
   }
-  window.open(u, newTab ? "_blank" : "_self")
+  window.location.assign(url)
 }
 
 actions.editSettings = () => tabOpenLink(chrome.extension.getURL("/pages/options.html"))
@@ -86,7 +87,8 @@ actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) =
 
 // FakeSpot
 // --------
-actions.fakeSpot = (url = util.getCurrentLocation("href")) => actions.openLink(`http://fakespot.com/analyze?url=${url}`, { newTab: true })()
+actions.fakeSpot = (url = util.getCurrentLocation("href")) =>
+  actions.openLink(`http://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })()
 
 // Godoc
 // -----

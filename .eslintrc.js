@@ -1,6 +1,7 @@
 module.exports = {
   extends: "airbnb",
   globals: {
+    RUNTIME:            false,
     Omnibar:            false,
     Front:              false,
     Clipboard:          false,
@@ -27,6 +28,7 @@ module.exports = {
 
     "newline-per-chained-call": "off",
     "no-restricted-syntax":     "off",
+    "implicit-arrow-linebreak": "off",
 
     "key-spacing": [
       "warn",

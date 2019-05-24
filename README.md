@@ -38,6 +38,7 @@ sites have been included which can help you perform some common actions:
 <table>
 <tbody>
 <tr><th colspan="2"><strong>global</strong></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>F</code></td><td>Open a link in non-active new tab</td></tr>
 <tr><td><code>w</code></td><td>Scroll up</td></tr>
 <tr><td><code>s</code></td><td>Scroll down</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>

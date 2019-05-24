@@ -1,7 +1,6 @@
 const ghReservedNames = require("github-reserved-names")
 
 const util = require("./util")
-const Hints = require("./hints")
 
 const actions = {}
 
@@ -55,8 +54,12 @@ actions.showWayback = ({ href = util.getCurrentLocation("href") } = {}) => () =>
 
 // Surfingkeys-specific actions
 // ----------------------------
-actions.createHint = (selector, action = Hints.dispatchMouseClick) => () => Hints
-  .create(selector, action)
+actions.createHint = (selector, action) => () => {
+  if (typeof action === "undefined") {
+    action = Hints.dispatchMouseClick // eslint-disable-line no-param-reassign
+  }
+  Hints.create(selector, action)
+}
 
 actions.openAnchor = ({ newTab = false, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab })()
 

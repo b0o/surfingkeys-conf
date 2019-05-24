@@ -13,10 +13,22 @@ const fetch = require("node-fetch")
 const { spawn } = require("child_process")
 const { URL } = require("url")
 
-const compl = require("./completions")
-const conf = require("./conf")
-const keys = require("./keys")
-const util = require("./util")
+let srcFilesLoaded = false
+let compl
+let conf
+let keys
+let util
+
+const requireSrcFiles = () => {
+  if (srcFilesLoaded) {
+    return
+  }
+  compl = require("./completions") // eslint-disable-line global-require
+  conf = require("./conf") // eslint-disable-line global-require
+  keys = require("./keys") // eslint-disable-line global-require
+  util = require("./util") // eslint-disable-line global-require
+  srcFilesLoaded = true
+}
 
 const paths = {
   scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
@@ -73,6 +85,8 @@ gulp.task("lint-gulpfile", () => gulp
 // })
 
 gulp.task("docs", parallel(async () => {
+  requireSrcFiles()
+
   const screens = {}
   let screenshotList = ""
 
@@ -190,6 +204,8 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
 }
 
 gulp.task("favicons", series("clean-favicons", async () => {
+  requireSrcFiles()
+
   const sites = [].concat(
     // search engine completions
     Object.entries(compl)

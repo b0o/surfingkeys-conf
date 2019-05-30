@@ -56,6 +56,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
 <tr><th colspan="2"><a href="//amazon.com"><img src="./assets/favicons/amazon.com.ico" width="16px"> amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View product</td></tr>
 <tr><th colspan="2"><a href="//behance.net"><img src="./assets/favicons/behance.net.ico" width="16px"> behance.net</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Appreciate project</td></tr>
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>

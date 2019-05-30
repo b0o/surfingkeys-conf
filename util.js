@@ -40,17 +40,19 @@ util.createURLItem = (title, url, sanitize = true) => {
 }
 
 // Determine if the given rect is visible in the viewport
-util.isRectVisibleInViewport = rect => (
+util.isRectVisibleInViewport = rect =>
   rect.height > 0
   && rect.width > 0
   && rect.bottom >= 0
   && rect.right >= 0
   && rect.top <= (window.innerHeight || document.documentElement.clientHeight)
   && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
-)
 
 // Determine if the given element is visible in the viewport
-util.isElementInViewport = e => util.isRectVisibleInViewport(e.getBoundingClientRect())
+util.isElementInViewport = e =>
+  e.offsetHeight > 0 && e.offsetWidth > 0
+  && !e.getAttribute("disabled")
+  && util.isRectVisibleInViewport(e.getBoundingClientRect())
 
 // Process Unmaps
 util.rmMaps = (a) => {

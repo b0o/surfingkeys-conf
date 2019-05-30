@@ -85,13 +85,42 @@ actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) =
   }
 })
 
-// Site-specific actions
-// =====================
-
 // FakeSpot
 // --------
 actions.fakeSpot = (url = util.getCurrentLocation("href")) =>
   actions.openLink(`http://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })()
+
+// Site-specific actions
+// =====================
+
+// Amazon
+// -----
+actions.az = {}
+actions.az.viewProduct = () => {
+  const reHost = /^([-\w]+[.])*amazon.\w+$/
+  const rePath = /^(?:.*\/)*(?:dp|gp\/product)(?:\/(?<asin>\w{10})).*/
+  const elements = {}
+  document.querySelectorAll("a[href]").forEach((a) => {
+    const u = new URL(a.href)
+    if (u.hash.length === 0 && reHost.test(u.hostname)) {
+      const rePathRes = rePath.exec(u.pathname)
+      if (rePathRes === null) {
+        return
+      }
+      if (!util.isElementInViewport(a)) {
+        return
+      }
+      if (elements[rePathRes.groups.asin] !== undefined) {
+        if (!(elements[rePathRes.groups.asin].text.trim().length === 0
+           && a.text.trim().length > 0)) {
+          return
+        }
+      }
+      elements[rePathRes.groups.asin] = a
+    }
+  })
+  Hints.create(Object.values(elements), Hints.dispatchMouseClick)
+}
 
 // Godoc
 // -----

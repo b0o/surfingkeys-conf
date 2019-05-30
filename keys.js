@@ -125,6 +125,11 @@ const maps = {
       description: "Fakespot",
       callback:    actions.fakeSpot,
     },
+    {
+      alias:       "a",
+      description: "View product",
+      callback:    actions.az.viewProduct,
+    },
   ],
 
   "www.google.com": [

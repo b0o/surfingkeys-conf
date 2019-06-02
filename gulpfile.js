@@ -1,5 +1,8 @@
 const gulp = require("gulp")
-const { parallel, series } = require("gulp")
+
+const { task, src, dest } = gulp
+const { parallel, series } = gulp
+
 const parcel = require("gulp-parcel")
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
@@ -7,10 +10,12 @@ const eslint = require("gulp-eslint")
 const file = require("gulp-file")
 const path = require("path")
 const del = require("del")
-const os = require("os")
+const platforms = require("platform-folders")
 const fs = require("fs").promises
 const fetch = require("node-fetch")
-const { spawn } = require("child_process")
+const http = require("http")
+
+const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
 
 let srcFilesLoaded = false
@@ -33,12 +38,17 @@ const requireSrcFiles = () => {
 const paths = {
   scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
   entry:       "conf.js",
-  gulpfile:    ["gulpfile.js"],
-  readme:      ["README.tmpl.md"],
+  gulpfile:    "gulpfile.js",
+  readme:      "README.tmpl.md",
   assets:      "assets",
   screenshots: "assets/screenshots",
   favicons:    "assets/favicons",
+  readmeOut:   "README.md",
+  scriptOut:   ".surfingkeys",
+  installDir:  platforms.getConfigHome(),
 }
+
+const servePort = 9919
 
 // This notice will be injected into the generated README.md file
 const disclaimer = `\
@@ -46,45 +56,31 @@ const disclaimer = `\
 
 NOTICE:
 This is an automatically generated file - Do not edit it directly.
-The source file is README.tmpl.md
+The source file is ${paths.readme}
 
 -->`
 
-gulp.task("gulp-autoreload", () => {
-  let p
-  const spawnChildren = function spawnChildren() {
-    if (p) p.kill()
-    p = spawn("gulp", ["lint-gulpfile", "install", "watch-nogulpfile"], { stdio: "inherit" })
+task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
+
+task("clean-favicons", () => del([paths.favicons]))
+
+task("lint", () => gulp
+  .src([...paths.scripts, paths.gulpfile])
+  .pipe(eslint())
+  .pipe(eslint.format()))
+
+task("check-priv", async () => {
+  try {
+    await fs.stat("./conf.priv.js")
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Notice: Initializing ./conf.priv.js - configure your API keys here.")
+    return fs.copyFile("./conf.priv.example.js", "./conf.priv.js", COPYFILE_EXCL)
   }
-  gulp.watch("gulpfile.js", spawnChildren)
-  spawnChildren()
+  return Promise.resolve()
 })
 
-gulp.task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
-
-gulp.task("clean-favicons", () => del([paths.favicons]))
-
-gulp.task("lint", () => gulp
-  .src([].concat(paths.scripts, paths.gulpfile))
-  .pipe(eslint())
-  .pipe(eslint.format()))
-
-gulp.task("lint-gulpfile", () => gulp
-  .src(paths.gulpfile)
-  .pipe(eslint())
-  .pipe(eslint.format()))
-
-// gulp.task("check-priv", async () => {
-//   try {
-//     fs.statSync("./conf.priv.js")
-//   } catch (e) {
-//     // eslint-disable-next-line no-console
-//     console.log("Creating ./conf.priv.js based on ./conf.priv.example.js")
-//     fs.copyFileSync("./conf.priv.example.js", "./conf.priv.js", fs.constants.COPYFILE_EXCL)
-//   }
-// })
-
-gulp.task("docs", parallel(async () => {
+task("docs", parallel(async () => {
   requireSrcFiles()
 
   const screens = {}
@@ -118,7 +114,6 @@ gulp.task("docs", parallel(async () => {
     const acc1 = await acc1p
     const c = compl[k]
     const u = new URL(c.domain ? `https://${c.domain}` : c.search)
-    // const domain = (u.hostname === "cse.google.com") ? "Google Custom Search" : u.hostname
     const domain = u.hostname
     let s = ""
     if (screens[c.alias]) {
@@ -165,7 +160,7 @@ gulp.task("docs", parallel(async () => {
     return `${acc1}<tr><th colspan="2">${domainStr}</th></tr>${header}\n${maps}`
   }, Promise.resolve(""))
 
-  return gulp.src(["./README.tmpl.md"])
+  return src([paths.readme])
     .pipe(replace("<!--{{DISCLAIMER}}-->", disclaimer))
     .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(compl).length))
     .pipe(replace("<!--{{COMPL_TABLE}}-->", complTable))
@@ -173,14 +168,12 @@ gulp.task("docs", parallel(async () => {
     .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))
-    .pipe(rename("README.md"))
-    .pipe(gulp.dest("."))
+    .pipe(rename(paths.readmeOut))
+    .pipe(dest("."))
 }))
 
 const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
-  // const url = `https://${domain}/favicon.ico`
   const url = favicon
-  // const ico = await fetch(
   let data
   const ext = path.extname(new URL(favicon).pathname)
   try {
@@ -203,7 +196,7 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   }
 }
 
-gulp.task("favicons", series("clean-favicons", async () => {
+task("favicons", series("clean-favicons", async () => {
   requireSrcFiles()
 
   const sites = [].concat(
@@ -221,40 +214,69 @@ gulp.task("favicons", series("clean-favicons", async () => {
         domain:  k,
         favicon: `${new URL(`https://${k}`).origin}/favicon.ico`,
       })),
-  )
-    .filter((e, i, arr) => i === arr.indexOf(e)) // Keep only first occurrence of each element
+  ).filter((e, i, arr) => i === arr.indexOf(e)) // Keep only first occurrence of each element
 
   const favicons = (await Promise.all(sites.map(async site => getFavicon(site))))
     .filter(e => e !== undefined)
   return file(favicons, { src: true })
-    .pipe(gulp.dest(paths.favicons))
+    .pipe(dest(paths.favicons))
 }))
 
-gulp.task("docs-full", parallel("docs", "favicons"))
+task("docs-full", parallel("docs", "favicons"))
 
-gulp.task("build",
+task("build",
   series(
-    parallel(/* "check-priv", */"clean"),
-    parallel("lint", "lint-gulpfile", () => gulp
-      .src(paths.entry, { read: false })
-      .pipe(parcel())
-      .pipe(rename(".surfingkeys"))
-      .pipe(gulp.dest("build")))
+    parallel(
+      "check-priv",
+      "clean",
+    ),
+    parallel(
+      "lint",
+      () => src(paths.entry, { read: false })
+        .pipe(parcel())
+        .pipe(rename(".surfingkeys"))
+        .pipe(dest("build")),
+    )
   ))
 
-gulp.task("dist", parallel("docs-full", "build"))
+task("dist", parallel("docs-full", "build"))
 
-gulp.task("install",
-  series("build",
-    () => gulp.src("build/.surfingkeys").pipe(gulp.dest(os.homedir()))))
+task("install", series("build", () => src(path.join("build", paths.scriptOut))
+  .pipe(dest(paths.installDir))))
 
-gulp.task("watch", () => {
-  gulp.watch([].concat(paths.scripts, paths.gulpfile), parallel("install"))
-})
+const watch = (g, t) => () =>
+  gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)
 
-gulp.task("watch-nogulpfile", async () => parallel(
-  gulp.watch([].concat(paths.scripts), parallel("docs", "install")),
-  gulp.watch(paths.readme, parallel("docs"))
-))
+task("watch-build", watch(paths.scripts, series("build")))
 
-gulp.task("default", parallel("build"))
+task("watch-install", watch(paths.scripts, series("install")))
+
+task("watch-lint", watch([...paths.scripts, paths.gulpfile], series("lint")))
+
+task("watch-docs", watch([...paths.scripts, paths.readme], series("docs")))
+
+task("watch-docs-full", watch([...paths.scripts, paths.readme], series("docs-full")))
+
+const serve = (done) => {
+  const srv = http.createServer(async (req, res) => {
+    console.log(`${new Date().toISOString()} ${req.method} ${req.url}`) // eslint-disable-line no-console
+    res.writeHead(200, {
+      "Content-Type": "text/javascript; charset=UTF-8",
+    })
+    res.end(await fs.readFile("./build/.surfingkeys"))
+  })
+  srv.listen(servePort)
+  console.log(`web server is listening on port ${servePort}`) // eslint-disable-line no-console
+  srv.on("close", () => {
+    console.log("web server is closing...") // eslint-disable-line no-console
+    done()
+  })
+}
+
+task("serve-simple", serve)
+
+task("serve-build", parallel("watch-build", "serve-simple"))
+
+task("serve", series("serve-build"))
+task("watch", series("watch-install"))
+task("default", series("build"))

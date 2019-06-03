@@ -579,14 +579,14 @@ completions.cp.callback = response => parseCrunchbase(response, (person) => {
 // ****** Search Engines ****** //
 
 // DuckDuckGo
-completions.dg = {
-  alias:  "dg",
+completions.dd = {
+  alias:  "dd",
   name:   "duckduckgo",
   search: "https://duckduckgo.com/?q=",
   compl:  "https://duckduckgo.com/ac/?q=",
 }
 
-completions.dg.callback = response => JSON.parse(response.text).map(r => r.phrase)
+completions.dd.callback = response => JSON.parse(response.text).map(r => r.phrase)
 
 // Google
 completions.go = {

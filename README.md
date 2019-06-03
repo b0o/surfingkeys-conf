@@ -239,18 +239,18 @@ For example, to open the Wikipedia completion, you would type `awp` while in nor
     <td></td>
   </tr>
   <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>dd</code></td>
+    <td>duckduckgo</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><a href="http://onelook.com"><img src="./assets/favicons/onelook.com.ico" width="16px"> </a></td>
     <td><code>de</code></td>
     <td>define</td>
     <td><a href="http://onelook.com">onelook.com</a></td>
     <td><a href="#define">:framed_picture:</a></td>
-  </tr>
-  <tr>
-    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
-    <td><code>dg</code></td>
-    <td>duckduckgo</td>
-    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
-    <td></td>
   </tr>
   <tr>
     <td><a href="https://hub.docker.com"><img src="./assets/favicons/hub.docker.com.ico" width="16px"> </a></td>

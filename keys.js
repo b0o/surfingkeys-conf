@@ -146,6 +146,20 @@ const maps = {
   ],
 
 
+  "duckduckgo.com": [
+    {
+      alias:       "a",
+      description: "Open search result",
+      callback:    actions.createHint(".result__a"),
+    },
+    {
+      alias:       "A",
+      description: "Open search result (non-active new tab)",
+      callback:    actions.createHint(".result__a", actions.openAnchor({ newTab: true, active: false })),
+    },
+  ],
+
+
   "yelp.com": [
     {
       alias:       "fs",

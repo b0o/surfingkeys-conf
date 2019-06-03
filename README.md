@@ -32,7 +32,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-202 key mappings for 17 unique
+216 key mappings for 18 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -61,14 +61,17 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;s</code></td><td>Appreciate project</td></tr>
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View project</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>View project (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View project (non-active new tab)</td></tr>
 <tr><th colspan="2"><a href="//dribbble.com"><img src="./assets/favicons/dribbble.com.ico" width="16px"> dribbble.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Heart Shot</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View shot</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>View shot (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View shot (non-active new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;v</code></td><td>View attachment image</td></tr>
 <tr><td><code>&lt;Space&gt;V</code></td><td>Yank attachment image source URL</td></tr>
 <tr><td><code>&lt;Space&gt;z</code></td><td>Zoom shot</td></tr>
+<tr><th colspan="2"><a href="//duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> duckduckgo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
 <tr><th colspan="2"><a href="//en.wiktionary.org"><img src="./assets/favicons/en.wiktionary.org.ico" width="16px"> en.wiktionary.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
@@ -101,7 +104,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;a</code></td><td>View post (link)</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>View post (link and comments)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
-<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (non-active new tab)</td></tr>
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><td><code>]]</code></td><td>Next page</td></tr>
 <tr><td><code>[[</code></td><td>Prev page</td></tr>
@@ -116,9 +119,9 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;S</code></td><td>Downvote</td></tr>
 <tr><td><code>&lt;Space&gt;e</code></td><td>Expand expando</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View post (link)</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (non-active new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
-<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (non-active new tab)</td></tr>
 <tr><th colspan="2"><a href="//twitter.com"><img src="./assets/favicons/twitter.com.ico" width="16px"> twitter.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>Follow user</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Like tweet</td></tr>
@@ -135,7 +138,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
 <tr><th colspan="2"><a href="//www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> www.google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
 <tr><th colspan="2"><a href="//yelp.com"><img src="./assets/favicons/yelp.com.ico" width="16px"> yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
 <tr><th colspan="2"><a href="//youtube.com"><img src="./assets/favicons/youtube.com.ico" width="16px"> youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>

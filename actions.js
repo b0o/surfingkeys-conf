@@ -61,7 +61,7 @@ actions.createHint = (selector, action) => () => {
   Hints.create(selector, action)
 }
 
-actions.openAnchor = ({ newTab = false, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab })()
+actions.openAnchor = ({ newTab = false, active = true, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab, active })()
 
 actions.openLink = (url, { newTab = false, active = true } = {}) => () => {
   if (newTab) {

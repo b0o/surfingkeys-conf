@@ -140,8 +140,8 @@ const maps = {
     },
     {
       alias:       "A",
-      description: "Open search result (new tab)",
-      callback:    actions.createHint("a.fl, .r>a", actions.openAnchor({ newTab: true })),
+      description: "Open search result (non-active new tab)",
+      callback:    actions.createHint("a.fl, .r>a", actions.openAnchor({ newTab: true, active: false })),
     },
   ],
 
@@ -358,8 +358,8 @@ const maps = {
     },
     {
       alias:       "A",
-      description: "View post (link) (new tab)",
-      callback:    actions.createHint(".title", actions.openAnchor({ newTab: true })),
+      description: "View post (link) (non-active new tab)",
+      callback:    actions.createHint(".title", actions.openAnchor({ newTab: true, active: false })),
     },
     {
       alias:       "c",
@@ -368,8 +368,8 @@ const maps = {
     },
     {
       alias:       "C",
-      description: "View post (comments) (new tab)",
-      callback:    actions.createHint(".comments", actions.openAnchor({ newTab: true })),
+      description: "View post (comments) (non-active new tab)",
+      callback:    actions.createHint(".comments", actions.openAnchor({ newTab: true, active: false })),
     },
   ],
 
@@ -411,8 +411,8 @@ const maps = {
     },
     {
       alias:       "C",
-      description: "View post (comments) (new tab)",
-      callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.openAnchor({ newTab: true })),
+      description: "View post (comments) (non-active new tab)",
+      callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.openAnchor({ newTab: true, active: false })),
     },
     {
       leader:      "",
@@ -465,8 +465,8 @@ const maps = {
     },
     {
       alias:       "A",
-      description: "View shot (new tab)",
-      callback:    actions.createHint(".dribbble-over, .gif-target, .more-thumbs a", actions.openAnchor({ newTab: true })),
+      description: "View shot (non-active new tab)",
+      callback:    actions.createHint(".dribbble-over, .gif-target, .more-thumbs a", actions.openAnchor({ newTab: true, active: false })),
     },
     {
       alias:       "v",
@@ -503,8 +503,8 @@ const maps = {
     },
     {
       alias:       "A",
-      description: "View project (new tab)",
-      callback:    actions.createHint(".rf-project-cover__title", actions.openAnchor({ newTab: true })),
+      description: "View project (non-active new tab)",
+      callback:    actions.createHint(".rf-project-cover__title", actions.openAnchor({ newTab: true, active: false })),
     },
   ],
 

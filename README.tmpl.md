@@ -106,10 +106,10 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 
 4. __Gulp Build/Install__
 	```shell
-	$ gulp install # OR "gulp build" to build to ./build/.surfingkeys without installing
+	$ gulp install # OR "gulp build" to build to ./build/surfingkeys.js without installing
 	```
 
-	This will build the final configuration file and place it at `~/.surfingkeys`.
+	This will build the final configuration file and place it at `~/.config/surfingkeys.js`.
 	If you already have a file in that location, make sure you back it up first!
 
 5. __Load your configuration into the SurfingKeys Extension__
@@ -125,9 +125,9 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 
 		_Note: you must specify the full, absolute path; environment variables like `$HOME` or the tilde `~` won't work_:
 
-		- __Linux__: `file:///home/{USERNAME}/.surfingkeys` (replace `{USERNAME}` with your username) 
-		- __macOS__: `file:///Users/{USERNAME}/.surfingkeys` (replace `{USERNAME}` with your username) 
-		- __Windows__: `file://%Homedrive%%Homepath%/.surfingkeys` (This is a guess, please correct me if I'm wrong)
+		- __Linux__: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
+		- __macOS__: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
+		- __Windows__: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
 	- __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your new configuration will automatically be loaded by SurfingKeys.
 
 	</details>
@@ -135,7 +135,7 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 	<details>
 	<summary><strong>Option B</strong>: Manually copy/paste into the SurfingKeys configuration form</summary>
 
-	- __I.__ Copy the contents of `./build/.surfingkeys` (or `$HOME/.surfingkeys` if you ran `gulp install`)
+	- __I.__ Copy the contents of `./build/surfingkeys.js` (or `$HOME/.config/surfingkeys.js` if you ran `gulp install`)
 
 	- __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
 
@@ -161,4 +161,4 @@ Todo
 
 License
 -------
-&copy;2017-2018 Maddison Hellstrom - MIT License
+&copy;2017-2019 Maddison Hellstrom - MIT License

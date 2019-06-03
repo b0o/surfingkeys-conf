@@ -44,7 +44,7 @@ const paths = {
   screenshots: "assets/screenshots",
   favicons:    "assets/favicons",
   readmeOut:   "README.md",
-  scriptOut:   ".surfingkeys",
+  scriptOut:   "surfingkeys.js",
   installDir:  platforms.getConfigHome(),
 }
 
@@ -234,7 +234,7 @@ task("build",
       "lint",
       () => src(paths.entry, { read: false })
         .pipe(parcel())
-        .pipe(rename(".surfingkeys"))
+        .pipe(rename(paths.scriptOut))
         .pipe(dest("build")),
     )
   ))
@@ -263,7 +263,7 @@ const serve = (done) => {
     res.writeHead(200, {
       "Content-Type": "text/javascript; charset=UTF-8",
     })
-    res.end(await fs.readFile("./build/.surfingkeys"))
+    res.end(await fs.readFile(path.join("build", paths.scriptOut)))
   })
   srv.listen(servePort)
   console.log(`web server is listening on port ${servePort}`) // eslint-disable-line no-console

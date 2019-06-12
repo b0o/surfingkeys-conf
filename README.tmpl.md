@@ -1,21 +1,19 @@
 <!--{{DISCLAIMER}}-->
 
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
-[![Liberapay contributions](https://img.shields.io/liberapay/receives/b0o.svg?logo=liberapay&style=for-the-badge)](https://liberapay.com/b0o/donate)
-
 Maddy's SurfingKeys Configuration
 =================================
 
-This is my personal configuration for the wonderful [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
+This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
-Its primary features include [keybindings for performing common actions](#site-specific-key-mappings) on many popular
-sites, as well as OmniBar support for [auto-completing searches](#bundled-search-engine-completions) within <!--{{COMPL_COUNT}}--> sites (and growing)!
+Its primary features include
+- <!--{{KEYS_MAPS_COUNT}}--> [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- <!--{{COMPL_COUNT}}--> [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
 -----------------
 
 1. [Site-Specific Key Mappings](#site-specific-key-mappings)
-2. [Bundled Search Engine Completions](#bundled-search-engine-completions)
+2. [Search Suggestion Engines](#search-suggestion-engines)
 3. [Installation Instructions](#installation)
 4. [Screenshots](#screenshots)
 5. [Todo](#todo)
@@ -35,13 +33,13 @@ sites have been included which can help you perform some common actions:
 </tbody>
 </table>
 
-### Bundled Search Engine Completions
+### Search Suggestion Engines
 
-There are currently <!--{{COMPL_COUNT}}--> Search Engine auto-completions.
+There are currently <!--{{COMPL_COUNT}}--> search suggestion engines.
 
-You can access a Search Engine auto-completion by pressing the search leader key, which is `a` by default, followed by the search engine alias.
+You can access a search suggestion prompt by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
-For example, to open the Wikipedia completion, you would type `awp` while in normal mode.
+For example, to open the Wikipedia suggestion engine, you would type `awp` while in normal mode.
 
 <table>
 <thead>
@@ -87,7 +85,7 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 
 3. __*(Optional)* Private API Key Configuration__
 
-	Some Search Engine Auto-Completions require private API keys for access. These
+	Some search suggestion engines require private API keys for access. These
 	keys are defined in `conf.priv.js`, which is not itself included in this repository.
 	An example configuration containing instructions on how to generate each API key
 	can be found in [conf.priv.example.js](./conf.priv.example.js).

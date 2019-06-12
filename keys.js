@@ -71,6 +71,12 @@ const maps = {
       callback:    actions.createHint("img", i => Clipboard.write(i.src)),
     },
     {
+      alias:       "yT",
+      category:    categories.tabs,
+      description: "Duplicate current tab (non-active new tab)",
+      callback:    actions.duplicateTab,
+    },
+    {
       alias:       ";se",
       category:    categories.settings,
       description: "Edit Settings",

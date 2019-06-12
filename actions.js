@@ -28,6 +28,8 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
 actions.copyURLPath = ({ count, domain } = {}) => () => Clipboard
   .write(actions.getURLPath({ count, domain }))
 
+actions.duplicateTab = () => actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
+
 // Site/Page Information
 // ---------------------
 const domainDossierUrl = "http://centralops.net/co/DomainDossier.aspx"

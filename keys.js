@@ -123,6 +123,18 @@ const maps = {
       description: "Toggle PDF viewer from SurfingKeys",
       callback:    actions.togglePdfViewer,
     },
+    {
+      alias:       "gxE",
+      map:         "gxt",
+      category:    categories.tabs,
+      description: "Close tab to left",
+    },
+    {
+      alias:       "gxR",
+      map:         "gxT",
+      category:    categories.tabs,
+      description: "Close tab to right",
+    },
   ],
 
   "amazon.com": [

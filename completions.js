@@ -311,8 +311,8 @@ completions.az.callback = response => JSON.parse(response.text)[1]
 completions.cl = {
   alias:  "cl",
   name:   "craigslist",
-  search: "https://craigslist.org/search/sss?query=",
-  compl:  "https://craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
+  search: "https://www.craigslist.org/search/sss?query=",
+  compl:  "https://www.craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
 }
 
 completions.cl.callback = response => JSON.parse(response.text)

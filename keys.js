@@ -175,6 +175,12 @@ const maps = {
       description: "Open search result (non-active new tab)",
       callback:    actions.createHint(".result__a", actions.openAnchor({ newTab: true, active: false })),
     },
+    {
+      leader:      "",
+      alias:       "]]",
+      description: "Show more results",
+      callback:    () => document.querySelector(".result--more__btn").click(),
+    },
   ],
 
 

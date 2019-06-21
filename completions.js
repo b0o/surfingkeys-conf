@@ -710,9 +710,8 @@ completions.gi = {
   name:   "google-images",
   search: "https://www.google.com/search?tbm=isch&q=",
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&ds=i&q=",
+  callback: completions.go.callback,
 }
-
-completions.gi.callback = response => JSON.parse(response.text)[1]
 
 // Google - I'm Feeling Lucky
 completions.G = {
@@ -720,9 +719,8 @@ completions.G = {
   name:   "google-lucky",
   search: "https://www.google.com/search?btnI=1&q=",
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
+  callback: completions.go.callback,
 }
-
-completions.gl.callback = response => JSON.parse(response.text)[1]
 
 //  ****** Elixir ****** //
 

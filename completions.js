@@ -133,6 +133,66 @@ completions.cs = {
   callback: googleCxCallback,
 }
 
+
+const parseFirefoxAddonsRes = response => JSON.parse(response.text).results.map((s) => {
+  let { name } = s
+  if (typeof name === "object") {
+    if (name[navigator.language] !== undefined) {
+      name = name[navigator.language]
+    } else {
+      [name] = Object.values(name)
+    }
+  }
+  name = escape(name)
+  let prefix = ""
+  switch (s.type) {
+  case "extension":
+    prefix += "🧩 "
+    break
+  case "statictheme":
+    prefix += "🖌 "
+    break
+  default:
+    break
+  }
+
+  return createSuggestionItem(`
+    <div style="padding:5px;display:grid;grid-template-columns:2em 1fr;grid-gap:15px">
+        <img style="width:2em" src="${s.icon_url}" alt="${name}">
+        <div>
+          <div class="title"><strong>${prefix}${name}</strong></div>
+        </div>
+      </div>
+    `, { url: s.url })
+})
+
+// Firefox Addons
+completions.fa = {
+  alias:    "fa",
+  name:     "firefox-addons",
+  search:   "https://addons.mozilla.org/en-US/firefox/search/?q=",
+  compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?q=",
+  callback: parseFirefoxAddonsRes
+}
+
+// Firefox Themes
+completions.ft = {
+  alias:    "ft",
+  name:     "firefox-themes",
+  search:   "https://addons.mozilla.org/en-US/firefox/search/?type=statictheme&q=",
+  compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=statictheme&q=",
+  callback: parseFirefoxAddonsRes
+}
+
+// Firefox Extensions
+completions.fe = {
+  alias:    "fe",
+  name:     "firefox-extensions",
+  search:   "https://addons.mozilla.org/en-US/firefox/search/?type=extension&q=",
+  compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=extension&q=",
+  callback: parseFirefoxAddonsRes
+}
+
 // OWASP Wiki
 completions.ow = {
   alias:  "ow",

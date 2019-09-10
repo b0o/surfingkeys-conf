@@ -18,6 +18,8 @@ util.addSettings({
   `,
 })
 
+Hints.characters = "qwertasdfgzxcvb"
+
 // Leader for site-specific mappings
 const siteleader = "<Space>"
 

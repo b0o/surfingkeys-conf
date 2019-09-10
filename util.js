@@ -70,11 +70,18 @@ util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) => {
 })
 
 // Process Mappings
-util.processMaps = (maps, siteleader) => {
+util.processMaps = (maps, aliases, siteleader) => {
   if (typeof map === "undefined" || typeof mapkey === "undefined") {
     return
   }
-  Object.entries(maps).forEach(([domain, domainMaps]) => domainMaps.forEach(((mapObj) => {
+
+  const hydratedAliases = Object.entries(aliases)
+    .flatMap(([baseDomain, aliasDomains]) =>
+      aliasDomains.flatMap(a => ({ [a]: maps[baseDomain] })))
+
+  const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases)
+
+  Object.entries(mapsAndAliases).forEach(([domain, domainMaps]) => domainMaps.forEach(((mapObj) => {
     const {
       alias,
       callback,
@@ -83,7 +90,6 @@ util.processMaps = (maps, siteleader) => {
       description = "",
     } = mapObj
     const opts = {}
-
 
     const key = `${leader}${alias}`
 

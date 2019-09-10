@@ -28,7 +28,7 @@ const searchleader = "a"
 // See ./keys.js and ./completions.js
 util.rmMaps(keys.unmaps.mappings)
 util.rmSearchAliases(keys.unmaps.searchAliases)
-util.processMaps(keys.maps, siteleader)
+util.processMaps(keys.maps, keys.aliases, siteleader)
 util.processCompletions(completions, searchleader)
 
 module.exports = { siteleader, searchleader }

@@ -574,6 +574,36 @@ const maps = {
 }
 
 // Aliases
-maps["en.wiktionary.org"] = maps["wikipedia.org"]
+const aliases = {
+  "wikipedia.org": [
+    // Wikimedia sites
+    "wiktionary.org",
+    "wikiquote.org",
+    "wikisource.org",
+    "wikimedia.org",
+    "mediawiki.org",
+    "wikivoyage.org",
+    "wikibooks.org",
+    "wikinews.org",
+    "wikiversity.org",
+    "wikidata.org",
 
-module.exports = { unmaps, maps }
+    // MediaWiki-powered sites
+    "wiki.archlinux.org",
+  ],
+
+  "stackoverflow.com": [
+    "stackexchange.com",
+    "serverfault.com",
+    "superuser.com",
+    "askubuntu.com",
+    "stackapps.com",
+    "mathoverflow.net",
+  ],
+}
+
+module.exports = {
+  unmaps,
+  maps,
+  aliases,
+}

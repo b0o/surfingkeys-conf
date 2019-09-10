@@ -9,8 +9,8 @@ const actions = {}
 
 // URL Manipulation/querying
 // -------------------------
-actions.vimEditURL = () => Front
-  .showEditor(util.getCurrentLocation(), (url) => {
+actions.vimEditURL = () =>
+  Front.showEditor(util.getCurrentLocation(), (url) => {
     actions.openLink(url)()
   }, "url")
 
@@ -25,39 +25,50 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
   return path
 }
 
-actions.copyURLPath = ({ count, domain } = {}) => () => Clipboard
-  .write(actions.getURLPath({ count, domain }))
+actions.copyURLPath = ({ count, domain } = {}) => () =>
+  Clipboard.write(actions.getURLPath({ count, domain }))
 
-actions.duplicateTab = () => actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
+actions.duplicateTab = () =>
+  actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
 
 // Site/Page Information
 // ---------------------
-const domainDossierUrl = "http://centralops.net/co/DomainDossier.aspx"
+const ddossierUrl = "http://centralops.net/co/DomainDossier.aspx"
 
-actions.showWhois = ({ hostname = util.getCurrentLocation("hostname") } = {}) => () => actions.openLink(`${domainDossierUrl}?dom_whois=true&addr=${hostname}`, { newTab: true })()
+actions.showWhois = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
+  () => actions.openLink(`${ddossierUrl}?dom_whois=true&addr=${hostname}`, { newTab: true })()
 
 actions.showDns = ({ hostname = util.getCurrentLocation("hostname"), verbose = false } = {}) => () => {
   let u = ""
   if (verbose) {
-    u = `${domainDossierUrl}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${hostname}`
+    u = `${ddossierUrl}?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true&addr=${hostname}`
   } else {
-    u = `${domainDossierUrl}?dom_dns=true&addr=${hostname}`
+    u = `${ddossierUrl}?dom_dns=true&addr=${hostname}`
   }
   actions.openLink(u, { newTab: true })()
 }
 
 const googleCacheUrl = "https://webcache.googleusercontent.com/search?q=cache:"
 
-actions.showGoogleCache = ({ href = util.getCurrentLocation("href") } = {}) => () => actions.openLink(`${googleCacheUrl}${href}`, { newTab: true })()
+actions.showGoogleCache = ({ href = util.getCurrentLocation("href") } = {}) =>
+  () => actions.openLink(`${googleCacheUrl}${href}`, { newTab: true })()
 
 const waybackUrl = "https://web.archive.org/web/*/"
 
-actions.showWayback = ({ href = util.getCurrentLocation("href") } = {}) => () => actions.openLink(`${waybackUrl}${href}`, { newTab: true })()
+actions.showWayback = ({ href = util.getCurrentLocation("href") } = {}) =>
+  () => actions.openLink(`${waybackUrl}${href}`, { newTab: true })()
+
+const outlineUrl = "https://outline.com/"
+
+actions.showOutline = ({ href = util.getCurrentLocation("href") } = {}) =>
+  () => actions.openLink(`${outlineUrl}${href}`, { newTab: true })()
 
 // Surfingkeys-specific actions
 // ----------------------------
 actions.createHint = (selector, action) => () => {
   if (typeof action === "undefined") {
+    // Use manual reassignment rather than default arg so that we can pre-compile without access
+    // to the Hints object
     action = Hints.dispatchMouseClick // eslint-disable-line no-param-reassign
   }
   Hints.create(selector, action)
@@ -87,10 +98,13 @@ actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) =
   }
 })
 
+actions.previewLink = actions.createHint("a[href]", a =>
+  Front.showEditor(a.href, url => actions.openLink(url)(), "url"))
+
 // FakeSpot
 // --------
 actions.fakeSpot = (url = util.getCurrentLocation("href")) =>
-  actions.openLink(`http://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })()
+  actions.openLink(`https://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })()
 
 // Site-specific actions
 // =====================
@@ -255,7 +269,8 @@ actions.gh.openPull = () => {
   Hints.create(elements, Hints.dispatchMouseClick)
 }
 
-actions.gh.toggleLangStats = () => document.querySelector("button.js-toggle-lang-stats").click()
+actions.gh.toggleLangStats = () =>
+  document.querySelector("summary[title='Click for language details']").click()
 
 actions.gh.goParent = () => {
   const segments = util.getCurrentLocation("pathname")

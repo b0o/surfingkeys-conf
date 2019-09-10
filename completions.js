@@ -172,7 +172,7 @@ completions.fa = {
   name:     "firefox-addons",
   search:   "https://addons.mozilla.org/en-US/firefox/search/?q=",
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?q=",
-  callback: parseFirefoxAddonsRes
+  callback: parseFirefoxAddonsRes,
 }
 
 // Firefox Themes
@@ -181,7 +181,7 @@ completions.ft = {
   name:     "firefox-themes",
   search:   "https://addons.mozilla.org/en-US/firefox/search/?type=statictheme&q=",
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=statictheme&q=",
-  callback: parseFirefoxAddonsRes
+  callback: parseFirefoxAddonsRes,
 }
 
 // Firefox Extensions
@@ -190,7 +190,7 @@ completions.fe = {
   name:     "firefox-extensions",
   search:   "https://addons.mozilla.org/en-US/firefox/search/?type=extension&q=",
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=extension&q=",
-  callback: parseFirefoxAddonsRes
+  callback: parseFirefoxAddonsRes,
 }
 
 // OWASP Wiki
@@ -650,47 +650,47 @@ completions.dd.callback = response => JSON.parse(response.text).map(r => r.phras
 
 // DuckDuckGo - I'm Feeling Lucky
 completions.D = {
-  alias:  "D",
-  name:   "duckduckgo-lucky",
-  search: "https://duckduckgo.com/?q=\\",
-  compl:  "https://duckduckgo.com/ac/?q=\\",
+  alias:    "D",
+  name:     "duckduckgo-lucky",
+  search:   "https://duckduckgo.com/?q=\\",
+  compl:    "https://duckduckgo.com/ac/?q=\\",
   callback: completions.dd.callback,
 }
 
 // DuckDuckGo Images
 completions.di = {
-  alias:  "di",
-  name:   "duckduckgo-images",
-  search: "https://duckduckgo.com/?ia=images&iax=images&q=",
-  compl:  "https://duckduckgo.com/ac/?ia=images&iax=images&q=",
+  alias:    "di",
+  name:     "duckduckgo-images",
+  search:   "https://duckduckgo.com/?ia=images&iax=images&q=",
+  compl:    "https://duckduckgo.com/ac/?ia=images&iax=images&q=",
   callback: completions.dd.callback,
 }
 
 // DuckDuckGo Videos
 completions.dv = {
-  alias:  "dv",
-  name:   "duckduckgo-videos",
-  search: "https://duckduckgo.com/?ia=videos&iax=videos&q=",
-  compl:  "https://duckduckgo.com/ac/?ia=videos&iax=videos&q=",
+  alias:    "dv",
+  name:     "duckduckgo-videos",
+  search:   "https://duckduckgo.com/?ia=videos&iax=videos&q=",
+  compl:    "https://duckduckgo.com/ac/?ia=videos&iax=videos&q=",
   callback: completions.dd.callback,
 }
 
 
 // DuckDuckGo News
 completions.dn = {
-  alias:  "dn",
-  name:   "duckduckgo-news",
-  search: "https://duckduckgo.com/?iar=news&ia=news&q=",
-  compl:  "https://duckduckgo.com/ac/?iar=news&ia=news&q=",
+  alias:    "dn",
+  name:     "duckduckgo-news",
+  search:   "https://duckduckgo.com/?iar=news&ia=news&q=",
+  compl:    "https://duckduckgo.com/ac/?iar=news&ia=news&q=",
   callback: completions.dd.callback,
 }
 
 // DuckDuckGo Maps
 completions.dm = {
-  alias:  "dm",
-  name:   "duckduckgo-maps",
-  search: "https://duckduckgo.com/?ia=maps&iax=maps&iaxm=places&q=",
-  compl:  "https://duckduckgo.com/ac/?ia=maps&iax=maps&iaxm=places&q=",
+  alias:    "dm",
+  name:     "duckduckgo-maps",
+  search:   "https://duckduckgo.com/?ia=maps&iax=maps&iaxm=places&q=",
+  compl:    "https://duckduckgo.com/ac/?ia=maps&iax=maps&iaxm=places&q=",
   callback: completions.dd.callback,
 }
 
@@ -706,19 +706,19 @@ completions.go.callback = response => JSON.parse(response.text)[1]
 
 // Google Images
 completions.gi = {
-  alias:  "gi",
-  name:   "google-images",
-  search: "https://www.google.com/search?tbm=isch&q=",
-  compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&ds=i&q=",
+  alias:    "gi",
+  name:     "google-images",
+  search:   "https://www.google.com/search?tbm=isch&q=",
+  compl:    "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&ds=i&q=",
   callback: completions.go.callback,
 }
 
 // Google - I'm Feeling Lucky
 completions.G = {
-  alias:  "G",
-  name:   "google-lucky",
-  search: "https://www.google.com/search?btnI=1&q=",
-  compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
+  alias:    "G",
+  name:     "google-lucky",
+  search:   "https://www.google.com/search?btnI=1&q=",
+  compl:    "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
   callback: completions.go.callback,
 }
 

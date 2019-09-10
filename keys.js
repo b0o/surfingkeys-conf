@@ -571,6 +571,14 @@ const maps = {
       callback:    actions.createHint("#bodyContent :not(sup):not(.mw-editsection) > a"),
     },
   ],
+
+  "stackoverflow.com": [
+    {
+      alias:       "a",
+      description: "View question",
+      callback:    actions.createHint("a.question-hyperlink"),
+    },
+  ],
 }
 
 // Aliases

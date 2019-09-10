@@ -29,6 +29,12 @@ const maps = {
       description: "Open a link in non-active new tab",
     },
     {
+      alias:       "zf",
+      category:    categories.mouseClick,
+      description: "Open link URL in vim editor",
+      callback:    actions.previewLink,
+    },
+    {
       alias:       "w",
       map:         "k",
       category:    categories.scroll,
@@ -118,6 +124,12 @@ const maps = {
       callback:    actions.showWayback(),
     },
     {
+      alias:       "=o",
+      category:    categories.misc,
+      description: "Show outline.com version of page",
+      callback:    actions.showOutline(),
+    },
+    {
       alias:       ";pd",
       category:    categories.misc,
       description: "Toggle PDF viewer from SurfingKeys",
@@ -163,6 +175,13 @@ const maps = {
     },
   ],
 
+  "algolia.com": [
+    {
+      alias:       "a",
+      description: "Open search result",
+      callback:    actions.createHint(".item-main h2>a:first-child"),
+    },
+  ],
 
   "duckduckgo.com": [
     {
@@ -259,10 +278,10 @@ const maps = {
       description: "View Pull Request",
       callback:    actions.gh.openPull,
     },
-    {
+    { // TODO: Add repetition support: 3gu
       leader:      "",
-      alias:       "gp",
-      description: "Go to parent",
+      alias:       "gu",
+      description: "Go up one path in the URL (GitHub)",
       callback:    actions.gh.goParent,
     },
     {
@@ -569,6 +588,14 @@ const maps = {
       alias:       "a",
       description: "View page",
       callback:    actions.createHint("#bodyContent :not(sup):not(.mw-editsection) > a"),
+    },
+  ],
+
+  "craigslist.org": [
+    {
+      alias:       "a",
+      description: "View listing",
+      callback:    actions.createHint("a.result-title"),
     },
   ],
 

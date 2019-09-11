@@ -1,5 +1,5 @@
 module.exports = {
-  extends: "airbnb",
+  extends: "airbnb-base",
   globals: {
     RUNTIME:            false,
     Omnibar:            false,

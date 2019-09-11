@@ -22,6 +22,7 @@
     "github-reserved-names": "^1.1.5"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-runtime": "^6.26.0",
     "del": "^5.1.0",
@@ -35,6 +36,7 @@
     "gulp-parcel": "b0o/gulp-parcel#fix-g_options-undefined",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^1.0.0",
+    "json5": "^2.1.0",
     "node-fetch": "^2.6.0",
     "platform-folders": "^0.4.1"
   },

@@ -18,7 +18,9 @@ util.addSettings({
   `,
 })
 
-Hints.characters = "qwertasdfgzxcvb"
+if (typeof Hints !== "undefined") {
+  Hints.characters = "qwertasdfgzxcvb"
+}
 
 // Leader for site-specific mappings
 const siteleader = "<Space>"

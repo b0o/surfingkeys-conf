@@ -14,6 +14,7 @@ const platforms = require("platform-folders")
 const fs = require("fs").promises
 const fetch = require("node-fetch")
 const http = require("http")
+const gulpIf = require("gulp-if")
 
 const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
@@ -64,10 +65,17 @@ task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
 
 task("clean-favicons", () => del([paths.favicons]))
 
-task("lint", () => gulp
-  .src([...paths.scripts, paths.gulpfile])
-  .pipe(eslint())
-  .pipe(eslint.format()))
+const lint = (globs, opts = {}) => gulp.src(globs)
+  .pipe(eslint(opts))
+  .pipe(eslint.format())
+
+task("lint", () => lint([...paths.scripts, paths.gulpfile]))
+
+task("lint-fix", () => lint([...paths.scripts, paths.gulpfile], { fix: true })
+  .pipe(gulpIf(
+    (f) => f.eslint !== undefined && f.eslint.fixed === true,
+    gulp.dest((f) => f.base),
+  )))
 
 task("check-priv", async () => {
   try {

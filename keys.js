@@ -62,7 +62,7 @@ const maps = {
       alias:       "gI",
       category:    categories.pageNav,
       description: "View image in new tab",
-      callback:    actions.createHint("img", i => actions.openLink(i.src)()),
+      callback:    actions.createHint("img", (i) => actions.openLink(i.src)()),
     },
     {
       alias:       "yp",
@@ -74,7 +74,7 @@ const maps = {
       alias:       "yI",
       category:    categories.clipboard,
       description: "Copy Image URL",
-      callback:    actions.createHint("img", i => Clipboard.write(i.src)),
+      callback:    actions.createHint("img", (i) => Clipboard.write(i.src)),
     },
     {
       alias:       "yT",
@@ -533,7 +533,7 @@ const maps = {
     {
       alias:       "V",
       description: "Yank attachment image source URL",
-      callback:    actions.dr.attachment(a => Clipboard.write(a)),
+      callback:    actions.dr.attachment((a) => Clipboard.write(a)),
     },
     {
       alias:       "z",

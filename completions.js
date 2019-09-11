@@ -20,7 +20,7 @@ const googleCxPublicURL = (alias) => {
 
 const googleCxCallback = (response) => {
   const res = JSON.parse(response.text).items
-  return res.map(s => createSuggestionItem(`
+  return res.map((s) => createSuggestionItem(`
       <div>
         <div class="title"><strong>${s.htmlTitle}</strong></div>
         <div>${s.htmlSnippet}</div>
@@ -50,7 +50,7 @@ completions.au = {
 
 completions.au.callback = (response) => {
   const res = JSON.parse(response.text)
-  return res.map(s => createURLItem(s, `https://aur.archlinux.org/packages/${s}`))
+  return res.map((s) => createURLItem(s, `https://aur.archlinux.org/packages/${s}`))
 }
 
 // Arch Linux Wiki
@@ -61,7 +61,7 @@ completions.aw = {
   compl:  "https://wiki.archlinux.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.aw.callback = response => JSON.parse(response.text)[1]
+completions.aw.callback = (response) => JSON.parse(response.text)[1]
 
 // Arch Linux Forums
 completions.af = {
@@ -134,7 +134,7 @@ completions.cs = {
 }
 
 
-const parseFirefoxAddonsRes = response => JSON.parse(response.text).results.map((s) => {
+const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.map((s) => {
   let { name } = s
   if (typeof name === "object") {
     if (name[navigator.language] !== undefined) {
@@ -201,7 +201,7 @@ completions.ow = {
   compl:  "https://www.owasp.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.ow.callback = response => JSON.parse(response.text)[1]
+completions.ow.callback = (response) => JSON.parse(response.text)[1]
 
 // StackOverflow
 completions.so = {
@@ -211,7 +211,7 @@ completions.so = {
   compl:  "https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=",
 }
 
-completions.so.callback = response => JSON.parse(response.text).items.map(s => createURLItem(`[${s.score}] ${s.title}`, s.link))
+completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => createURLItem(`[${s.score}] ${s.title}`, s.link))
 
 // DockerHub repo search
 completions.dh = {
@@ -221,7 +221,7 @@ completions.dh = {
   compl:  "https://hub.docker.com/v2/search/repositories/?page_size=20&query=",
 }
 
-completions.dh.callback = response => JSON.parse(response.text).results.map((s) => {
+completions.dh.callback = (response) => JSON.parse(response.text).results.map((s) => {
   let meta = ""
   let repo = s.repo_name
   meta += `[★${escape(s.star_count)}] `
@@ -246,7 +246,7 @@ completions.gh = {
   compl:  "https://api.github.com/search/repositories?sort=stars&order=desc&q=",
 }
 
-completions.gh.callback = response => JSON.parse(response.text).items.map((s) => {
+completions.gh.callback = (response) => JSON.parse(response.text).items.map((s) => {
   let prefix = ""
   if (s.stargazers_count) {
     prefix += `[★${s.stargazers_count}] `
@@ -262,7 +262,7 @@ completions.do = {
   compl:  "https://5jmgqstc3m.execute-api.us-west-1.amazonaws.com/v1/domainr?q=",
 }
 
-completions.do.callback = response => Object.entries(JSON.parse(response.text))
+completions.do.callback = (response) => Object.entries(JSON.parse(response.text))
   .map(([domain, data]) => {
     let color = "inherit"
     let symbol = "<strong>?</strong> "
@@ -292,8 +292,8 @@ completions.vw = {
   compl:   "https://vim.fandom.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.vw.callback = response => JSON.parse(response.text)[1]
-  .map(r => createURLItem(r, `https://vim.fandom.com/wiki/${r}`))
+completions.vw.callback = (response) => JSON.parse(response.text)[1]
+  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${r}`))
 
 // ****** Shopping & Food ****** //
 
@@ -305,7 +305,7 @@ completions.az = {
   compl:  "https://completion.amazon.com/search/complete?method=completion&mkt=1&search-alias=aps&q=",
 }
 
-completions.az.callback = response => JSON.parse(response.text)[1]
+completions.az.callback = (response) => JSON.parse(response.text)[1]
 
 // Craigslist
 completions.cl = {
@@ -315,7 +315,7 @@ completions.cl = {
   compl:  "https://www.craigslist.org/suggest?v=12&type=search&cat=sss&area=1&term=",
 }
 
-completions.cl.callback = response => JSON.parse(response.text)
+completions.cl.callback = (response) => JSON.parse(response.text)
 
 // EBay
 completions.eb = {
@@ -325,7 +325,7 @@ completions.eb = {
   compl:  "https://autosug.ebay.com/autosug?callback=0&sId=0&kwd=",
 }
 
-completions.eb.callback = response => JSON.parse(response.text).res.sug
+completions.eb.callback = (response) => JSON.parse(response.text).res.sug
 
 // Yelp
 completions.yp = {
@@ -352,10 +352,11 @@ completions.yp.callback = (response) => {
 // ****** General References, Calculators & Utilities ****** //
 
 const parseDatamuseRes = (res, o = {}) => {
-  const opts = Object.assign({}, {
+  const opts = {
     maxDefs:  -1,
     ellipsis: false,
-  }, o)
+  }
+  Object.assign(opts, o)
 
   return res.map((r) => {
     const defs = []
@@ -425,7 +426,7 @@ completions.wp = {
   compl:  "https://en.wikipedia.org/w/api.php?action=query&format=json&generator=prefixsearch&prop=info|pageprops%7Cpageimages%7Cdescription&redirects=&ppprop=displaytitle&piprop=thumbnail&pithumbsize=100&pilimit=6&inprop=url&gpssearch=",
 }
 
-completions.wp.callback = response => Object.values(JSON.parse(response.text).query.pages)
+completions.wp.callback = (response) => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => {
     const img = p.thumbnail ? p.thumbnail.source : wpDefaultIcon
     const desc = p.description ? p.description : ""
@@ -460,8 +461,8 @@ completions.wt = {
   compl:  "https://en.wiktionary.org/w/api.php?action=query&format=json&generator=prefixsearch&gpssearch=",
 }
 
-completions.wt.callback = response => Object.values(JSON.parse(response.text).query.pages)
-  .map(p => p.title)
+completions.wt.callback = (response) => Object.values(JSON.parse(response.text).query.pages)
+  .map((p) => p.title)
 
 // WolframAlpha
 completions.wa = {
@@ -491,7 +492,7 @@ completions.wa.callback = (response) => {
         </div>`, { url: "https://www.wolframalpha.com/" })]
     }
     if (res.didyoumeans) {
-      return res.didyoumeans.map(s => createSuggestionItem(`
+      return res.didyoumeans.map((s) => createSuggestionItem(`
         <div>
             <div class="title"><strong>Did you mean...?</strong></div>
             <div class="title">${escape(s.val)}</div>
@@ -528,7 +529,7 @@ completions.wa.callback = (response) => {
     }
   })
 
-  return results.map(r => createSuggestionItem(`
+  return results.map((r) => createSuggestionItem(`
     <div>
       <div class="title"><strong>${r.title}</strong></div>
       ${r.values.join("\n")}
@@ -546,7 +547,7 @@ const parseCrunchbase = (response, parse) => {
         <div class="title">Nothing matched your query</div>
       </div>`, { url: "https://www.crunchbase.com/" })]
   }
-  const objs = res.map(obj => parse(obj))
+  const objs = res.map((obj) => parse(obj))
   return objs.map((p) => {
     const domain = p.domain ? ` | <a href="https://${p.domain}" target="_blank">${p.domain}</a>` : ""
     const location = p.loc ? ` located in <em>${p.loc}</em>` : ""
@@ -570,7 +571,7 @@ completions.co = {
   compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`,
 }
 
-completions.co.callback = response => parseCrunchbase(response, (org) => {
+completions.co.callback = (response) => parseCrunchbase(response, (org) => {
   const r = org.properties
   const p = {
     name:   escape(r.name),
@@ -605,7 +606,7 @@ completions.cp = {
   compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`,
 }
 
-completions.cp.callback = response => parseCrunchbase(response, (person) => {
+completions.cp.callback = (response) => parseCrunchbase(response, (person) => {
   const r = person.properties
   const p = {
     name: `${escape(r.first_name)} ${escape(r.last_name)}`,
@@ -646,7 +647,7 @@ completions.dd = {
   compl:  "https://duckduckgo.com/ac/?q=",
 }
 
-completions.dd.callback = response => JSON.parse(response.text).map(r => r.phrase)
+completions.dd.callback = (response) => JSON.parse(response.text).map((r) => r.phrase)
 
 // DuckDuckGo - I'm Feeling Lucky
 completions.D = {
@@ -702,7 +703,7 @@ completions.go = {
   compl:  "https://www.google.com/complete/search?client=chrome-omni&gs_ri=chrome-ext&oit=1&cp=1&pgcl=7&q=",
 }
 
-completions.go.callback = response => JSON.parse(response.text)[1]
+completions.go.callback = (response) => JSON.parse(response.text)[1]
 
 // Google Images
 completions.gi = {
@@ -732,7 +733,7 @@ completions.hx = {
   compl:  "https://hex.pm/api/packages?sort=downloads&hx&search=",
 }
 
-completions.hx.callback = response => JSON.parse(response.text).map((s) => {
+completions.hx.callback = (response) => JSON.parse(response.text).map((s) => {
   let dls = ""
   let desc = ""
   let liscs = ""
@@ -767,7 +768,7 @@ completions.hd = {
   compl:  "https://hex.pm/api/packages?sort=downloads&hd&search=",
 }
 
-completions.hd.callback = response => JSON.parse(response.text).map((s) => {
+completions.hd.callback = (response) => JSON.parse(response.text).map((s) => {
   let dls = ""
   let desc = ""
   if (s.downloads && s.downloads.all) {
@@ -796,7 +797,7 @@ completions.ex = {
   compl:  googleCxURL("ex"),
 }
 
-completions.ex.callback = response => JSON.parse(response.text).items.map((s) => {
+completions.ex.callback = (response) => JSON.parse(response.text).items.map((s) => {
   let hash = ""
 
   const snippet = s.htmlSnippet
@@ -849,7 +850,7 @@ completions.ex.callback = response => JSON.parse(response.text).items.map((s) =>
         <div>${s.htmlSnippet}</div>
       </div>
     `, { url: `${s.link}#${hash}` })
-}).filter(s => s !== null)
+}).filter((s) => s !== null)
 
 // ****** Golang ****** //
 
@@ -871,7 +872,7 @@ completions.gd = {
   compl:  "https://api.godoc.org/search?q=",
 }
 
-completions.gd.callback = response => JSON.parse(response.text).results.map((s) => {
+completions.gd.callback = (response) => JSON.parse(response.text).results.map((s) => {
   let prefix = ""
   if (s.import_count) {
     prefix += `[↓${s.import_count}] `
@@ -891,7 +892,7 @@ completions.gw = {
   compl:   "https://gowalker.org/search/json?q=",
 }
 
-completions.gw.callback = response => JSON.parse(response.text).results.map((s) => {
+completions.gw.callback = (response) => JSON.parse(response.text).results.map((s) => {
   const title = escape(s.title)
   const desc = escape(s.description)
   return createSuggestionItem(`
@@ -912,8 +913,8 @@ completions.gs = {
   compl:   "http://go-search.org/api?action=search&q=",
 }
 
-completions.gs.callback = response => JSON.parse(response.text).hits
-  .map(r => r.package)
+completions.gs.callback = (response) => JSON.parse(response.text).hits
+  .map((r) => r.package)
 
 
 // ****** Haskell ****** //
@@ -927,8 +928,8 @@ completions.ha = {
   compl:   "https://hackage.haskell.org/packages/search.json?terms=",
 }
 
-completions.ha.callback = response => JSON.parse(response.text)
-  .map(s => createURLItem(s.name, `https://hackage.haskell.org/package/${s.name}`))
+completions.ha.callback = (response) => JSON.parse(response.text)
+  .map((s) => createURLItem(s.name, `https://hackage.haskell.org/package/${s.name}`))
 
 // Hoogle
 completions.ho = {
@@ -941,8 +942,8 @@ completions.ho = {
     encodeURIComponent("+platform +xmonad +xmonad-contrib ")}`,
 }
 
-completions.ho.callback = response => JSON.parse(response.text).results
-  .map(s => createURLItem(s.self, s.location))
+completions.ho.callback = (response) => JSON.parse(response.text).results
+  .map((s) => createURLItem(s.self, s.location))
 
 // Haskell Wiki
 completions.hw = {
@@ -953,7 +954,7 @@ completions.hw = {
   compl:   "https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
-completions.hw.callback = response => JSON.parse(response.text)[1]
+completions.hw.callback = (response) => JSON.parse(response.text)[1]
 
 // Hayoo
 completions.hy = {
@@ -964,8 +965,8 @@ completions.hy = {
   compl:   "http://hayoo.fh-wedel.de/json?query=",
 }
 
-completions.hy.callback = response => JSON.parse(response.text).result
-  .map(s => createURLItem(`[${s.resultType}] ${s.resultName}`, s.resultUri))
+completions.hy.callback = (response) => JSON.parse(response.text).result
+  .map((s) => createURLItem(`[${s.resultType}] ${s.resultName}`, s.resultUri))
 
 // ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
 
@@ -1028,7 +1029,7 @@ completions.np = {
   compl:   "https://api.npms.io/v2/search/suggestions?size=20&q=",
 }
 
-completions.np.callback = response => JSON.parse(response.text)
+completions.np.callback = (response) => JSON.parse(response.text)
   .map((s) => {
     let flags = ""
     let desc = ""
@@ -1117,8 +1118,8 @@ completions.re = {
   compl:  "https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q=",
 }
 
-completions.re.callback = response => JSON.parse(response.text).data.children
-  .map(s => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://reddit.com${s.data.permalink}`))
+completions.re.callback = (response) => JSON.parse(response.text).data.children
+  .map((s) => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://reddit.com${s.data.permalink}`))
 
 // YouTube
 completions.yt = {
@@ -1128,7 +1129,7 @@ completions.yt = {
   compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`,
 }
 
-completions.yt.callback = response => JSON.parse(response.text).items
+completions.yt.callback = (response) => JSON.parse(response.text).items
   .map((s) => {
     switch (s.id.kind) {
     case "youtube#channel":
@@ -1144,6 +1145,6 @@ completions.yt.callback = response => JSON.parse(response.text).items
     default:
       return null
     }
-  }).filter(s => s !== null)
+  }).filter((s) => s !== null)
 
 module.exports = completions

@@ -74,7 +74,7 @@ actions.createHint = (selector, action) => () => {
   Hints.create(selector, action)
 }
 
-actions.openAnchor = ({ newTab = false, active = true, prop = "href" } = {}) => a => actions.openLink(a[prop], { newTab, active })()
+actions.openAnchor = ({ newTab = false, active = true, prop = "href" } = {}) => (a) => actions.openLink(a[prop], { newTab, active })()
 
 actions.openLink = (url, { newTab = false, active = true } = {}) => () => {
   if (newTab) {
@@ -98,8 +98,8 @@ actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) =
   }
 })
 
-actions.previewLink = actions.createHint("a[href]", a =>
-  Front.showEditor(a.href, url => actions.openLink(url)(), "url"))
+actions.previewLink = actions.createHint("a[href]", (a) =>
+  Front.showEditor(a.href, (url) => actions.openLink(url)(), "url"))
 
 // FakeSpot
 // --------
@@ -178,7 +178,7 @@ actions.gh.openRepo = () => {
   const elements = [...document.querySelectorAll("a[href]")]
     .filter((a) => {
       const u = new URL(a.href)
-      const [user, repo, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin")
         && typeof user === "string"
@@ -197,7 +197,7 @@ actions.gh.openUser = () => {
   const elements = [...document.querySelectorAll("a[href]")]
     .filter((a) => {
       const u = new URL(a.href)
-      const [user, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      const [user, ...rest] = u.pathname.split("/").filter((s) => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin")
         && typeof user === "string"
@@ -214,7 +214,7 @@ actions.gh.openFile = () => {
   const elements = [...document.querySelectorAll("a[href]")]
     .filter((a) => {
       const u = new URL(a.href)
-      const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter(s => s !== "")
+      const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter((s) => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin")
         && typeof user === "string"
@@ -235,7 +235,7 @@ actions.gh.openIssue = () => {
   const elements = [...document.querySelectorAll("a[href]")]
     .filter((a) => {
       const u = new URL(a.href)
-      const [user, repo, maybeIssues] = u.pathname.split("/").filter(s => s !== "")
+      const [user, repo, maybeIssues] = u.pathname.split("/").filter((s) => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin")
         && typeof user === "string"
@@ -254,7 +254,7 @@ actions.gh.openPull = () => {
   const elements = [...document.querySelectorAll("a[href]")]
     .filter((a) => {
       const u = new URL(a.href)
-      const [user, repo, maybePulls] = u.pathname.split("/").filter(s => s !== "")
+      const [user, repo, maybePulls] = u.pathname.split("/").filter((s) => s !== "")
       return (
         u.origin === util.getCurrentLocation("origin")
         && typeof user === "string"
@@ -274,7 +274,7 @@ actions.gh.toggleLangStats = () =>
 
 actions.gh.goParent = () => {
   const segments = util.getCurrentLocation("pathname")
-    .split("/").filter(s => s !== "")
+    .split("/").filter((s) => s !== "")
   const newPath = (() => {
     const [user, repo, maybeBlob] = segments
     switch (segments.length) {
@@ -327,7 +327,7 @@ actions.gl.star = () => {
 actions.re = {}
 actions.re.collapseNextComment = () => {
   const vis = Array.from(document.querySelectorAll(".noncollapsed.comment"))
-    .filter(e => util.isElementInViewport(e))
+    .filter((e) => util.isElementInViewport(e))
   if (vis.length > 0) {
     vis[0].querySelector(".expand").click()
   }
@@ -343,8 +343,8 @@ actions.re.toggleVisibleExpandos = (dir = 0) => () => {
     sel += ".collapsed"
   }
   Array.from(document.querySelectorAll(sel))
-    .filter(e => util.isElementInViewport(e))
-    .forEach(e => e.click())
+    .filter((e) => util.isElementInViewport(e))
+    .forEach((e) => e.click())
 }
 
 // HackerNews
@@ -360,7 +360,7 @@ actions.hn.goParent = () => {
 
 actions.hn.collapseNextComment = () => {
   const vis = Array.from(document.querySelectorAll("a.togg"))
-    .filter(e => e.innerText === "[-]" && util.isElementInViewport(e))
+    .filter((e) => e.innerText === "[-]" && util.isElementInViewport(e))
   if (vis.length > 0) {
     vis[0].click()
   }
@@ -400,7 +400,7 @@ actions.hn.openLinkAndComments = (e) => {
 // -----------
 actions.ph = {}
 actions.ph.openExternal = () => {
-  Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", p => actions.openLink(
+  Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", (p) => actions.openLink(
     p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href,
     { newTab: true }
   )())
@@ -409,7 +409,7 @@ actions.ph.openExternal = () => {
 // Dribbble
 // --------
 actions.dr = {}
-actions.dr.attachment = (cb = a => actions.openLink(a, { newTab: true })()) => actions.createHint(".attachments .thumb", a => cb(a.src.replace("/thumbnail/", "/")))
+actions.dr.attachment = (cb = (a) => actions.openLink(a, { newTab: true })()) => actions.createHint(".attachments .thumb", (a) => cb(a.src.replace("/thumbnail/", "/")))
 
 // Wikipedia
 // ---------
@@ -422,7 +422,7 @@ actions.wp.toggleSimple = () => {
         return s === "simple" ? "" : "simple"
       }
       return s
-    }).filter(s => s !== "").join(".")
+    }).filter((s) => s !== "").join(".")
   actions.openLink(u.href)()
 }
 

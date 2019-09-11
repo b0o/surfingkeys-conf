@@ -9,7 +9,7 @@ util.getCurrentLocation = (prop = "href") => {
   return window.location[prop]
 }
 
-util.escape = str => String(str).replace(/[&<>"'`=/]/g, s => ({
+util.escape = (str) => String(str).replace(/[&<>"'`=/]/g, (s) => ({
   "&":  "&amp;",
   "<":  "&lt;",
   ">":  "&gt;",
@@ -40,7 +40,7 @@ util.createURLItem = (title, url, sanitize = true) => {
 }
 
 // Determine if the given rect is visible in the viewport
-util.isRectVisibleInViewport = rect =>
+util.isRectVisibleInViewport = (rect) =>
   rect.height > 0
   && rect.width > 0
   && rect.bottom >= 0
@@ -49,7 +49,7 @@ util.isRectVisibleInViewport = rect =>
   && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
 
 // Determine if the given element is visible in the viewport
-util.isElementInViewport = e =>
+util.isElementInViewport = (e) =>
   e.offsetHeight > 0 && e.offsetWidth > 0
   && !e.getAttribute("disabled")
   && util.isRectVisibleInViewport(e.getBoundingClientRect())
@@ -59,14 +59,14 @@ util.rmMaps = (a) => {
   if (typeof unmap === "undefined") {
     return
   }
-  a.forEach(u => unmap(u))
+  a.forEach((u) => unmap(u))
 }
 
-util.rmSearchAliases = a => Object.entries(a).forEach(([leader, items]) => {
+util.rmSearchAliases = (a) => Object.entries(a).forEach(([leader, items]) => {
   if (typeof removeSearchAliasX === "undefined") {
     return
   }
-  items.forEach(v => removeSearchAliasX(v, leader))
+  items.forEach((v) => removeSearchAliasX(v, leader))
 })
 
 // Process Mappings
@@ -77,7 +77,7 @@ util.processMaps = (maps, aliases, siteleader) => {
 
   const hydratedAliases = Object.entries(aliases)
     .flatMap(([baseDomain, aliasDomains]) =>
-      aliasDomains.flatMap(a => ({ [a]: maps[baseDomain] })))
+      aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] })))
 
   const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases)
 

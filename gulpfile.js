@@ -217,15 +217,15 @@ task("favicons", series("clean-favicons", async () => {
 
     // site-specific keybindings
     Object.keys(keys.maps)
-      .filter(k => k !== "global")
-      .map(k => ({
+      .filter((k) => k !== "global")
+      .map((k) => ({
         domain:  k,
         favicon: `${new URL(`https://${k}`).origin}/favicon.ico`,
       })),
   ).filter((e, i, arr) => i === arr.indexOf(e)) // Keep only first occurrence of each element
 
-  const favicons = (await Promise.all(sites.map(async site => getFavicon(site))))
-    .filter(e => e !== undefined)
+  const favicons = (await Promise.all(sites.map(async (site) => getFavicon(site))))
+    .filter((e) => e !== undefined)
   return file(favicons, { src: true })
     .pipe(dest(paths.favicons))
 }))

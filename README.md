@@ -12,8 +12,8 @@ Maddy's SurfingKeys Configuration
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include
-- 216 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
-- 46 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
+- 241 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- 54 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
 -----------------
@@ -30,13 +30,14 @@ Features
 
 ### Site-Specific Key Mappings
 
-216 key mappings for 18 unique
+241 key mappings for 20 unique
 sites have been included which can help you perform some common actions:
 
 <table>
 <tbody>
 <tr><th colspan="2"><strong>global</strong></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>F</code></td><td>Open a link in non-active new tab</td></tr>
+<tr><td><code>zf</code></td><td>Open link URL in vim editor</td></tr>
 <tr><td><code>w</code></td><td>Scroll up</td></tr>
 <tr><td><code>s</code></td><td>Scroll down</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
@@ -52,7 +53,12 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&#x3D;D</code></td><td>Lookup all information for domain</td></tr>
 <tr><td><code>&#x3D;c</code></td><td>Show Google's cached version of page</td></tr>
 <tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
+<tr><td><code>&#x3D;o</code></td><td>Show outline.com version of page</td></tr>
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
+<tr><td><code>gxE</code></td><td>Close tab to left</td></tr>
+<tr><td><code>gxR</code></td><td>Close tab to right</td></tr>
+<tr><th colspan="2"><a href="//algolia.com"><img src="./assets/favicons/algolia.com.ico" width="16px"> algolia.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><th colspan="2"><a href="//amazon.com"><img src="./assets/favicons/amazon.com.ico" width="16px"> amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View product</td></tr>
@@ -61,6 +67,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View project</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>View project (non-active new tab)</td></tr>
+<tr><th colspan="2"><a href="//craigslist.org"><img src="./assets/favicons/craigslist.org.ico" width="16px"> craigslist.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View listing</td></tr>
 <tr><th colspan="2"><a href="//dribbble.com"><img src="./assets/favicons/dribbble.com.ico" width="16px"> dribbble.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Heart Shot</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View shot</td></tr>
@@ -71,9 +79,7 @@ sites have been included which can help you perform some common actions:
 <tr><th colspan="2"><a href="//duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> duckduckgo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
-<tr><th colspan="2"><a href="//en.wiktionary.org"><img src="./assets/favicons/en.wiktionary.org.ico" width="16px"> en.wiktionary.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
-<tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
-<tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
+<tr><td><code>]]</code></td><td>Show more results</td></tr>
 <tr><th colspan="2"><a href="//fonts.adobe.com"><img src="./assets/favicons/fonts.adobe.com.ico" width="16px"> fonts.adobe.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Activate font</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Favorite font</td></tr>
@@ -83,7 +89,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
 <tr><td><code>&lt;Space&gt;i</code></td><td>View Issue</td></tr>
 <tr><td><code>&lt;Space&gt;p</code></td><td>View Pull Request</td></tr>
-<tr><td><code>gp</code></td><td>Go to parent</td></tr>
+<tr><td><code>gu</code></td><td>Go up one path in the URL (GitHub)</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;S</code></td><td>Check Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
@@ -121,6 +127,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>View post (link) (non-active new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (non-active new tab)</td></tr>
+<tr><th colspan="2"><a href="//stackoverflow.com"><img src="./assets/favicons/stackoverflow.com.ico" width="16px"> stackoverflow.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View question</td></tr>
 <tr><th colspan="2"><a href="//twitter.com"><img src="./assets/favicons/twitter.com.ico" width="16px"> twitter.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>Follow user</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Like tweet</td></tr>
@@ -152,7 +160,7 @@ sites have been included which can help you perform some common actions:
 
 ### Search Suggestion Engines
 
-There are currently 46 search suggestion engines.
+There are currently 54 search suggestion engines.
 
 You can access a search suggestion prompt by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -167,6 +175,20 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
 </thead>
 <tbody>
 
+  <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>D</code></td>
+    <td>duckduckgo-lucky</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
+    <td><code>G</code></td>
+    <td>google-lucky</td>
+    <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
   <tr>
     <td><a href="https://bbs.archlinux.org"><img src="./assets/favicons/bbs.archlinux.org.ico" width="16px"> </a></td>
     <td><code>af</code></td>
@@ -210,10 +232,10 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://craigslist.org"><img src="./assets/favicons/craigslist.org.ico" width="16px"> </a></td>
+    <td><a href="https://www.craigslist.org"><img src="./assets/favicons/www.craigslist.org.ico" width="16px"> </a></td>
     <td><code>cl</code></td>
     <td>craigslist</td>
-    <td><a href="https://craigslist.org">craigslist.org</a></td>
+    <td><a href="https://www.craigslist.org">www.craigslist.org</a></td>
     <td></td>
   </tr>
   <tr>
@@ -259,11 +281,39 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><a href="#dockerhub">:framed_picture:</a></td>
   </tr>
   <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>di</code></td>
+    <td>duckduckgo-images</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>dm</code></td>
+    <td>duckduckgo-maps</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>dn</code></td>
+    <td>duckduckgo-news</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><a href="https://domainr.com"><img src="./assets/favicons/domainr.com.ico" width="16px"> </a></td>
     <td><code>do</code></td>
     <td>domainr</td>
     <td><a href="https://domainr.com">domainr.com</a></td>
     <td><a href="#domainr">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
+    <td><code>dv</code></td>
+    <td>duckduckgo-videos</td>
+    <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
+    <td></td>
   </tr>
   <tr>
     <td><a href="https://www.ebay.com"><img src="./assets/favicons/www.ebay.com.ico" width="16px"> </a></td>
@@ -277,6 +327,27 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><code>ex</code></td>
     <td>exdocs</td>
     <td><a href="https://hex.pm">hex.pm</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://addons.mozilla.org"><img src="./assets/favicons/addons.mozilla.org.ico" width="16px"> </a></td>
+    <td><code>fa</code></td>
+    <td>firefox-addons</td>
+    <td><a href="https://addons.mozilla.org">addons.mozilla.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://addons.mozilla.org"><img src="./assets/favicons/addons.mozilla.org.ico" width="16px"> </a></td>
+    <td><code>fe</code></td>
+    <td>firefox-extensions</td>
+    <td><a href="https://addons.mozilla.org">addons.mozilla.org</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://addons.mozilla.org"><img src="./assets/favicons/addons.mozilla.org.ico" width="16px"> </a></td>
+    <td><code>ft</code></td>
+    <td>firefox-themes</td>
+    <td><a href="https://addons.mozilla.org">addons.mozilla.org</a></td>
     <td></td>
   </tr>
   <tr>
@@ -304,13 +375,6 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
     <td><code>gi</code></td>
     <td>google-images</td>
-    <td><a href="https://www.google.com">www.google.com</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
-    <td><code>gl</code></td>
-    <td>google-lucky</td>
     <td><a href="https://www.google.com">www.google.com</a></td>
     <td></td>
   </tr>

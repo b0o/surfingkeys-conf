@@ -604,8 +604,23 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 	```shell
 	$ vim ./conf.priv.js
 	```
+ 
+4. __*(Optional)* Own Custom Mappings & Settings Configuration__
+    Own custom settings & mappings can be placed in one file without touching
+    the core files.
+	Copy the example custom configuration:
 
-4. __Gulp Build/Install__
+	```shell
+	$ cp ./conf.cust.example.js ./conf.cust.js
+	```
+
+	Open `./conf.cust.js` in your favorite editor and follow the instructions inside:
+
+	```shell
+	$ vim ./conf.cust.js
+	```
+
+5. __Gulp Build/Install__
 	```shell
 	$ gulp install # OR "gulp build" to build to ./build/surfingkeys.js without installing
 	```
@@ -613,7 +628,7 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 	This will build the final configuration file and place it at `~/.config/surfingkeys.js`.
 	If you already have a file in that location, make sure you back it up first!
 
-5. __Load your configuration into the SurfingKeys Extension__
+6. __Load your configuration into the SurfingKeys Extension__
 
 	<details>
 	<summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load configuration file from disk</summary>

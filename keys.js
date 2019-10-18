@@ -1,5 +1,6 @@
 const actions = require("./actions")
 const { categories } = require("./help")
+const custom = require("./conf.cust")
 
 // Remove undesired default mappings
 const unmaps = {
@@ -608,6 +609,12 @@ const maps = {
   ],
 }
 
+const customMaps = Object.entries(custom.maps || {})
+
+customMaps.forEach((m) => {
+  maps[m[0]] = (maps[m[0]] || []).concat(m[1])
+})
+
 // Aliases
 const aliases = {
   "wikipedia.org": [
@@ -636,6 +643,8 @@ const aliases = {
     "mathoverflow.net",
   ],
 }
+
+Object.assign(aliases, custom.aliases || {})
 
 module.exports = {
   unmaps,

@@ -1,6 +1,7 @@
 const util = require("./util")
 const keys = require("./keys")
 const completions = require("./completions")
+const custom = require("./conf.cust")
 
 // ---- Settings ----//
 util.addSettings({
@@ -17,6 +18,8 @@ util.addSettings({
     }
   `,
 })
+
+util.addSettings(custom.conf || {})
 
 if (typeof Hints !== "undefined") {
   Hints.characters = "qwertasdfgzxcvb"

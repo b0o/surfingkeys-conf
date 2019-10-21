@@ -22,14 +22,14 @@ util.addSettings({
 util.addSettings(custom.conf || {})
 
 if (typeof Hints !== "undefined") {
-  Hints.characters = "qwertasdfgzxcvb"
+  Hints.characters = custom.hints || "qwertasdfgzxcvb"
 }
 
 // Leader for site-specific mappings
-const siteleader = "<Space>"
+const siteleader = custom.leaders.site || "<Space>"
 
 // Leader for OmniBar searchEngines
-const searchleader = "a"
+const searchleader = custom.leaders.search || "a"
 
 // Process mappings and completions
 // See ./keys.js and ./completions.js

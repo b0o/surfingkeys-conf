@@ -35,8 +35,20 @@ const conf = {
    */
 }
 
+// miscellanous entries
+const leaders = {
+  /*
+    site: "",
+    search: "",
+   */
+}
+
+const hints = ""
+
 module.exports = {
   maps,
   aliases,
   conf,
+  leaders,
+  hints
 }

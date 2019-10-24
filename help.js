@@ -17,9 +17,9 @@ module.exports.categories = {
   misc:               14,
   insertMode:         15,
   vim:                {
-    normal:         16,
-    insert:         17,
-    visual:         18,
-    command:        19,
+    normal:  16,
+    insert:  17,
+    visual:  18,
+    command: 19,
   },
 }

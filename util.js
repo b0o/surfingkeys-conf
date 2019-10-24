@@ -110,7 +110,7 @@ util.processMaps = (maps, aliases, siteleader) => {
             }[mapObj.category])
 
         }
-        method = {
+        const method = {
             [ categories.omnibar ]: cmap,
             [ categories.insertMode ]: imap,
             [ categories.visualMode ]: vmap,

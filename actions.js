@@ -189,100 +189,86 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
 }
 
-actions.gh.openRepo = () => {
-  const elements = [...document.querySelectorAll("a[href]")]
-    .filter((a) => {
-      const u = new URL(a.href)
-      const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-      return (
-        u.origin === util.getCurrentLocation("origin")
-        && typeof user === "string"
-        && user.length > 0
-        && typeof repo === "string"
-        && repo.length > 0
-        && rest.length === 0
-        && /^([a-zA-Z0-9]+-?)+$/.test(user)
-        && !ghReservedNames.check(user)
-      )
-    })
-  Hints.create(elements, Hints.dispatchMouseClick)
+actions.gh.isRepo = (href) => {
+  const u = new URL(href)
+  const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  return (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && typeof repo === "string"
+    && repo.length > 0
+    && rest.length === 0
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
 }
 
-actions.gh.openUser = () => {
-  const elements = [...document.querySelectorAll("a[href]")]
-    .filter((a) => {
-      const u = new URL(a.href)
-      const [user, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-      return (
-        u.origin === util.getCurrentLocation("origin")
-        && typeof user === "string"
-        && user.length > 0
-        && rest.length === 0
-        && /^([a-zA-Z0-9]+-?)+$/.test(user)
-        && !ghReservedNames.check(user)
-      )
-    })
-  Hints.create(elements, Hints.dispatchMouseClick)
+actions.gh.isUser = (href) => {
+  const u = new URL(href)
+  const [user, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  return (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && rest.length === 0
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
 }
 
-actions.gh.openFile = () => {
-  const elements = [...document.querySelectorAll("a[href]")]
-    .filter((a) => {
-      const u = new URL(a.href)
-      const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-      return (
-        u.origin === util.getCurrentLocation("origin")
-        && typeof user === "string"
-        && user.length > 0
-        && typeof repo === "string"
-        && repo.length > 0
-        && typeof maybeBlob === "string"
-        && (maybeBlob === "blob" || maybeBlob === "tree")
-        && rest.length !== 0
-        && /^([a-zA-Z0-9]+-?)+$/.test(user)
-        && !ghReservedNames.check(user)
-      )
-    })
-  Hints.create(elements, Hints.dispatchMouseClick)
+actions.gh.isFile = (href) => {
+  const u = new URL(href)
+  const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  return (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && typeof repo === "string"
+    && repo.length > 0
+    && typeof maybeBlob === "string"
+    && (maybeBlob === "blob" || maybeBlob === "tree")
+    && rest.length !== 0
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
 }
 
-actions.gh.openIssue = () => {
-  const elements = [...document.querySelectorAll("a[href]")]
-    .filter((a) => {
-      const u = new URL(a.href)
-      const [user, repo, maybeIssues] = u.pathname.split("/").filter((s) => s !== "")
-      return (
-        u.origin === util.getCurrentLocation("origin")
-        && typeof user === "string"
-        && user.length > 0
-        && typeof repo === "string"
-        && repo.length > 0
-        && maybeIssues === "issues"
-        && /^([a-zA-Z0-9]+-?)+$/.test(user)
-        && !ghReservedNames.check(user)
-      )
-    })
-  Hints.create(elements, Hints.dispatchMouseClick)
+actions.gh.isIssue = (href) => {
+  const u = new URL(href)
+  const [user, repo, maybeIssues] = u.pathname.split("/").filter((s) => s !== "")
+  return (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && typeof repo === "string"
+    && repo.length > 0
+    && maybeIssues === "issues"
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
 }
 
-actions.gh.openPull = () => {
-  const elements = [...document.querySelectorAll("a[href]")]
-    .filter((a) => {
-      const u = new URL(a.href)
-      const [user, repo, maybePulls] = u.pathname.split("/").filter((s) => s !== "")
-      return (
-        u.origin === util.getCurrentLocation("origin")
-        && typeof user === "string"
-        && user.length > 0
-        && typeof repo === "string"
-        && repo.length > 0
-        && /^pulls?$/.test(maybePulls)
-        && /^([a-zA-Z0-9]+-?)+$/.test(user)
-        && !ghReservedNames.check(user)
-      )
-    })
-  Hints.create(elements, Hints.dispatchMouseClick)
+actions.gh.isPull = (href) => {
+  const u = new URL(href)
+  const [user, repo, maybePulls] = u.pathname.split("/").filter((s) => s !== "")
+  return (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && typeof repo === "string"
+    && repo.length > 0
+    && /^pulls?$/.test(maybePulls)
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
 }
+
+actions.gh.openRepo = () => util.createHintsFiltered((a) => actions.gh.isRepo(a.href))
+actions.gh.openUser = () => util.createHintsFiltered((a) => actions.gh.isUser(a.href))
+actions.gh.openFile = () => util.createHintsFiltered((a) => actions.gh.isFile(a.href))
+actions.gh.openIssue = () => util.createHintsFiltered((a) => actions.gh.isIssue(a.href))
+actions.gh.openPull = () => util.createHintsFiltered((a) => actions.gh.isPull(a.href))
 
 actions.gh.toggleLangStats = () =>
   document.querySelector("summary[title='Click for language details']").click()

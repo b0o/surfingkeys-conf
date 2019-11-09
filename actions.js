@@ -148,10 +148,25 @@ actions.viewGodoc = () => actions.openLink(`https://godoc.org/${actions.getURLPa
 // GitHub
 // ------
 actions.gh = {}
-actions.gh.star = ({ toggle = false } = {}) => () => {
-  const repo = util.getCurrentLocation("pathname").slice(1).split("/").slice(0, 2).join("/")
-  const container = document.querySelector("div.starring-container")
+actions.gh.star = ({ toggle = false } = {}) => async () => {
+  const starContainers = [...document.querySelectorAll("div.starring-container")]
+  if (starContainers.length === 0) return
+
+  let container
+  try {
+    container = starContainers.length > 1
+      ? await util.createHintsAsync(starContainers, (c) => c)
+      : starContainers[0]
+  } catch (e) {
+    return
+  }
+
+  const repoUrl = container.parentElement.parentElement.matches("ul.pagehead-actions")
+    ? util.getCurrentLocation("pathname")
+    : new URL(container.parentElement.querySelector("a").href).pathname
+
   const status = container.classList.contains("on")
+  const repo = repoUrl.slice(1).split("/").slice(0, 2).join("/")
 
   let star = "★"
   let statusMsg = "starred"

@@ -39,6 +39,10 @@ util.createURLItem = (title, url, sanitize = true) => {
     `, { url: u })
 }
 
+util.createHintsAsync = (cssSelector, onHintKey, attrs) =>
+  new Promise((resolve) =>
+    Hints.create(cssSelector, (...args) => resolve(...args), attrs))
+
 // Determine if the given rect is visible in the viewport
 util.isRectVisibleInViewport = (rect) =>
   rect.height > 0

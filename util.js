@@ -43,6 +43,12 @@ util.createHintsAsync = (cssSelector, onHintKey, attrs) =>
   new Promise((resolve) =>
     Hints.create(cssSelector, (...args) => resolve(...args), attrs))
 
+util.createHintsFiltered = (filter, {
+  elems = [...document.querySelectorAll("a[href]")],
+  action = Hints.dispatchMouseClick,
+} = {}) =>
+  Hints.create(elems.filter(filter), action)
+
 // Determine if the given rect is visible in the viewport
 util.isRectVisibleInViewport = (rect) =>
   rect.height > 0

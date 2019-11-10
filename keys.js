@@ -254,6 +254,56 @@ const maps = {
 
   "github.com": [
     {
+      alias:       "A",
+      description: "Open repository Actions page",
+      callback:    actions.gh.openRepoPage("/actions"),
+    },
+    {
+      alias:       "C",
+      description: "Open repository Commits page",
+      callback:    actions.gh.openRepoPage("/commits"),
+    },
+    {
+      alias:       "I",
+      description: "Open repository Issues page",
+      callback:    actions.gh.openRepoPage("/issues"),
+    },
+    {
+      alias:       "P",
+      description: "Open pull Requests page",
+      callback:    actions.gh.openRepoPage("/pulls"),
+    },
+    {
+      alias:       "R",
+      description: "Open Repository page",
+      callback:    actions.gh.openRepoPage("/"),
+    },
+    {
+      alias:       "S",
+      description: "Open repository Settings page",
+      callback:    actions.gh.openRepoPage("/settings"),
+    },
+    {
+      alias:       "W",
+      description: "Open repository Wiki page",
+      callback:    actions.gh.openRepoPage("/wiki"),
+    },
+    {
+      alias:       "X",
+      description: "Open repository Security page",
+      callback:    actions.gh.openRepoPage("/security"),
+    },
+    {
+      alias:       "O",
+      description: "Open repository Owner's profile page",
+      callback:    actions.gh.openRepoOwner,
+    },
+    {
+      alias:       "M",
+      description: "Open your profile page ('Me')",
+      callback:    actions.gh.openProfile,
+    },
+    {
       alias:       "a",
       description: "View Repository",
       callback:    actions.gh.openRepo,
@@ -288,11 +338,6 @@ const maps = {
       alias:       "s",
       description: "Toggle Star",
       callback:    actions.gh.star({ toggle: true }),
-    },
-    {
-      alias:       "S",
-      description: "Check Star",
-      callback:    actions.gh.star({ toggle: false }),
     },
     {
       alias:       "y",

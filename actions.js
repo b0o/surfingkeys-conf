@@ -189,38 +189,62 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
 }
 
-actions.gh.isRepo = (href) => {
-  const u = new URL(href)
+actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
+  const u = url instanceof URL ? url : new URL(url)
   const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-  return (
+  const isRoot = rest.length === 0
+  const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
     && repo.length > 0
-    && rest.length === 0
+    && (isRoot || rootOnly === false)
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
+  return cond
+    ? {
+      type:     "repo",
+      owner:    user,
+      name:     repo,
+      href:     url,
+      url:      u,
+      repoBase: `/${user}/${repo}`,
+      repoRoot: isRoot,
+      repoPath: rest,
+    }
+    : null
 }
 
-actions.gh.isUser = (href) => {
-  const u = new URL(href)
+actions.gh.parseUser = (url = util.getCurrentLocation(), rootOnly = false) => {
+  const u = url instanceof URL ? url : new URL(url)
   const [user, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-  return (
+  const isRoot = rest.length === 0
+  const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
-    && rest.length === 0
+    && (rootOnly === false || rest.length === 0)
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
+  return cond
+    ? {
+      type:     "user",
+      name:     user,
+      href:     url,
+      url:      u,
+      userRoot: isRoot,
+      userPath: rest,
+    }
+    : null
 }
 
-actions.gh.isFile = (href) => {
-  const u = new URL(href)
+actions.gh.parseFile = (url = util.getCurrentLocation()) => {
+  const u = url instanceof URL ? url : new URL(url)
   const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter((s) => s !== "")
-  return (
+  const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
@@ -232,12 +256,21 @@ actions.gh.isFile = (href) => {
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
+  return cond
+    ? {
+      type:     "file",
+      href:     url,
+      url:      u,
+      filePath: [maybeBlob].concat(rest),
+    }
+    : null
 }
 
-actions.gh.isIssue = (href) => {
-  const u = new URL(href)
-  const [user, repo, maybeIssues] = u.pathname.split("/").filter((s) => s !== "")
-  return (
+actions.gh.parseIssue = (url = util.getCurrentLocation()) => {
+  const u = url instanceof URL ? url : new URL(url)
+  const [user, repo, maybeIssues, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  const isRoot = rest.length === 0
+  const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
@@ -247,12 +280,27 @@ actions.gh.isIssue = (href) => {
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
+  return cond
+    ? {
+      href: url,
+      url:  u,
+      ...(isRoot ? {
+        type:      "issues",
+        issuePath: rest,
+      } : {
+        type:      "issue",
+        number:    rest[0],
+        issuePath: rest,
+      }),
+    }
+    : null
 }
 
-actions.gh.isPull = (href) => {
-  const u = new URL(href)
-  const [user, repo, maybePulls] = u.pathname.split("/").filter((s) => s !== "")
-  return (
+actions.gh.parsePull = (url = util.getCurrentLocation()) => {
+  const u = url instanceof URL ? url : new URL(url)
+  const [user, repo, maybePulls, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  const isRoot = rest.length === 0
+  const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
@@ -262,7 +310,31 @@ actions.gh.isPull = (href) => {
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
+  return cond
+    ? {
+      href: url,
+      url:  u,
+      ...(isRoot ? {
+        type:     "pulls",
+        pullPath: rest,
+      } : {
+        type:     "pull",
+        number:   rest[0],
+        pullPath: rest,
+      }),
+    }
+    : null
 }
+
+actions.gh.isUser = (url = util.getCurrentLocation(), rootOnly = true) =>
+  actions.gh.parseUser(url, rootOnly) !== null
+
+actions.gh.isRepo = (url = util.getCurrentLocation(), rootOnly = true) =>
+  actions.gh.parseRepo(url, rootOnly) !== null
+
+actions.gh.isFile = (url = util.getCurrentLocation()) => actions.gh.parseFile(url) !== null
+actions.gh.isIssue = (url = util.getCurrentLocation()) => actions.gh.parseIssue(url) !== null
+actions.gh.isPull = (url = util.getCurrentLocation()) => actions.gh.parsePull(url) !== null
 
 actions.gh.openRepo = () => util.createHintsFiltered((a) => actions.gh.isRepo(a.href))
 actions.gh.openUser = () => util.createHintsFiltered((a) => actions.gh.isUser(a.href))
@@ -270,8 +342,23 @@ actions.gh.openFile = () => util.createHintsFiltered((a) => actions.gh.isFile(a.
 actions.gh.openIssue = () => util.createHintsFiltered((a) => actions.gh.isIssue(a.href))
 actions.gh.openPull = () => util.createHintsFiltered((a) => actions.gh.isPull(a.href))
 
+actions.gh.openRepoPage = (repoPath) => () => {
+  const repo = actions.gh.parseRepo()
+  if (repo === null) return
+  actions.openLink(`${repo.repoBase}${repoPath}`)()
+}
+
+actions.gh.openRepoOwner = () => {
+  const repo = actions.gh.parseRepo()
+  if (repo === null) return
+  actions.openLink(`/${repo.owner}`)()
+}
+
+actions.gh.openProfile = () =>
+  actions.openLink(`${document.querySelector("a.user-profile-link").href}`)()
+
 actions.gh.toggleLangStats = () =>
-  document.querySelector("summary[title='Click for language details']").click()
+  document.querySelector(".repository-lang-stats-graph").click()
 
 actions.gh.goParent = () => {
   const segments = util.getCurrentLocation("pathname")

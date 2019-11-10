@@ -84,6 +84,16 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;a</code></td><td>Activate font</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Favorite font</td></tr>
 <tr><th colspan="2"><a href="//github.com"><img src="./assets/favicons/github.com.ico" width="16px"> github.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open repository Actions page</td></tr>
+<tr><td><code>&lt;Space&gt;C</code></td><td>Open repository Commits page</td></tr>
+<tr><td><code>&lt;Space&gt;I</code></td><td>Open repository Issues page</td></tr>
+<tr><td><code>&lt;Space&gt;P</code></td><td>Open pull Requests page</td></tr>
+<tr><td><code>&lt;Space&gt;R</code></td><td>Open Repository page</td></tr>
+<tr><td><code>&lt;Space&gt;S</code></td><td>Open repository Settings page</td></tr>
+<tr><td><code>&lt;Space&gt;W</code></td><td>Open repository Wiki page</td></tr>
+<tr><td><code>&lt;Space&gt;X</code></td><td>Open repository Security page</td></tr>
+<tr><td><code>&lt;Space&gt;O</code></td><td>Open repository Owner's profile page</td></tr>
+<tr><td><code>&lt;Space&gt;M</code></td><td>Open your profile page ('Me')</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View Repository</td></tr>
 <tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
@@ -91,7 +101,6 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;p</code></td><td>View Pull Request</td></tr>
 <tr><td><code>gu</code></td><td>Go up one path in the URL (GitHub)</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
-<tr><td><code>&lt;Space&gt;S</code></td><td>Check Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>

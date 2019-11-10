@@ -87,7 +87,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open repository Actions page</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>Open repository Commits page</td></tr>
 <tr><td><code>&lt;Space&gt;I</code></td><td>Open repository Issues page</td></tr>
-<tr><td><code>&lt;Space&gt;P</code></td><td>Open pull Requests page</td></tr>
+<tr><td><code>&lt;Space&gt;P</code></td><td>Open repository Pull Requests page</td></tr>
 <tr><td><code>&lt;Space&gt;R</code></td><td>Open Repository page</td></tr>
 <tr><td><code>&lt;Space&gt;S</code></td><td>Open repository Settings page</td></tr>
 <tr><td><code>&lt;Space&gt;W</code></td><td>Open repository Wiki page</td></tr>

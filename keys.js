@@ -270,7 +270,7 @@ const maps = {
     },
     {
       alias:       "P",
-      description: "Open pull Requests page",
+      description: "Open repository Pull Requests page",
       callback:    actions.gh.openRepoPage("/pulls"),
     },
     {

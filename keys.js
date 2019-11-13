@@ -160,6 +160,36 @@ const maps = {
       description: "View product",
       callback:    actions.az.viewProduct,
     },
+    {
+      alias:       "c",
+      description: "Add to Cart",
+      callback:    actions.createHint("#add-to-cart-button"),
+    },
+    {
+      alias:       "R",
+      description: "View Product Reviews",
+      callback:    actions.openLink("#customerReviews"),
+    },
+    {
+      alias:       "Q",
+      description: "View Product Q&A",
+      callback:    actions.openLink("#Ask"),
+    },
+    {
+      alias:       "A",
+      description: "Open Account page",
+      callback:    actions.openLink("/gp/css/homepage.html"),
+    },
+    {
+      alias:       "C",
+      description: "Open Cart page",
+      callback:    actions.openLink("/gp/cart/view.html"),
+    },
+    {
+      alias:       "O",
+      description: "Open Orders page",
+      callback:    actions.openLink("/gp/css/order-history"),
+    },
   ],
 
   "www.google.com": [

@@ -1016,7 +1016,7 @@ completions.md.callback = (response) => {
         <div style="font-size:0.8em"><em>${slug}</em></div>
         <div>${excerpt}</div>
       </div>
-    `, { url: s.url })
+    `, { url: `https://developer.mozilla.org/${s.slug}` })
   })
 }
 

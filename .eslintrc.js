@@ -4,6 +4,8 @@ module.exports = {
     RUNTIME:            false,
     Omnibar:            false,
     Front:              false,
+    Visual:             false,
+    Hints:              false,
     Clipboard:          false,
     runtime:            false,
     chrome:             false,

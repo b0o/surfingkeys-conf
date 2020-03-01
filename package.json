@@ -19,7 +19,8 @@
   "author": "Maddison Hellstrom",
   "license": "MIT",
   "dependencies": {
-    "github-reserved-names": "^1.1.5"
+    "github-reserved-names": "^1.1.5",
+    "stylus": "^0.54.7"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -35,6 +36,7 @@
     "gulp-parcel": "^0.3.6",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^1.0.0",
+    "gulp-stylus": "^2.7.0",
     "json5": "^2.1.1",
     "node-fetch": "^2.6.0",
     "platform-folders": "^0.4.1"

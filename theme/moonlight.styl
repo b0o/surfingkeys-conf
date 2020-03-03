@@ -1,87 +1,136 @@
-@import "easings";
-@import "mixins";
+@import 'easings'
+@import 'mixins'
 
-$fn     = "Inter var"
-$blue   = #82aaff
-$red    = #ff5370
-$green  = #c3e88d
+$fn = 'Inter var'
+$blue = #82aaff
+$red = #ff5370
+$green = #c3e88d
 $purple = #c099ff
-$cyan   = #86e1fc
-$teal   = #4fd6be
+$cyan = #86e1fc
+$teal = #4fd6be
 $yellow = #ffc777
-$bd     = #131421
-$bg     = #191b28
-$alt    = #1e2030
-$hl     = #222436
-$lt     = #2f334d
-$fg     = #828bb8
-$cn     = #ffffff
+$bd = #131421
+$bg = #191b28
+$alt = #1e2030
+$hl = #222436
+$lt = #2f334d
+$fg = #828bb8
+$cn = #ffffff
 
-$f      { fn: $fn; }
-$b      { b: 1px solid; }
-$mono   { fn: monospace; }
-$base   { c: $fg $bd $bg; }
-$cursor { c: 0 $blue $blue; }
+$f
+	fn $fn
+
+$b
+	b 1px solid
+
+$mono
+	fn monospace
+
+$base
+	c $fg $bd $bg
 
 border-width = 1px
 border-style = solid
 border-color = $bd
 
-$hint
-  @extend $base
-  c $fg black
-  bg $bd
-  & > span { c: $blue; o: 1; }
-
-#sk_omnibar { p: 0; }
-.expandRichHints kbd > .candidates{ c: $fg; }
-#sk_editor
-  @extend $base
-  .normal-mode .ace_cursor
-    @extend $cursor
-.sk_omnibar_middle, #sk_omnibarSearchArea
-		@extends $b
-		c 0 $bd $hl
-		m 0
-		p 0.5rem 1rem
 .sk_theme
-  @extend $f, $base
-  .prompt    { c: $cn; }
-  .separator { c: $cyan; }
-  .url
-    td underline
-    c $blue
-  .feature_name
-    c $purple
-    & > span { c: 0 $lt; }
-  .resultPage, .annotation  { c: $fg; }
-  .omnibar_
-    &timestamp  { c: $purple; }
-    &visitcount { c: $blue; }
-    &highlight  { c: $bg 0 $yellow; }
-  kbd
-    @extend $mono, $b
-    c $blue black $hl
-    box-shadow none
-  tbody { c: $green; }
-  input
-    @extend $f
-    c $cn
+	@extends $f, $base
 
-  #sk_omnibarSearchResult { m: 0; p: 0; fs: 16px; }
-  #sk_omnibarSearchResult
-    .omnibar_folder { c: $blue; }
-    & > ul > li
-      &, &:nth-child(2n+1) // Search candidates
-        &.title { c: $cn; }
-        &.focused { c: $cn 0 $lt; }
-        @extend $base, $b
-        tr background-color
-        p 1em 1.5em
-  for x in expand collapse
-    s = @(a) {
-      {a}RichHints
-    }
-    .{s(x)}
-      a 1 forwards s(x)
+	tbody
+		c $green
 
+// Hints
+$hint
+	@extends $base
+	c $fg black
+	bg $bd
+
+	& > span
+		c $blue
+		o 1
+
+for x in expand collapse
+	.{x}RichHints
+		a 0.05s forwards x
+
+.sk_theme kbd
+	@extends $mono, $b
+	c $blue black $hl
+	s none
+
+.expandRichHints kbd > .candidates
+	c $fg
+
+// Editor
+#sk_editor
+	@extends $base
+
+	.normal-mode .ace_cursor
+		c 0 $blue $blue
+
+// Help page
+.sk_theme
+	// Help page
+	.resultPage, .annotation
+		c $fg
+
+	.feature_name
+		c $purple
+
+		& > span
+			c 0 $lt
+
+// Omnibar
+$o = 'sk_omnibar'
+$omni-colors = {
+	folder: $blue,
+	timestamp: $purple,
+	visitcount: $blue,
+	highlight: $bg 0 $yellow
+}
+
+.sk_theme
+	.url
+		td underline
+		c $blue
+
+	.prompt
+		c $cn
+
+	.separator
+		c $cyan
+
+	input
+		@extends $f
+		c $cn
+
+#{$o}
+	p 0
+
+#{$o}SearchArea
+	m 0
+	p 0
+	fs 16px
+
+.{$o}_middle, #{$omni}SearchArea
+	@extends $b
+	c 0 $bd $hl
+	m 0
+	p 0.5rem 1rem
+
+	#{$o}SearchResult, .omnibar_
+		for k, v in $omni-colors
+			&{k}
+				c v
+
+	{selector('& > ul > li', '&, &:nth-child(2n + 1)')}
+		@extends $base, $b
+
+		&.title
+			c $cn
+
+		&.focused
+			c $cn 0 $lt
+
+		tr background-color
+		p 1em 1.5em

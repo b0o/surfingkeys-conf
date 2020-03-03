@@ -1,8 +1,7 @@
 @require easings;
 
-ease-in-out-sine = cubic-bezier(0.645, 0.045, 0.355, 1)
 transition-duration = 0.05s
-transition-timing-function = ease-in-out-sine;
+transition-timing-function = $ease-in-out-sine;
 i = !important
 t = transparent
 
@@ -37,6 +36,8 @@ by()
 bx()
 	border-left arguments i
 	border-right arguments i
+r()
+	border-radius arguments i
 
 m()
   margin arguments i
@@ -63,9 +64,6 @@ pl()
   padding-left arguments i
 pr()
 	padding-right arguments i
-
-r()
-	border-radius arguments i
 
 s()
  box-shadow arguments i

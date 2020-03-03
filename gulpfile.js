@@ -74,6 +74,11 @@ const lint = (globs, opts = {}) => gulp.src(globs)
 
 task("lint", () => lint([...paths.scripts, paths.gulpfile]))
 
+task("theme", () => exec("stylus -p ./theme/moonlight.styl", (err, output) => {
+  if (err) console.error(err)
+  console.log(output)
+}))
+
 task("lint-fix", () => lint([...paths.scripts, paths.gulpfile], { fix: true })
   .pipe(gulpIf(
     (f) => f.eslint !== undefined && f.eslint.fixed === true,

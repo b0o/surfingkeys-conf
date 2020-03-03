@@ -7749,11 +7749,6 @@ stylehacks@^4.0.0:
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
 
-stylus-mixins@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/stylus-mixins/-/stylus-mixins-0.4.0.tgz#86467c47317b7b45f8005402a8676e414f7295c5"
-  integrity sha1-hkZ8RzF7e0X4AFQCqGduQU9ylcU=
-
 stylus@^0.54.0, stylus@^0.54.7:
   version "0.54.7"
   resolved "https://registry.yarnpkg.com/stylus/-/stylus-0.54.7.tgz#c6ce4793965ee538bcebe50f31537bfc04d88cd2"

@@ -39,8 +39,7 @@
     "gulp-stylus": "^2.7.0",
     "json5": "^2.1.1",
     "node-fetch": "^2.6.0",
-    "platform-folders": "^0.4.1",
-    "stylus-mixins": "^0.4.0"
+    "platform-folders": "^0.4.1"
   },
   "config": {
     "commitizen": {

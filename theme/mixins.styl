@@ -1,0 +1,86 @@
+@require easings;
+
+transition-duration = 0.05s
+transition-timing-function = $ease-in-out-sine;
+i = !important
+t = transparent
+
+
+/**
+* c <foreground> <border-color> <background> <foreground-important> <border-important> <background-important>
+* use 0 to omit arguments
+*/
+c(x, y = 0, z = 0, xi = 1, yi = 1, zi = 1)
+  if x is a 'call' or x is a 'rgba'
+    color: xi is 0 ? x : x i
+  if y is a 'call' or y is a 'rgba'
+    border-color: yi is 0 ? y : y i
+  if z is a 'call' or z is a 'rgba'
+    background-color: zi is 0 ? z : z i
+bg()
+  background arguments i
+
+b()
+  border arguments i
+bb()
+  border-bottom arguments i
+bt()
+  border-top arguments i
+bl()
+  border-left arguments i
+br()
+  border-right arguments i
+by()
+	border-top arguments i
+	border-bottom arguments i
+bx()
+	border-left arguments i
+	border-right arguments i
+r()
+	border-radius arguments i
+
+m()
+  margin arguments i
+mt()
+  margin-top arguments i
+mb()
+ margin-bottom arguments i
+ml()
+  margin-left arguments  i
+mr()
+	margin-right arguments i
+my()
+	m arguments 0
+mx()
+	m arguments x
+
+p()
+  padding arguments i
+pt()
+	padding-top arguments i
+pb()
+ padding-bottom arguments i
+pl()
+  padding-left arguments i
+pr()
+	padding-right arguments i
+
+s()
+ box-shadow arguments i
+o()
+  opacity arguments i
+
+a()
+  animation arguments i
+tr()
+  transition arguments i
+
+fn()
+  font-family arguments i
+fs()
+  font-size arguments i
+fw()
+  font-weight arguments i
+td()
+  text-decoration arguments i
+

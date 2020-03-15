@@ -1,0 +1,167 @@
+@import 'easings'
+@import 'mixins'
+
+$fn = 'Inter var'
+$blue = #82aaff
+$red = #ff5370
+$green = #c3e88d
+$purple = #c099ff
+$cyan = #86e1fc
+$teal = #4fd6be
+$yellow = #ffc777
+$bd = #131421
+$bg = #191b28
+$alt = #1e2030
+$hl = #222436
+$lt = #2f334d
+$fg = #828bb8
+$cn = #ffffff
+
+$f
+	fn $fn
+
+$b
+	b 1px solid
+
+$mono
+	fn monospace
+
+$base
+	c $fg $bd $bg
+
+border-width = 1px
+border-style = solid
+border-color = $bd
+
+#sk_keystroke
+	bg $bd
+	p 0.2rem 0.8rem
+
+	div
+		.annotation
+			c $cn
+
+.sk_theme
+	@extends $f, $base
+
+	tbody
+		c $green
+
+// Hints
+$hint
+	@extends $base
+	c $fg black
+	bg $bd
+
+	& > span
+		c $blue
+		o 1
+
+.expandRichHints
+	animation 0s ease-in-out 1 forwards expandRichHints
+
+.collapseRichHints
+	animation 0s ease-in-out 1 forwards collapseRichHints
+
+.sk_theme kbd
+	@extends $mono, $b
+	c $blue black $hl
+	s none
+
+.expandRichHints kbd > .candidates
+	c $fg
+
+// Editor
+#sk_editor
+	@extends $base
+
+	.normal-mode .ace_cursor
+		c 0 $blue $blue
+
+// Help page
+.sk_theme
+	// Help page
+	.resultPage, .annotation
+		line-height 1.5
+		fw 500
+		ml 1rem
+		mr 3rem
+		c $cn
+
+	.feature_name
+		c $purple
+
+		& > span
+			c 0 $lt
+
+// Omnibar
+$o = 'sk_omnibar'
+$omni-colors = {
+	folder: $blue,
+	timestamp: $purple,
+	visitcount: $blue,
+	highlight: $green
+}
+
+.sk_theme
+	.url
+		td underline
+		fw 400
+		c $blue
+
+#{$o}
+	p 0
+
+#{$o}SearchArea
+	m 0
+	fs 1.6rem
+	fn monospace
+
+	.prompt
+		c $purple $bd $hl
+
+	.prompt, input
+		fn monospace
+
+	input
+		c $cn $bd $hl
+		caret-color $blue
+
+	.prompt .separator
+		position relative
+		top 2px
+		c $cyan
+		fs 1rem
+
+.{$o}_middle, #{$o}SearchArea
+	@extends $b
+	c 0 $bd $hl
+	m 0
+	p 0.5rem 1rem
+
+	#{$o}SearchResult, .omnibar_
+		line-height 1.5
+		c $fg $bd $bg
+		m 0
+		p 0
+		fs 0.875rem
+
+		& > ul > li
+			&, &:nth-child(2n + 1)
+				@extends $base, $b
+				p 0.5rem
+
+				&.focused
+					c $cn $hl $lt
+
+				&.title
+					c lighten($lt, 70%)
+					fw lighter
+					fs 1.4rem
+
+		for k, v in $omni-colors
+			&{k}
+				c v
+
+	tr background-color
+		p 1em 1.5em

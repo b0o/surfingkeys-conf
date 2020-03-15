@@ -1,21 +1,24 @@
+// @ts-nocheck
 const util = require("./util")
 const keys = require("./keys")
 const completions = require("./completions")
 
+Hints.style(
+  "background: #131421 !important; color: #828bb8 !important; border: 1px solid #82aaff;",
+)
+Visual.style("cursor", "background-color: #82aaff !important;")
+Visual.style(
+  "marks",
+  "background-color: #ffc777 !important; color: black !important;",
+)
 // ---- Settings ----//
 util.addSettings({
   hintAlign:                "left",
   omnibarSuggestionTimeout: 500,
+  scrollStepSize:           140,
+  smoothScroll:             true,
   richHintsForKeystroke:    1,
-  theme:                    `
-    /* Disable RichHints CSS animation */
-    .expandRichHints {
-        animation: 0s ease-in-out 1 forwards expandRichHints;
-    }
-    .collapseRichHints {
-        animation: 0s ease-in-out 1 forwards collapseRichHints;
-    }
-  `,
+  theme:                    process.env.SK_THEME,
 })
 
 if (typeof Hints !== "undefined") {

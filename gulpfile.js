@@ -3,6 +3,7 @@ const gulp = require("gulp")
 const { task, src, dest } = gulp
 const { parallel, series } = gulp
 
+
 const parcel = require("gulp-parcel")
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
@@ -15,6 +16,7 @@ const fs = require("fs").promises
 const fetch = require("node-fetch")
 const http = require("http")
 const gulpIf = require("gulp-if")
+const { exec } = require("child_process")
 
 const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
@@ -25,6 +27,7 @@ let conf
 let keys
 let util
 
+exec("export SK_THEME=$(stylus -p ./theme/moonlight.styl)")
 const requireSrcFiles = () => {
   if (srcFilesLoaded) {
     return
@@ -70,6 +73,11 @@ const lint = (globs, opts = {}) => gulp.src(globs)
   .pipe(eslint.format())
 
 task("lint", () => lint([...paths.scripts, paths.gulpfile]))
+
+task("theme", () => exec("stylus -p ./theme/moonlight.styl", (err, output) => {
+  if (err) console.error(err)
+  console.log(output)
+}))
 
 task("lint-fix", () => lint([...paths.scripts, paths.gulpfile], { fix: true })
   .pipe(gulpIf(
@@ -194,8 +202,8 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
     process.stdout.write(`no favicon found for ${url}: ${e}\n`)
     // transparent pixel
     data = Buffer.from(
-      "AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",
-      "base64"
+      "AAABAAEA,AQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",
+      "base64",
     )
   }
   return {
@@ -231,7 +239,6 @@ task("favicons", series("clean-favicons", async () => {
 }))
 
 task("docs-full", parallel("docs", "favicons"))
-
 task("build",
   series(
     parallel(
@@ -244,7 +251,7 @@ task("build",
         .pipe(parcel())
         .pipe(rename(paths.scriptOut))
         .pipe(dest("build")),
-    )
+    ),
   ))
 
 task("dist", parallel("docs-full", "build"))

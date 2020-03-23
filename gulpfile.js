@@ -37,7 +37,7 @@ const requireSrcFiles = () => {
 }
 
 const paths = {
-  scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
+  scripts:     ["conf.priv.js", "conf.cust.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
   entry:       "conf.js",
   gulpfile:    "gulpfile.js",
   readme:      "README.tmpl.md",
@@ -84,6 +84,17 @@ task("check-priv", async () => {
     // eslint-disable-next-line no-console
     console.log("Notice: Initializing ./conf.priv.js - configure your API keys here.")
     return fs.copyFile("./conf.priv.example.js", "./conf.priv.js", COPYFILE_EXCL)
+  }
+  return Promise.resolve()
+})
+
+task("check-cust", async () => {
+  try {
+    await fs.stat("./conf.cust.js")
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log("Notice: Initializing ./conf.cust.js - configure your custom settings & mappings here.")
+    return fs.copyFile("./conf.cust.example.js", "./conf.cust.js", COPYFILE_EXCL)
   }
   return Promise.resolve()
 })
@@ -236,6 +247,7 @@ task("build",
   series(
     parallel(
       "check-priv",
+      "check-cust",
       "clean",
     ),
     parallel(

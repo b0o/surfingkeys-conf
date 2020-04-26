@@ -19,6 +19,20 @@ const gulpIf = require("gulp-if")
 const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
 
+const paths = {
+  scripts:          ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
+  entry:            "conf.js",
+  gulpfile:         "gulpfile.js",
+  readme:           "README.tmpl.md",
+  assets:           "assets",
+  screenshots:      "assets/screenshots",
+  favicons:         "assets/favicons",
+  faviconsManifest: "favicons.json",
+  readmeOut:        "README.md",
+  scriptOut:        "surfingkeys.js",
+  installDir:       platforms.getConfigHome(),
+}
+
 let srcFilesLoaded = false
 let compl
 let conf
@@ -29,24 +43,27 @@ const requireSrcFiles = () => {
   if (srcFilesLoaded) {
     return
   }
-  compl = require("./completions") // eslint-disable-line global-require
-  conf = require("./conf") // eslint-disable-line global-require
-  keys = require("./keys") // eslint-disable-line global-require
-  util = require("./util") // eslint-disable-line global-require
+  /* eslint-disable global-require, import/no-dynamic-require */
+  compl = require("./completions")
+  conf = require("./conf")
+  keys = require("./keys")
+  util = require("./util")
+  /* eslint-enable global-require, import/no-dynamic-require */
   srcFilesLoaded = true
 }
 
-const paths = {
-  scripts:     ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
-  entry:       "conf.js",
-  gulpfile:    "gulpfile.js",
-  readme:      "README.tmpl.md",
-  assets:      "assets",
-  screenshots: "assets/screenshots",
-  favicons:    "assets/favicons",
-  readmeOut:   "README.md",
-  scriptOut:   "surfingkeys.js",
-  installDir:  platforms.getConfigHome(),
+let faviconsManifest
+const loadFaviconsManifest = async () => {
+  if (typeof faviconsManifest === "object" && Object.keys(faviconsManifest).length > 0) {
+    return
+  }
+  try {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    faviconsManifest = require(`./${path.join(paths.favicons, paths.faviconsManifest)}`)
+  } catch (e) {
+    console.log(`Warning: couldn't load favicons manifest: ${e}`) // eslint-disable-line no-console
+    faviconsManifest = {}
+  }
 }
 
 const servePort = 9919
@@ -90,6 +107,7 @@ task("check-priv", async () => {
 
 task("docs", parallel(async () => {
   requireSrcFiles()
+  await loadFaviconsManifest()
 
   const screens = {}
   let screenshotList = ""
@@ -132,8 +150,9 @@ task("docs", parallel(async () => {
         screenshotList += `![${c.name} screenshot](./${url})\n\n`
       })
     }
-    const faviconExt = c.favicon ? path.extname(new URL(c.favicon).pathname) : ".ico"
-    const favicon = `<img src="./assets/favicons/${u.hostname}${faviconExt}" width="16px"> `
+
+    const favicon = faviconsManifest[domain] ? `<img src="./assets/favicons/${faviconsManifest[domain]}" width="16px"> ` : ""
+
     return `${acc1}
   <tr>
     <td><a href="${u.protocol}//${domain}">${favicon}</a></td>
@@ -161,8 +180,9 @@ task("docs", parallel(async () => {
       return `${acc2}<tr><td><code>${mapStr}</code></td><td>${map.description}</td></tr>\n`
     }, "")
     let domainStr = "<strong>global</strong>"
-    const favicon = `<img src="./assets/favicons/${domain}.ico" width="16px"> `
+    let favicon = ""
     if (domain !== "global") {
+      favicon = faviconsManifest[domain] ? `<img src="./assets/favicons/${faviconsManifest[domain]}" width="16px"> ` : ""
       domainStr = `<a href="//${domain}">${favicon}${domain}</a>`
     }
     return `${acc1}<tr><th colspan="2">${domainStr}</th></tr>${header}\n${maps}`
@@ -183,7 +203,7 @@ task("docs", parallel(async () => {
 const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   const url = favicon
   let data
-  const ext = path.extname(new URL(favicon).pathname)
+  let ext = path.extname(new URL(favicon).pathname)
   try {
     const res = await fetch(url, { timeout })
     if (!res.ok) {
@@ -192,13 +212,15 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
     data = await res.buffer()
   } catch (e) {
     process.stdout.write(`no favicon found for ${url}: ${e}\n`)
+    ext = ".ico"
     // transparent pixel
     data = Buffer.from(
       "AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",
-      "base64"
+      "base64",
     )
   }
   return {
+    domain,
     name:   `${domain}${ext}`,
     source: data,
   }
@@ -226,11 +248,22 @@ task("favicons", series("clean-favicons", async () => {
 
   const favicons = (await Promise.all(sites.map(async (site) => getFavicon(site))))
     .filter((e) => e !== undefined)
-  return file(favicons, { src: true })
+
+  faviconsManifest = favicons.reduce((acc, e) => {
+    acc[e.domain] = e.name
+    return acc
+  }, {})
+
+  const files = [{
+    name:   paths.faviconsManifest,
+    source: JSON.stringify(faviconsManifest),
+  }, ...favicons]
+
+  return file(files)
     .pipe(dest(paths.favicons))
 }))
 
-task("docs-full", parallel("docs", "favicons"))
+task("docs-full", series("favicons", "docs"))
 
 task("build",
   series(
@@ -244,7 +277,7 @@ task("build",
         .pipe(parcel())
         .pipe(rename(paths.scriptOut))
         .pipe(dest("build")),
-    )
+    ),
   ))
 
 task("dist", parallel("docs-full", "build"))

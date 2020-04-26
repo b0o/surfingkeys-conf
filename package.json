@@ -16,7 +16,8 @@
     "chrome-extension",
     "configuration"
   ],
-  "author": "Maddison Hellstrom",
+  "author": "Maddison Hellstrom (https://github.com/b0o)",
+  "contributors": [],
   "license": "MIT",
   "dependencies": {
     "github-reserved-names": "^1.1.5"

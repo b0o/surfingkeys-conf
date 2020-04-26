@@ -19,6 +19,10 @@ const gulpIf = require("gulp-if")
 const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
 
+const pkg = require("./package.json")
+
+const copyrightYearOne = 2017
+
 const paths = {
   scripts:          ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
   entry:            "conf.js",
@@ -105,6 +109,23 @@ task("check-priv", async () => {
   return Promise.resolve()
 })
 
+const parseContributor = (contributor) => {
+  let c = contributor
+  if (typeof contributor === "string") {
+    const m = contributor.match(/^(?<name>.*?)\s*(<(?<email>.*?)>)?\s*(\((?<url>.*?)\))?$/)
+    if (!m) {
+      throw new Error(`couldn't parse contributor '${contributor}'`)
+    }
+    c = m.groups
+  } else if (typeof contributor !== "object") {
+    throw new Error(`expected contributor to be of type 'string' or 'object', got '${typeof contributor}'`)
+  }
+  if (!c.name) {
+    return null
+  }
+  return `${c.url ? `<a href="${c.url}">` : ""}${c.name}${c.url ? "</a>" : ""}`
+}
+
 task("docs", parallel(async () => {
   requireSrcFiles()
   await loadFaviconsManifest()
@@ -188,6 +209,16 @@ task("docs", parallel(async () => {
     return `${acc1}<tr><th colspan="2">${domainStr}</th></tr>${header}\n${maps}`
   }, Promise.resolve(""))
 
+  const year = (new Date()).getFullYear()
+  const copyrightYears = `${copyrightYearOne !== year ? `${copyrightYearOne}-${year}` : copyrightYearOne}`
+  let copyright = `<p><h4>Author</h4>&copy; ${copyrightYears} ${parseContributor(pkg.author)}</p>`
+  if (Array.isArray(pkg.contributors) && pkg.contributors.length > 0) {
+    copyright += "<p><h4>Contributors</h4><ul>"
+    copyright += pkg.contributors.reduce((acc, c) => `${acc}<li>${parseContributor(c)}</li>`, "")
+    copyright += "</ul></p>"
+  }
+  copyright += `<p><h4>License</h4>Released under the <a href="./LICENSE">${pkg.license} License</a></p>`
+
   return src([paths.readme])
     .pipe(replace("<!--{{DISCLAIMER}}-->", disclaimer))
     .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(compl).length))
@@ -196,6 +227,7 @@ task("docs", parallel(async () => {
     .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))
+    .pipe(replace("<!--{{COPYRIGHT}}-->", copyright))
     .pipe(rename(paths.readmeOut))
     .pipe(dest("."))
 }))

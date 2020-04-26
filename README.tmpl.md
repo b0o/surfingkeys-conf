@@ -157,6 +157,6 @@ Todo
 - [x] Simplify installation process
 - [x] Feed the kittens
 
-License
--------
-&copy;2017-2019 Maddison Hellstrom - MIT License
+Copyright
+---------
+<!--{{COPYRIGHT}}-->

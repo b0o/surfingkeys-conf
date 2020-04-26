@@ -69,6 +69,12 @@ const outlineUrl = "https://outline.com/"
 actions.showOutline = ({ href = util.getCurrentLocation("href") } = {}) =>
   () => actions.openLink(`${outlineUrl}${href}`, { newTab: true })()
 
+// Site/Page Actions
+const rssSubscribeUrl = "https://feedrabbit.com/subscriptions/new?url="
+
+actions.rssSubscribe = ({ href = util.getCurrentLocation("href") } = {}) =>
+  () => actions.openLink(`${rssSubscribeUrl}${encodeURIComponent(href)}`, { newTab: true })()
+
 // Surfingkeys-specific actions
 // ----------------------------
 actions.createHint = (selector, action) => () => {

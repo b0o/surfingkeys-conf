@@ -142,6 +142,12 @@ const maps = {
       callback:    actions.showOutline(),
     },
     {
+      alias:       "=r",
+      category:    categories.misc,
+      description: "Subscribe to RSS feed for page",
+      callback:    actions.rssSubscribe(),
+    },
+    {
       alias:       ";pd",
       category:    categories.misc,
       description: "Toggle PDF viewer from SurfingKeys",

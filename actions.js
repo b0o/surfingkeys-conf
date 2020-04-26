@@ -28,6 +28,12 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
 actions.copyURLPath = ({ count, domain } = {}) => () =>
   Clipboard.write(actions.getURLPath({ count, domain }))
 
+actions.copyOrgLink = () =>
+  Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`)
+
+actions.copyMarkdownLink = () =>
+  Clipboard.write(`[${document.title}](${util.getCurrentLocation("href")})`)
+
 actions.duplicateTab = () =>
   actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
 

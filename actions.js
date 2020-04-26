@@ -157,6 +157,118 @@ actions.az.viewProduct = () => {
 // -----
 actions.viewGodoc = () => actions.openLink(`https://godoc.org/${actions.getURLPath({ count: 2, domain: true })}`, { newTab: true })()
 
+// Google
+actions.go = {}
+actions.go.parseLocation = () => {
+  const u = new URL(util.getCurrentLocation())
+  const q = u.searchParams.get("q")
+  const p = u.pathname.split("/")
+
+  const res = {
+    type:  "unknown",
+    url:   u,
+    query: q,
+  }
+
+  if (u.hostname === "www.google.com") { // TODO: handle other ccTLDs
+    if (p.length <= 1) {
+      res.type = "home"
+    } else if (p[1] === "search") {
+      switch (u.searchParams.get("tbm")) {
+      case "vid":
+        res.type = "videos"
+        break
+      case "isch":
+        res.type = "images"
+        break
+      case "nws":
+        res.type = "news"
+        break
+      default:
+        res.type = "web"
+      }
+    } else if (p[1] === "maps") {
+      res.type = "maps"
+      if (p[2] === "search" && p[3] !== undefined) {
+        res.query = p[3] // eslint-disable-line prefer-destructuring
+      } else if (p[2] !== undefined) {
+        res.query = p[2] // eslint-disable-line prefer-destructuring
+      }
+    }
+  }
+
+  return res
+}
+
+actions.go.ddg = () => {
+  const g = actions.go.parseLocation()
+
+  const ddg = new URL("https://duckduckgo.com")
+  if (g.query) {
+    ddg.searchParams.set("q", g.query)
+  }
+
+  switch (g.type) {
+  case "videos":
+    ddg.searchParams.set("ia", "videos")
+    ddg.searchParams.set("iax", "videos")
+    break
+  case "images":
+    ddg.searchParams.set("ia", "images")
+    ddg.searchParams.set("iax", "images")
+    break
+  case "news":
+    ddg.searchParams.set("ia", "news")
+    ddg.searchParams.set("iar", "news")
+    break
+  case "maps":
+    ddg.searchParams.set("iaxm", "maps")
+    break
+  case "search":
+  case "home":
+  case "unknown":
+  default:
+    ddg.searchParams.set("ia", "web")
+    break
+  }
+
+  actions.openLink(ddg.href)()
+}
+
+// DuckDuckGo
+actions.dg = {}
+actions.dg.goog = () => {
+  let u
+  try {
+    u = new URL(util.getCurrentLocation())
+  } catch (e) {
+    return
+  }
+  const q = u.searchParams.get("q")
+  if (!q) {
+    return
+  }
+
+  const goog = new URL("https://google.com/search")
+  goog.searchParams.set("q", q)
+
+  const iax = u.searchParams.get("iax")
+  const iaxm = u.searchParams.get("iaxm")
+  const iar = u.searchParams.get("iar")
+
+  if (iax === "images") {
+    goog.searchParams.set("tbm", "isch")
+  } else if (iax === "videos") {
+    goog.searchParams.set("tbm", "vid")
+  } else if (iar === "news") {
+    goog.searchParams.set("tbm", "nws")
+  } else if (iaxm === "maps") {
+    goog.pathname = "/maps"
+  }
+
+  actions.openLink(goog.href)()
+}
+
 // GitHub
 // ------
 actions.gh = {}

@@ -221,6 +221,11 @@ const maps = {
       description: "Open search result (non-active new tab)",
       callback:    actions.createHint("a.fl, .r>a", actions.openAnchor({ newTab: true, active: false })),
     },
+    {
+      alias:       "d",
+      description: "Open search in DuckDuckGo",
+      callback:    actions.go.ddg,
+    },
   ],
 
   "algolia.com": [
@@ -247,6 +252,11 @@ const maps = {
       alias:       "]]",
       description: "Show more results",
       callback:    () => document.querySelector(".result--more__btn").click(),
+    },
+    {
+      alias:       "g",
+      description: "Open search in Google",
+      callback:    actions.dg.goog,
     },
   ],
 

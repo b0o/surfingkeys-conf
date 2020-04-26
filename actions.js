@@ -614,7 +614,7 @@ actions.ph = {}
 actions.ph.openExternal = () => {
   Hints.create("ul[class^='postsList_'] > li > div[class^='item_']", (p) => actions.openLink(
     p.querySelector("div[class^='meta_'] > div[class^='actions_'] > div[class^='minorActions_'] > a:nth-child(1)").href,
-    { newTab: true }
+    { newTab: true },
   )())
 }
 

@@ -213,6 +213,13 @@ completions.so = {
 
 completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => createURLItem(`[${s.score}] ${s.title}`, s.link))
 
+// StackExchange - all sites (No completion)
+completions.se = {
+  alias:  "se",
+  name:   "stackexchange",
+  search: "https://stackexchange.com/search?q=",
+}
+
 // DockerHub repo search
 completions.dh = {
   alias:  "dh",

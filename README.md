@@ -13,7 +13,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 Its primary features include
 - 241 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
-- 54 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
+- 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
 -----------------
@@ -45,6 +45,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>gI</code></td><td>View image in new tab</td></tr>
 <tr><td><code>yp</code></td><td>Copy URL path of current page</td></tr>
 <tr><td><code>yI</code></td><td>Copy Image URL</td></tr>
+<tr><td><code>yO</code></td><td>Copy page URL/Title as Org-mode link</td></tr>
+<tr><td><code>yM</code></td><td>Copy page URL/Title as Markdown link</td></tr>
 <tr><td><code>yT</code></td><td>Duplicate current tab (non-active new tab)</td></tr>
 <tr><td><code>;se</code></td><td>Edit Settings</td></tr>
 <tr><td><code>gS</code></td><td>Open Chrome settings</td></tr>
@@ -54,6 +56,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&#x3D;c</code></td><td>Show Google's cached version of page</td></tr>
 <tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
 <tr><td><code>&#x3D;o</code></td><td>Show outline.com version of page</td></tr>
+<tr><td><code>&#x3D;r</code></td><td>Subscribe to RSS feed for page</td></tr>
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
 <tr><td><code>gxE</code></td><td>Close tab to left</td></tr>
 <tr><td><code>gxR</code></td><td>Close tab to right</td></tr>
@@ -86,6 +89,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
 <tr><td><code>]]</code></td><td>Show more results</td></tr>
+<tr><td><code>&lt;Space&gt;g</code></td><td>Open search in Google</td></tr>
 <tr><th colspan="2"><a href="//fonts.adobe.com"><img src="./assets/favicons/fonts.adobe.com.ico" width="16px"> fonts.adobe.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Activate font</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Favorite font</td></tr>
@@ -103,14 +107,18 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;a</code></td><td>View Repository</td></tr>
 <tr><td><code>&lt;Space&gt;u</code></td><td>View User</td></tr>
 <tr><td><code>&lt;Space&gt;f</code></td><td>View File</td></tr>
+<tr><td><code>&lt;Space&gt;c</code></td><td>View Commit</td></tr>
 <tr><td><code>&lt;Space&gt;i</code></td><td>View Issue</td></tr>
 <tr><td><code>&lt;Space&gt;p</code></td><td>View Pull Request</td></tr>
+<tr><td><code>&lt;Space&gt;e</code></td><td>View external link</td></tr>
 <tr><td><code>gu</code></td><td>Go up one path in the URL (GitHub)</td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
+<tr><td><code>&lt;Space&gt;H</code></td><td>View RepoHealth Report for Project</td></tr>
+<tr><td><code>&lt;Space&gt;ra</code></td><td>View live raw version of file</td></tr>
 <tr><th colspan="2"><a href="//gitlab.com"><img src="./assets/favicons/gitlab.com.ico" width="16px"> gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
@@ -125,6 +133,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>View post (link and comments)</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>View post (comments)</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>View post (comments) (non-active new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;e</code></td><td>View external link</td></tr>
 <tr><td><code>gp</code></td><td>Go to parent</td></tr>
 <tr><td><code>]]</code></td><td>Next page</td></tr>
 <tr><td><code>[[</code></td><td>Prev page</td></tr>
@@ -158,9 +167,11 @@ sites have been included which can help you perform some common actions:
 <tr><th colspan="2"><a href="//wikipedia.org"><img src="./assets/favicons/wikipedia.org.ico" width="16px"> wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
+<tr><td><code>&lt;Space&gt;e</code></td><td>View external link</td></tr>
 <tr><th colspan="2"><a href="//www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> www.google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;d</code></td><td>Open search in DuckDuckGo</td></tr>
 <tr><th colspan="2"><a href="//yelp.com"><img src="./assets/favicons/yelp.com.ico" width="16px"> yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
 <tr><th colspan="2"><a href="//youtube.com"><img src="./assets/favicons/youtube.com.ico" width="16px"> youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
@@ -175,7 +186,7 @@ sites have been included which can help you perform some common actions:
 
 ### Search Suggestion Engines
 
-There are currently 54 search suggestion engines.
+There are currently 55 search suggestion engines.
 
 You can access a search suggestion prompt by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -401,7 +412,7 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
-    <td><a href="http://go-search.org"><img src="./assets/favicons/go-search.org.png" width="16px"> </a></td>
+    <td><a href="http://go-search.org"><img src="./assets/favicons/go-search.org.ico" width="16px"> </a></td>
     <td><code>gs</code></td>
     <td>go-search</td>
     <td><a href="http://go-search.org">go-search.org</a></td>
@@ -503,6 +514,13 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><code>re</code></td>
     <td>reddit</td>
     <td><a href="https://www.reddit.com">www.reddit.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://stackexchange.com"><img src="./assets/favicons/stackexchange.com.ico" width="16px"> </a></td>
+    <td><code>se</code></td>
+    <td>stackexchange</td>
+    <td><a href="https://stackexchange.com">stackexchange.com</a></td>
     <td></td>
   </tr>
   <tr>
@@ -714,6 +732,6 @@ Todo
 - [x] Simplify installation process
 - [x] Feed the kittens
 
-License
--------
-&copy;2017-2019 Maddison Hellstrom - MIT License
+Copyright
+---------
+<p><h4>Author</h4>&copy; 2017-2020 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE)">MIT License</a></p>

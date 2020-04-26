@@ -286,7 +286,7 @@ completions.do.callback = (response) => Object.entries(JSON.parse(response.text)
     }
     return createSuggestionItem(
       `<div><div class="title" style="color:${color}"><strong>${symbol}${escape(domain)}</strong></div></div>`,
-      { url: `https://domainr.com/${domain}` }
+      { url: `https://domainr.com/${domain}` },
     )
   })
 
@@ -447,7 +447,7 @@ completions.wp.callback = (response) => Object.values(JSON.parse(response.text).
         </div>
       </div>
     `,
-      { url: p.fullurl }
+      { url: p.fullurl },
     )
   })
 

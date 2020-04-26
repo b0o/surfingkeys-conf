@@ -595,6 +595,11 @@ const maps = {
       callback:    actions.createHint("td > a[href*='item']:not(.storylink)", actions.openAnchor({ newTab: true, active: false })),
     },
     {
+      alias:       "e",
+      description: "View external link",
+      callback:    actions.createHint("a[rel=nofollow]"),
+    },
+    {
       leader:      "",
       alias:       "gp",
       description: "Go to parent",
@@ -710,7 +715,12 @@ const maps = {
     {
       alias:       "a",
       description: "View page",
-      callback:    actions.createHint("#bodyContent :not(sup):not(.mw-editsection) > a"),
+      callback:    actions.createHint("#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])"),
+    },
+    {
+      alias:       "e",
+      description: "View external link",
+      callback:    actions.createHint("a[rel=nofollow]"),
     },
   ],
 

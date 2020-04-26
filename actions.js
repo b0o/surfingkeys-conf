@@ -376,16 +376,44 @@ actions.gh.parseFile = (url = util.getCurrentLocation()) => {
     && repo.length > 0
     && typeof maybeBlob === "string"
     && (maybeBlob === "blob" || maybeBlob === "tree")
-    && rest.length !== 0
+    && rest.length > 0
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
   return cond
     ? {
       type:     "file",
+      user,
+      repo,
       href:     url,
       url:      u,
-      filePath: [maybeBlob].concat(rest),
+      filePath: rest,
+    }
+    : null
+}
+
+actions.gh.parseCommit = (url = util.getCurrentLocation()) => {
+  const u = url instanceof URL ? url : new URL(url)
+  const [user, repo, commit, hash] = u.pathname.split("/").filter((s) => s !== "")
+  const cond = (
+    u.origin === util.getCurrentLocation("origin")
+    && typeof user === "string"
+    && user.length > 0
+    && typeof repo === "string"
+    && repo.length > 0
+    && typeof commit === "string"
+    && commit === "commit"
+    && typeof hash === "string"
+    && hash.length > 0
+    && /^([a-zA-Z0-9]+-?)+$/.test(user)
+    && !ghReservedNames.check(user)
+  )
+  return cond
+    ? {
+      type:       "commit",
+      href:       url,
+      url:        u,
+      commitHash: hash,
     }
     : null
 }
@@ -457,12 +485,14 @@ actions.gh.isRepo = (url = util.getCurrentLocation(), rootOnly = true) =>
   actions.gh.parseRepo(url, rootOnly) !== null
 
 actions.gh.isFile = (url = util.getCurrentLocation()) => actions.gh.parseFile(url) !== null
+actions.gh.isCommit = (url = util.getCurrentLocation()) => actions.gh.parseCommit(url) !== null
 actions.gh.isIssue = (url = util.getCurrentLocation()) => actions.gh.parseIssue(url) !== null
 actions.gh.isPull = (url = util.getCurrentLocation()) => actions.gh.parsePull(url) !== null
 
 actions.gh.openRepo = () => util.createHintsFiltered((a) => actions.gh.isRepo(a.href))
 actions.gh.openUser = () => util.createHintsFiltered((a) => actions.gh.isUser(a.href))
 actions.gh.openFile = () => util.createHintsFiltered((a) => actions.gh.isFile(a.href))
+actions.gh.openCommit = () => util.createHintsFiltered((a) => actions.gh.isCommit(a.href))
 actions.gh.openIssue = () => util.createHintsFiltered((a) => actions.gh.isIssue(a.href))
 actions.gh.openPull = () => util.createHintsFiltered((a) => actions.gh.isPull(a.href))
 
@@ -517,6 +547,18 @@ actions.gh.goParent = () => {
     const u = `${util.getCurrentLocation("origin")}/${newPath.join("/")}`
     actions.openLink(u)()
   }
+}
+
+actions.gh.viewRepoHealth = () => {
+  const repo = actions.gh.parseRepo()
+  if (repo === null) return
+  actions.openLink(`https://repohealth.info/report${repo.repoBase}`, { newTab: true })()
+}
+
+actions.gh.viewRaw = () => {
+  const file = actions.gh.parseFile()
+  if (file === null) return
+  actions.openLink(`https://raw.githack.com/${file.user}/${file.repo}/${file.filePath.join("/")}`, { newTab: true })()
 }
 
 // GitLab

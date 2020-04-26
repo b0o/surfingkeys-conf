@@ -377,6 +377,11 @@ const maps = {
       callback:    actions.gh.openFile,
     },
     {
+      alias:       "c",
+      description: "View Commit",
+      callback:    actions.gh.openCommit,
+    },
+    {
       alias:       "i",
       description: "View Issue",
       callback:    actions.gh.openIssue,
@@ -385,6 +390,11 @@ const maps = {
       alias:       "p",
       description: "View Pull Request",
       callback:    actions.gh.openPull,
+    },
+    {
+      alias:       "e",
+      description: "View external link",
+      callback:    actions.createHint("a[rel=nofollow]"),
     },
     { // TODO: Add repetition support: 3gu
       leader:      "",
@@ -416,6 +426,16 @@ const maps = {
       alias:       "D",
       description: "View GoDoc for Project",
       callback:    actions.viewGodoc,
+    },
+    {
+      alias:       "H",
+      description: "View RepoHealth Report for Project",
+      callback:    actions.gh.viewRepoHealth,
+    },
+    {
+      alias:       "ra",
+      description: "View live raw version of file",
+      callback:    actions.gh.viewRaw,
     },
   ],
 

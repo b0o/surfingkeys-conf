@@ -25,19 +25,19 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "del": "^5.1.0",
-    "eslint": "6.6.0",
-    "eslint-config-airbnb-base": "14.0.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.1.0",
     "eslint-plugin-import": "^2.18.2",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-file": "^0.4.0",
     "gulp-if": "^3.0.0",
     "gulp-parcel": "^0.3.6",
-    "gulp-rename": "^1.2.2",
+    "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "json5": "^2.1.1",
     "node-fetch": "^2.6.0",
-    "platform-folders": "^0.4.1"
+    "platform-folders": "^0.5.1"
   },
   "config": {
     "commitizen": {

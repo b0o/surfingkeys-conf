@@ -113,11 +113,13 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 5. __Load your configuration into the SurfingKeys Extension__
 
 	<details>
-	<summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load configuration file from disk</summary>
+	<summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load the configuration file</summary>
+	<blockquote><details>
+	<summary><strong>Local File Access (Chrome/Chromium only)</strong></summary>
 
-	- __I.__ Visit [`chrome://extensions/`](chrome://extensions/) and enable `Allow access to file URLs` for the Surfingkeys extension
+	- __I.__ Visit `chrome://extensions/` and enable `Allow access to file URLs` for the Surfingkeys extension.
 
-	- __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
+	- __II.__ Open the SurfingKeys configuration page: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`.
 
 	- __III.__ Set the `Load settings from` option to point to the configuration file.
 
@@ -126,20 +128,59 @@ Building `surfingkeys-conf` requires a few dependencies to be installed:
 		- __Linux__: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
 		- __macOS__: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
 		- __Windows__: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
-	- __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your new configuration will automatically be loaded by SurfingKeys.
 
+	- __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your 
+		new configuration will automatically be loaded by SurfingKeys.
+
+	</details></blockquote>
+	<blockquote><details>
+	<summary><strong>Local Web Server (Chrome, Chromium, and Firefox)</strong></summary>
+
+	- __I.__ Run the configuration file server:
+
+		```shell
+		$ gulp serve-simple
+		```
+
+		Alternatively, you can use the `gulp serve` task, which automatically rebuilds the configuration file whenever a source file is modified.
+
+	- __II.__ Open the SurfingKeys configuration page: 
+
+		Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
+
+		Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
+
+	- __III.__ Set the `Load settings from` option to `http://localhost:9919`
+
+	- __IV.__ You will want to configure your system to automatically run `gulp serve-simple` from the repository directory on boot, otherwise 
+		SurfingKeys will lose the settings as soon as the local web server is down.
+	
+		If you run Linux with systemd, an [example user service](./surfingkeys-conf.service) is provided in this repo. You will need to modify 
+		it to contain the proper path to your surfingkeys-conf repo.
+
+	- __V.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp build` again and your new 
+		configuration will automatically be loaded by SurfingKeys.
+
+	- __Note:__ This method starts a web server on `localhost:9919`. Depending on your firewall configuration, other devices on your local network 
+		(or the internet at large in the case of misconfigured router firewall) may be able to read your configuration file, including any private
+		API keys or other secrets you have configured in `conf.priv.js`. Proceed with caution.
+
+	</details></blockquote>
 	</details>
-
 	<details>
 	<summary><strong>Option B</strong>: Manually copy/paste into the SurfingKeys configuration form</summary>
 
 	- __I.__ Copy the contents of `./build/surfingkeys.js` (or `$HOME/.config/surfingkeys.js` if you ran `gulp install`)
 
-	- __II.__ Open the SurfingKeys [configuration page](chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html)
+	- __II.__ Open the SurfingKeys configuration page: 
+
+		Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
+
+		Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
 
 	- __III.__ Paste into the text box, then press `save`
 
-	- __IV.__ Repeat steps 4 & 5 after any changes you make to any of your configuration files.
+	- __IV.__ Repeat steps 4 - 5 after any changes you make to any of your configuration files.
 
 	</details>
 

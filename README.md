@@ -12,7 +12,7 @@ Maddy's SurfingKeys Configuration
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include
-- 241 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- 258 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
 - 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
@@ -30,7 +30,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-241 key mappings for 20 unique
+258 key mappings for 21 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -71,6 +71,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open Account page</td></tr>
 <tr><td><code>&lt;Space&gt;C</code></td><td>Open Cart page</td></tr>
 <tr><td><code>&lt;Space&gt;O</code></td><td>Open Orders page</td></tr>
+<tr><th colspan="2"><a href="//aur.archlinux.org"><img src="./assets/favicons/aur.archlinux.org.ico" width="16px"> aur.archlinux.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>View package</td></tr>
 <tr><th colspan="2"><a href="//behance.net"><img src="./assets/favicons/behance.net.ico" width="16px"> behance.net</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Appreciate project</td></tr>
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>

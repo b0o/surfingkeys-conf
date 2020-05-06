@@ -739,6 +739,14 @@ const maps = {
       callback:    actions.createHint("a.question-hyperlink"),
     },
   ],
+
+  "aur.archlinux.org": [
+    {
+      alias:       "a",
+      description: "View package",
+      callback:    actions.createHint("a[href^='/packages/'][href$='/']"),
+    },
+  ],
 }
 
 // Aliases

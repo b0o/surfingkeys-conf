@@ -13,7 +13,7 @@ const del = require("del")
 const platforms = require("platform-folders")
 const fs = require("fs").promises
 const fetch = require("node-fetch")
-const http = require("http")
+const express = require("express")
 const gulpIf = require("gulp-if")
 
 const { COPYFILE_EXCL } = require("fs").constants
@@ -331,16 +331,24 @@ task("watch-docs", watch([...paths.scripts, paths.readme], series("docs")))
 task("watch-docs-full", watch([...paths.scripts, paths.readme], series("docs-full")))
 
 const serve = (done) => {
-  const srv = http.createServer(async (req, res) => {
+  const app = express()
+
+  const handler = (allowedOrigin) => async (req, res) => {
     console.log(`${new Date().toISOString()} ${req.method} ${req.url}`) // eslint-disable-line no-console
     res.writeHead(200, {
-      "Content-Type": "text/javascript; charset=UTF-8",
+      "Content-Type":                "text/javascript; charset=UTF-8",
+      "Access-Control-Allow-Origin": allowedOrigin,
     })
     res.end(await fs.readFile(path.join("build", paths.scriptOut)))
-  })
-  srv.listen(servePort)
+  }
+
+  app.get("/", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
+  app.get("/chrome", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
+  app.get("/firefox", handler("moz-extension://a7b04efeb-0b36-47f6-9f57-70293e5ee7b2"))
+
+  app.listen(servePort)
   console.log(`web server is listening on port ${servePort}`) // eslint-disable-line no-console
-  srv.on("close", () => {
+  app.on("close", () => {
     console.log("web server is closing...") // eslint-disable-line no-console
     done()
   })

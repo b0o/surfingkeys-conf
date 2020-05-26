@@ -47,6 +47,18 @@ const maps = {
       description: "Scroll down",
     },
     {
+      alias:       "K",
+      map:         "e",
+      category:    categories.scroll,
+      description: "Scroll half page up",
+    },
+    {
+      alias:       "J",
+      map:         "d",
+      category:    categories.scroll,
+      description: "Scroll half page down",
+    },
+    {
       alias:       "gi",
       category:    categories.pageNav,
       description: "Edit current URL with vim editor",

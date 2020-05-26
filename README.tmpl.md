@@ -191,6 +191,7 @@ Screenshots
 Todo
 ----
 
+- [ ] Include aliased sites in README
 - [ ] Add `CHANGELOG.md` using [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
 - [ ] Improve code organization
 - [ ] Ensure screenshots have a plain white background

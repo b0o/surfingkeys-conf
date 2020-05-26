@@ -40,6 +40,8 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>zf</code></td><td>Open link URL in vim editor</td></tr>
 <tr><td><code>w</code></td><td>Scroll up</td></tr>
 <tr><td><code>s</code></td><td>Scroll down</td></tr>
+<tr><td><code>K</code></td><td>Scroll half page up</td></tr>
+<tr><td><code>J</code></td><td>Scroll half page down</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gI</code></td><td>View image in new tab</td></tr>
@@ -768,6 +770,7 @@ Screenshots
 Todo
 ----
 
+- [ ] Include aliased sites in README
 - [ ] Add `CHANGELOG.md` using [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
 - [ ] Improve code organization
 - [ ] Ensure screenshots have a plain white background

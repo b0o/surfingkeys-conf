@@ -614,7 +614,7 @@ actions.hn.goParent = () => {
 
 actions.hn.collapseNextComment = () => {
   const vis = Array.from(document.querySelectorAll("a.togg"))
-    .filter((e) => e.innerText === "[-]" && util.isElementInViewport(e))
+    .filter((e) => e.innerText === "[–]" && util.isElementInViewport(e))
   if (vis.length > 0) {
     vis[0].click()
   }

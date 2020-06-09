@@ -223,7 +223,7 @@ task("docs", parallel(async () => {
     .pipe(replace("<!--{{DISCLAIMER}}-->", disclaimer))
     .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(compl).length))
     .pipe(replace("<!--{{COMPL_TABLE}}-->", complTable))
-    .pipe(replace("<!--{{KEYS_MAPS_COUNT}}-->", Object.keys(keys.maps).reduce((acc, m) => acc + m.length, 0)))
+    .pipe(replace("<!--{{KEYS_MAPS_COUNT}}-->", Object.values(keys.maps).reduce((acc, m) => acc + m.length, 0)))
     .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))

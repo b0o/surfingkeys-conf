@@ -12,7 +12,7 @@ Maddy's SurfingKeys Configuration
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include
-- 258 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- 128 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
 - 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
@@ -30,7 +30,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-258 key mappings for 21 unique
+128 key mappings for 21 unique
 sites have been included which can help you perform some common actions:
 
 <table>

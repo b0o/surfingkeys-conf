@@ -133,7 +133,6 @@ completions.cs = {
   callback: googleCxCallback,
 }
 
-
 const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.map((s) => {
   let { name } = s
   if (typeof name === "object") {
@@ -683,7 +682,6 @@ completions.dv = {
   callback: completions.dd.callback,
 }
 
-
 // DuckDuckGo News
 completions.dn = {
   alias:    "dn",
@@ -910,7 +908,6 @@ completions.gw.callback = (response) => JSON.parse(response.text).results.map((s
   `, { url: `https://golang.org/doc/${encodeURIComponent(s.url)}` })
 })
 
-
 // Go-Search
 completions.gs = {
   alias:   "gs",
@@ -922,7 +919,6 @@ completions.gs = {
 
 completions.gs.callback = (response) => JSON.parse(response.text).hits
   .map((r) => r.package)
-
 
 // ****** Haskell ****** //
 

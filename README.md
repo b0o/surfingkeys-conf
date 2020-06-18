@@ -12,7 +12,7 @@ Maddy's SurfingKeys Configuration
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include
-- 128 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- 129 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
 - 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
@@ -30,7 +30,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-128 key mappings for 21 unique
+129 key mappings for 21 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -59,6 +59,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
 <tr><td><code>&#x3D;o</code></td><td>Show outline.com version of page</td></tr>
 <tr><td><code>&#x3D;r</code></td><td>Subscribe to RSS feed for page</td></tr>
+<tr><td><code>&#x3D;s</code></td><td>Speed read page</td></tr>
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
 <tr><td><code>gxE</code></td><td>Close tab to left</td></tr>
 <tr><td><code>gxR</code></td><td>Close tab to right</td></tr>

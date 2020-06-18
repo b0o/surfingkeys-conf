@@ -273,7 +273,13 @@ actions.dg.goog = () => {
 // ------
 actions.gh = {}
 actions.gh.star = ({ toggle = false } = {}) => async () => {
-  const starContainers = [...document.querySelectorAll("div.starring-container")]
+  const hasDisplayNoneParent = (e) =>
+    window.getComputedStyle(e).display === "none"
+    || (e.parentElement ? hasDisplayNoneParent(e.parentElement) : false)
+
+  const starContainers = Array.from(document.querySelectorAll("div.starring-container"))
+    .filter((e) => !hasDisplayNoneParent(e))
+
   if (starContainers.length === 0) return
 
   let container

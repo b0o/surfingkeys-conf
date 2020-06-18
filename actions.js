@@ -75,6 +75,24 @@ const rssSubscribeUrl = "https://feedrabbit.com/subscriptions/new?url="
 actions.rssSubscribe = ({ href = util.getCurrentLocation("href") } = {}) =>
   () => actions.openLink(`${rssSubscribeUrl}${encodeURIComponent(href)}`, { newTab: true })()
 
+actions.showSpeedReader = () => {
+  const script = document.createElement("script")
+  script.innerHTML = `(() => {
+    const sq = window.sq || {}
+    window.sq = sq
+    if (sq.script) {
+      sq.again()
+    } else if (sq.context !== "inner") {
+      sq.bookmarkletVersion = "0.3.0"
+      sq.iframeQueryParams = { host: "//squirt.io" }
+      sq.script = document.createElement("script")
+      sq.script.src = \`\${sq.iframeQueryParams.host}/bookmarklet/frame.outer.js\`
+      document.body.appendChild(sq.script)
+    }
+  })()`
+  document.body.appendChild(script)
+}
+
 // Surfingkeys-specific actions
 // ----------------------------
 actions.createHint = (selector, action) => () => {
@@ -273,7 +291,13 @@ actions.dg.goog = () => {
 // ------
 actions.gh = {}
 actions.gh.star = ({ toggle = false } = {}) => async () => {
-  const starContainers = [...document.querySelectorAll("div.starring-container")]
+  const hasDisplayNoneParent = (e) =>
+    window.getComputedStyle(e).display === "none"
+    || (e.parentElement ? hasDisplayNoneParent(e.parentElement) : false)
+
+  const starContainers = Array.from(document.querySelectorAll("div.starring-container"))
+    .filter((e) => !hasDisplayNoneParent(e))
+
   if (starContainers.length === 0) return
 
   let container

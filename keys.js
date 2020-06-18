@@ -160,6 +160,12 @@ const maps = {
       callback:    actions.rssSubscribe(),
     },
     {
+      alias:       "=s",
+      category:    categories.misc,
+      description: "Speed read page",
+      callback:    actions.showSpeedReader,
+    },
+    {
       alias:       ";pd",
       category:    categories.misc,
       description: "Toggle PDF viewer from SurfingKeys",

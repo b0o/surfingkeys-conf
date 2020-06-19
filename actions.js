@@ -311,7 +311,7 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
 
   const repoUrl = container.parentElement.parentElement.matches("ul.pagehead-actions")
     ? util.getCurrentLocation("pathname")
-    : new URL(container.parentElement.querySelector("a").href).pathname
+    : new URL(container.parentElement.querySelector("form").action).pathname
 
   const status = container.classList.contains("on")
   const repo = repoUrl.slice(1).split("/").slice(0, 2).join("/")
@@ -328,9 +328,9 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   if (toggle) {
     verb = "has been"
     if (status) {
-      container.querySelector(".starred>button").click()
+      container.querySelector(".starred>button, button.starred").click()
     } else {
-      container.querySelector(".unstarred>button").click()
+      container.querySelector(".unstarred>button, button.unstarred").click()
     }
   }
 

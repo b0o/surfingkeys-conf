@@ -13,7 +13,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 Its primary features include
 - 129 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
-- 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
+- 53 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
 -----------------
@@ -191,7 +191,7 @@ sites have been included which can help you perform some common actions:
 
 ### Search Suggestion Engines
 
-There are currently 55 search suggestion engines.
+There are currently 53 search suggestion engines.
 
 You can access a search suggestion prompt by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -417,13 +417,6 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
-    <td><a href="http://go-search.org"><img src="./assets/favicons/go-search.org.ico" width="16px"> </a></td>
-    <td><code>gs</code></td>
-    <td>go-search</td>
-    <td><a href="http://go-search.org">go-search.org</a></td>
-    <td></td>
-  </tr>
-  <tr>
     <td><a href="https://gowalker.org"><img src="./assets/favicons/gowalker.org.ico" width="16px"> </a></td>
     <td><code>gw</code></td>
     <td>gowalker</td>
@@ -470,13 +463,6 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><code>hx</code></td>
     <td>hex</td>
     <td><a href="https://hex.pm">hex.pm</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><a href="http://hayoo.fh-wedel.de"><img src="./assets/favicons/hayoo.fh-wedel.de.ico" width="16px"> </a></td>
-    <td><code>hy</code></td>
-    <td>hayoo</td>
-    <td><a href="http://hayoo.fh-wedel.de">hayoo.fh-wedel.de</a></td>
     <td></td>
   </tr>
   <tr>

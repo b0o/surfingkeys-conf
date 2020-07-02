@@ -41,11 +41,10 @@ completions.al = {
 
 // Arch Linux AUR
 completions.au = {
-  alias:   "au",
-  name:    "AUR",
-  favicon: "https://aur.archlinux.org/images/favicon.ico",
-  search:  "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
-  compl:   "https://aur.archlinux.org/rpc?type=suggest&arg=",
+  alias:  "au",
+  name:   "AUR",
+  search: "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
+  compl:  "https://aur.archlinux.org/rpc?type=suggest&arg=",
 }
 
 completions.au.callback = (response) => {
@@ -127,7 +126,6 @@ completions.at.callback = (response) => {
 completions.cs = {
   alias:    "cs",
   name:     "chromestore",
-  favicon:  "https://www.google.com/images/icons/product/chrome_web_store-32.png",
   search:   "https://chrome.google.com/webstore/search/",
   compl:    googleCxURL("cs"),
   callback: googleCxCallback,
@@ -291,11 +289,10 @@ completions.do.callback = (response) => Object.entries(JSON.parse(response.text)
 
 // Vim Wiki
 completions.vw = {
-  alias:   "vw",
-  name:    "vimwiki",
-  favicon: "https://vignette.wikia.nocookie.net/vim/images/6/64/Favicon.ico",
-  search:  "https://vim.fandom.com/wiki/Special:Search?query=",
-  compl:   "https://vim.fandom.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
+  alias:  "vw",
+  name:   "vimwiki",
+  search: "https://vim.fandom.com/wiki/Special:Search?query=",
+  compl:  "https://vim.fandom.com/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
 completions.vw.callback = (response) => JSON.parse(response.text)[1]
@@ -890,11 +887,10 @@ completions.gd.callback = (response) => JSON.parse(response.text).results.map((s
 
 // Gowalker
 completions.gw = {
-  alias:   "gw",
-  name:    "gowalker",
-  favicon: "https://gowalker.org/img/favicon.png",
-  search:  "https://gowalker.org/search?auto_redirect=true&q=",
-  compl:   "https://gowalker.org/search/json?q=",
+  alias:  "gw",
+  name:   "gowalker",
+  search: "https://gowalker.org/search?auto_redirect=true&q=",
+  compl:  "https://gowalker.org/search/json?q=",
 }
 
 completions.gw.callback = (response) => JSON.parse(response.text).results.map((s) => {
@@ -910,11 +906,10 @@ completions.gw.callback = (response) => JSON.parse(response.text).results.map((s
 
 // Go-Search
 completions.gs = {
-  alias:   "gs",
-  name:    "go-search",
-  favicon: "https://go-search.org/images/logo-16.png",
-  search:  "http://go-search.org/search?q=",
-  compl:   "http://go-search.org/api?action=search&q=",
+  alias:  "gs",
+  name:   "go-search",
+  search: "http://go-search.org/search?q=",
+  compl:  "http://go-search.org/api?action=search&q=",
 }
 
 completions.gs.callback = (response) => JSON.parse(response.text).hits
@@ -924,11 +919,10 @@ completions.gs.callback = (response) => JSON.parse(response.text).hits
 
 // Hackage
 completions.ha = {
-  alias:   "ha",
-  name:    "hackage",
-  favicon: "https://hackage.haskell.org/static/favicon.png",
-  search:  "https://hackage.haskell.org/packages/search?terms=",
-  compl:   "https://hackage.haskell.org/packages/search.json?terms=",
+  alias:  "ha",
+  name:   "hackage",
+  search: "https://hackage.haskell.org/packages/search?terms=",
+  compl:  "https://hackage.haskell.org/packages/search.json?terms=",
 }
 
 completions.ha.callback = (response) => JSON.parse(response.text)
@@ -936,12 +930,11 @@ completions.ha.callback = (response) => JSON.parse(response.text)
 
 // Hoogle
 completions.ho = {
-  alias:   "ho",
-  name:    "hoogle",
-  favicon: "https://www.haskell.org/img/favicon.ico",
-  search:  `https://www.haskell.org/hoogle/?hoogle=${
+  alias:  "ho",
+  name:   "hoogle",
+  search: `https://www.haskell.org/hoogle/?hoogle=${
     encodeURIComponent("+platform +xmonad +xmonad-contrib ")}`, // This tells Hoogle to include these modules in the search - encodeURIComponent is only used for better readability
-  compl:   `https://www.haskell.org/hoogle/?mode=json&hoogle=${
+  compl:  `https://www.haskell.org/hoogle/?mode=json&hoogle=${
     encodeURIComponent("+platform +xmonad +xmonad-contrib ")}`,
 }
 
@@ -950,22 +943,20 @@ completions.ho.callback = (response) => JSON.parse(response.text).results
 
 // Haskell Wiki
 completions.hw = {
-  alias:   "hw",
-  name:    "haskellwiki",
-  favicon: "https://www.haskell.org/img/favicon.ico",
-  search:  "https://wiki.haskell.org/index.php?go=go&search=",
-  compl:   "https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
+  alias:  "hw",
+  name:   "haskellwiki",
+  search: "https://wiki.haskell.org/index.php?go=go&search=",
+  compl:  "https://wiki.haskell.org/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&suggest=true&search=",
 }
 
 completions.hw.callback = (response) => JSON.parse(response.text)[1]
 
 // Hayoo
 completions.hy = {
-  alias:   "hy",
-  name:    "hayoo",
-  favicon: "https://www.haskell.org/img/favicon.ico",
-  search:  "http://hayoo.fh-wedel.de/?query=",
-  compl:   "http://hayoo.fh-wedel.de/json?query=",
+  alias:  "hy",
+  name:   "hayoo",
+  search: "http://hayoo.fh-wedel.de/?query=",
+  compl:  "http://hayoo.fh-wedel.de/json?query=",
 }
 
 completions.hy.callback = (response) => JSON.parse(response.text).result
@@ -1025,11 +1016,10 @@ completions.md.callback = (response) => {
 
 // NPM registry search
 completions.np = {
-  alias:   "np",
-  name:    "npm",
-  favicon: "https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png",
-  search:  "https://www.npmjs.com/search?q=",
-  compl:   "https://api.npms.io/v2/search/suggestions?size=20&q=",
+  alias:  "np",
+  name:   "npm",
+  search: "https://www.npmjs.com/search?q=",
+  compl:  "https://api.npms.io/v2/search/suggestions?size=20&q=",
 }
 
 completions.np.callback = (response) => JSON.parse(response.text)

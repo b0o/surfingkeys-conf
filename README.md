@@ -284,7 +284,7 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><a href="#crunchbase-people">:framed_picture:</a></td>
   </tr>
   <tr>
-    <td><a href="https://chrome.google.com"><img src="./assets/favicons/chrome.google.com.png" width="16px"> </a></td>
+    <td><a href="https://chrome.google.com"><img src="./assets/favicons/chrome.google.com.ico" width="16px"> </a></td>
     <td><code>cs</code></td>
     <td>chromestore</td>
     <td><a href="https://chrome.google.com">chrome.google.com</a></td>
@@ -424,14 +424,14 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://gowalker.org"><img src="./assets/favicons/gowalker.org.png" width="16px"> </a></td>
+    <td><a href="https://gowalker.org"><img src="./assets/favicons/gowalker.org.ico" width="16px"> </a></td>
     <td><code>gw</code></td>
     <td>gowalker</td>
     <td><a href="https://gowalker.org">gowalker.org</a></td>
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://hackage.haskell.org"><img src="./assets/favicons/hackage.haskell.org.png" width="16px"> </a></td>
+    <td><a href="https://hackage.haskell.org"><img src="./assets/favicons/hackage.haskell.org.ico" width="16px"> </a></td>
     <td><code>ha</code></td>
     <td>hackage</td>
     <td><a href="https://hackage.haskell.org">hackage.haskell.org</a></td>
@@ -501,7 +501,7 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://www.npmjs.com"><img src="./assets/favicons/www.npmjs.com.png" width="16px"> </a></td>
+    <td><a href="https://www.npmjs.com"><img src="./assets/favicons/www.npmjs.com.ico" width="16px"> </a></td>
     <td><code>np</code></td>
     <td>npm</td>
     <td><a href="https://www.npmjs.com">www.npmjs.com</a></td>

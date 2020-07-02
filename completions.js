@@ -904,17 +904,6 @@ completions.gw.callback = (response) => JSON.parse(response.text).results.map((s
   `, { url: `https://golang.org/doc/${encodeURIComponent(s.url)}` })
 })
 
-// Go-Search
-completions.gs = {
-  alias:  "gs",
-  name:   "go-search",
-  search: "http://go-search.org/search?q=",
-  compl:  "http://go-search.org/api?action=search&q=",
-}
-
-completions.gs.callback = (response) => JSON.parse(response.text).hits
-  .map((r) => r.package)
-
 // ****** Haskell ****** //
 
 // Hackage
@@ -950,17 +939,6 @@ completions.hw = {
 }
 
 completions.hw.callback = (response) => JSON.parse(response.text)[1]
-
-// Hayoo
-completions.hy = {
-  alias:  "hy",
-  name:   "hayoo",
-  search: "http://hayoo.fh-wedel.de/?query=",
-  compl:  "http://hayoo.fh-wedel.de/json?query=",
-}
-
-completions.hy.callback = (response) => JSON.parse(response.text).result
-  .map((s) => createURLItem(`[${s.resultType}] ${s.resultName}`, s.resultUri))
 
 // ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
 

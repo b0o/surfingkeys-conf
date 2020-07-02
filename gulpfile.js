@@ -235,7 +235,6 @@ task("docs", parallel(async () => {
 const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   const url = favicon
   let data
-  let ext = path.extname(new URL(favicon).pathname)
   try {
     const res = await fetch(url, { timeout })
     if (!res.ok) {
@@ -244,7 +243,6 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
     data = await res.buffer()
   } catch (e) {
     process.stdout.write(`no favicon found for ${url}: ${e}\n`)
-    ext = ".ico"
     // transparent pixel
     data = Buffer.from(
       "AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",
@@ -253,7 +251,7 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   }
   return {
     domain,
-    name:   `${domain}${ext}`,
+    name:   `${domain}.ico`,
     source: data,
   }
 }
@@ -266,7 +264,7 @@ task("favicons", series("clean-favicons", async () => {
     Object.entries(compl)
       .map(([, v]) => ({
         domain:  new URL(v.domain ? `https://${v.domain}` : v.search).hostname,
-        favicon: v.favicon ? v.favicon : `${new URL(v.domain ? `https://${v.domain}` : v.search).origin}/favicon.ico`,
+        favicon: `https://icons.duckduckgo.com/ip3/${new URL(v.domain ? `https://${v.domain}` : v.search).hostname}.ico`,
       })),
 
     // site-specific keybindings
@@ -274,7 +272,7 @@ task("favicons", series("clean-favicons", async () => {
       .filter((k) => k !== "global")
       .map((k) => ({
         domain:  k,
-        favicon: `${new URL(`https://${k}`).origin}/favicon.ico`,
+        favicon: `https://icons.duckduckgo.com/ip3/${new URL(`https://${k}`).hostname}.ico`,
       })),
   ).filter((e, i, arr) => i === arr.indexOf(e)) // Keep only first occurrence of each element
 

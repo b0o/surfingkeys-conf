@@ -311,12 +311,6 @@ const maps = {
       description: "Toggle fullscreen",
       callback:    () => document.querySelector(".ytp-fullscreen-button.ytp-button").click(),
     },
-    {
-      leader:      "",
-      alias:       "<Space>",
-      description: "Play/pause",
-      callback:    actions.createHint(".ytp-play-button"),
-    },
   ],
 
   "vimeo.com": [

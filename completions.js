@@ -716,6 +716,13 @@ completions.gi = {
   callback: completions.go.callback,
 }
 
+// Google Images (reverse image search by URL)
+completions.gI = {
+  alias:  "gI",
+  name:   "google-reverse-image",
+  search: "https://www.google.com/searchbyimage?image_url=",
+}
+
 // Google - I'm Feeling Lucky
 completions.G = {
   alias:    "G",

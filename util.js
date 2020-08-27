@@ -112,7 +112,19 @@ util.processMaps = (maps, aliases, siteleader) => {
     const fullDescription = `#${category} ${description}`
 
     if (mapObj.map !== undefined) {
-      map(alias, mapObj.map)
+      if (Object.values(categories.vim).includes(mapObj.category)) {
+        aceVimMap(alias, mapObj.map, {
+          [categories.vim.normal]:  "normal",
+          [categories.vim.insert]:  "insert",
+          [categories.vim.command]: "command",
+        }[mapObj.category])
+      }
+      const method = {
+        [categories.omnibar]:    cmap,
+        [categories.insertMode]: imap,
+        [categories.visualMode]: vmap,
+      }[mapObj.category] || map
+      method(alias, mapObj.map)
     } else {
       mapkey(key, fullDescription, callback, opts)
     }

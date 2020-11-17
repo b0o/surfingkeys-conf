@@ -9,16 +9,38 @@ util.getCurrentLocation = (prop = "href") => {
   return window.location[prop]
 }
 
-util.escape = (str) => String(str).replace(/[&<>"'`=/]/g, (s) => ({
-  "&":  "&amp;",
-  "<":  "&lt;",
-  ">":  "&gt;",
-  "\"": "&quot;",
-  "'":  "&#39;",
-  "/":  "&#x2F;",
-  "`":  "&#x60;",
-  "=":  "&#x3D;",
-}[s]))
+util.escape = (str) =>
+  String(str).replace(/[&<>"'`=/]/g, (s) => ({
+    "&":  "&amp;",
+    "<":  "&lt;",
+    ">":  "&gt;",
+    "\"": "&quot;",
+    "'":  "&#39;",
+    "/":  "&#x2F;",
+    "`":  "&#x60;",
+    "=":  "&#x3D;",
+  }[s]))
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
+util.escapeRegExp = (str) =>
+  str.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&")
+
+util.until = (check, test = (a) => a, maxAttempts = 50, interval = 50) =>
+  new Promise((resolve, reject) => {
+    const f = (attempts = 0) => {
+      const res = check()
+      if (!test(res)) {
+        if (attempts > maxAttempts) {
+          reject(new Error("until: timeout"))
+        } else {
+          setTimeout(() => f(attempts + 1), interval)
+        }
+        return
+      }
+      resolve(res)
+    }
+    f()
+  })
 
 util.createSuggestionItem = (html, props = {}) => {
   const li = document.createElement("li")
@@ -98,24 +120,26 @@ util.processMaps = (maps, aliases, siteleader) => {
       leader = (domain === "global") ? "" : siteleader,
       category = categories.misc,
       description = "",
-    } = mapObj
-    const opts = {}
+      path = "(/.*)?",
+    } = mapObj;
+    (Array.isArray(alias) ? alias : [alias]).forEach((a) => {
+      const opts = {}
+      const key = `${leader}${a}`
 
-    const key = `${leader}${alias}`
+      // Determine if it's a site-specific mapping
+      if (domain !== "global") {
+        const d = util.escapeRegExp(domain)
+        opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
+      }
 
-    // Determine if it's a site-specific mapping
-    if (domain !== "global") {
-      const d = domain.replace(".", "\\.")
-      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})(/.*)?`)
-    }
+      const fullDescription = `#${category} ${description}`
 
-    const fullDescription = `#${category} ${description}`
-
-    if (mapObj.map !== undefined) {
-      map(alias, mapObj.map)
-    } else {
-      mapkey(key, fullDescription, callback, opts)
-    }
+      if (mapObj.map !== undefined) {
+        map(a, mapObj.map)
+      } else {
+        mapkey(key, fullDescription, callback, opts)
+      }
+    })
   })))
 }
 

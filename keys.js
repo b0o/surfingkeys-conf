@@ -758,6 +758,59 @@ const maps = {
       callback:    actions.createHint("a[href^='/packages/'][href$='/']"),
     },
   ],
+
+  "home.nest.com": [
+    {
+      path:        "/thermostat/DEVICE_.*",
+      leader:      "",
+      alias:       ["+", "="],
+      description: "Increment temperature",
+      callback:    actions.nt.adjustTemp(1),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      leader:      "",
+      alias:       ["-", "_"],
+      description: "Decrement temperature",
+      callback:    actions.nt.adjustTemp(-1),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "h",
+      description: "Switch mode to Heat",
+      callback:    actions.nt.setMode("heat"),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "c",
+      description: "Switch mode to Cool",
+      callback:    actions.nt.setMode("cool"),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "r",
+      description: "Switch mode to Heat/Cool",
+      callback:    actions.nt.setMode("range"),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "o",
+      description: "Switch mode to Off",
+      callback:    actions.nt.setMode("off"),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "f",
+      description: "Switch fan On",
+      callback:    actions.nt.setFan(1),
+    },
+    {
+      path:        "/thermostat/DEVICE_.*",
+      alias:       "F",
+      description: "Switch fan Off",
+      callback:    actions.nt.setFan(0),
+    },
+  ],
 }
 
 // Aliases

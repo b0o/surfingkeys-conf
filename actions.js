@@ -704,4 +704,90 @@ actions.wp.toggleSimple = () => {
   actions.openLink(u.href)()
 }
 
+// Nest Thermostat Controller
+// --------------------------
+actions.nt = {}
+actions.nt.adjustTemp = (dir) => () =>
+  document.querySelector(
+    `button[data-test='thermozilla-controller-controls-${dir > 0 ? "in" : "de"}crement-button']`,
+  ).click()
+
+actions.nt.setMode = (mode) => async () => {
+  const selectMode = async (popover) => {
+    const query = () => !popover.isConnected
+    const q = query()
+    if (q) return q
+    popover.querySelector(`button[data-test='thermozilla-mode-switcher-${mode}-button']`).click()
+    return util.until(query)
+  }
+
+  const openPopover = async () => {
+    const query = () => document.querySelector("div[data-test='thermozilla-mode-popover']")
+    const q = query()
+    if (q) return q
+    document.querySelector("button[data-test='thermozilla-mode-button']").click()
+    return util.until(query)
+  }
+
+  const popover = await openPopover()
+  return selectMode(popover)
+}
+
+actions.nt.setFan = (desiredState) => async () => {
+  const startStopFan = async (startStop, popover) => {
+    const query = () => !popover.isConnected
+    const q = query()
+    if (q) return q
+    popover.querySelector(`div[data-test='thermozilla-fan-timer-${startStop}-button']`).click()
+    return util.until(query)
+  }
+
+  const selectFanTime = async (popover, listbox) => {
+    const query = () => !listbox.isConnected
+    const q = query()
+    if (q) return q
+    Hints.dispatchMouseClick(listbox.querySelector("div[role='option']:last-child"))
+    return util.until(query)
+  }
+
+  const openFanListbox = async (popover) => {
+    const query = () => popover.querySelector("div[role='listbox']")
+    const q = query()
+    if (q) return q
+    Hints.dispatchMouseClick(popover.querySelector("div[role='combobox']"))
+    return util.until(query)
+  }
+
+  const openPopover = async () => {
+    const query = () => document.querySelector("div[data-test='thermozilla-fan-timer-popover']")
+    const q = query()
+    if (q) return q
+    document.querySelector("button[data-test='thermozilla-fan-button']").click()
+    return util.until(query)
+  }
+
+  const fanRunning = () => document.querySelector("div[data-test='thermozilla-aag-fan-listcell-title']")
+
+  const startFan = async () => {
+    const popover = await openPopover()
+    const listbox = await openFanListbox(popover)
+    await selectFanTime(popover, listbox)
+    return startStopFan("start", popover)
+  }
+
+  const stopFan = async () => {
+    const popover = await openPopover()
+    await startStopFan("stop", popover)
+    await util.until(() => !fanRunning())
+  }
+
+  if (fanRunning()) {
+    await stopFan()
+  }
+
+  if (desiredState === 1) {
+    await startFan()
+  }
+}
+
 module.exports = actions

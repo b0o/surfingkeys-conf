@@ -533,7 +533,7 @@ actions.gh.openRepoOwner = () => {
 }
 
 actions.gh.openProfile = () =>
-  actions.openLink(`${document.querySelector("a.user-profile-link").href}`)()
+  actions.openLink(`/${document.querySelector("meta[name='user-login']").content}`)()
 
 actions.gh.toggleLangStats = () =>
   document.querySelector(".repository-lang-stats-graph").click()

@@ -120,26 +120,24 @@ util.processMaps = (maps, aliases, siteleader) => {
       leader = (domain === "global") ? "" : siteleader,
       category = categories.misc,
       description = "",
-      path = "(/.*)?",
-    } = mapObj;
-    (Array.isArray(alias) ? alias : [alias]).forEach((a) => {
-      const opts = {}
-      const key = `${leader}${a}`
+    } = mapObj
+    const opts = {}
 
-      // Determine if it's a site-specific mapping
-      if (domain !== "global") {
-        const d = util.escapeRegExp(domain)
-        opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
-      }
+    const key = `${leader}${alias}`
 
-      const fullDescription = `#${category} ${description}`
+    // Determine if it's a site-specific mapping
+    if (domain !== "global") {
+      const d = domain.replace(".", "\\.")
+      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})(/.*)?`)
+    }
 
-      if (mapObj.map !== undefined) {
-        map(a, mapObj.map)
-      } else {
-        mapkey(key, fullDescription, callback, opts)
-      }
-    })
+    const fullDescription = `#${category} ${description}`
+
+    if (mapObj.map !== undefined) {
+      map(alias, mapObj.map)
+    } else {
+      mapkey(key, fullDescription, callback, opts)
+    }
   })))
 }
 

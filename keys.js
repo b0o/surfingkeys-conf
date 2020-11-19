@@ -763,14 +763,14 @@ const maps = {
     {
       path:        "/thermostat/DEVICE_.*",
       leader:      "",
-      alias:       ["+", "="],
+      alias:       "=",
       description: "Increment temperature",
       callback:    actions.nt.adjustTemp(1),
     },
     {
       path:        "/thermostat/DEVICE_.*",
       leader:      "",
-      alias:       ["-", "_"],
+      alias:       "-",
       description: "Decrement temperature",
       callback:    actions.nt.adjustTemp(-1),
     },

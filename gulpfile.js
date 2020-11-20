@@ -333,11 +333,18 @@ const serve = (done) => {
 
   const handler = (allowedOrigin) => async (req, res) => {
     console.log(`${new Date().toISOString()} ${req.method} ${req.url}`) // eslint-disable-line no-console
-    res.writeHead(200, {
-      "Content-Type":                "text/javascript; charset=UTF-8",
-      "Access-Control-Allow-Origin": allowedOrigin,
-    })
-    res.end(await fs.readFile(path.join("build", paths.scriptOut)))
+    try {
+      res.sendFile(path.resolve(__dirname, "build", paths.scriptOut), {
+        headers: {
+          "Content-Type":                "text/javascript; charset=UTF-8",
+          "Access-Control-Allow-Origin": allowedOrigin,
+        },
+        maxAge: 2000,
+      })
+    } catch (e) {
+      console.log(e) // eslint-disable-line no-console
+      res.status(500).send("Error reading config file.\n")
+    }
   }
 
   app.get("/", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))

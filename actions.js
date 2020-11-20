@@ -97,7 +97,7 @@ actions.showSpeedReader = () => {
 // ----------------------------
 actions.createHint = (selector, action) => () => {
   if (typeof action === "undefined") {
-    // Use manual reassignment rather than default arg so that we can pre-compile without access
+    // Use manual reassignment rather than a default arg so that we can lint/bundle without access
     // to the Hints object
     action = Hints.dispatchMouseClick // eslint-disable-line no-param-reassign
   }

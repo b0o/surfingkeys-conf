@@ -733,6 +733,11 @@ const maps = {
       description: "View external link",
       callback:    actions.createHint("a[rel=nofollow]"),
     },
+    {
+      alias:       "R",
+      description: "View WikiRank for current article",
+      callback:    actions.wp.viewWikiRank,
+    },
   ],
 
   "craigslist.org": [

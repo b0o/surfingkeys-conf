@@ -704,6 +704,17 @@ actions.wp.toggleSimple = () => {
   actions.openLink(u.href)()
 }
 
+actions.wp.viewWikiRank = () => {
+  const h = document.location.hostname.split(".")
+  const lang = h.length > 2 && h[0] !== "www" ? h[0] : "en"
+  const p = document.location.pathname.split("/")
+  if (p.length < 3 || p[1] !== "wiki") {
+    return
+  }
+  const article = p.slice(2).join("/")
+  actions.openLink(`https://wikirank.net/${lang}/${article}`, { newTab: true })()
+}
+
 // Nest Thermostat Controller
 // --------------------------
 actions.nt = {}

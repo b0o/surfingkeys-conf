@@ -732,6 +732,16 @@ completions.G = {
   callback: completions.go.callback,
 }
 
+// Google Scholar
+completions.gs = {
+  alias:  "gs",
+  name:   "google-scholar",
+  search: "https://scholar.google.com/scholar?q=",
+  compl:  "https://scholar.google.com/scholar_complete?q=",
+}
+
+completions.gs.callback = (response) => JSON.parse(response.text).l
+
 //  ****** Elixir ****** //
 
 // Hex.pm

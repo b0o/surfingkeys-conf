@@ -183,6 +183,12 @@ const maps = {
       category:    categories.tabs,
       description: "Close tab to right",
     },
+    {
+      alias:       "gh",
+      category:    categories.clipboard,
+      description: "Scroll to element targeted by URL hash",
+      callback:    actions.scrollToHash,
+    },
   ],
 
   "amazon.com": [

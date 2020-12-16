@@ -93,6 +93,15 @@ actions.showSpeedReader = () => {
   document.body.appendChild(script)
 }
 
+actions.scrollToHash = (hash = null) => {
+  const h = (hash || document.location.hash).replace("#", "")
+  const e = document.getElementById(h) || document.querySelector(`[name="${h}"]`)
+  if (!e) {
+    return
+  }
+  e.scrollIntoView({ behavior: "smooth" })
+}
+
 // Surfingkeys-specific actions
 // ----------------------------
 actions.createHint = (selector, action) => () => {

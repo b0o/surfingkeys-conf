@@ -12,8 +12,8 @@ Maddy's SurfingKeys Configuration
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
 Its primary features include
-- 129 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
-- 53 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
+- 139 [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
+- 55 [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
 Table of Contents
 -----------------
@@ -30,7 +30,7 @@ Features
 
 ### Site-Specific Key Mappings
 
-129 key mappings for 21 unique
+139 key mappings for 22 unique
 sites have been included which can help you perform some common actions:
 
 <table>
@@ -42,6 +42,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>s</code></td><td>Scroll down</td></tr>
 <tr><td><code>K</code></td><td>Scroll half page up</td></tr>
 <tr><td><code>J</code></td><td>Scroll half page down</td></tr>
+<tr><td><code>gh</code></td><td>Scroll to element targeted by URL hash</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gI</code></td><td>View image in new tab</td></tr>
@@ -63,6 +64,7 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>;pd</code></td><td>Toggle PDF viewer from SurfingKeys</td></tr>
 <tr><td><code>gxE</code></td><td>Close tab to left</td></tr>
 <tr><td><code>gxR</code></td><td>Close tab to right</td></tr>
+<tr><td><code>\cgh</code></td><td>Open clipboard string as GitHub path (e.g. 'torvalds/linux')</td></tr>
 <tr><th colspan="2"><a href="//algolia.com"><img src="./assets/favicons/algolia.com.ico" width="16px"> algolia.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><th colspan="2"><a href="//amazon.com"><img src="./assets/favicons/amazon.com.ico" width="16px"> amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
@@ -122,13 +124,23 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
-<tr><td><code>&lt;Space&gt;H</code></td><td>View RepoHealth Report for Project</td></tr>
+<tr><td><code>&lt;Space&gt;G</code></td><td>View on SourceGraph</td></tr>
 <tr><td><code>&lt;Space&gt;ra</code></td><td>View live raw version of file</td></tr>
+<tr><td><code>&lt;Space&gt;gcp</code></td><td>Open clipboard string as file path in repo</td></tr>
 <tr><th colspan="2"><a href="//gitlab.com"><img src="./assets/favicons/gitlab.com.ico" width="16px"> gitlab.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle Star</td></tr>
 <tr><td><code>&lt;Space&gt;y</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
+<tr><th colspan="2"><a href="//home.nest.com"><img src="./assets/favicons/home.nest.com.ico" width="16px"> home.nest.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&#x3D;</code></td><td>Increment temperature</td></tr>
+<tr><td><code>-</code></td><td>Decrement temperature</td></tr>
+<tr><td><code>&lt;Space&gt;h</code></td><td>Switch mode to Heat</td></tr>
+<tr><td><code>&lt;Space&gt;c</code></td><td>Switch mode to Cool</td></tr>
+<tr><td><code>&lt;Space&gt;r</code></td><td>Switch mode to Heat/Cool</td></tr>
+<tr><td><code>&lt;Space&gt;o</code></td><td>Switch mode to Off</td></tr>
+<tr><td><code>&lt;Space&gt;f</code></td><td>Switch fan On</td></tr>
+<tr><td><code>&lt;Space&gt;F</code></td><td>Switch fan Off</td></tr>
 <tr><th colspan="2"><a href="//news.ycombinator.com"><img src="./assets/favicons/news.ycombinator.com.ico" width="16px"> news.ycombinator.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;x</code></td><td>Collapse comment</td></tr>
 <tr><td><code>&lt;Space&gt;X</code></td><td>Collapse next comment</td></tr>
@@ -163,19 +175,19 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>&lt;Space&gt;s</code></td><td>Like tweet</td></tr>
 <tr><td><code>&lt;Space&gt;R</code></td><td>Retweet</td></tr>
 <tr><td><code>&lt;Space&gt;c</code></td><td>Comment/Reply</td></tr>
-<tr><td><code>&lt;Space&gt;t</code></td><td>New tweet</td></tr>
-<tr><td><code>&lt;Space&gt;T</code></td><td>Tweet to</td></tr>
-<tr><td><code>&lt;Space&gt;r</code></td><td>Load new tweets</td></tr>
-<tr><td><code>&lt;Space&gt;g</code></td><td>Goto user</td></tr>
+<tr><td><code>&lt;Space&gt;T</code></td><td>New tweet</td></tr>
+<tr><td><code>&lt;Space&gt;u</code></td><td>Goto user</td></tr>
+<tr><td><code>&lt;Space&gt;t</code></td><td>Goto tweet</td></tr>
 <tr><th colspan="2"><a href="//vimeo.com"><img src="./assets/favicons/vimeo.com.ico" width="16px"> vimeo.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;F</code></td><td>Toggle fullscreen</td></tr>
 <tr><th colspan="2"><a href="//wikipedia.org"><img src="./assets/favicons/wikipedia.org.ico" width="16px"> wikipedia.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;s</code></td><td>Toggle simple version of current article</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View page</td></tr>
 <tr><td><code>&lt;Space&gt;e</code></td><td>View external link</td></tr>
+<tr><td><code>&lt;Space&gt;R</code></td><td>View WikiRank for current article</td></tr>
 <tr><th colspan="2"><a href="//www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> www.google.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
-<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (non-active new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;d</code></td><td>Open search in DuckDuckGo</td></tr>
 <tr><th colspan="2"><a href="//yelp.com"><img src="./assets/favicons/yelp.com.ico" width="16px"> yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
@@ -184,14 +196,13 @@ sites have been included which can help you perform some common actions:
 <tr><td><code>C</code></td><td>Open channel</td></tr>
 <tr><td><code>gH</code></td><td>Goto homepage</td></tr>
 <tr><td><code>F</code></td><td>Toggle fullscreen</td></tr>
-<tr><td><code>&lt;Space&gt;</code></td><td>Play/pause</td></tr>
 
 </tbody>
 </table>
 
 ### Search Suggestion Engines
 
-There are currently 53 search suggestion engines.
+There are currently 55 search suggestion engines.
 
 You can access a search suggestion prompt by pressing the search leader key, which is `a` by default, followed by the search engine alias.
 
@@ -382,6 +393,13 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td></td>
   </tr>
   <tr>
+    <td><a href="https://www.google.com"><img src="./assets/favicons/www.google.com.ico" width="16px"> </a></td>
+    <td><code>gI</code></td>
+    <td>google-reverse-image</td>
+    <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><a href="https://godoc.org"><img src="./assets/favicons/godoc.org.ico" width="16px"> </a></td>
     <td><code>gd</code></td>
     <td>godoc</td>
@@ -414,6 +432,13 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
     <td><code>go</code></td>
     <td>google</td>
     <td><a href="https://www.google.com">www.google.com</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://scholar.google.com"><img src="./assets/favicons/scholar.google.com.ico" width="16px"> </a></td>
+    <td><code>gs</code></td>
+    <td>google-scholar</td>
+    <td><a href="https://scholar.google.com">scholar.google.com</a></td>
     <td></td>
   </tr>
   <tr>

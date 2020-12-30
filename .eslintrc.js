@@ -22,9 +22,10 @@ module.exports = {
     node:    true,
   },
   rules: {
-    semi:           ["error", "never"],
-    "comma-dangle": ["warn", "always-multiline"],
-    quotes:         ["warn", "double"],
+    semi:             ["error", "never"],
+    "comma-dangle":   ["warn", "always-multiline"],
+    quotes:           ["warn", "double"],
+    "no-cond-assign": ["error", "except-parens"],
 
     "newline-per-chained-call": "off",
     "no-restricted-syntax":     "off",

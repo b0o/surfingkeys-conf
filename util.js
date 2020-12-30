@@ -149,7 +149,7 @@ util.processCompletions = (completions, searchleader) => Object.values(completio
   addSearchAliasX(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
   mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
   mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
-    Clipboard.read((c) => {
+    Clipboard.read((c) => { // TODO: use navigator.clipboard
       Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
     })
   })

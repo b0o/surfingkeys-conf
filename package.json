@@ -20,30 +20,25 @@
   "contributors": [],
   "license": "MIT",
   "dependencies": {
-    "github-reserved-names": "^1.1.9"
+    "github-reserved-names": "^2.0.4"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "del": "^5.1.0",
-    "eslint": "7.3.1",
-    "eslint-config-airbnb-base": "14.2.0",
-    "eslint-plugin-import": "^2.22.0",
+    "del": "^6.0.0",
+    "eslint": "7.16.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-file": "^0.4.0",
     "gulp-if": "^3.0.0",
-    "gulp-parcel": "^0.3.6",
+    "gulp-notify": "^3.2.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
-    "json5": "^2.1.1",
-    "node-fetch": "^2.6.0",
-    "platform-folders": "^0.5.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "node-fetch": "^2.6.1",
+    "platform-folders": "^0.5.2",
+    "plugin-error": "^1.0.1",
+    "webpack": "^5.11.1",
+    "webpack-stream": "^6.1.1"
   }
 }

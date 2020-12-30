@@ -5,6 +5,8 @@ const wpDefaultIcon = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20enco
 
 const cbDefaultIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
 
+const locale = typeof navigator !== "undefined" ? navigator.language : ""
+
 const completions = {}
 
 // Helper functions for Google Custom Search Engine completions
@@ -167,7 +169,7 @@ const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.ma
 completions.fa = {
   alias:    "fa",
   name:     "firefox-addons",
-  search:   "https://addons.mozilla.org/en-US/firefox/search/?q=",
+  search:   `https://addons.mozilla.org/${locale}/firefox/search/?q=`,
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?q=",
   callback: parseFirefoxAddonsRes,
 }
@@ -176,7 +178,7 @@ completions.fa = {
 completions.ft = {
   alias:    "ft",
   name:     "firefox-themes",
-  search:   "https://addons.mozilla.org/en-US/firefox/search/?type=statictheme&q=",
+  search:   `https://addons.mozilla.org/${locale}/firefox/search/?type=statictheme&q=`,
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=statictheme&q=",
   callback: parseFirefoxAddonsRes,
 }
@@ -185,7 +187,7 @@ completions.ft = {
 completions.fe = {
   alias:    "fe",
   name:     "firefox-extensions",
-  search:   "https://addons.mozilla.org/en-US/firefox/search/?type=extension&q=",
+  search:   `https://addons.mozilla.org/${locale}/firefox/search/?type=extension&q=`,
   compl:    "https://addons.mozilla.org/api/v4/addons/autocomplete/?type=extension&q=",
   callback: parseFirefoxAddonsRes,
 }
@@ -983,8 +985,8 @@ completions.no = {
 completions.md = {
   alias:  "md",
   name:   "mdn",
-  search: "https://developer.mozilla.org/en-US/search?q=",
-  compl:  "https://developer.mozilla.org/en-US/search.json?q=",
+  search: `https://developer.mozilla.org/${locale}/search?q=`,
+  compl:  `https://developer.mozilla.org/api/v1/search/${locale}?q=`,
 }
 
 completions.md.callback = (response) => {
@@ -1005,7 +1007,7 @@ completions.md.callback = (response) => {
         <div style="font-size:0.8em"><em>${slug}</em></div>
         <div>${excerpt}</div>
       </div>
-    `, { url: `https://developer.mozilla.org/${s.slug}` })
+    `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` })
   })
 }
 

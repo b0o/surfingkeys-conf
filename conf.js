@@ -8,6 +8,10 @@ util.addSettings({
   omnibarSuggestionTimeout: 500,
   richHintsForKeystroke:    1,
   theme:                    `
+    body {
+      font-family: "DejaVu Sans", DejaVu, Arial, sans-serif;
+    }
+
     /* Disable RichHints CSS animation */
     .expandRichHints {
         animation: 0s ease-in-out 1 forwards expandRichHints;

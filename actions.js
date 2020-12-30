@@ -26,13 +26,13 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
 }
 
 actions.copyURLPath = ({ count, domain } = {}) => () =>
-  Clipboard.write(actions.getURLPath({ count, domain }))
+  Clipboard.write(actions.getURLPath({ count, domain })) // TODO: use navigator.clipboard
 
 actions.copyOrgLink = () =>
-  Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`)
+  Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`) // TODO: use navigator.clipboard
 
 actions.copyMarkdownLink = () =>
-  Clipboard.write(`[${document.title}](${util.getCurrentLocation("href")})`)
+  Clipboard.write(`[${document.title}](${util.getCurrentLocation("href")})`) // TODO: use navigator.clipboard
 
 actions.duplicateTab = () =>
   actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()
@@ -104,7 +104,7 @@ actions.scrollToHash = (hash = null) => {
 
 // Surfingkeys-specific actions
 // ----------------------------
-actions.createHint = (selector, action) => () => {
+actions.createHints = (selector, action) => () => {
   if (typeof action === "undefined") {
     // Use manual reassignment rather than a default arg so that we can lint/bundle without access
     // to the Hints object
@@ -137,7 +137,7 @@ actions.togglePdfViewer = () => chrome.storage.local.get("noPdfViewer", (resp) =
   }
 })
 
-actions.previewLink = actions.createHint("a[href]", (a) =>
+actions.previewLink = actions.createHints("a[href]", (a) =>
   Front.showEditor(a.href, (url) => actions.openLink(url)(), "url"))
 
 // FakeSpot
@@ -298,6 +298,7 @@ actions.dg.goog = () => {
 
 // GitHub
 // ------
+// TODO: This is a mess
 actions.gh = {}
 actions.gh.star = ({ toggle = false } = {}) => async () => {
   const hasDisplayNoneParent = (e) =>
@@ -363,6 +364,8 @@ actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
   return cond
     ? {
       type:     "repo",
+      user,
+      repo,
       owner:    user,
       name:     repo,
       href:     url,
@@ -390,6 +393,7 @@ actions.gh.parseUser = (url = util.getCurrentLocation(), rootOnly = false) => {
     ? {
       type:     "user",
       name:     user,
+      user,
       href:     url,
       url:      u,
       userRoot: isRoot,
@@ -400,16 +404,17 @@ actions.gh.parseUser = (url = util.getCurrentLocation(), rootOnly = false) => {
 
 actions.gh.parseFile = (url = util.getCurrentLocation()) => {
   const u = url instanceof URL ? url : new URL(url)
-  const [user, repo, maybeBlob, ...rest] = u.pathname.split("/").filter((s) => s !== "")
+  const [user, repo, pathType, commitHash, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
     && repo.length > 0
-    && typeof maybeBlob === "string"
-    && (maybeBlob === "blob" || maybeBlob === "tree")
-    && rest.length > 0
+    && typeof pathType === "string"
+    && (pathType === "blob" || pathType === "tree")
+    && typeof commitHash === "string"
+    && commitHash.length > 0
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
@@ -418,16 +423,19 @@ actions.gh.parseFile = (url = util.getCurrentLocation()) => {
       type:     "file",
       user,
       repo,
+      pathType,
+      commitHash,
       href:     url,
       url:      u,
       filePath: rest,
+      repoBase: `/${user}/${repo}`,
     }
     : null
 }
 
 actions.gh.parseCommit = (url = util.getCurrentLocation()) => {
   const u = url instanceof URL ? url : new URL(url)
-  const [user, repo, commit, hash] = u.pathname.split("/").filter((s) => s !== "")
+  const [user, repo, commit, commitHash] = u.pathname.split("/").filter((s) => s !== "")
   const cond = (
     u.origin === util.getCurrentLocation("origin")
     && typeof user === "string"
@@ -436,17 +444,19 @@ actions.gh.parseCommit = (url = util.getCurrentLocation()) => {
     && repo.length > 0
     && typeof commit === "string"
     && commit === "commit"
-    && typeof hash === "string"
-    && hash.length > 0
+    && typeof commitHash === "string"
+    && commitHash.length > 0
     && /^([a-zA-Z0-9]+-?)+$/.test(user)
     && !ghReservedNames.check(user)
   )
   return cond
     ? {
-      type:       "commit",
-      href:       url,
-      url:        u,
-      commitHash: hash,
+      type: "commit",
+      user,
+      repo,
+      commitHash,
+      href: url,
+      url:  u,
     }
     : null
 }
@@ -551,12 +561,12 @@ actions.gh.goParent = () => {
   const segments = util.getCurrentLocation("pathname")
     .split("/").filter((s) => s !== "")
   const newPath = (() => {
-    const [user, repo, maybeBlob] = segments
+    const [user, repo, pathType] = segments
     switch (segments.length) {
     case 0:
       return false
     case 4:
-      switch (maybeBlob) {
+      switch (pathType) {
       case "blob":
       case "tree":
         return [user, repo]
@@ -567,7 +577,7 @@ actions.gh.goParent = () => {
       }
       break
     case 5:
-      if (maybeBlob === "blob") {
+      if (pathType === "blob") {
         return [user, repo]
       }
       break
@@ -582,16 +592,82 @@ actions.gh.goParent = () => {
   }
 }
 
-actions.gh.viewRepoHealth = () => {
-  const repo = actions.gh.parseRepo()
-  if (repo === null) return
-  actions.openLink(`https://repohealth.info/report${repo.repoBase}`, { newTab: true })()
+actions.gh.viewSourceGraph = () => {
+  const url = new URL("https://sourcegraph.com/github.com")
+  let page = null
+  // The following conditional expressions are indeed intended to be
+  // assignments, this is not a bug.
+  if ((page = actions.gh.parseFile(window.location.href)) !== null) {
+    const filePath = page.filePath.join("/")
+    url.pathname += `/${page.user}/${page.repo}@${page.commitHash}/-/${page.pathType}/${filePath}`
+    if (window.location.hash !== "") {
+      url.hash = window.location.hash
+    } else if (!util.isElementInViewport(document.querySelector("#L1"))) {
+      for (const e of document.querySelectorAll(".js-line-number")) {
+        if (util.isElementInViewport(e)) {
+          url.hash = e.id
+          break
+        }
+      }
+    }
+  } else if ((page = actions.gh.parseCommit(window.location.href)) !== null) {
+    url.pathname += `/${page.user}/${page.repo}@${page.commitHash}`
+  } else if ((page = actions.gh.parseRepo(window.location.href)) !== null) {
+    url.pathname += `/${page.user}/${page.repo}`
+  } else {
+    url.pathname = ""
+  }
+
+  actions.openLink(url.href, { newTab: true })()
 }
 
 actions.gh.viewRaw = () => {
   const file = actions.gh.parseFile()
   if (file === null) return
   actions.openLink(`https://raw.githack.com/${file.user}/${file.repo}/${file.filePath.join("/")}`, { newTab: true })()
+}
+
+actions.gh.openRepoFromClipboard = async ({ newTab = true } = {}) =>
+  actions.openLink(`https://github.com/${await navigator.clipboard.readText()}`, { newTab })()
+
+actions.gh.openFileFromClipboard = async ({ newTab = true } = {}) => {
+  const clip = await navigator.clipboard.readText()
+  if (typeof clip !== "string" || clip.length === 0) {
+    return
+  }
+
+  const loc = util.getCurrentLocation()
+  const dest = {
+    user:       null,
+    repo:       null,
+    commitHash: "master",
+  }
+
+  const file = actions.gh.parseFile(loc)
+  if (file !== null) {
+    dest.user = file.user
+    dest.repo = file.repo
+    dest.commitHash = file.commitHash
+  } else {
+    const commit = actions.gh.parseCommit(loc)
+    if (commit !== null) {
+      dest.user = commit.user
+      dest.repo = commit.repo
+      dest.commitHash = commit.commitHash
+    } else {
+      const repository = actions.gh.parseRepo(loc)
+      if (repository !== null) {
+        return
+      }
+      dest.user = repository.user
+      dest.repo = repository.repo
+    }
+  }
+
+  actions.openLink(
+    `https://github.com/${dest.user}/${dest.repo}/tree/${dest.commitHash}/${clip}`,
+    { newTab },
+  )()
 }
 
 // GitLab
@@ -608,6 +684,17 @@ actions.gl.star = () => {
   }
   Front.showBanner(`${star} Repository ${repo} ${action}`)
 }
+
+// Twitter
+// ------
+actions.tw = {}
+actions.tw.openUser = () =>
+  actions.createHints([].concat(
+    [...document.querySelectorAll("a[role='link'] img[src^='https://pbs.twimg.com/profile_images']")]
+      .map((e) => e.closest("a")),
+    [...document.querySelectorAll("a[role='link']")]
+      .filter((e) => e.text.match(/^@/)),
+  ))()
 
 // Reddit
 // ------
@@ -696,7 +783,7 @@ actions.ph.openExternal = () => {
 // Dribbble
 // --------
 actions.dr = {}
-actions.dr.attachment = (cb = (a) => actions.openLink(a, { newTab: true })()) => actions.createHint(".attachments .thumb", (a) => cb(a.src.replace("/thumbnail/", "/")))
+actions.dr.attachment = (cb = (a) => actions.openLink(a, { newTab: true })()) => actions.createHints(".attachments .thumb", (a) => cb(a.src.replace("/thumbnail/", "/")))
 
 // Wikipedia
 // ---------

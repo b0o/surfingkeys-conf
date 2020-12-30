@@ -3,7 +3,9 @@ const gulp = require("gulp")
 const { task, src, dest } = gulp
 const { parallel, series } = gulp
 
-const parcel = require("gulp-parcel")
+const webpack = require("webpack")
+const webpackStream = require("webpack-stream")
+
 const replace = require("gulp-replace")
 const rename = require("gulp-rename")
 const eslint = require("gulp-eslint")
@@ -15,11 +17,14 @@ const fs = require("fs").promises
 const fetch = require("node-fetch")
 const express = require("express")
 const gulpIf = require("gulp-if")
+const gulpNotify = require("gulp-notify")
+const PluginError = require("plugin-error")
 
 const { COPYFILE_EXCL } = require("fs").constants
 const { URL } = require("url")
 
 const pkg = require("./package.json")
+const webpackConfig = require("./webpack.config.js")
 
 const copyrightYearOne = 2017
 
@@ -34,6 +39,7 @@ const paths = {
   faviconsManifest: "favicons.json",
   readmeOut:        "README.md",
   scriptOut:        "surfingkeys.js",
+  buildDir:         "build/",
   installDir:       platforms.getConfigHome(),
 }
 
@@ -82,13 +88,48 @@ The source file is ${paths.readme}
 
 -->`
 
-task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
+const notify = Object.assign((opts, ...args) => gulpNotify({
+  icon:    null,
+  onLast:  true,
+  timeout: 2000,
+  ...opts,
+}, ...args), gulpNotify)
 
+notify.onError = (opts, ...args) => gulpNotify.onError({
+  onLast:  true,
+  timeout: 7500,
+  ...opts,
+}, ...args)
+
+task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
 task("clean-favicons", () => del([paths.favicons]))
 
 const lint = (globs, opts = {}) => gulp.src(globs)
   .pipe(eslint(opts))
   .pipe(eslint.format())
+  .pipe(eslint.results((res) => {
+    if (res.warningCount + res.errorCount > 0) {
+      const msg = []
+      if (res.warningCount > 0) {
+        msg.push(`${res.warningCount} warning${res.warningCount === 1 ? "" : "s"}`)
+      }
+      if (res.errorCount > 0) {
+        msg.push(`${res.errorCount} error${res.errorCount === 1 ? "" : "s"}`)
+      }
+      const numBadFiles = res.reduce((acc, e) =>
+        (e.errorCount + e.warningCount > 0 ? acc + 1 : acc),
+      0)
+      const err = new PluginError("gulp-eslint", {
+        name:    "ESLintError",
+        message: `${msg.join(" and ")} in ${numBadFiles} file${numBadFiles === 1 ? "" : "s"}`,
+      })
+      notify.onError({
+        title:   `Lint failure [${pkg.name}]`,
+        message: err.message,
+      })(err)
+      throw err
+    }
+  }))
 
 task("lint", () => lint([...paths.scripts, paths.gulpfile]))
 
@@ -295,24 +336,41 @@ task("favicons", series("clean-favicons", async () => {
 
 task("docs-full", series("favicons", "docs"))
 
+const build = () =>
+  src(paths.entry)
+    .pipe(webpackStream(webpackConfig, webpack))
+    .on("error", (err) => {
+      notify.onError({
+        title:   `Build failure [${pkg.name}]`,
+        message: `${err.message.split("\n").slice(0, 1)}`,
+      })(err)
+      throw err
+    })
+    .pipe(rename(paths.scriptOut))
+    .pipe(dest(paths.buildDir))
+    .pipe(notify({
+      title:   `Build success [${pkg.name}]`,
+      message: "No issues",
+    }))
+
 task("build",
+  parallel(
+    "lint",
+    build,
+  ))
+
+task("build-full",
   series(
     parallel(
       "check-priv",
       "clean",
     ),
-    parallel(
-      "lint",
-      () => src(paths.entry, { read: false })
-        .pipe(parcel())
-        .pipe(rename(paths.scriptOut))
-        .pipe(dest("build")),
-    ),
+    "build",
   ))
 
-task("dist", parallel("docs-full", "build"))
+task("dist", parallel("docs-full", "build-full"))
 
-task("install", series("build", () => src(path.join("build", paths.scriptOut))
+task("install", series("build", () => src(path.join(paths.buildDir, paths.scriptOut))
   .pipe(dest(paths.installDir))))
 
 const watch = (g, t) => () =>
@@ -334,7 +392,7 @@ const serve = (done) => {
   const handler = (allowedOrigin) => async (req, res) => {
     console.log(`${new Date().toISOString()} ${req.method} ${req.url}`) // eslint-disable-line no-console
     try {
-      res.sendFile(path.resolve(__dirname, "build", paths.scriptOut), {
+      res.sendFile(path.resolve(__dirname, paths.buildDir, paths.scriptOut), {
         headers: {
           "Content-Type":                "text/javascript; charset=UTF-8",
           "Access-Control-Allow-Origin": allowedOrigin,
@@ -366,3 +424,5 @@ task("serve-build", parallel("watch-build", "serve-simple"))
 task("serve", series("serve-build"))
 task("watch", series("watch-install"))
 task("default", series("build"))
+
+// debugger

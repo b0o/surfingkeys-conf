@@ -133,7 +133,7 @@ util.processMaps = (maps, aliases, siteleader) => {
 
     const fullDescription = `#${category} ${description}`
 
-    if (mapObj.map !== undefined) {
+    if (typeof mapObj.map !== "undefined") {
       map(alias, mapObj.map)
     } else {
       mapkey(key, fullDescription, callback, opts)

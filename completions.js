@@ -991,24 +991,14 @@ completions.md = {
 
 completions.md.callback = (response) => {
   const res = JSON.parse(response.text)
-  return res.documents.map((s) => {
-    let excerpt = escape(s.excerpt)
-    if (excerpt.length > 240) {
-      excerpt = `${excerpt.slice(0, 240)}…`
-    }
-    res.query.split(" ").forEach((q) => {
-      excerpt = excerpt.replace(new RegExp(q, "gi"), "<strong>$&</strong>")
-    })
-    const title = escape(s.title)
-    const slug = escape(s.slug)
-    return createSuggestionItem(`
+  return res.documents.map((s) =>
+    createSuggestionItem(`
       <div>
-        <div class="title"><strong>${title}</strong></div>
-        <div style="font-size:0.8em"><em>${slug}</em></div>
-        <div>${excerpt}</div>
+        <div class="title"><strong>${s.title}</strong></div>
+        <div style="font-size:0.8em"><em>${s.slug}</em></div>
+        <div>${s.summary}</div>
       </div>
-    `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` })
-  })
+    `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` }))
 }
 
 // NPM registry search

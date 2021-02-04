@@ -792,4 +792,4 @@ Todo
 
 Copyright
 ---------
-<p><h4>Author</h4>&copy; 2017-2020 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>
+<p><h4>Author</h4>&copy; 2017-2021 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>

@@ -32,7 +32,13 @@ actions.copyOrgLink = () =>
   Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`) // TODO: use navigator.clipboard
 
 actions.copyMarkdownLink = () =>
-  Clipboard.write(`[${document.title}](${util.getCurrentLocation("href")})`) // TODO: use navigator.clipboard
+  Clipboard.write(
+    // I mostly use this feature to paste links into my Neuron (github.com/srid/neuron) notes.
+    // Due to a bug in Neuron's markdown library (github.com/jgm/commonmark-hs/issues/52),
+    // the vertical bar character breaks lists and titles.
+    // As a workaround, we backslash-escape any vertical bar characters.
+    `[${document.title.replace("|", "\\|")}](${util.getCurrentLocation("href")})`,
+  )
 
 actions.duplicateTab = () =>
   actions.openLink(util.getCurrentLocation("href"), { newTab: true, active: false })()

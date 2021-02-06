@@ -26,10 +26,10 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
 }
 
 actions.copyURLPath = ({ count, domain } = {}) => () =>
-  Clipboard.write(actions.getURLPath({ count, domain })) // TODO: use navigator.clipboard
+  Clipboard.write(actions.getURLPath({ count, domain }))
 
 actions.copyOrgLink = () =>
-  Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`) // TODO: use navigator.clipboard
+  Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`)
 
 actions.copyMarkdownLink = () =>
   Clipboard.write(

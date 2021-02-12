@@ -1090,6 +1090,13 @@ completions.hn.callback = (response) => {
   })
 }
 
+// Twitter
+completions.tw = {
+  alias:  "tw",
+  name:   "twitter",
+  search: "https://twitter.com/search?q=",
+}
+
 // Reddit
 completions.re = {
   alias:  "re",

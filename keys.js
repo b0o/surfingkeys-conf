@@ -156,6 +156,12 @@ maps.global = [
     callback:    actions.showWayback(),
   },
   {
+    alias:       "=A",
+    category:    categories.misc,
+    description: "Show Alexa.com info for domain",
+    callback:    actions.showAlexa(),
+  },
+  {
     alias:       "=o",
     category:    categories.misc,
     description: "Show outline.com version of page",

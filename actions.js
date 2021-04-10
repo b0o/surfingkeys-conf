@@ -75,6 +75,11 @@ const outlineUrl = "https://outline.com/"
 actions.showOutline = ({ href = util.getCurrentLocation("href") } = {}) =>
   () => actions.openLink(`${outlineUrl}${href}`, { newTab: true })()
 
+const alexaUrl = "https://www.alexa.com/siteinfo/"
+
+actions.showAlexa = ({ href = util.getCurrentLocation("hostname") } = {}) =>
+  () => actions.openLink(`${alexaUrl}${href}`, { newTab: true })()
+
 // Site/Page Actions
 const rssSubscribeUrl = "https://feedrabbit.com/subscriptions/new?url="
 

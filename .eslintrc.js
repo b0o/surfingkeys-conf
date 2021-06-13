@@ -28,6 +28,8 @@ module.exports = {
     quotes:           ["warn", "double"],
     "no-cond-assign": ["error", "except-parens"],
 
+    "prefer-rest-params":       "off",
+    "no-underscore-dangle":     "off",
     "newline-per-chained-call": "off",
     "no-restricted-syntax":     "off",
     "implicit-arrow-linebreak": "off",

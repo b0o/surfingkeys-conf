@@ -6,6 +6,7 @@ module.exports = {
     Front:              false,
     Clipboard:          false,
     runtime:            false,
+    browser:            false,
     chrome:             false,
     tabOpenLink:        false,
     Hints:              false,

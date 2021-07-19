@@ -453,6 +453,11 @@ maps["github.com"] = [
     callback:    actions.copyURLPath({ count: 2 }),
   },
   {
+    alias:       "L",
+    description: "Copy clone Path",
+    callback:    actions.copyURLPath({ count: 2, replace: (path) => `git@github.com:${path}.git` }),
+  },
+  {
     alias:       "Y",
     description: "Copy Project Path (including domain)",
     callback:    actions.copyURLPath({ count: 2, domain: true }),

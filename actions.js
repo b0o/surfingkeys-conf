@@ -14,7 +14,9 @@ actions.vimEditURL = () =>
     actions.openLink(url)()
   }, "url")
 
-actions.getURLPath = ({ count = 0, domain = false } = {}) => {
+actions.getURLPath = ({
+  count = 0, domain = false, replace = (path) => path,
+} = {}) => {
   let path = util.getCurrentLocation("pathname").slice(1)
   if (count) {
     path = path.split("/").slice(0, count).join("/")
@@ -22,11 +24,11 @@ actions.getURLPath = ({ count = 0, domain = false } = {}) => {
   if (domain) {
     path = `${util.getCurrentLocation("hostname")}/${path}`
   }
-  return path
+  return replace(path)
 }
 
-actions.copyURLPath = ({ count, domain } = {}) => () =>
-  Clipboard.write(actions.getURLPath({ count, domain }))
+actions.copyURLPath = ({ count, domain, replace } = {}) => () =>
+  Clipboard.write(actions.getURLPath({ count, domain, replace }))
 
 actions.copyOrgLink = () =>
   Clipboard.write(`[[${util.getCurrentLocation("href")}][${document.title}]]`)

@@ -772,7 +772,12 @@ maps["wikipedia.org"] = [
   {
     alias:       "e",
     description: "View external link",
-    callback:    actions.createHints("a[rel=nofollow]"),
+    callback:    () => util.createHints("a[rel=nofollow]"),
+  },
+  {
+    alias:       "ys",
+    description: "Copy article summary as Markdown",
+    callback:    () => Clipboard.write(actions.wp.markdownSummary()),
   },
   {
     alias:       "R",

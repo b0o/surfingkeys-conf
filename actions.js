@@ -822,6 +822,19 @@ actions.wp.viewWikiRank = () => {
   actions.openLink(`https://wikirank.net/${lang}/${article}`, { newTab: true })()
 }
 
+actions.wp.markdownSummary = () =>
+  `> ${
+    [
+      (acc) => [...acc.querySelectorAll("sup")].map((e) => e.remove()),
+      (acc) => [...acc.querySelectorAll("b")].forEach((e) => { e.innerText = `**${e.innerText}**` }),
+      (acc) => [...acc.querySelectorAll("i")].forEach((e) => { e.innerText = `_${e.innerText}_` }),
+    ].reduce(
+      (acc, f) => (f(acc) && false) || acc,
+      document.querySelector("#mw-content-text p:not([class]):not([id])").cloneNode(true),
+    ).innerText.trim()}
+
+— ${actions.getMarkdownLink()}`
+
 // Nest Thermostat Controller
 // --------------------------
 actions.nt = {}

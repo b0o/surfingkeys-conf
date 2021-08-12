@@ -201,7 +201,9 @@ maps.global = [
     alias:       "\\cgh",
     category:    categories.clipboard,
     description: "Open clipboard string as GitHub path (e.g. 'torvalds/linux')",
-    callback:    actions.gh.openRepoFromClipboard,
+    callback:    async () => actions.openLink(
+      actions.gh.parseRepo(await navigator.clipboard.readText()).url,
+    ),
   },
 ]
 

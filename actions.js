@@ -359,7 +359,12 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
 }
 
 actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
-  const u = url instanceof URL ? url : new URL(url)
+  let u
+  try {
+    u = url instanceof URL ? url : new URL(url)
+  } catch (e) {
+    u = new URL(`https://github.com/${url}`)
+  }
   const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const isRoot = rest.length === 0
   const cond = (

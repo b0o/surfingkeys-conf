@@ -368,7 +368,7 @@ actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
   const [user, repo, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const isRoot = rest.length === 0
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    ["github.com", "gist.github.com"].includes(u.hostname)
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"

@@ -86,23 +86,8 @@ const rssSubscribeUrl = "https://feedrabbit.com/subscriptions/new?url="
 actions.rssSubscribe = ({ href = util.getCurrentLocation("href") } = {}) =>
   () => actions.openLink(`${rssSubscribeUrl}${encodeURIComponent(href)}`, { newTab: true })()
 
-actions.showSpeedReader = () => {
-  const script = document.createElement("script")
-  script.innerHTML = `(() => {
-    const sq = window.sq || {}
-    window.sq = sq
-    if (sq.script) {
-      sq.again()
-    } else if (sq.context !== "inner") {
-      sq.bookmarkletVersion = "0.3.0"
-      sq.iframeQueryParams = { host: "//squirt.io" }
-      sq.script = document.createElement("script")
-      sq.script.src = \`\${sq.iframeQueryParams.host}/bookmarklet/frame.outer.js\`
-      document.body.appendChild(sq.script)
-    }
-  })()`
-  document.body.appendChild(script)
-}
+actions.getDiscussionsUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
+  `https://discussions.xojoc.pw/?${(new URLSearchParams({ url: href }))}`
 
 actions.scrollToHash = (hash = null) => {
   const h = (hash || document.location.hash).replace("#", "")

@@ -162,16 +162,10 @@ maps.global = [
     callback:    actions.showAlexa(),
   },
   {
-    alias:       "=o",
+    alias:       "=s",
     category:    categories.misc,
-    description: "Show outline.com version of page",
-    callback:    actions.showOutline(),
-  },
-  {
-    alias:       "=r",
-    category:    categories.misc,
-    description: "Subscribe to RSS feed for page",
-    callback:    actions.rssSubscribe(),
+    description: "View social discussions for page",
+    callback:    () => actions.openLink(actions.getDiscussionsUrl(), { newTab: true }),
   },
   {
     alias:       "=s",

@@ -744,6 +744,39 @@ completions.gs = {
 
 completions.gs.callback = (response) => JSON.parse(response.text).l
 
+// Kagi
+completions.ka = {
+  alias:    "ka",
+  name:     "kagi",
+  search:   "https://kagi.com/search?q=",
+  compl:    "https://kagi.com/autosuggest?q=",
+  callback: (response) => JSON.parse(response.text).map((r) => {
+    const u = new URL("https://kagi.com/search")
+    u.searchParams.append("q", r.t)
+
+    const thumbImg = document.createElement("img")
+    thumbImg.style = "width: 60px"
+    thumbImg.src = r.img ? new URL(r.img, "https://kagi.com") : wpDefaultIcon
+
+    const txtNode = document.createElement("div")
+    txtNode.className = "title"
+    txtNode.innerText = r.txt ?? ""
+
+    return createSuggestionItem(
+      `
+      <div style="padding: 5px; display: grid; grid-template-columns: 60px 1fr; grid-gap: 15px">
+        ${thumbImg.outerHTML}
+        <div>
+          <div class="title"><strong>${r.t}</strong></div>
+          ${txtNode.outerHTML}
+        </div>
+      </div>
+    `,
+      { url: u.href },
+    )
+  }),
+}
+
 //  ****** Elixir ****** //
 
 // Hex.pm

@@ -1027,9 +1027,9 @@ completions.md.callback = (response) => {
   return res.documents.map((s) =>
     createSuggestionItem(`
       <div>
-        <div class="title"><strong>${s.title}</strong></div>
-        <div style="font-size:0.8em"><em>${s.slug}</em></div>
-        <div>${s.summary}</div>
+        <div class="title"><strong>${escape(s.title)}</strong></div>
+        <div style="font-size:0.8em"><em>${escape(s.slug)}</em></div>
+        <div>${escape(s.summary)}</div>
       </div>
     `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` }))
 }

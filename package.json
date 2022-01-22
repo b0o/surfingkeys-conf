@@ -35,7 +35,7 @@
     "gulp-notify": "^3.2.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.0.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "platform-folders": "^0.5.2",
     "plugin-error": "^1.0.1",
     "webpack": "^5.11.1",

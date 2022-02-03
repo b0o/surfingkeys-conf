@@ -51,8 +51,8 @@ const registerKeys = (maps, aliases, siteleader) => {
       registerKey(domain, mapObj, siteleader)))
 }
 
-const registerCompletions = (completions, searchleader) =>
-  Object.values(completions).forEach((s) => {
+const registerSearchEngines = (searchEngines, searchleader) =>
+  Object.values(searchEngines).forEach((s) => {
     addSearchAlias(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
     mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
     mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
@@ -85,8 +85,8 @@ const main = () => {
     }
   }
 
-  if (conf.completions) {
-    registerCompletions(conf.completions, conf.searchleader ?? "o")
+  if (conf.searchEngines) {
+    registerSearchEngines(conf.searchEngines, conf.searchleader ?? "o")
   }
 
   if (conf.keys && conf.keys.maps) {

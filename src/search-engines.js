@@ -1,4 +1,4 @@
-const { keys } = require("./conf.priv")
+const priv = require("./conf.priv")
 const { escape, createSuggestionItem, createURLItem } = require("./util")
 
 // TODO: use a Babel loader to import these images
@@ -9,37 +9,30 @@ const locale = typeof navigator !== "undefined" ? navigator.language : ""
 
 const completions = {}
 
-// Helper functions for Google Custom Search Engine completions
-const googleCxURL = (alias) => {
-  const key = `google_cx_${alias}`
-  return `https://www.googleapis.com/customsearch/v1?key=${keys.google_cs}&cx=${keys[key]}&q=`
-}
-
-const googleCxPublicURL = (alias) => {
-  const key = `google_cx_${alias}`
-  return `https://cse.google.com/cse/publicurl?cx=${keys[key]}&q=`
-}
-
-const googleCxCallback = (response) => {
-  const res = JSON.parse(response.text).items
-  return res.map((s) => createSuggestionItem(`
+const googleCustomSearch = (opts) => ({
+  compl:    `https://www.googleapis.com/customsearch/v1?key=${priv.keys.google_cs}&cx=${priv.keys[`google_cx_${opts.alias}`]}&q=`,
+  search:   `https://cse.google.com/cse/publicurl?cx=${priv.keys[`google_cx_${opts.alias}`]}&q=`,
+  callback: (response) => {
+    const res = JSON.parse(response.text).items
+    return res.map((s) => createSuggestionItem(`
       <div>
         <div class="title"><strong>${s.htmlTitle}</strong></div>
         <div>${s.htmlSnippet}</div>
       </div>
     `, { url: s.link }))
-}
+  },
+  priv: true,
+  ...opts,
+})
 
 // ****** Arch Linux ****** //
 
 // Arch Linux official repos
-completions.al = {
-  alias:    "al",
-  name:     "archlinux",
-  search:   "https://www.archlinux.org/packages/?arch=x86_64&q=",
-  compl:    googleCxURL("al"),
-  callback: googleCxCallback,
-}
+completions.al = googleCustomSearch({
+  alias:  "al",
+  name:   "archlinux",
+  search: "https://www.archlinux.org/packages/?arch=x86_64&q=",
+})
 
 // Arch Linux AUR
 completions.au = {
@@ -65,14 +58,11 @@ completions.aw = {
 completions.aw.callback = (response) => JSON.parse(response.text)[1]
 
 // Arch Linux Forums
-completions.af = {
-  alias:    "af",
-  name:     "archforums",
-  domain:   "bbs.archlinux.org",
-  search:   googleCxPublicURL("af"),
-  compl:    googleCxURL("af"),
-  callback: googleCxCallback,
-}
+completions.af = googleCustomSearch({
+  alias:  "af",
+  name:   "archforums",
+  domain: "bbs.archlinux.org",
+})
 
 // ****** Technical Resources ****** //
 
@@ -105,7 +95,8 @@ completions.at = {
   alias:  "at",
   name:   "alternativeTo",
   search: "https://alternativeto.net/browse/search/?q=",
-  compl:  `https://zidpns2vb0-dsn.algolia.net/1/indexes/fullitems?x-algolia-application-id=ZIDPNS2VB0&x-algolia-api-key=${keys.alternativeTo}&attributesToRetrieve=Name,UrlName,TagLine,Description,Likes,HasIcon,IconId,IconExtension,InternalUrl&query=`,
+  compl:  `https://zidpns2vb0-dsn.algolia.net/1/indexes/fullitems?x-algolia-application-id=ZIDPNS2VB0&x-algolia-api-key=${priv.keys.alternativeTo}&attributesToRetrieve=Name,UrlName,TagLine,Description,Likes,HasIcon,IconId,IconExtension,InternalUrl&query=`,
+  priv:   true,
 }
 
 completions.at.callback = (response) => {
@@ -149,13 +140,11 @@ completions.at.callback = (response) => {
 }
 
 // Chrome Webstore
-completions.cs = {
-  alias:    "cs",
-  name:     "chromestore",
-  search:   "https://chrome.google.com/webstore/search/",
-  compl:    googleCxURL("cs"),
-  callback: googleCxCallback,
-}
+completions.cs = googleCustomSearch({
+  alias:  "cs",
+  name:   "chromestore",
+  search: "https://chrome.google.com/webstore/search/",
+})
 
 const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.map((s) => {
   let { name } = s
@@ -498,7 +487,8 @@ completions.wa = {
   alias:  "wa",
   name:   "wolframalpha",
   search: "http://www.wolframalpha.com/input/?i=",
-  compl:  `http://api.wolframalpha.com/v2/query?appid=${keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
+  compl:  `http://api.wolframalpha.com/v2/query?appid=${priv.keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
+  priv:   true,
 }
 
 completions.wa.callback = (response) => {
@@ -597,7 +587,8 @@ completions.co = {
   alias:  "co",
   name:   "crunchbase-orgs",
   search: "https://www.crunchbase.com/textsearch?q=",
-  compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${keys.crunchbase}&query=%s`,
+  compl:  `https://api.crunchbase.com/v/3/odm_organizations?user_key=${priv.keys.crunchbase}&query=%s`,
+  priv:   true,
 }
 
 completions.co.callback = (response) => parseCrunchbase(response, (org) => {
@@ -632,7 +623,8 @@ completions.cp = {
   alias:  "cp",
   name:   "crunchbase-people",
   search: "https://www.crunchbase.com/app/search/?q=",
-  compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${keys.crunchbase}&query=%s`,
+  compl:  `https://api.crunchbase.com/v/3/odm_people?user_key=${priv.keys.crunchbase}&query=%s`,
+  priv:   true,
 }
 
 completions.cp.callback = (response) => parseCrunchbase(response, (person) => {
@@ -868,12 +860,11 @@ completions.hd.callback = (response) => JSON.parse(response.text).map((s) => {
 
 // Exdocs
 // Similar to `hd` but searches inside docs using Google Custom Search
-completions.ex = {
+completions.ex = googleCustomSearch({
   alias:  "ex",
   name:   "exdocs",
   search: "https://hex.pm/packages?sort=downloads&ex&search=",
-  compl:  googleCxURL("ex"),
-}
+})
 
 completions.ex.callback = (response) => JSON.parse(response.text).items.map((s) => {
   let hash = ""
@@ -932,15 +923,12 @@ completions.ex.callback = (response) => JSON.parse(response.text).items.map((s) 
 
 // ****** Golang ****** //
 
-// Golang Docs (Google CSE)
-completions.gg = {
-  alias:    "gg",
-  name:     "golang",
-  domain:   "golang.org",
-  search:   googleCxPublicURL("gg"),
-  compl:    googleCxURL("gg"),
-  callback: googleCxCallback,
-}
+// Golang Docs
+completions.gg = googleCustomSearch({
+  alias:  "gg",
+  name:   "golang",
+  domain: "golang.org",
+})
 
 // Godoc
 completions.gd = {
@@ -1019,24 +1007,18 @@ completions.hw.callback = (response) => JSON.parse(response.text)[1]
 // ****** HTML, CSS, JavaScript, NodeJS, ... ****** //
 
 // jQuery API documentation
-completions.jq = {
-  alias:    "jq",
-  name:     "jquery",
-  domain:   "jquery.com",
-  search:   googleCxPublicURL("jq"),
-  compl:    googleCxURL("jq"),
-  callback: googleCxCallback,
-}
+completions.jq = googleCustomSearch({
+  alias:  "jq",
+  name:   "jquery",
+  domain: "jquery.com",
+})
 
 // NodeJS standard library documentation
-completions.no = {
-  alias:    "no",
-  name:     "node",
-  domain:   "nodejs.org",
-  search:   googleCxPublicURL("no"),
-  compl:    googleCxURL("no"),
-  callback: googleCxCallback,
-}
+completions.no = googleCustomSearch({
+  alias:  "no",
+  name:   "node",
+  domain: "nodejs.org",
+})
 
 // Mozilla Developer Network (MDN)
 completions.md = {
@@ -1170,7 +1152,8 @@ completions.yt = {
   alias:  "yt",
   name:   "youtube",
   search: "https://www.youtube.com/search?q=",
-  compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${keys.google_yt}&safeSearch=none&q=`,
+  compl:  `https://www.googleapis.com/youtube/v3/search?maxResults=20&part=snippet&type=video,channel&key=${priv.keys.google_yt}&safeSearch=none&q=`,
+  priv:   true,
 }
 
 completions.yt.callback = (response) => JSON.parse(response.text).items

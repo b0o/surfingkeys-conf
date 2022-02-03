@@ -8,7 +8,7 @@ module.exports = {
     theme:                    require("./theme.css"),
   }),
   keys:           require("./keys"),
-  completions:    require("./completions"),
+  searchEngines:  require("./search-engines"),
   hintCharacters: "qwertasdfgzxcvb",
 
   // Leader for site-specific mappings

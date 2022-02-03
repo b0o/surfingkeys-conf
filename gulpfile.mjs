@@ -44,12 +44,13 @@ const paths = {
   screenshots:      "assets/screenshots",
 
   sources: {
-    completions: "completions.js",
-    confPriv:    "conf.priv.js",
-    conf:        "conf.js",
-    entrypoint:  "index.js",
-    keys:        "keys.js",
-    util:        "util.js",
+    actions:       "actions.js",
+    conf:          "conf.js",
+    confPriv:      "conf.priv.js",
+    entrypoint:    "index.js",
+    keys:          "keys.js",
+    searchEngines: "search-engines.js",
+    util:          "util.js",
   },
 }
 
@@ -143,7 +144,7 @@ const parseContributor = (contributor) => {
 
 task("docs", parallel(async () => {
   const {
-    completions, conf, keys, util,
+    searchEngines, conf, keys, util,
   } = await getSources()
   await loadFaviconsManifest()
 
@@ -160,7 +161,7 @@ task("docs", parallel(async () => {
     screens[alias].push(path.join(paths.screenshots, path.basename(s)))
   })
 
-  let complTable = Object.keys(completions).sort((a, b) => {
+  let searchEnginesTable = Object.keys(searchEngines).sort((a, b) => {
     if (a < b) return -1
     if (a > b) return 1
     return 0
@@ -174,9 +175,9 @@ task("docs", parallel(async () => {
     return 0
   })
 
-  complTable = await complTable.reduce(async (acc1p, k) => {
+  searchEnginesTable = await searchEnginesTable.reduce(async (acc1p, k) => {
     const acc1 = await acc1p
-    const c = completions[k]
+    const c = searchEngines[k]
     const u = new URL(c.domain ? `https://${c.domain}` : c.search)
     const domain = u.hostname
     let s = ""
@@ -190,12 +191,13 @@ task("docs", parallel(async () => {
     }
 
     const favicon = faviconsManifest[domain] ? `<img src="./assets/favicons/${faviconsManifest[domain]}" width="16px"> ` : ""
+    const privNote = c.priv ? " <a title=\"requires private API key\" href=\"#optional-private-api-key-configuration\">&#8727;</a>" : ""
 
     return `${acc1}
   <tr>
     <td><a href="${u.protocol}//${domain}">${favicon}</a></td>
     <td><code>${c.alias}</code></td>
-    <td>${c.name}</td>
+    <td>${c.name}${privNote}</td>
     <td><a href="${u.protocol}//${domain}">${domain}</a></td>
     <td>${s}</td>
   </tr>`
@@ -240,8 +242,8 @@ task("docs", parallel(async () => {
 
   return src([getPath(paths.readme)])
     .pipe(replace("<!--{{NOTICE}}-->", notice))
-    .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(completions).length))
-    .pipe(replace("<!--{{COMPL_TABLE}}-->", complTable))
+    .pipe(replace("<!--{{SEARCH_ENGINES_COUNT}}-->", Object.keys(searchEngines).length))
+    .pipe(replace("<!--{{SEARCH_ENGINES_TABLE}}-->", searchEnginesTable))
     .pipe(replace("<!--{{KEYS_MAPS_COUNT}}-->", Object.values(keys.maps).reduce((acc, m) => acc + m.length, 0)))
     .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
@@ -275,25 +277,28 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
   }
 }
 
+const getDuckduckgoFaviconUrl = (domain) => new URL(`https://icons.duckduckgo.com/ip3/${domain}.ico`)
+
 task("favicons", series("clean-favicons", async () => {
-  const { completions, keys } = await getSources()
+  const { searchEngines, keys } = await getSources()
 
   const sites = [].concat(
-    // search engine completions
-    Object.entries(completions)
-      .map(([, v]) => ({
-        domain:  new URL(v.domain ? `https://${v.domain}` : v.search).hostname,
-        favicon: `https://icons.duckduckgo.com/ip3/${new URL(v.domain ? `https://${v.domain}` : v.search).hostname}.ico`,
-      })),
+    Object.entries(searchEngines)
+      .map(([, v]) => {
+        const domain = new URL(v.domain ? `https://${v.domain}` : v.search).hostname
+        return {
+          domain,
+          favicon: getDuckduckgoFaviconUrl(domain),
+        }
+      }),
 
-    // site-specific keybindings
     Object.keys(keys.maps)
       .filter((k) => k !== "global")
       .map((k) => ({
         domain:  k,
-        favicon: `https://icons.duckduckgo.com/ip3/${new URL(`https://${k}`).hostname}.ico`,
+        favicon: getDuckduckgoFaviconUrl(new URL(`https://${k}`).hostname),
       })),
-  ).filter((e, i, arr) => i === arr.indexOf(e)) // Keep only first occurrence of each element
+  ).filter((e, i, arr) => i === arr.indexOf(e))
 
   const favicons = (await Promise.all(sites.map(async (site) => getFavicon(site))))
     .filter((e) => e !== undefined)

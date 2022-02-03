@@ -1,5 +1,11 @@
 const actions = require("./actions")
+const util = require("./util")
 const { categories } = require("./help")
+
+const {
+  Clipboard,
+  Front,
+} = util.api()
 
 // Remove undesired default mappings
 const unmaps = {
@@ -12,6 +18,7 @@ const unmaps = {
     "zz", "zR", "ab",
     "Q", "q", "ag",
     "af", ";s", "yp",
+    "p",
     "<Ctrl-j>", "<Ctrl-h>",
   ],
   searchAliases: {
@@ -21,6 +28,13 @@ const unmaps = {
 }
 
 const maps = {}
+
+// TODO: Make object property names consistent with SurfingKeys
+//   description  -> annotation
+//   callback     -> code
+//   category     -> feature_group
+//   repeatIgnore -> repeatIgnore
+//   alias        -> word
 
 maps.global = [
   {
@@ -81,38 +95,49 @@ maps.global = [
     alias:       "gI",
     category:    categories.pageNav,
     description: "View image in new tab",
-    callback:    actions.createHints("img", (i) => actions.openLink(i.src)()),
+    callback:    () => util.createHints("img", (i) => actions.openLink(i.src)),
   },
   {
     alias:       "yp",
     category:    categories.clipboard,
     description: "Copy URL path of current page",
-    callback:    actions.copyURLPath(),
+    callback:    () => Clipboard.write(window.location.href),
   },
   {
     alias:       "yI",
     category:    categories.clipboard,
     description: "Copy Image URL",
-    // TODO: use navigator.clipboard
-    callback:    actions.createHints("img", (i) => Clipboard.write(i.src)),
+    callback:    () => util.createHints("img", (i) => Clipboard.write(i.src)),
   },
   {
     alias:       "yO",
     category:    categories.clipboard,
     description: "Copy page URL/Title as Org-mode link",
-    callback:    actions.copyOrgLink,
+    callback:    () => Clipboard.write(actions.getOrgLink()),
   },
   {
     alias:       "yM",
     category:    categories.clipboard,
     description: "Copy page URL/Title as Markdown link",
-    callback:    actions.copyMarkdownLink,
+    callback:    () => Clipboard.write(actions.getMarkdownLink()),
   },
   {
     alias:       "yT",
     category:    categories.tabs,
     description: "Duplicate current tab (non-active new tab)",
-    callback:    actions.duplicateTab,
+    callback:    () => actions.openLink(window.location.href, { newTab: true, active: false }),
+  },
+  {
+    alias:       "yx",
+    category:    categories.tabs,
+    description: "Cut current tab",
+    callback:    () => actions.cutTab(),
+  },
+  {
+    alias:       "px",
+    category:    categories.tabs,
+    description: "Paste tab",
+    callback:    () => actions.pasteTab(),
   },
   {
     alias:       ";se",
@@ -126,40 +151,40 @@ maps.global = [
     description: "Open Chrome settings",
   },
   {
-    alias:       "=w",
+    alias:       "=W",
     category:    categories.misc,
     description: "Lookup whois information for domain",
-    callback:    actions.showWhois(),
+    callback:    () => actions.openLink(actions.getWhoisUrl(), { newTab: true }),
   },
   {
     alias:       "=d",
     category:    categories.misc,
     description: "Lookup dns information for domain",
-    callback:    actions.showDns(),
+    callback:    () => actions.openLink(actions.getDnsInfoUrl(), { newTab: true }),
   },
   {
     alias:       "=D",
     category:    categories.misc,
     description: "Lookup all information for domain",
-    callback:    actions.showDns({ verbose: true }),
+    callback:    () => actions.openLink(actions.getDnsInfoUrl({ all: true }), { newTab: true }),
   },
   {
     alias:       "=c",
     category:    categories.misc,
     description: "Show Google's cached version of page",
-    callback:    actions.showGoogleCache(),
+    callback:    () => actions.openLink(actions.getGoogleCacheUrl(), { newTab: true }),
   },
   {
     alias:       "=a",
     category:    categories.misc,
     description: "Show Archive.org Wayback Machine for page",
-    callback:    actions.showWayback(),
+    callback:    () => actions.openLink(actions.getWaybackUrl(), { newTab: true }),
   },
   {
     alias:       "=A",
     category:    categories.misc,
     description: "Show Alexa.com info for domain",
-    callback:    actions.showAlexa(),
+    callback:    () => actions.openLink(actions.getAlexaUrl(), { newTab: true }),
   },
   {
     alias:       "=s",
@@ -168,10 +193,22 @@ maps.global = [
     callback:    () => actions.openLink(actions.getDiscussionsUrl(), { newTab: true }),
   },
   {
-    alias:       "=s",
+    alias:       "=o",
     category:    categories.misc,
-    description: "Speed read page",
-    callback:    actions.showSpeedReader,
+    description: "Show outline.com version of page",
+    callback:    () => actions.openLink(actions.getOutlineUrl(), { newTab: true }),
+  },
+  {
+    alias:       "=bw",
+    category:    categories.misc,
+    description: "Show BuiltWith report for page",
+    callback:    () => actions.openLink(actions.getBuiltWithUrl(), { newTab: true }),
+  },
+  {
+    alias:       "=wa",
+    category:    categories.misc,
+    description: "Show Wappalyzer report for page",
+    callback:    () => actions.openLink(actions.getWappalyzerUrl(), { newTab: true }),
   },
   {
     alias:       ";pd",
@@ -199,6 +236,18 @@ maps.global = [
       actions.gh.parseRepo(await navigator.clipboard.readText()).url,
     ),
   },
+  {
+    alias:       "F",
+    map:         "gf",
+    category:    categories.mouseClick,
+    description: "Open a link in non-active new tab",
+  },
+  {
+    alias:       "oh",
+    category:    categories.omnibar,
+    description: "Open URL from history",
+    callback:    () => Front.openOmnibar({ type: "History" }),
+  },
 ]
 
 maps["amazon.com"] = [
@@ -215,32 +264,32 @@ maps["amazon.com"] = [
   {
     alias:       "c",
     description: "Add to Cart",
-    callback:    actions.createHints("#add-to-cart-button"),
+    callback:    () => util.createHints("#add-to-cart-button"),
   },
   {
     alias:       "R",
     description: "View Product Reviews",
-    callback:    actions.openLink("#customerReviews"),
+    callback:    () => actions.openLink("#customerReviews"),
   },
   {
     alias:       "Q",
     description: "View Product Q&A",
-    callback:    actions.openLink("#Ask"),
+    callback:    () => actions.openLink("#Ask"),
   },
   {
     alias:       "A",
     description: "Open Account page",
-    callback:    actions.openLink("/gp/css/homepage.html"),
+    callback:    () => actions.openLink("/gp/css/homepage.html"),
   },
   {
     alias:       "C",
     description: "Open Cart page",
-    callback:    actions.openLink("/gp/cart/view.html"),
+    callback:    () => actions.openLink("/gp/cart/view.html"),
   },
   {
     alias:       "O",
     description: "Open Orders page",
-    callback:    actions.openLink("/gp/css/order-history"),
+    callback:    () => actions.openLink("/gp/css/order-history"),
   },
 ]
 
@@ -260,13 +309,15 @@ maps["www.google.com"] = [
   {
     alias:       "a",
     description: "Open search result",
-    callback:    actions.createHints(googleSearchResultSelector),
+    callback:    () => util.createHints(googleSearchResultSelector),
   },
   {
     alias:       "A",
     description: "Open search result (new tab)",
-    callback:    actions.createHints(googleSearchResultSelector,
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      googleSearchResultSelector,
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
   {
     alias:       "d",
@@ -279,7 +330,7 @@ maps["algolia.com"] = [
   {
     alias:       "a",
     description: "Open search result",
-    callback:    actions.createHints(".item-main h2>a:first-child"),
+    callback:    () => util.createHints(".item-main h2>a:first-child"),
   },
 ]
 
@@ -287,13 +338,15 @@ maps["duckduckgo.com"] = [
   {
     alias:       "a",
     description: "Open search result",
-    callback:    actions.createHints(".result__a"),
+    callback:    () => util.createHints(".result__a"),
   },
   {
     alias:       "A",
     description: "Open search result (non-active new tab)",
-    callback:    actions.createHints(".result__a",
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      ".result__a",
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
   {
     leader:      "",
@@ -305,6 +358,11 @@ maps["duckduckgo.com"] = [
     alias:       "g",
     description: "Open search in Google",
     callback:    actions.dg.goog,
+  },
+  {
+    alias:       "sgh",
+    description: "Search site:github.com",
+    callback:    () => actions.dg.siteSearch("github.com"),
   },
 ]
 
@@ -321,20 +379,22 @@ maps["youtube.com"] = [
     leader:      "",
     alias:       "A",
     description: "Open video",
-    callback:    actions.createHints("*[id='video-title']",
-      actions.openAnchor({ newTab: true })),
+    callback:    () => util.createHints(
+      "*[id='video-title']",
+      actions.openAnchor({ newTab: true }),
+    ),
   },
   {
     leader:      "",
     alias:       "C",
     description: "Open channel",
-    callback:    actions.createHints("*[id='byline']"),
+    callback:    () => util.createHints("*[id='byline']"),
   },
   {
     leader:      "",
     alias:       "gH",
     description: "Goto homepage",
-    callback:    actions.openLink("https://www.youtube.com/feed/subscriptions?flow=2"),
+    callback:    () => actions.openLink("https://www.youtube.com/feed/subscriptions?flow=2"),
   },
   {
     leader:      "",
@@ -356,42 +416,42 @@ maps["github.com"] = [
   {
     alias:       "A",
     description: "Open repository Actions page",
-    callback:    actions.gh.openRepoPage("/actions"),
+    callback:    () => actions.gh.openRepoPage("/actions"),
   },
   {
     alias:       "C",
     description: "Open repository Commits page",
-    callback:    actions.gh.openRepoPage("/commits"),
+    callback:    () => actions.gh.openRepoPage("/commits"),
   },
   {
     alias:       "I",
     description: "Open repository Issues page",
-    callback:    actions.gh.openRepoPage("/issues"),
+    callback:    () => actions.gh.openRepoPage("/issues"),
   },
   {
     alias:       "P",
     description: "Open repository Pull Requests page",
-    callback:    actions.gh.openRepoPage("/pulls"),
+    callback:    () => actions.gh.openRepoPage("/pulls"),
   },
   {
     alias:       "R",
     description: "Open Repository page",
-    callback:    actions.gh.openRepoPage("/"),
+    callback:    () => actions.gh.openRepoPage("/"),
   },
   {
     alias:       "S",
     description: "Open repository Settings page",
-    callback:    actions.gh.openRepoPage("/settings"),
+    callback:    () => actions.gh.openRepoPage("/settings"),
   },
   {
     alias:       "W",
     description: "Open repository Wiki page",
-    callback:    actions.gh.openRepoPage("/wiki"),
+    callback:    () => actions.gh.openRepoPage("/wiki"),
   },
   {
     alias:       "X",
     description: "Open repository Security page",
-    callback:    actions.gh.openRepoPage("/security"),
+    callback:    () => actions.gh.openRepoPage("/security"),
   },
   {
     alias:       "O",
@@ -436,7 +496,7 @@ maps["github.com"] = [
   {
     alias:       "e",
     description: "View external link",
-    callback:    actions.createHints("a[rel=nofollow]"),
+    callback:    () => util.createHints("a[rel=nofollow]"),
   },
   { // TODO: Add repetition support: 3gu
     leader:      "",
@@ -450,14 +510,16 @@ maps["github.com"] = [
     callback:    actions.gh.star({ toggle: true }),
   },
   {
-    alias:       "y",
+    alias:       "yy",
     description: "Copy Project Path",
-    callback:    actions.copyURLPath({ count: 2 }),
+    callback:    async () => Clipboard.write(util.getURLPath({ count: 2 })),
   },
   {
     alias:       "Y",
     description: "Copy Project Path (including domain)",
-    callback:    actions.copyURLPath({ count: 2, domain: true }),
+    callback:    () => Clipboard.write(
+      util.getURLPath({ count: 2, domain: true }),
+    ),
   },
   {
     alias:       "l",
@@ -475,14 +537,48 @@ maps["github.com"] = [
     callback:    actions.gh.viewSourceGraph,
   },
   {
-    alias:       "ra",
+    alias:       "r",
     description: "View live raw version of file",
-    callback:    actions.gh.viewRaw,
+    callback:    () => actions.gh.selectFile({ directories: false })
+      .then((file) => actions.openLink(file.rawUrl, { newTab: true })),
+  },
+  {
+    alias:       "yr",
+    description: "Copy raw link to file",
+    callback:    () => actions.gh.selectFile({ directories: false })
+      .then((file) => Clipboard.write(file.rawUrl)),
+  },
+  {
+    alias:       "yf",
+    description: "Copy link to file",
+    callback:    () => actions.gh.selectFile()
+      .then((file) => Clipboard.write(file.url)),
   },
   {
     alias:       "gcp",
     description: "Open clipboard string as file path in repo",
     callback:    actions.gh.openFileFromClipboard,
+  },
+]
+
+maps["raw.githubusercontent.com"] = [
+  {
+    alias:       "R",
+    description: "Open Repository page",
+    callback:    () => actions.gh.openRepoPage("/"),
+  },
+  {
+    alias:       "F",
+    description: "Open Source File",
+    callback:    actions.gh.openSourceFile,
+  },
+]
+
+maps["github.io"] = [
+  {
+    alias:       "R",
+    description: "Open Repository page",
+    callback:    () => actions.gh.openGithubPagesRepo(),
   },
 ]
 
@@ -495,12 +591,16 @@ maps["gitlab.com"] = [
   {
     alias:       "y",
     description: "Copy Project Path",
-    callback:    actions.copyURLPath({ count: 2 }),
+    callback:    () => Clipboard.write(
+      util.getURLPath({ count: 2 }),
+    ),
   },
   {
     alias:       "Y",
     description: "Copy Project Path (including domain)",
-    callback:    actions.copyURLPath({ count: 2, domain: true }),
+    callback:    () => Clipboard.write(
+      util.getURLPath({ count: 2, domain: true }),
+    ),
   },
   {
     alias:       "D",
@@ -513,22 +613,22 @@ maps["twitter.com"] = [
   {
     alias:       "f",
     description: "Follow user",
-    callback:    actions.createHints("div[role='button'][data-testid$='follow']"),
+    callback:    () => util.createHints("div[role='button'][data-testid$='follow']"),
   },
   {
     alias:       "s",
     description: "Like tweet",
-    callback:    actions.createHints("div[role='button'][data-testid$='like']"),
+    callback:    () => util.createHints("div[role='button'][data-testid$='like']"),
   },
   {
     alias:       "R",
     description: "Retweet",
-    callback:    actions.createHints("div[role='button'][data-testid$='retweet']"),
+    callback:    () => util.createHints("div[role='button'][data-testid$='retweet']"),
   },
   {
     alias:       "c",
     description: "Comment/Reply",
-    callback:    actions.createHints("div[role='button'][data-testid='reply']"),
+    callback:    () => util.createHints("div[role='button'][data-testid='reply']"),
   },
   {
     alias:       "T",
@@ -543,7 +643,7 @@ maps["twitter.com"] = [
   {
     alias:       "t",
     description: "Goto tweet",
-    callback:    actions.createHints("article, article div[data-focusable='true'][role='link'][tabindex='0']"),
+    callback:    () => util.createHints("article, article div[data-focusable='true'][role='link'][tabindex='0']"),
   },
 ]
 
@@ -551,7 +651,7 @@ maps["reddit.com"] = [
   {
     alias:       "x",
     description: "Collapse comment",
-    callback:    actions.createHints(".expand"),
+    callback:    () => util.createHints(".expand"),
   },
   {
     alias:       "X",
@@ -561,39 +661,43 @@ maps["reddit.com"] = [
   {
     alias:       "s",
     description: "Upvote",
-    callback:    actions.createHints(".arrow.up"),
+    callback:    () => util.createHints(".arrow.up"),
   },
   {
     alias:       "S",
     description: "Downvote",
-    callback:    actions.createHints(".arrow.down"),
+    callback:    () => util.createHints(".arrow.down"),
   },
   {
     alias:       "e",
     description: "Expand expando",
-    callback:    actions.createHints(".expando-button"),
+    callback:    () => util.createHints(".expando-button"),
   },
   {
     alias:       "a",
     description: "View post (link)",
-    callback:    actions.createHints(".title"),
+    callback:    () => util.createHints(".title"),
   },
   {
     alias:       "A",
     description: "View post (link) (non-active new tab)",
-    callback:    actions.createHints(".title",
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      ".title",
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
   {
     alias:       "c",
     description: "View post (comments)",
-    callback:    actions.createHints(".comments"),
+    callback:    () => util.createHints(".comments"),
   },
   {
     alias:       "C",
     description: "View post (comments) (non-active new tab)",
-    callback:    actions.createHints(".comments",
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      ".comments",
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
 ]
 
@@ -601,7 +705,7 @@ maps["news.ycombinator.com"] = [
   {
     alias:       "x",
     description: "Collapse comment",
-    callback:    actions.createHints(".togg"),
+    callback:    () => util.createHints(".togg"),
   },
   {
     alias:       "X",
@@ -611,38 +715,40 @@ maps["news.ycombinator.com"] = [
   {
     alias:       "s",
     description: "Upvote",
-    callback:    actions.createHints(".votearrow[title='upvote']"),
+    callback:    () => util.createHints(".votearrow[title='upvote']"),
   },
   {
     alias:       "S",
     description: "Downvote",
-    callback:    actions.createHints(".votearrow[title='downvote']"),
+    callback:    () => util.createHints(".votearrow[title='downvote']"),
   },
   {
     alias:       "a",
     description: "View post (link)",
-    callback:    actions.createHints(".storylink"),
+    callback:    () => util.createHints(".titlelink"),
   },
   {
     alias:       "A",
     description: "View post (link and comments)",
-    callback:    actions.createHints(".athing", actions.hn.openLinkAndComments),
+    callback:    () => util.createHints(".athing", actions.hn.openLinkAndComments),
   },
   {
     alias:       "c",
     description: "View post (comments)",
-    callback:    actions.createHints("td > a[href*='item']:not(.storylink)"),
+    callback:    () => util.createHints("td > a[href*='item']:not(.titlelink)"),
   },
   {
     alias:       "C",
     description: "View post (comments) (non-active new tab)",
-    callback:    actions.createHints("td > a[href*='item']:not(.storylink)",
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      "td > a[href*='item']:not(.titlelink)",
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
   {
     alias:       "e",
     description: "View external link",
-    callback:    actions.createHints("a[rel=nofollow]"),
+    callback:    () => util.createHints("a[rel=nofollow]"),
   },
   {
     leader:      "",
@@ -673,47 +779,12 @@ maps["producthunt.com"] = [
   {
     alias:       "v",
     description: "View product",
-    callback:    actions.createHints("ul[class^='postsList_'] > li > div[class^='item_'] > a"),
+    callback:    () => util.createHints("ul[class^='postsList_'] > li > div[class^='item_'] > a"),
   },
   {
     alias:       "s",
     description: "Upvote product",
-    callback:    actions.createHints("button[data-test='vote-button']"),
-  },
-]
-
-maps["dribbble.com"] = [
-  {
-    alias:       "s",
-    description: "Heart Shot",
-    callback:    actions.createHints(".toggle-fav, .like-shot"),
-  },
-  {
-    alias:       "a",
-    description: "View shot",
-    callback:    actions.createHints(".dribbble-over, .gif-target, .more-thumbs a"),
-  },
-  {
-    alias:       "A",
-    description: "View shot (non-active new tab)",
-    callback:    actions.createHints(".dribbble-over, .gif-target, .more-thumbs a",
-      actions.openAnchor({ newTab: true, active: false })),
-  },
-  {
-    alias:       "v",
-    description: "View attachment image",
-    callback:    actions.dr.attachment(),
-  },
-  {
-    alias:       "V",
-    description: "Yank attachment image source URL",
-    // TODO: use navigator.clipboard
-    callback:    actions.dr.attachment((a) => Clipboard.write(a)),
-  },
-  {
-    alias:       "z",
-    description: "Zoom shot",
-    callback:    actions.createHints(".single-img picture, .detail-shot img"),
+    callback:    () => util.createHints("button[data-test='vote-button']"),
   },
 ]
 
@@ -721,7 +792,7 @@ maps["behance.net"] = [
   {
     alias:       "s",
     description: "Appreciate project",
-    callback:    actions.createHints(".appreciation-button"),
+    callback:    () => util.createHints(".appreciation-button"),
   },
   {
     alias:       "b",
@@ -731,13 +802,15 @@ maps["behance.net"] = [
   {
     alias:       "a",
     description: "View project",
-    callback:    actions.createHints(".rf-project-cover__title"),
+    callback:    () => util.createHints(".rf-project-cover__title"),
   },
   {
     alias:       "A",
     description: "View project (non-active new tab)",
-    callback:    actions.createHints(".rf-project-cover__title",
-      actions.openAnchor({ newTab: true, active: false })),
+    callback:    () => util.createHints(
+      ".rf-project-cover__title",
+      actions.openAnchor({ newTab: true, active: false }),
+    ),
   },
 ]
 
@@ -745,12 +818,12 @@ maps["fonts.adobe.com"] = [
   {
     alias:       "a",
     description: "Activate font",
-    callback:    actions.createHints(".spectrum-ToggleSwitch-input"),
+    callback:    () => util.createHints(".spectrum-ToggleSwitch-input"),
   },
   {
     alias:       "s",
     description: "Favorite font",
-    callback:    actions.createHints(".favorite-toggle-icon"),
+    callback:    () => util.createHints(".favorite-toggle-icon"),
   },
 ]
 
@@ -763,7 +836,7 @@ maps["wikipedia.org"] = [
   {
     alias:       "a",
     description: "View page",
-    callback:    actions.createHints("#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])"),
+    callback:    () => util.createHints("#bodyContent :not(sup):not(.mw-editsection) > a:not([rel=nofollow])"),
   },
   {
     alias:       "e",
@@ -786,7 +859,7 @@ maps["craigslist.org"] = [
   {
     alias:       "a",
     description: "View listing",
-    callback:    actions.createHints("a.result-title"),
+    callback:    () => util.createHints("a.result-title"),
   },
 ]
 
@@ -794,7 +867,7 @@ maps["stackoverflow.com"] = [
   {
     alias:       "a",
     description: "View question",
-    callback:    actions.createHints("a.question-hyperlink"),
+    callback:    () => util.createHints("a.question-hyperlink"),
   },
 ]
 
@@ -802,7 +875,7 @@ maps["aur.archlinux.org"] = [
   {
     alias:       "a",
     description: "View package",
-    callback:    actions.createHints("a[href^='/packages/'][href$='/']"),
+    callback:    () => util.createHints("a[href^='/packages/'][href$='/']"),
   },
 ]
 
@@ -812,50 +885,283 @@ maps["home.nest.com"] = [
     leader:      "",
     alias:       "=",
     description: "Increment temperature",
-    callback:    actions.nt.adjustTemp(1),
+    callback:    () => actions.nt.adjustTemp(1),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     leader:      "",
     alias:       "-",
     description: "Decrement temperature",
-    callback:    actions.nt.adjustTemp(-1),
+    callback:    () => actions.nt.adjustTemp(-1),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "h",
     description: "Switch mode to Heat",
-    callback:    actions.nt.setMode("heat"),
+    callback:    () => actions.nt.setMode("heat"),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "c",
     description: "Switch mode to Cool",
-    callback:    actions.nt.setMode("cool"),
+    callback:    () => actions.nt.setMode("cool"),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "r",
     description: "Switch mode to Heat/Cool",
-    callback:    actions.nt.setMode("range"),
+    callback:    () => actions.nt.setMode("range"),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "o",
     description: "Switch mode to Off",
-    callback:    actions.nt.setMode("off"),
+    callback:    () => actions.nt.setMode("off"),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "f",
     description: "Switch fan On",
-    callback:    actions.nt.setFan(1),
+    callback:    () => actions.nt.setFan(1),
   },
   {
     path:        "/thermostat/DEVICE_.*",
     alias:       "F",
     description: "Switch fan Off",
-    callback:    actions.nt.setFan(0),
+    callback:    () => actions.nt.setFan(0),
+  },
+]
+
+const rescriptMeta = {
+  docsPat: "/docs(/.*)?",
+}
+
+maps["rescript-lang.org"] = [
+  // Links / elements
+  {
+    leader:      "",
+    alias:       "i",
+    description: "Focus search field",
+    path:        `(${rescriptMeta.docsPat})?$`,
+    callback:    actions.re.focusSearch,
+  },
+  {
+    alias:       "a",
+    description: "Open docs link",
+    path:        rescriptMeta.docsPat,
+    callback:    () => util.createHints("a[href^='/docs/']"),
+  },
+
+  // Shorcuts
+  {
+    alias:       "L",
+    description: "Open language manual",
+    callback:    () => actions.openLink("/docs/manual/latest/introduction"),
+  },
+  {
+    alias:       "R",
+    description: "Open ReScript + React docs",
+    callback:    () => actions.openLink("/docs/react/latest/introduction"),
+  },
+  {
+    alias:       "G",
+    description: "Open GenType docs",
+    callback:    () => actions.openLink("/docs/gentype/latest/introduction"),
+  },
+  {
+    alias:       "P",
+    description: "Open package index",
+    callback:    () => actions.openLink("/packages"),
+  },
+  {
+    alias:       "Y",
+    description: "Open playground",
+    callback:    () => actions.openLink("/try"),
+  },
+  {
+    alias:       "S",
+    description: "Open syntax lookup",
+    callback:    () => actions.openLink("/syntax-lookup"),
+  },
+  {
+    alias:       "F",
+    description: "Open community forum",
+    callback:    () => actions.openLink("https://forum.rescript-lang.org/"),
+  },
+  {
+    alias:       "A",
+    description: "Open API docs",
+    callback:    () => actions.openLink("/docs/manual/latest/api"),
+  },
+  {
+    alias:       "J",
+    description: "Open JS API docs",
+    callback:    () => actions.openLink("/docs/manual/latest/api/js"),
+  },
+  {
+    alias:       "B",
+    description: "Open Belt API docs",
+    callback:    () => actions.openLink("/docs/manual/latest/api/belt"),
+  },
+  {
+    alias:       "D",
+    description: "Open DOM API docs",
+    callback:    () => actions.openLink("/docs/manual/latest/api/dom"),
+  },
+
+  // Scroll
+  {
+    leader:      "",
+    alias:       "w",
+    description: "Scroll sidebar up",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollSidebar("up"),
+  },
+  {
+    leader:      "",
+    alias:       "s",
+    description: "Scroll sidebar down",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollSidebar("down"),
+  },
+  {
+    leader:      "",
+    alias:       "e",
+    description: "Scroll sidebar page up",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollSidebar("pageUp"),
+  },
+  {
+    leader:      "",
+    alias:       "d",
+    description: "Scroll sidebar page down",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollSidebar("pageDown"),
+  },
+  {
+    leader:      "",
+    alias:       "k",
+    description: "Scroll body up",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollContent("up"),
+  },
+  {
+    leader:      "",
+    alias:       "j",
+    description: "Scroll body down",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollContent("down"),
+  },
+  {
+    leader:      "",
+    alias:       "K",
+    description: "Scroll body page up",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollContent("pageUp"),
+  },
+  {
+    leader:      "",
+    alias:       "J",
+    description: "Scroll body page down",
+    path:        rescriptMeta.docsPat,
+    callback:    () => actions.re.scrollContent("pageDown"),
+  },
+]
+
+maps["devdocs.io"] = [
+  {
+    leader:      "",
+    alias:       "w",
+    description: "Scroll sidebar up",
+    callback:    () => actions.dv.scrollSidebar("up"),
+  },
+  {
+    leader:      "",
+    alias:       "s",
+    description: "Scroll sidebar down",
+    callback:    () => actions.dv.scrollSidebar("down"),
+  },
+  {
+    leader:      "",
+    alias:       "e",
+    description: "Scroll sidebar page up",
+    callback:    () => actions.dv.scrollSidebar("pageUp"),
+  },
+  {
+    leader:      "",
+    alias:       "d",
+    description: "Scroll sidebar page down",
+    callback:    () => actions.dv.scrollSidebar("pageDown"),
+  },
+  {
+    leader:      "",
+    alias:       "k",
+    description: "Scroll body up",
+    callback:    () => actions.dv.scrollContent("up"),
+  },
+  {
+    leader:      "",
+    alias:       "j",
+    description: "Scroll body down",
+    callback:    () => actions.dv.scrollContent("down"),
+  },
+  {
+    leader:      "",
+    alias:       "K",
+    description: "Scroll body page up",
+    callback:    () => actions.dv.scrollContent("pageUp"),
+  },
+  {
+    leader:      "",
+    alias:       "J",
+    description: "Scroll body page down",
+    callback:    () => actions.dv.scrollContent("pageDown"),
+  },
+]
+
+maps["ebay.com"] = [
+  {
+    alias:       "fs",
+    description: "Fakespot",
+    callback:    actions.fakeSpot,
+  },
+]
+
+maps["ikea.com"] = [
+  {
+    alias:       "d",
+    description: "Toggle Product Details",
+    callback:    () => actions.ik.toggleProductDetails(),
+  },
+  {
+    alias:       "i",
+    description: "Toggle Product Details",
+    callback:    () => actions.ik.toggleProductDetails(),
+  },
+  {
+    alias:       "r",
+    description: "Toggle Product Reviews",
+    callback:    () => actions.ik.toggleProductReviews(),
+  },
+  {
+    alias:       "C",
+    description: "Open Cart page",
+    callback:    () => actions.openLink("/us/en/shoppingcart/"),
+  },
+  {
+    alias:       "P",
+    description: "Open Profile page",
+    callback:    () => actions.openLink("/us/en/profile/login/"),
+  },
+  {
+    alias:       "F",
+    description: "Open Favorites page",
+    callback:    () => actions.openLink("/us/en/favorites/"),
+  },
+  {
+    alias:       "O",
+    description: "Open Orders page",
+    callback:    () => actions.openLink("/us/en/customer-service/track-manage-order/"),
   },
 ]
 

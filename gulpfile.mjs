@@ -1,66 +1,83 @@
-const gulp = require("gulp")
+import fetch from "node-fetch"
+import gulp from "gulp"
+import webpack from "webpack"
+import webpackStream from "webpack-stream"
+import replace from "gulp-replace"
+import rename from "gulp-rename"
+// import eslint from "gulp-eslint"
+import file from "gulp-file"
+import path from "path"
+import del from "del"
+import platforms from "platform-folders"
+import express from "express"
+// import gulpIf from "gulp-if"
+import gulpNotify from "gulp-notify"
+// import PluginError from "plugin-error"
+import fs from "fs/promises"
+import url, { fileURLToPath } from "url"
+import webpackConfig from "./webpack.config.js"
 
-const { task, src, dest } = gulp
-const { parallel, series } = gulp
-
-const webpack = require("webpack")
-const webpackStream = require("webpack-stream")
-
-const replace = require("gulp-replace")
-const rename = require("gulp-rename")
-const eslint = require("gulp-eslint")
-const file = require("gulp-file")
-const path = require("path")
-const del = require("del")
-const platforms = require("platform-folders")
-const fs = require("fs").promises
-const fetch = require("node-fetch")
-const express = require("express")
-const gulpIf = require("gulp-if")
-const gulpNotify = require("gulp-notify")
-const PluginError = require("plugin-error")
-
-const { COPYFILE_EXCL } = require("fs").constants
-const { URL } = require("url")
-
-const pkg = require("./package.json")
-const webpackConfig = require("./webpack.config.js")
+const requireJson = async (f) => JSON.parse(await fs.readFile(f))
+const log = (...msg) => process.stderr.write(`${msg.join("\n")}\n`)
 
 const copyrightYearOne = 2017
 
+const { URL } = url
+
+const {
+  task, src, dest, parallel, series,
+} = gulp
+
+const gulpfilePath = fileURLToPath(import.meta.url)
+
 const paths = {
-  scripts:          ["conf.priv.js", "completions.js", "conf.js", "actions.js", "help.js", "keys.js", "util.js"],
-  entry:            "conf.js",
-  gulpfile:         "gulpfile.js",
-  readme:           "README.tmpl.md",
   assets:           "assets",
-  screenshots:      "assets/screenshots",
+  buildDir:         "build/",
+  confPrivExample:  "conf.priv.example.js",
+  dirname:          path.dirname(gulpfilePath),
   favicons:         "assets/favicons",
   faviconsManifest: "favicons.json",
-  readmeOut:        "README.md",
-  scriptOut:        "surfingkeys.js",
-  buildDir:         "build/",
+  gulpfile:         path.basename(gulpfilePath),
   installDir:       platforms.getConfigHome(),
+  output:           "surfingkeys.js",
+  pkgJson:          "package.json",
+  readme:           "README.tmpl.md",
+  readmeOut:        "README.md",
+  screenshots:      "assets/screenshots",
+
+  sources: {
+    completions: "completions.js",
+    confPriv:    "conf.priv.js",
+    conf:        "conf.js",
+    entrypoint:  "index.js",
+    keys:        "keys.js",
+    util:        "util.js",
+  },
 }
 
-let srcFilesLoaded = false
-let compl
-let conf
-let keys
-let util
+const getPath = (...f) => path.join(paths.dirname, ...f)
+const getSrcPath = (s) => getPath(s)
 
-const requireSrcFiles = () => {
-  if (srcFilesLoaded) {
-    return
+const pkg = await requireJson(getPath(paths.pkgJson))
+
+const getSources = (() => {
+  let sources = null
+  return async () => {
+    if (sources !== null) {
+      return sources
+    }
+    sources = await Object.fromEntries(
+      await Promise.all(Object.entries(paths.sources).map(
+        async ([name, srcPath]) =>
+          [
+            name,
+            (await import(getSrcPath(srcPath))).default,
+          ],
+      )),
+    )
+    return sources
   }
-  /* eslint-disable global-require, import/no-dynamic-require */
-  compl = require("./completions")
-  conf = require("./conf")
-  keys = require("./keys")
-  util = require("./util")
-  /* eslint-enable global-require, import/no-dynamic-require */
-  srcFilesLoaded = true
-}
+})()
 
 let faviconsManifest
 const loadFaviconsManifest = async () => {
@@ -68,25 +85,16 @@ const loadFaviconsManifest = async () => {
     return
   }
   try {
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    faviconsManifest = require(`./${path.join(paths.favicons, paths.faviconsManifest)}`)
+    faviconsManifest = await requireJson(
+      getPath(paths.favicons, paths.faviconsManifest),
+    )
   } catch (e) {
-    console.log(`Warning: couldn't load favicons manifest: ${e}`) // eslint-disable-line no-console
+    log(`Warning: couldn't load favicons manifest: ${e}`)
     faviconsManifest = {}
   }
 }
 
 const servePort = 9919
-
-// This notice will be injected into the generated README.md file
-const disclaimer = `\
-<!--
-
-NOTICE:
-This is an automatically generated file - Do not edit it directly.
-The source file is ${paths.readme}
-
--->`
 
 const notify = Object.assign((opts, ...args) => gulpNotify({
   icon:    null,
@@ -104,48 +112,16 @@ notify.onError = (opts, ...args) => gulpNotify.onError({
 task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
 task("clean-favicons", () => del([paths.favicons]))
 
-const lint = (globs, opts = {}) => gulp.src(globs)
-  .pipe(eslint(opts))
-  .pipe(eslint.format())
-  .pipe(eslint.results((res) => {
-    if (res.warningCount + res.errorCount > 0) {
-      const msg = []
-      if (res.warningCount > 0) {
-        msg.push(`${res.warningCount} warning${res.warningCount === 1 ? "" : "s"}`)
-      }
-      if (res.errorCount > 0) {
-        msg.push(`${res.errorCount} error${res.errorCount === 1 ? "" : "s"}`)
-      }
-      const numBadFiles = res.reduce((acc, e) =>
-        (e.errorCount + e.warningCount > 0 ? acc + 1 : acc),
-      0)
-      const err = new PluginError("gulp-eslint", {
-        name:    "ESLintError",
-        message: `${msg.join(" and ")} in ${numBadFiles} file${numBadFiles === 1 ? "" : "s"}`,
-      })
-      notify.onError({
-        title:   `Lint failure [${pkg.name}]`,
-        message: err.message,
-      })(err)
-      throw err
-    }
-  }))
-
-task("lint", () => lint([...paths.scripts, paths.gulpfile]))
-
-task("lint-fix", () => lint([...paths.scripts, paths.gulpfile], { fix: true })
-  .pipe(gulpIf(
-    (f) => f.eslint !== undefined && f.eslint.fixed === true,
-    gulp.dest((f) => f.base),
-  )))
-
 task("check-priv", async () => {
   try {
-    await fs.stat("./conf.priv.js")
+    await fs.stat(getSrcPath(paths.sources.priv))
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("Notice: Initializing ./conf.priv.js - configure your API keys here.")
-    return fs.copyFile("./conf.priv.example.js", "./conf.priv.js", COPYFILE_EXCL)
+    log(`Notice: Initializing ${paths.sources.confPriv}. Configure your API keys here.`)
+    return fs.copyFile(
+      getPath(paths.confPrivExample),
+      getSrcPath(paths.sources.confPriv),
+      fs.constants.COPYFILE_EXCL,
+    )
   }
   return Promise.resolve()
 })
@@ -168,23 +144,25 @@ const parseContributor = (contributor) => {
 }
 
 task("docs", parallel(async () => {
-  requireSrcFiles()
+  const {
+    completions, conf, keys, util,
+  } = await getSources()
   await loadFaviconsManifest()
 
   const screens = {}
   let screenshotList = ""
 
-  const screenshots = await fs.readdir(path.join(__dirname, paths.screenshots))
+  const screenshots = await fs.readdir(getPath(paths.screenshots))
   screenshots.forEach((s) => {
     const name = path.basename(s, ".png").split("-")
     const alias = name[0]
     if (!screens[alias]) {
       screens[alias] = []
     }
-    screens[alias].push(path.join(paths.screenshots, path.basename(s)))
+    screens[alias].push(getPath(paths.screenshots, path.basename(s)))
   })
 
-  let complTable = Object.keys(compl).sort((a, b) => {
+  let complTable = Object.keys(completions).sort((a, b) => {
     if (a < b) return -1
     if (a > b) return 1
     return 0
@@ -200,16 +178,16 @@ task("docs", parallel(async () => {
 
   complTable = await complTable.reduce(async (acc1p, k) => {
     const acc1 = await acc1p
-    const c = compl[k]
+    const c = completions[k]
     const u = new URL(c.domain ? `https://${c.domain}` : c.search)
     const domain = u.hostname
     let s = ""
     if (screens[c.alias]) {
-      screens[c.alias].forEach((url, i) => {
+      screens[c.alias].forEach((ss, i) => {
         const num = (i > 0) ? ` ${i + 1}` : ""
         s += `<a href="#${c.name}${num.replace(" ", "-")}">:framed_picture:</a>`
         screenshotList += `##### ${c.name}${num}\n`
-        screenshotList += `![${c.name} screenshot](./${url})\n\n`
+        screenshotList += `![${c.name} screenshot](./${ss})\n\n`
       })
     }
 
@@ -260,30 +238,32 @@ task("docs", parallel(async () => {
   }
   copyright += `<p><h4>License</h4>Released under the <a href="./LICENSE">${pkg.license} License</a></p>`
 
-  return src([paths.readme])
-    .pipe(replace("<!--{{DISCLAIMER}}-->", disclaimer))
-    .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(compl).length))
+  const notice = "<!-- NOTICE: This file is auto-generated. Do not edit directly. -->"
+
+  return src([getPath(paths.readme)])
+    .pipe(replace("<!--{{NOTICE}}-->", notice))
+    .pipe(replace("<!--{{COMPL_COUNT}}-->", Object.keys(completions).length))
     .pipe(replace("<!--{{COMPL_TABLE}}-->", complTable))
     .pipe(replace("<!--{{KEYS_MAPS_COUNT}}-->", Object.values(keys.maps).reduce((acc, m) => acc + m.length, 0)))
     .pipe(replace("<!--{{KEYS_SITES_COUNT}}-->", Object.keys(keys.maps).length))
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))
     .pipe(replace("<!--{{COPYRIGHT}}-->", copyright))
-    .pipe(rename(paths.readmeOut))
+    .pipe(rename(getPath(paths.readmeOut)))
     .pipe(dest("."))
 }))
 
 const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
-  const url = favicon
+  const ss = favicon
   let data
   try {
-    const res = await fetch(url, { timeout })
+    const res = await fetch(ss, { timeout })
     if (!res.ok) {
-      throw new Error(`request to ${url} failed with code ${res.status}`)
+      throw new Error(`request to ${ss} failed with code ${res.status}`)
     }
-    data = await res.buffer()
+    data = await res.arrayBuffer()
   } catch (e) {
-    process.stdout.write(`no favicon found for ${url}: ${e}\n`)
+    process.stdout.write(`no favicon found for ${ss}: ${e}\n`)
     // transparent pixel
     data = Buffer.from(
       "AAABAAEAAQEAAAEAIAAwAAAAFgAAACgAAAABAAAAAgAAAAEAIAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA==",
@@ -298,11 +278,11 @@ const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
 }
 
 task("favicons", series("clean-favicons", async () => {
-  requireSrcFiles()
+  const { completions, keys } = await getSources()
 
   const sites = [].concat(
     // search engine completions
-    Object.entries(compl)
+    Object.entries(completions)
       .map(([, v]) => ({
         domain:  new URL(v.domain ? `https://${v.domain}` : v.search).hostname,
         favicon: `https://icons.duckduckgo.com/ip3/${new URL(v.domain ? `https://${v.domain}` : v.search).hostname}.ico`,
@@ -331,68 +311,73 @@ task("favicons", series("clean-favicons", async () => {
   }, ...favicons]
 
   return file(files)
-    .pipe(dest(paths.favicons))
+    .pipe(dest(getPath(paths.favicons)))
 }))
 
 task("docs-full", series("favicons", "docs"))
 
 const build = () =>
-  src(paths.entry)
+  src(getSrcPath(paths.sources.entrypoint))
     .pipe(webpackStream(webpackConfig, webpack))
     .on("error", (err) => {
       notify.onError({
         title:   `Build failure [${pkg.name}]`,
         message: `${err.message.split("\n").slice(0, 1)}`,
+        timeout: 10,
       })(err)
       throw err
     })
-    .pipe(rename(paths.scriptOut))
-    .pipe(dest(paths.buildDir))
+    .pipe(rename(paths.output))
+    .pipe(dest(getPath(paths.buildDir)))
     .pipe(notify({
       title:   `Build success [${pkg.name}]`,
       message: "No issues",
+      timeout: 2,
     }))
 
-task("build",
-  parallel(
-    "lint",
-    build,
-  ))
+task(
+  "build",
+  build,
+  // parallel(
+  //  "lint",
+  //  build,
+  // ),
+)
 
-task("build-full",
+task(
+  "build-full",
   series(
     parallel(
       "check-priv",
       "clean",
     ),
     "build",
-  ))
+  ),
+)
 
 task("dist", parallel("docs-full", "build-full"))
 
-task("install", series("build", () => src(path.join(paths.buildDir, paths.scriptOut))
-  .pipe(dest(paths.installDir))))
+task("install", series("build", () => src(getPath(paths.buildDir, paths.output))
+  .pipe(dest(getPath(paths.installDir)))))
 
 const watch = (g, t) => () =>
   gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)
 
-task("watch-build", watch(paths.scripts, series("build")))
+task("watch-build", watch("*.js", series("build")))
 
-task("watch-install", watch(paths.scripts, series("install")))
+task("watch-install", watch("*.js", series("install")))
 
-task("watch-lint", watch([...paths.scripts, paths.gulpfile], series("lint")))
+task("watch-docs", watch(["*.js", getPath(paths.readme)], series("docs")))
 
-task("watch-docs", watch([...paths.scripts, paths.readme], series("docs")))
-
-task("watch-docs-full", watch([...paths.scripts, paths.readme], series("docs-full")))
+task("watch-docs-full", watch(["*.js", getPath(paths.readme)], series("docs-full")))
 
 const serve = (done) => {
   const app = express()
 
   const handler = (allowedOrigin) => async (req, res) => {
-    console.log(`${new Date().toISOString()} ${req.method} ${req.url}`) // eslint-disable-line no-console
+    log(`${new Date().toISOString()} ${req.method} ${req.url}`)
     try {
-      res.sendFile(path.resolve(__dirname, paths.buildDir, paths.scriptOut), {
+      res.sendFile(getPath(paths.buildDir, paths.output), {
         headers: {
           "Content-Type":                "text/javascript; charset=UTF-8",
           "Access-Control-Allow-Origin": allowedOrigin,
@@ -400,7 +385,7 @@ const serve = (done) => {
         maxAge: 2000,
       })
     } catch (e) {
-      console.log(e) // eslint-disable-line no-console
+      log(e)
       res.status(500).send("Error reading config file.\n")
     }
   }
@@ -410,9 +395,9 @@ const serve = (done) => {
   app.get("/firefox", handler("moz-extension://a7b04efeb-0b36-47f6-9f57-70293e5ee7b2"))
 
   app.listen(servePort)
-  console.log(`web server is listening on port ${servePort}`) // eslint-disable-line no-console
+  log(`web server is listening on port ${servePort}`)
   app.on("close", () => {
-    console.log("web server is closing...") // eslint-disable-line no-console
+    log("web server is closing...")
     done()
   })
 }
@@ -424,5 +409,3 @@ task("serve-build", parallel("watch-build", "serve-simple"))
 task("serve", series("serve-build"))
 task("watch", series("watch-install"))
 task("default", series("build"))
-
-// debugger

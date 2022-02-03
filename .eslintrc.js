@@ -1,27 +1,22 @@
 module.exports = {
   extends: "airbnb-base",
-  globals: {
-    RUNTIME:            false,
-    Omnibar:            false,
-    Front:              false,
-    Clipboard:          false,
-    runtime:            false,
-    browser:            false,
-    chrome:             false,
-    tabOpenLink:        false,
-    Hints:              false,
-    unmap:              false,
-    map:                false,
-    mapkey:             false,
-    settings:           false,
-    removeSearchAliasX: false,
-    addSearchAliasX:    false,
-    completions:        false,
+
+  parserOptions: {
+    ecmaVersion: "latest",
   },
+
+  globals: {
+    api:      false,
+    browser:  false,
+    chrome:   false,
+    settings: false,
+  },
+
   env: {
     browser: true,
     node:    true,
   },
+
   rules: {
     semi:             ["error", "never"],
     "comma-dangle":   ["warn", "always-multiline"],
@@ -33,6 +28,9 @@ module.exports = {
     "newline-per-chained-call": "off",
     "no-restricted-syntax":     "off",
     "implicit-arrow-linebreak": "off",
+
+    "import/extensions":                 "off",
+    "import/no-extraneous-dependencies": "off",
 
     "key-spacing": [
       "warn",

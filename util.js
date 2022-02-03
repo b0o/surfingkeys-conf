@@ -2,6 +2,36 @@ const { categories } = require("./help")
 
 const util = {}
 
+util.getContext = () => (typeof window !== "undefined" ? "browser" : "node")
+
+util.api = () => (util.getContext() === "browser" ? api : {})
+
+const {
+  mapkey,
+  map,
+  unmap,
+  Clipboard,
+  Front,
+  Hints,
+  removeSearchAlias,
+  addSearchAlias,
+} = util.api()
+
+// util.getURLPath = ({ count = 0, domain = false } = {}) => {
+util.getURLPath = ({ count = 0, domain = false } = {}) => {
+  let path = util.getCurrentLocation("pathname").slice(1)
+  if (count) {
+    path = path.split("/").slice(0, count).join("/")
+  }
+  if (domain) {
+    path = `${util.getCurrentLocation("hostname")}/${path}`
+  }
+  return path
+}
+
+util.getMap = (mode, keys) =>
+  keys.split("").reduce((acc, c) => acc[c] || acc, mode.mappings).meta || null
+
 util.getCurrentLocation = (prop = "href") => {
   if (typeof window === "undefined") {
     return ""
@@ -61,17 +91,29 @@ util.createURLItem = (title, url, sanitize = true) => {
     `, { url: u })
 }
 
-util.createHintsAsync = (cssSelector, onHintKey, attrs) =>
-  new Promise((resolve) =>
-    Hints.create(cssSelector, (...args) => resolve(...args), attrs))
+util.defaultSelector = "a[href]:not([href^=javascript])"
 
-util.createHintsFiltered = (filter, {
-  elems = [...document.querySelectorAll("a[href]")],
+util.querySelectorFiltered = (selector = util.defaultSelector, filter = () => true) =>
+  [...document.querySelectorAll(selector)].filter(filter)
+
+util.createHints = (
+  selector = util.defaultSelector,
   action = Hints.dispatchMouseClick,
-} = {}) =>
-  Hints.create(elems.filter(filter), action)
+  attrs = {},
+) =>
+  new Promise((resolve) => {
+    Hints.create(selector, (...args) => {
+      resolve(...args)
+      if (typeof action === "function") action(...args)
+    }, attrs)
+  })
+
+util.createHintsFiltered = (filter, selector, ...args) => {
+  util.createHints(util.querySelectorFiltered(selector, filter), ...args)
+}
 
 // Determine if the given rect is visible in the viewport
+// https://developer.mozilla.org/en-US/docs/web/api/element/getboundingclientrect
 util.isRectVisibleInViewport = (rect) =>
   rect.height > 0
   && rect.width > 0
@@ -95,10 +137,10 @@ util.rmMaps = (a) => {
 }
 
 util.rmSearchAliases = (a) => Object.entries(a).forEach(([leader, items]) => {
-  if (typeof removeSearchAliasX === "undefined") {
+  if (typeof removeSearchAlias === "undefined") {
     return
   }
-  items.forEach((v) => removeSearchAliasX(v, leader))
+  items.forEach((v) => removeSearchAlias(v, leader))
 })
 
 // Process Mappings
@@ -120,6 +162,7 @@ util.processMaps = (maps, aliases, siteleader) => {
       leader = (domain === "global") ? "" : siteleader,
       category = categories.misc,
       description = "",
+      path = "(/.*)?",
     } = mapObj
     const opts = {}
 
@@ -128,7 +171,7 @@ util.processMaps = (maps, aliases, siteleader) => {
     // Determine if it's a site-specific mapping
     if (domain !== "global") {
       const d = domain.replace(".", "\\.")
-      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})(/.*)?`)
+      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
     }
 
     const fullDescription = `#${category} ${description}`
@@ -143,20 +186,23 @@ util.processMaps = (maps, aliases, siteleader) => {
 
 // process completions
 util.processCompletions = (completions, searchleader) => Object.values(completions).forEach((s) => {
-  if (typeof Front === "undefined" || typeof addSearchAliasX === "undefined" || typeof mapkey === "undefined") {
+  if (typeof Front === "undefined" || typeof addSearchAlias === "undefined" || typeof mapkey === "undefined") {
     return
   }
-  addSearchAliasX(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
+  addSearchAlias(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
   mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
   mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
-    Clipboard.read((c) => { // TODO: use navigator.clipboard
+    Clipboard.read((c) => {
       Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
     })
   })
+  if (searchleader !== "o") {
+    unmap(`o${s.alias}`)
+  }
 })
 
 util.addSettings = (s) => {
-  if (typeof settings === "undefined") {
+  if (util.getContext() !== "browser") {
     return
   }
   Object.assign(settings, s)

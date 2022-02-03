@@ -1,16 +1,15 @@
-<!--{{DISCLAIMER}}-->
+<!--{{NOTICE}}-->
 
-Maddy's SurfingKeys Configuration
-=================================
+# Maddison's SurfingKeys Configuration
 
 This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surfingkeys) browser extension.
 
-Its primary features include
+Its primary features include:
+
 - <!--{{KEYS_MAPS_COUNT}}--> [Site-Specific Key Mappings](#site-specific-key-mappings) which **automate common actions** on many popular websites
 - <!--{{COMPL_COUNT}}--> [Search Suggestion Engines](#search-suggestion-engines) providing **interactive search suggestions** from dozens of knowledge sources
 
-Table of Contents
------------------
+## Table of Contents
 
 1. [Site-Specific Key Mappings](#site-specific-key-mappings)
 2. [Search Suggestion Engines](#search-suggestion-engines)
@@ -19,13 +18,11 @@ Table of Contents
 5. [Todo](#todo)
 6. [License](#license)
 
-Features
---------
+## Features
 
 ### Site-Specific Key Mappings
 
-<!--{{KEYS_MAPS_COUNT}}--> key mappings for <!--{{KEYS_SITES_COUNT}}--> unique
-sites have been included which can help you perform some common actions:
+<!--{{KEYS_MAPS_COUNT}}--> key mappings for <!--{{KEYS_SITES_COUNT}}--> unique sites have been included which can help you perform some common actions:
 
 <table>
 <tbody>
@@ -58,147 +55,138 @@ For example, to open the Wikipedia suggestion engine, you would type `awp` while
 | ----- | ---- | ------ | ----------- |
 -->
 
-Installation
-------------
+## Installation
 
 ### Dependencies
 
 Building `surfingkeys-conf` requires a few dependencies to be installed:
 
-- __Surfingkeys__ `^0.9.40`
-- __git__
-- __node__
-- __gulp__
+- **Surfingkeys** `>1.0.0`
+- **git**
+- **node**
+- **gulp**
 
 ### Building & Installing
 
-1. __Clone this repository__
-	```shell
-	$ git clone http://github.com/b0o/surfingkeys-conf
-	$ cd surfingkeys-conf
-	```
+1.  **Clone this repository**
 
-2. __Install the NodeJS build dependencies__
-	```shell
-	$ npm install
-	```
+    ```shell
+    $ git clone http://github.com/b0o/surfingkeys-conf
+    $ cd surfingkeys-conf
+    ```
 
-3. __*(Optional)* Private API Key Configuration__
+2.  **Install the NodeJS build dependencies**
 
-	Some search suggestion engines require private API keys for access. These
-	keys are defined in `conf.priv.js`, which is not itself included in this repository.
-	An example configuration containing instructions on how to generate each API key
-	can be found in [conf.priv.example.js](./conf.priv.example.js).
+    ```shell
+    $ npm install
+    ```
 
-	Copy the example private configuration:
+3.  **_(Optional)_ Private API Key Configuration**
 
-	```shell
-	$ cp ./conf.priv.example.js ./conf.priv.js
-	```
+    Some search suggestion engines require private API keys for access. These
+    keys are defined in `conf.priv.js`, which is not itself included in this repository.
+    An example configuration containing instructions on how to generate each API key
+    can be found in [conf.priv.example.js](./conf.priv.example.js).
 
-	Open `./conf.priv.js` in your favorite editor and follow the instructions inside:
+    Copy the example private configuration:
 
-	```shell
-	$ vim ./conf.priv.js
-	```
+    ```shell
+    $ cp ./conf.priv.example.js ./conf.priv.js
+    ```
 
-4. __Gulp Build/Install__
-	```shell
-	$ gulp install # OR "gulp build" to build to ./build/surfingkeys.js without installing
-	```
+    Open `./conf.priv.js` in your favorite editor and follow the instructions inside:
 
-	This will build the final configuration file and place it at `~/.config/surfingkeys.js`.
-	If you already have a file in that location, make sure you back it up first!
+    ```shell
+    $ vim ./conf.priv.js
+    ```
 
-5. __Load your configuration into the SurfingKeys Extension__
+4.  **Gulp Build/Install**
 
-	<details>
-	<summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load the configuration file</summary>
-	<blockquote><details>
-	<summary><strong>Local File Access (Chrome/Chromium only)</strong></summary>
+    ```shell
+    $ gulp install # OR "gulp build" to build to ./build/surfingkeys.js without installing
+    ```
 
-	- __I.__ Visit `chrome://extensions/` and enable `Allow access to file URLs` for the Surfingkeys extension.
+    This will build the final configuration file and place it at `~/.config/surfingkeys.js`.
+    If you already have a file in that location, make sure you back it up first!
 
-	- __II.__ Open the SurfingKeys configuration page: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`.
+5.  **Load your configuration into the SurfingKeys Extension**
 
-	- __III.__ Set the `Load settings from` option to point to the configuration file.
+    <details>
+    <summary><strong>Option A</strong> <em>(recommended)</em>: Configure SurfingKeys to automatically load the configuration file</summary>
+    <blockquote><details>
+    <summary><strong>Local File Access (Chrome/Chromium only)</strong></summary>
 
-		_Note: you must specify the full, absolute path; environment variables like `$HOME` or the tilde `~` won't work_:
+    - **I.** Visit `chrome://extensions/` and enable `Allow access to file URLs` for the Surfingkeys extension.
 
-		- __Linux__: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
-		- __macOS__: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username) 
-		- __Windows__: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
+    - **II.** Open the SurfingKeys configuration page: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`.
 
-	- __IV.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your 
-		new configuration will automatically be loaded by SurfingKeys.
+    - **III.** Set the `Load settings from` option to point to the configuration file.
 
-	</details></blockquote>
-	<blockquote><details>
-	<summary><strong>Local Web Server (Chrome, Chromium, and Firefox)</strong></summary>
+          	_Note: you must specify the full, absolute path; environment variables like `$HOME` or the tilde `~` won't work_:
 
-	- __I.__ Run the configuration file server:
+          	- __Linux__: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
+          	- __macOS__: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
+          	- __Windows__: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
 
-		```shell
-		$ gulp serve-simple
-		```
+    - **IV.** Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp install` again and your
+      new configuration will automatically be loaded by SurfingKeys.
 
-		Alternatively, you can use the `gulp serve` task, which automatically rebuilds the configuration file whenever a source file is modified.
+    </details></blockquote>
+    <blockquote><details>
+    <summary><strong>Local Web Server (Chrome, Chromium, and Firefox)</strong></summary>
 
-	- __II.__ Open the SurfingKeys configuration page: 
+    - **I.** Run the configuration file server:
 
-		Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
+          	```shell
+          	$ gulp serve-simple
+          	```
 
-		Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
+          	Alternatively, you can use the `gulp serve` task, which automatically rebuilds the configuration file whenever a source file is modified.
 
-	- __III.__ Set the `Load settings from` option to `http://localhost:9919`
+    - **II.** Open the SurfingKeys configuration page:
 
-	- __IV.__ You will want to configure your system to automatically run `gulp serve-simple` from the repository directory on boot, otherwise 
-		SurfingKeys will lose the settings as soon as the local web server is down.
-	
-		If you run Linux with systemd, an [example user service](./surfingkeys-conf.service) is provided in this repo. You will need to modify 
-		it to contain the proper path to your surfingkeys-conf repo.
+          	Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
 
-	- __V.__ Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp build` again and your new 
-		configuration will automatically be loaded by SurfingKeys.
+          	Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
 
-	- __Note:__ This method starts a web server on `localhost:9919`. Depending on your firewall configuration, other devices on your local network 
-		(or the internet at large in the case of misconfigured router firewall) may be able to read your configuration file, including any private
-		API keys or other secrets you have configured in `conf.priv.js`. Proceed with caution.
+    - **III.** Set the `Load settings from` option to `http://localhost:9919`
 
-	</details></blockquote>
-	</details>
-	<details>
-	<summary><strong>Option B</strong>: Manually copy/paste into the SurfingKeys configuration form</summary>
+    - **IV.** You will want to configure your system to automatically run `gulp serve-simple` from the repository directory on boot, otherwise
+      SurfingKeys will lose the settings as soon as the local web server is down.
 
-	- __I.__ Copy the contents of `./build/surfingkeys.js` (or `$HOME/.config/surfingkeys.js` if you ran `gulp install`)
+          	If you run Linux with systemd, an [example user service](./surfingkeys-conf.service) is provided in this repo. You will need to modify
+          	it to contain the proper path to your surfingkeys-conf repo.
 
-	- __II.__ Open the SurfingKeys configuration page: 
+    - **V.** Hack Away! If you ever make a change to any of your configuration files in the future, simply run `gulp build` again and your new
+      configuration will automatically be loaded by SurfingKeys.
 
-		Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
+    - **Note:** This method starts a web server on `localhost:9919`. Depending on your firewall configuration, other devices on your local network
+      (or the internet at large in the case of misconfigured router firewall) may be able to read your configuration file, including any private
+      API keys or other secrets you have configured in `conf.priv.js`. Proceed with caution.
 
-		Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
+    </details></blockquote>
+    </details>
+    <details>
+    <summary><strong>Option B</strong>: Manually copy/paste into the SurfingKeys configuration form</summary>
 
-	- __III.__ Paste into the text box, then press `save`
+    - **I.** Copy the contents of `./build/surfingkeys.js` (or `$HOME/.config/surfingkeys.js` if you ran `gulp install`)
 
-	- __IV.__ Repeat steps 4 - 5 after any changes you make to any of your configuration files.
+    - **II.** Open the SurfingKeys configuration page:
 
-	</details>
+          	Chrome: `chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid/pages/options.html`
 
-Screenshots
------------
+          	Firefox: `moz-extension://7b04efeb-0b36-47f6-9f57-70293e5ee7b2/pages/options.html`
+
+    - **III.** Paste into the text box, then press `save`
+
+    - **IV.** Repeat steps 4 - 5 after any changes you make to any of your configuration files.
+
+    </details>
+
+## Screenshots
+
 <!--{{SCREENSHOTS}}-->
 
-Todo
-----
+## Copyright
 
-- [ ] Include aliased sites in README
-- [ ] Add `CHANGELOG.md` using [conventional-changelog](https://github.com/conventional-changelog/conventional-changelog)
-- [ ] Improve code organization
-- [ ] Ensure screenshots have a plain white background
-- [ ] Add additional screenshots
-- [x] Simplify installation process
-- [x] Feed the kittens
-
-Copyright
----------
 <!--{{COPYRIGHT}}-->

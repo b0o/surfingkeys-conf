@@ -4,15 +4,12 @@ import webpack from "webpack"
 import webpackStream from "webpack-stream"
 import replace from "gulp-replace"
 import rename from "gulp-rename"
-// import eslint from "gulp-eslint"
 import file from "gulp-file"
 import path from "path"
 import del from "del"
 import platforms from "platform-folders"
 import express from "express"
-// import gulpIf from "gulp-if"
 import gulpNotify from "gulp-notify"
-// import PluginError from "plugin-error"
 import fs from "fs/promises"
 import url, { fileURLToPath } from "url"
 import webpackConfig from "./webpack.config.js"
@@ -160,7 +157,7 @@ task("docs", parallel(async () => {
     if (!screens[alias]) {
       screens[alias] = []
     }
-    screens[alias].push(getPath(paths.screenshots, path.basename(s)))
+    screens[alias].push(path.join(paths.screenshots, path.basename(s)))
   })
 
   let complTable = Object.keys(completions).sort((a, b) => {
@@ -250,8 +247,8 @@ task("docs", parallel(async () => {
     .pipe(replace("<!--{{KEYS_TABLE}}-->", keysTable))
     .pipe(replace("<!--{{SCREENSHOTS}}-->", screenshotList))
     .pipe(replace("<!--{{COPYRIGHT}}-->", copyright))
-    .pipe(rename(getPath(paths.readmeOut)))
-    .pipe(dest("."))
+    .pipe(rename(paths.readmeOut))
+    .pipe(dest(paths.dirname))
 }))
 
 const getFavicon = async ({ domain, favicon }, timeout = 5000) => {
@@ -339,10 +336,6 @@ const build = () =>
 task(
   "build",
   build,
-  // parallel(
-  //  "lint",
-  //  build,
-  // ),
 )
 
 task(
@@ -364,13 +357,15 @@ task("install", series("build", () => src(getPath(paths.buildDir, paths.output))
 const watch = (g, t) => () =>
   gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)
 
-task("watch-build", watch("*.js", series("build")))
+const srcWatchPat = getSrcPath("*.js")
 
-task("watch-install", watch("*.js", series("install")))
+task("watch-build", watch(srcWatchPat, series("build")))
 
-task("watch-docs", watch(["*.js", getPath(paths.readme)], series("docs")))
+task("watch-install", watch(srcWatchPat, series("install")))
 
-task("watch-docs-full", watch(["*.js", getPath(paths.readme)], series("docs-full")))
+task("watch-docs", watch([srcWatchPat, getPath(paths.readme)], series("docs")))
+
+task("watch-docs-full", watch([srcWatchPat, getPath(paths.readme)], series("docs-full")))
 
 const serve = (done) => {
   const app = express()

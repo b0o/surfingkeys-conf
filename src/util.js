@@ -1,21 +1,9 @@
-const { categories } = require("./help")
-
 const util = {}
 
 util.getContext = () => (typeof window !== "undefined" ? "browser" : "node")
-
 util.api = () => (util.getContext() === "browser" ? api : {})
 
-const {
-  mapkey,
-  map,
-  unmap,
-  Clipboard,
-  Front,
-  Hints,
-  removeSearchAlias,
-  addSearchAlias,
-} = util.api()
+const { Hints } = util.api()
 
 // util.getURLPath = ({ count = 0, domain = false } = {}) => {
 util.getURLPath = ({ count = 0, domain = false } = {}) => {
@@ -127,82 +115,5 @@ util.isElementInViewport = (e) =>
   e.offsetHeight > 0 && e.offsetWidth > 0
   && !e.getAttribute("disabled")
   && util.isRectVisibleInViewport(e.getBoundingClientRect())
-
-// Process Unmaps
-util.rmMaps = (a) => {
-  if (typeof unmap === "undefined") {
-    return
-  }
-  a.forEach((u) => unmap(u))
-}
-
-util.rmSearchAliases = (a) => Object.entries(a).forEach(([leader, items]) => {
-  if (typeof removeSearchAlias === "undefined") {
-    return
-  }
-  items.forEach((v) => removeSearchAlias(v, leader))
-})
-
-util.processMaps = (maps, aliases, siteleader) => {
-  if (typeof map === "undefined" || typeof mapkey === "undefined") {
-    return
-  }
-
-  const hydratedAliases = Object.entries(aliases)
-    .flatMap(([baseDomain, aliasDomains]) =>
-      aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] })))
-
-  const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases)
-
-  Object.entries(mapsAndAliases).forEach(([domain, domainMaps]) => domainMaps.forEach(((mapObj) => {
-    const {
-      alias,
-      callback,
-      leader = (domain === "global") ? "" : siteleader,
-      category = categories.misc,
-      description = "",
-      path = "(/.*)?",
-    } = mapObj
-    const opts = {}
-
-    const key = `${leader}${alias}`
-
-    if (domain !== "global") {
-      const d = domain.replace(".", "\\.")
-      opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
-    }
-
-    const fullDescription = `#${category} ${description}`
-
-    if (typeof mapObj.map !== "undefined") {
-      map(alias, mapObj.map)
-    } else {
-      mapkey(key, fullDescription, callback, opts)
-    }
-  })))
-}
-
-util.processCompletions = (completions, searchleader) => Object.values(completions).forEach((s) => {
-  if (typeof Front === "undefined" || typeof addSearchAlias === "undefined" || typeof mapkey === "undefined") {
-    return
-  }
-  addSearchAlias(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
-  mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
-  mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
-    Clipboard.read((c) => {
-      Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
-    })
-  })
-  if (searchleader !== "o") {
-    unmap(`o${s.alias}`)
-  }
-})
-
-util.addSettings = (s) => {
-  if (util.getContext() !== "browser") {
-    return
-  }
-  Object.assign(settings, s)
-}
 
 module.exports = util

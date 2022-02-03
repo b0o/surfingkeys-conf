@@ -39,6 +39,7 @@ const paths = {
   faviconsManifest: "favicons.json",
   gulpfile:         path.basename(gulpfilePath),
   installDir:       platforms.getConfigHome(),
+  srcDir:           "src",
   output:           "surfingkeys.js",
   pkgJson:          "package.json",
   readme:           "README.tmpl.md",
@@ -56,7 +57,7 @@ const paths = {
 }
 
 const getPath = (...f) => path.join(paths.dirname, ...f)
-const getSrcPath = (s) => getPath(s)
+const getSrcPath = (...s) => getPath(paths.srcDir, ...s)
 
 const pkg = await requireJson(getPath(paths.pkgJson))
 

@@ -143,7 +143,6 @@ util.rmSearchAliases = (a) => Object.entries(a).forEach(([leader, items]) => {
   items.forEach((v) => removeSearchAlias(v, leader))
 })
 
-// Process Mappings
 util.processMaps = (maps, aliases, siteleader) => {
   if (typeof map === "undefined" || typeof mapkey === "undefined") {
     return
@@ -168,7 +167,6 @@ util.processMaps = (maps, aliases, siteleader) => {
 
     const key = `${leader}${alias}`
 
-    // Determine if it's a site-specific mapping
     if (domain !== "global") {
       const d = domain.replace(".", "\\.")
       opts.domain = new RegExp(`^http(s)?://(([a-zA-Z0-9-_]+\\.)*)(${d})${path}`)
@@ -184,7 +182,6 @@ util.processMaps = (maps, aliases, siteleader) => {
   })))
 }
 
-// process completions
 util.processCompletions = (completions, searchleader) => Object.values(completions).forEach((s) => {
   if (typeof Front === "undefined" || typeof addSearchAlias === "undefined" || typeof mapkey === "undefined") {
     return

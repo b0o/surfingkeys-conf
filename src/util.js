@@ -1,31 +1,26 @@
 const util = {}
 
-util.getContext = () => (typeof window !== "undefined" ? "browser" : "node")
-util.api = () => (util.getContext() === "browser" ? api : {})
+util.getRuntime = () => (
+  typeof window !== "undefined" ? "browser" : "node"
+)
+
+util.api = () => (util.getRuntime() === "browser" ? api : {})
 
 const { Hints } = util.api()
 
-// util.getURLPath = ({ count = 0, domain = false } = {}) => {
 util.getURLPath = ({ count = 0, domain = false } = {}) => {
-  let path = util.getCurrentLocation("pathname").slice(1)
+  let path = window.location.pathname.slice(1)
   if (count) {
     path = path.split("/").slice(0, count).join("/")
   }
   if (domain) {
-    path = `${util.getCurrentLocation("hostname")}/${path}`
+    path = `${window.location.hostname}/${path}`
   }
   return path
 }
 
 util.getMap = (mode, keys) =>
   keys.split("").reduce((acc, c) => acc[c] || acc, mode.mappings).meta || null
-
-util.getCurrentLocation = (prop = "href") => {
-  if (typeof window === "undefined") {
-    return ""
-  }
-  return window.location[prop]
-}
 
 util.escape = (str) =>
   String(str).replace(/[&<>"'`=/]/g, (s) => ({
@@ -100,7 +95,6 @@ util.createHintsFiltered = (filter, selector, ...args) => {
   util.createHints(util.querySelectorFiltered(selector, filter), ...args)
 }
 
-// Determine if the given rect is visible in the viewport
 // https://developer.mozilla.org/en-US/docs/web/api/element/getboundingclientrect
 util.isRectVisibleInViewport = (rect) =>
   rect.height > 0
@@ -110,7 +104,6 @@ util.isRectVisibleInViewport = (rect) =>
   && rect.top <= (window.innerHeight || document.documentElement.clientHeight)
   && rect.left <= (window.innerWidth || document.documentElement.clientWidth)
 
-// Determine if the given element is visible in the viewport
 util.isElementInViewport = (e) =>
   e.offsetHeight > 0 && e.offsetWidth > 0
   && !e.getAttribute("disabled")

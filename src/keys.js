@@ -127,18 +127,19 @@ maps.global = [
     description: "Duplicate current tab (non-active new tab)",
     callback:    () => actions.openLink(window.location.href, { newTab: true, active: false }),
   },
-  {
-    alias:       "yx",
-    category:    categories.tabs,
-    description: "Cut current tab",
-    callback:    () => actions.cutTab(),
-  },
-  {
-    alias:       "px",
-    category:    categories.tabs,
-    description: "Paste tab",
-    callback:    () => actions.pasteTab(),
-  },
+  // TODO
+  // {
+  //   alias:       "yx",
+  //   category:    categories.tabs,
+  //   description: "Cut current tab",
+  //   callback:    () => actions.cutTab(),
+  // },
+  // {
+  //   alias:       "px",
+  //   category:    categories.tabs,
+  //   description: "Paste tab",
+  //   callback:    () => actions.pasteTab(),
+  // },
   {
     alias:       ";se",
     category:    categories.settings,

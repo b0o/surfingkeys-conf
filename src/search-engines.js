@@ -39,7 +39,7 @@ completions.au = {
   alias:  "au",
   name:   "AUR",
   search: "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
-  compl:  "https://aur.archlinux.org/rpc?type=suggest&arg=",
+  compl:  "https://aur.archlinux.org/rpc?v=5&type=suggest&arg=",
 }
 
 completions.au.callback = (response) => {
@@ -105,9 +105,9 @@ completions.at.callback = (response) => {
     const name = escape(s.Name)
     let title = name
     let prefix = ""
-    if (s._highlightResult) { // eslint-disable-line no-underscore-dangle
-      if (s._highlightResult.Name) { // eslint-disable-line no-underscore-dangle
-        title = s._highlightResult.Name.value // eslint-disable-line no-underscore-dangle
+    if (s._highlightResult) {
+      if (s._highlightResult.Name) {
+        title = s._highlightResult.Name.value
       }
     }
     if (s.Likes) {
@@ -769,9 +769,12 @@ completions.ka = {
   callback: (response) => JSON.parse(response.text).map((r) => {
     const u = new URL("https://kagi.com/search")
     u.searchParams.append("q", r.t)
+    if (r.goto) {
+      u.href = r.goto
+    }
 
     const thumbImg = document.createElement("img")
-    thumbImg.style = "width: 60px"
+    thumbImg.style = "width: 32px"
     thumbImg.src = r.img ? new URL(r.img, "https://kagi.com") : wpDefaultIcon
 
     const txtNode = document.createElement("div")
@@ -780,7 +783,7 @@ completions.ka = {
 
     return createSuggestionItem(
       `
-      <div style="padding: 5px; display: grid; grid-template-columns: 60px 1fr; grid-gap: 15px">
+      <div style="padding: 5px; display: grid; grid-template-columns: 32px 1fr; grid-gap: 15px">
         ${thumbImg.outerHTML}
         <div>
           <div class="title"><strong>${r.t}</strong></div>
@@ -1107,9 +1110,9 @@ completions.hn.callback = (response) => {
     if (s.num_comments) {
       prefix += `[↲${s.num_comments}] `
     }
-    switch (s._tags[0]) { // eslint-disable-line no-underscore-dangle
+    switch (s._tags[0]) {
     case "story":
-      title = s.title // eslint-disable-line prefer-destructuring
+      title = s.title
       break
     case "comment":
       title = s.comment_text

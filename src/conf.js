@@ -1,6 +1,7 @@
+/* eslint-disable global-require */
+
 module.exports = {
   settings: () => ({
-    /* eslint-disable global-require */
     hintAlign:                "left",
     omnibarSuggestionTimeout: 500,
     richHintsForKeystroke:    1,

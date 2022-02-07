@@ -18,20 +18,21 @@ const actions = {}
 actions.moveTabNextToTab = (targetId, nextTo, leftOf = false) =>
   browser.tabs.move(targetId, { windowId: nextTo.windowId, index: nextTo.index - (leftOf ? 1 : 0) })
 
-actions.cutTab = async () =>
-  browser.storage.local.set({
-    cutTabEvent: {
-      tabId:     (await browser.tabs.query({ currentWindow: true, active: true }))[0].id,
-      timestamp: new Date(),
-    },
-  })
+// TODO
+// actions.cutTab = async () =>
+//   browser.storage.local.set({
+//     cutTabEvent: {
+//       tabId:     (await browser.tabs.query({ currentWindow: true, active: true }))[0].id,
+//       timestamp: new Date(),
+//     },
+//   })
 
-actions.pasteTab = async (leftOf = false) => {
-  const { cutTabEvent = null } = await browser.storage.local.get("cutTabEvent")
-  if (!cutTabEvent || (new Date() - cutTabEvent.timestamp) > 60000) return
-  const curTab = (await browser.tabs.query({ currentWindow: true, active: true }))[0]
-  await actions.moveTabNextToTab(cutTabEvent.tabId, curTab, leftOf)
-}
+// actions.pasteTab = async (leftOf = false) => {
+//   const { cutTabEvent = null } = await browser.storage.local.get("cutTabEvent")
+//   if (!cutTabEvent || (new Date() - cutTabEvent.timestamp) > 60000) return
+//   const curTab = (await browser.tabs.query({ currentWindow: true, active: true }))[0]
+//   await actions.moveTabNextToTab(cutTabEvent.tabId, curTab, leftOf)
+// }
 
 actions.dispatchEvents = (type, node, ...eventTypes) =>
   eventTypes.forEach((t) => {
@@ -42,53 +43,6 @@ actions.dispatchEvents = (type, node, ...eventTypes) =>
 
 actions.dispatchMouseEvents = actions.dispatchEvents.bind(undefined, ["MouseEvents"])
 
-// URL Manipulation/querying
-// -------------------------
-actions.vimEditURL = () =>
-  Front.showEditor(util.getCurrentLocation(), (url) => {
-    actions.openLink(url)
-  }, "url")
-
-actions.getOrgLink = () =>
-  `[[${util.getCurrentLocation("href")}][${document.title}]]`
-
-actions.getMarkdownLink = () =>
-  `[${document.title}](${util.getCurrentLocation("href")})`
-
-// Site/Page Information
-// ---------------------
-
-const ddossierUrl = "http://centralops.net/co/DomainDossier.aspx"
-
-actions.getWhoisUrl = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
-  `${ddossierUrl}?dom_whois=true&addr=${hostname}`
-
-actions.getDnsInfoUrl = ({ hostname = util.getCurrentLocation("hostname"), all = false } = {}) =>
-  `${ddossierUrl}?dom_dns=true&addr=${hostname}${
-    all ? "?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true" : ""
-  }`
-
-actions.getGoogleCacheUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
-  `https://webcache.googleusercontent.com/search?q=cache:${href}`
-
-actions.getWaybackUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
-  `https://web.archive.org/web/*/${href}`
-
-actions.getOutlineUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
-  `https://outline.com/${href}`
-
-actions.getAlexaUrl = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
-  `https://www.alexa.com/siteinfo/${hostname}`
-
-actions.getBuiltWithUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
-  `https://www.builtwith.com/?${href}`
-
-actions.getWappalyzerUrl = ({ hostname = util.getCurrentLocation("hostname") } = {}) =>
-  `https://www.wappalyzer.com/lookup/${hostname}`
-
-actions.getDiscussionsUrl = ({ href = util.getCurrentLocation("href") } = {}) =>
-  `https://discussions.xojoc.pw/?${(new URLSearchParams({ url: href }))}`
-
 actions.scrollToHash = (hash = null) => {
   const h = (hash || document.location.hash).replace("#", "")
   const e = document.getElementById(h) || document.querySelector(`[name="${h}"]`)
@@ -97,6 +51,53 @@ actions.scrollToHash = (hash = null) => {
   }
   e.scrollIntoView({ behavior: "smooth" })
 }
+
+// URL Manipulation/querying
+// -------------------------
+actions.vimEditURL = () =>
+  Front.showEditor(window.location.href, (url) => {
+    actions.openLink(url)
+  }, "url")
+
+actions.getOrgLink = () =>
+  `[[${window.location.href}][${document.title}]]`
+
+actions.getMarkdownLink = () =>
+  `[${document.title}](${window.location.href})`
+
+// Site/Page Information
+// ---------------------
+
+const ddossierUrl = "http://centralops.net/co/DomainDossier.aspx"
+
+actions.getWhoisUrl = ({ hostname = window.location.hostname } = {}) =>
+  `${ddossierUrl}?dom_whois=true&addr=${hostname}`
+
+actions.getDnsInfoUrl = ({ hostname = window.location.hostname, all = false } = {}) =>
+  `${ddossierUrl}?dom_dns=true&addr=${hostname}${
+    all ? "?dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true" : ""
+  }`
+
+actions.getGoogleCacheUrl = ({ href = window.location.href } = {}) =>
+  `https://webcache.googleusercontent.com/search?q=cache:${href}`
+
+actions.getWaybackUrl = ({ href = window.location.href } = {}) =>
+  `https://web.archive.org/web/*/${href}`
+
+actions.getOutlineUrl = ({ href = window.location.href } = {}) =>
+  `https://outline.com/${href}`
+
+actions.getAlexaUrl = ({ hostname = window.location.hostname } = {}) =>
+  `https://www.alexa.com/siteinfo/${hostname}`
+
+actions.getBuiltWithUrl = ({ href = window.location.href } = {}) =>
+  `https://www.builtwith.com/?${href}`
+
+actions.getWappalyzerUrl = ({ hostname = window.location.hostname } = {}) =>
+  `https://www.wappalyzer.com/lookup/${hostname}`
+
+actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
+  `https://discussions.xojoc.pw/?${(new URLSearchParams({ url: href }))}`
 
 // Surfingkeys-specific actions
 // ----------------------------
@@ -135,7 +136,7 @@ actions.scrollElement = (el, dir) => {
 
 // FakeSpot
 // --------
-actions.fakeSpot = (url = util.getCurrentLocation("href")) =>
+actions.fakeSpot = (url = window.location.href) =>
   actions.openLink(`https://fakespot.com/analyze?ra=true&url=${url}`, { newTab: true, active: false })
 
 // Site-specific actions
@@ -180,7 +181,7 @@ actions.viewGodoc = () => actions.openLink(`https://godoc.org/${util.getURLPath(
 // Google
 actions.go = {}
 actions.go.parseLocation = () => {
-  const u = new URL(util.getCurrentLocation())
+  const u = new URL(window.location.href)
   const q = u.searchParams.get("q")
   const p = u.pathname.split("/")
 
@@ -190,7 +191,7 @@ actions.go.parseLocation = () => {
     query: q,
   }
 
-  if (u.hostname === "www.google.com") { // TODO: handle other ccTLDs
+  if (u.hostname === "www.google.com") {
     if (p.length <= 1) {
       res.type = "home"
     } else if (p[1] === "search") {
@@ -260,7 +261,7 @@ actions.dg = {}
 actions.dg.goog = () => {
   let u
   try {
-    u = new URL(util.getCurrentLocation())
+    u = new URL(window.location.href)
   } catch (e) {
     return
   }
@@ -292,7 +293,7 @@ actions.dg.goog = () => {
 actions.dg.siteSearch = (site) => {
   let u
   try {
-    u = new URL(util.getCurrentLocation())
+    u = new URL(window.location.href)
   } catch (e) {
     return
   }
@@ -303,10 +304,6 @@ actions.dg.siteSearch = (site) => {
   if (!q) {
     return
   }
-
-  // if (q.toLowerCase().split(" ").filter((e) => e === `site:${domain}`)) {
-  //
-  // }
 
   const i = q.indexOf(siteParam)
   if (i !== -1) {
@@ -320,7 +317,6 @@ actions.dg.siteSearch = (site) => {
 
 // GitHub
 // ------
-// TODO: This is a mess
 actions.gh = {}
 actions.gh.star = ({ toggle = false } = {}) => async () => {
   const hasDisplayNoneParent = (e) =>
@@ -342,7 +338,7 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   }
 
   const repoUrl = container.parentElement.parentElement.matches("ul.pagehead-actions")
-    ? util.getCurrentLocation("pathname")
+    ? window.location.pathname
     : new URL(container.parentElement.querySelector("form").action).pathname
 
   const status = container.classList.contains("on")
@@ -369,7 +365,7 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
 }
 
-actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
+actions.gh.parseRepo = (url = window.location.href, rootOnly = false) => {
   let u
   try {
     u = url instanceof URL ? url : new URL(url)
@@ -404,12 +400,12 @@ actions.gh.parseRepo = (url = util.getCurrentLocation(), rootOnly = false) => {
     : null
 }
 
-actions.gh.parseUser = (url = util.getCurrentLocation(), rootOnly = false) => {
+actions.gh.parseUser = (url = window.location.href, rootOnly = false) => {
   const u = url instanceof URL ? url : new URL(url)
   const [user, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const isRoot = rest.length === 0
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    u.origin === window.location.origin
     && typeof user === "string"
     && user.length > 0
     && (rootOnly === false || rest.length === 0)
@@ -429,11 +425,11 @@ actions.gh.parseUser = (url = util.getCurrentLocation(), rootOnly = false) => {
     : null
 }
 
-actions.gh.parseFile = (url = util.getCurrentLocation()) => {
+actions.gh.parseFile = (url = window.location.href) => {
   const u = url instanceof URL ? url : new URL(url)
   const [user, repo, pathType, commitHash, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    u.origin === window.location.origin
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
@@ -464,11 +460,11 @@ actions.gh.parseFile = (url = util.getCurrentLocation()) => {
   return f
 }
 
-actions.gh.parseCommit = (url = util.getCurrentLocation()) => {
+actions.gh.parseCommit = (url = window.location.href) => {
   const u = url instanceof URL ? url : new URL(url)
   const [user, repo, commit, commitHash] = u.pathname.split("/").filter((s) => s !== "")
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    u.origin === window.location.origin
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
@@ -492,12 +488,12 @@ actions.gh.parseCommit = (url = util.getCurrentLocation()) => {
     : null
 }
 
-actions.gh.parseIssue = (url = util.getCurrentLocation()) => {
+actions.gh.parseIssue = (url = window.location.href) => {
   const u = url instanceof URL ? url : new URL(url)
   const [user, repo, maybeIssues, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const isRoot = rest.length === 0
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    u.origin === window.location.origin
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
@@ -522,12 +518,12 @@ actions.gh.parseIssue = (url = util.getCurrentLocation()) => {
     : null
 }
 
-actions.gh.parsePull = (url = util.getCurrentLocation()) => {
+actions.gh.parsePull = (url = window.location.href) => {
   const u = url instanceof URL ? url : new URL(url)
   const [user, repo, maybePulls, ...rest] = u.pathname.split("/").filter((s) => s !== "")
   const isRoot = rest.length === 0
   const cond = (
-    u.origin === util.getCurrentLocation("origin")
+    u.origin === window.location.origin
     && typeof user === "string"
     && user.length > 0
     && typeof repo === "string"
@@ -552,16 +548,16 @@ actions.gh.parsePull = (url = util.getCurrentLocation()) => {
     : null
 }
 
-actions.gh.isUser = (url = util.getCurrentLocation(), rootOnly = true) =>
+actions.gh.isUser = (url = window.location.href, rootOnly = true) =>
   actions.gh.parseUser(url, rootOnly) !== null
 
-actions.gh.isRepo = (url = util.getCurrentLocation(), rootOnly = true) =>
+actions.gh.isRepo = (url = window.location.href, rootOnly = true) =>
   actions.gh.parseRepo(url, rootOnly) !== null
 
-actions.gh.isFile = (url = util.getCurrentLocation()) => actions.gh.parseFile(url) !== null
-actions.gh.isCommit = (url = util.getCurrentLocation()) => actions.gh.parseCommit(url) !== null
-actions.gh.isIssue = (url = util.getCurrentLocation()) => actions.gh.parseIssue(url) !== null
-actions.gh.isPull = (url = util.getCurrentLocation()) => actions.gh.parsePull(url) !== null
+actions.gh.isFile = (url = window.location.href) => actions.gh.parseFile(url) !== null
+actions.gh.isCommit = (url = window.location.href) => actions.gh.parseCommit(url) !== null
+actions.gh.isIssue = (url = window.location.href) => actions.gh.parseIssue(url) !== null
+actions.gh.isPull = (url = window.location.href) => actions.gh.parsePull(url) !== null
 
 actions.gh.openRepo = () => util.createHintsFiltered((a) => actions.gh.isRepo(a.href))
 actions.gh.openUser = () => util.createHintsFiltered((a) => actions.gh.isUser(a.href))
@@ -600,7 +596,7 @@ actions.gh.toggleLangStats = () =>
   document.querySelector(".repository-lang-stats-graph").click()
 
 actions.gh.goParent = () => {
-  const segments = util.getCurrentLocation("pathname")
+  const segments = window.location.pathname
     .split("/").filter((s) => s !== "")
   const newPath = (() => {
     const [user, repo, pathType] = segments
@@ -629,7 +625,7 @@ actions.gh.goParent = () => {
     return segments.slice(0, segments.length - 1)
   })()
   if (newPath !== false) {
-    const u = `${util.getCurrentLocation("origin")}/${newPath.join("/")}`
+    const u = `${window.location.origin}/${newPath.join("/")}`
     actions.openLink(u)
   }
 }
@@ -674,7 +670,7 @@ actions.gh.selectFile = async ({ files = true, directories = true } = {}) => {
   const repo = actions.gh.parseRepo()
   if (repo === null) throw new Error("Not a repository")
 
-  const elem = await util.createHintsFiltered((a) => {
+  const elem = util.createHintsFiltered((a) => {
     const f = actions.gh.parseFile(a.href)
     return f && f.isDirectory === false
   }, null)
@@ -690,7 +686,7 @@ actions.gh.openFileFromClipboard = async ({ newTab = true } = {}) => {
     return
   }
 
-  const loc = util.getCurrentLocation()
+  const loc = window.location.href
   const dest = {
     user:       null,
     repo:       null,
@@ -728,7 +724,7 @@ actions.gh.openFileFromClipboard = async ({ newTab = true } = {}) => {
 // ------
 actions.gl = {}
 actions.gl.star = () => {
-  const repo = util.getCurrentLocation("pathname").slice(1).split("/").slice(0, 2).join("/")
+  const repo = window.location.pathname.slice(1).split("/").slice(0, 2).join("/")
   const btn = document.querySelector(".btn.star-btn > span")
   btn.click()
   const action = `${btn.textContent.toLowerCase()}red`
@@ -783,7 +779,7 @@ actions.hn.collapseNextComment = () => {
 actions.hn.goPage = (dist = 1) => {
   let u
   try {
-    u = new URL(util.getCurrentLocation())
+    u = new URL(window.location.href)
   } catch (e) {
     return
   }
@@ -824,7 +820,7 @@ actions.ph.openExternal = () => {
 // ---------
 actions.wp = {}
 actions.wp.toggleSimple = () => {
-  const u = new URL(util.getCurrentLocation("href"))
+  const u = new URL(window.location.href)
   u.hostname = u.hostname.split(".")
     .map((s, i) => {
       if (i === 0) {

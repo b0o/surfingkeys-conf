@@ -96,4 +96,4 @@ const main = () => {
   }
 }
 
-if (util.getContext() === "browser") main()
+if (util.getRuntime() === "browser") main()

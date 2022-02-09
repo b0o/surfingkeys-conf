@@ -1088,6 +1088,16 @@ completions.np.callback = (response) => JSON.parse(response.text)
     `, { url: s.package.links.npm })
   })
 
+// caniuse
+completions.ci = {
+  alias:  "ci",
+  name:   "caniuse",
+  search: "https://caniuse.com/?search=",
+  compl:  "https://caniuse.com/process/query.php?search=",
+}
+
+completions.ci.callback = (response) => JSON.parse(response.text).featureIds
+
 // ****** Social Media & Entertainment ****** //
 
 // Hacker News (YCombinator)

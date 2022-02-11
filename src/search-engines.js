@@ -952,25 +952,6 @@ completions.gd.callback = (response) => JSON.parse(response.text).results.map((s
   return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
 })
 
-// Gowalker
-completions.gw = {
-  alias:  "gw",
-  name:   "gowalker",
-  search: "https://gowalker.org/search?auto_redirect=true&q=",
-  compl:  "https://gowalker.org/search/json?q=",
-}
-
-completions.gw.callback = (response) => JSON.parse(response.text).results.map((s) => {
-  const title = escape(s.title)
-  const desc = escape(s.description)
-  return createSuggestionItem(`
-    <div>
-      <div class="title"><strong>${title}</strong></div>
-      <div>${desc}</div>
-    </div>
-  `, { url: `https://golang.org/doc/${encodeURIComponent(s.url)}` })
-})
-
 // ****** Haskell ****** //
 
 // Hackage

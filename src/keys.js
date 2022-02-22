@@ -1166,7 +1166,6 @@ maps["ikea.com"] = [
   },
 ]
 
-// Aliases
 const aliases = {
   "wikipedia.org": [
     // Wikimedia sites

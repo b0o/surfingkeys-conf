@@ -106,7 +106,7 @@ actions.openAnchor = ({ newTab = false, active = true, prop = "href" } = {}) =>
 
 actions.openLink = (url, { newTab = false, active = true } = {}) => {
   if (newTab) {
-    RUNTIME("openLink", { tab: { tabbed: true, active }, url })
+    RUNTIME("openLink", { tab: { tabbed: true, active }, url: url instanceof URL ? url.href : url })
     return
   }
   window.location.assign(url)

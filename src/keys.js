@@ -335,17 +335,24 @@ maps["algolia.com"] = [
   },
 ]
 
+const ddgSelector = [
+  "a[rel=noopener][target=_self]:not([data-testid=result-extras-url-link])",
+  ".js-images-show-more",
+  ".module--images__thumbnails__link",
+  ".tile--img__sub",
+].join(",")
+
 maps["duckduckgo.com"] = [
   {
     alias:       "a",
     description: "Open search result",
-    callback:    () => util.createHints(".result__a"),
+    callback:    () => util.createHints(ddgSelector),
   },
   {
     alias:       "A",
     description: "Open search result (non-active new tab)",
     callback:    () => util.createHints(
-      ".result__a",
+      ddgSelector,
       actions.openAnchor({ newTab: true, active: false }),
     ),
   },

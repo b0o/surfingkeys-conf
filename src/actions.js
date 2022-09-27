@@ -761,7 +761,7 @@ actions.re.collapseNextComment = () => {
 // ----------
 actions.hn = {}
 actions.hn.goParent = () => {
-  const par = document.querySelector(".par>a")
+  const par = document.querySelector(".navs>a[href^='item']")
   if (!par) {
     return
   }
@@ -800,8 +800,8 @@ actions.hn.goPage = (dist = 1) => {
 }
 
 actions.hn.openLinkAndComments = (e) => {
-  const linkUrl = e.querySelector("a.titlelink").href
-  const commentsUrl = e.nextElementSibling.querySelector("td > a[href*='item']:not(.titlelink)").href
+  const linkUrl = e.querySelector(".titleline>a").href
+  const commentsUrl = e.nextElementSibling.querySelector("a[href^='item']:not(.titlelink)").href
   actions.openLink(commentsUrl, { newTab: true })
   actions.openLink(linkUrl, { newTab: true })
 }

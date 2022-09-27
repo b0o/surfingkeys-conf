@@ -733,7 +733,7 @@ maps["news.ycombinator.com"] = [
   {
     alias:       "a",
     description: "View post (link)",
-    callback:    () => util.createHints(".titlelink"),
+    callback:    () => util.createHints(".titleline>a"),
   },
   {
     alias:       "A",
@@ -743,13 +743,13 @@ maps["news.ycombinator.com"] = [
   {
     alias:       "c",
     description: "View post (comments)",
-    callback:    () => util.createHints("td > a[href*='item']:not(.titlelink)"),
+    callback:    () => util.createHints(".subline>a[href^='item']"),
   },
   {
     alias:       "C",
     description: "View post (comments) (non-active new tab)",
     callback:    () => util.createHints(
-      "td > a[href*='item']:not(.titlelink)",
+      ".subline>a[href^='item']",
       actions.openAnchor({ newTab: true, active: false }),
     ),
   },

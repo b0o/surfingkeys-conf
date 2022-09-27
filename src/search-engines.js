@@ -1008,8 +1008,8 @@ completions.no = googleCustomSearch({
 completions.md = {
   alias:  "md",
   name:   "mdn",
-  search: `https://developer.mozilla.org/${locale}/search?q=`,
-  compl:  `https://developer.mozilla.org/api/v1/search/${locale}?q=`,
+  search: "https://developer.mozilla.org/search?q=",
+  compl:  "https://developer.mozilla.org/api/v1/search?q=",
 }
 
 completions.md.callback = (response) => {
@@ -1017,9 +1017,9 @@ completions.md.callback = (response) => {
   return res.documents.map((s) =>
     createSuggestionItem(`
       <div>
-        <div class="title"><strong>${escape(s.title)}</strong></div>
-        <div style="font-size:0.8em"><em>${escape(s.slug)}</em></div>
-        <div>${escape(s.summary)}</div>
+        <div class="title"><strong>${escapeHTML(s.title)}</strong></div>
+        <div style="font-size:0.8em"><em>${escapeHTML(s.slug)}</em></div>
+        <div>${escapeHTML(s.summary)}</div>
       </div>
     `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` }))
 }

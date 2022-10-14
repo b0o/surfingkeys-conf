@@ -326,18 +326,20 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   const starContainers = Array.from(document.querySelectorAll("div.starring-container"))
     .filter((e) => !hasDisplayNoneParent(e))
 
-  if (starContainers.length === 0) return
-
   let container
-  try {
-    container = starContainers.length > 1
-      ? await util.createHints(starContainers, { action: null })
-      : starContainers[0]
-  } catch (e) {
+  switch (starContainers.length) {
+  case 0:
     return
+  case 1:
+    [container] = starContainers
+    break
+  default:
+    try {
+      container = await util.createHints(starContainers, { action: null })
+    } catch (_) { return }
   }
 
-  const repoUrl = container.parentElement.parentElement.matches("ul.pagehead-actions")
+  const repoUrl = container.parentElement.parentElement?.matches("ul.pagehead-actions")
     ? window.location.pathname
     : new URL(container.parentElement.querySelector("form").action).pathname
 
@@ -346,7 +348,7 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
 
   let star = "★"
   let statusMsg = "starred"
-  let verb = "is"
+  let copula = "is"
 
   if ((status && toggle) || (!status && !toggle)) {
     statusMsg = `un${statusMsg}`
@@ -354,15 +356,11 @@ actions.gh.star = ({ toggle = false } = {}) => async () => {
   }
 
   if (toggle) {
-    verb = "has been"
-    if (status) {
-      container.querySelector(".starred>button, button.starred").click()
-    } else {
-      container.querySelector(".unstarred>button, button.unstarred").click()
-    }
+    copula = "has been"
+    container.querySelector(status ? ".starred button, button.starred" : ".unstarred button, button.unstarred").click()
   }
 
-  Front.showBanner(`${star} Repository ${repo} ${verb} ${statusMsg}!`)
+  Front.showBanner(`${star} Repository ${repo} ${copula} ${statusMsg}!`)
 }
 
 actions.gh.parseRepo = (url = window.location.href, rootOnly = false) => {

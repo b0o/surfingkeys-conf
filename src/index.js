@@ -1,7 +1,8 @@
-const util = require("./util")
-const conf = require("./conf")
-const { categories } = require("./help")
+import conf from "./conf.js"
+import help from "./help.js"
+import api from "./api.js"
 
+const { categories } = help
 const {
   mapkey,
   map,
@@ -10,7 +11,7 @@ const {
   Front,
   removeSearchAlias,
   addSearchAlias,
-} = util.api()
+} = api
 
 const registerKey = (domain, mapObj, siteleader) => {
   const {
@@ -53,7 +54,19 @@ const registerKeys = (maps, aliases, siteleader) => {
 
 const registerSearchEngines = (searchEngines, searchleader) =>
   Object.values(searchEngines).forEach((s) => {
-    addSearchAlias(s.alias, s.name, s.search, searchleader, s.compl, s.callback)
+    const options = {
+      favicon_url: s.favicon,
+    }
+    addSearchAlias(
+      s.alias,
+      s.name,
+      s.search,
+      searchleader,
+      s.compl,
+      s.callback,
+      undefined,
+      options,
+    )
     mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
     mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
       Clipboard.read((c) => {
@@ -66,6 +79,8 @@ const registerSearchEngines = (searchEngines, searchleader) =>
   })
 
 const main = () => {
+  window.surfingKeys = api
+  console.log({ window, surfingKeys: window.surfingKeys })
   if (conf.settings) {
     Object.assign(
       settings,
@@ -96,4 +111,11 @@ const main = () => {
   }
 }
 
-if (util.getRuntime() === "browser") main()
+if (typeof window !== "undefined") {
+  main()
+  // try {
+  //   main()
+  // } catch (err) {
+  //   console.trace(err)
+  // }
+}

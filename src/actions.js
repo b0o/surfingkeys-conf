@@ -1,6 +1,7 @@
-const ghReservedNames = require("github-reserved-names")
+import ghReservedNames from "github-reserved-names"
 
-const util = require("./util")
+import util from "./util.js"
+import api from "./api.js"
 
 const {
   tabOpenLink,
@@ -8,7 +9,7 @@ const {
   Hints,
   Normal,
   RUNTIME,
-} = util.api()
+} = api
 
 const actions = {}
 
@@ -62,8 +63,8 @@ actions.vimEditURL = () =>
 actions.getOrgLink = () =>
   `[[${window.location.href}][${document.title}]]`
 
-actions.getMarkdownLink = () =>
-  `[${document.title}](${window.location.href})`
+actions.getMarkdownLink = ({ title = document.title, href = window.location.href } = {}) =>
+  `[${title}](${href})`
 
 // Site/Page Information
 // ---------------------
@@ -98,6 +99,36 @@ actions.getWappalyzerUrl = ({ hostname = window.location.hostname } = {}) =>
 
 actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
   `https://discussions.xojoc.pw/?${(new URLSearchParams({ url: href }))}`
+
+// Custom Omnibar interfaces
+// ------------------------
+actions.omnibar = {}
+
+// AWS Services
+actions.omnibar.aws = () => {
+  // const services = [
+  //   {
+  //     title: "EC2",
+  //     url:   "https://cn-northwest-1.console.amazonaws.cn/ec2/v2/home?region=cn-northwest-1",
+  //   },
+  //   {
+  //     title: "Elastic Beanstalk",
+  //     url:   "https://cn-northwest-1.console.amazonaws.cn/elasticbeanstalk/home?region=cn-northwest-1",
+  //   },
+  //   {
+  //     title: "Batch",
+  //     url:   "https://cn-northwest-1.console.amazonaws.cn/batch/home?region=cn-northwest-1",
+  //   },
+  // ]
+  // Front.openOmnibar({ type: "UserURLs", extra: services })
+  Front.openOmnibar({
+    type:  "Custom",
+    extra: {
+      prompt:  "AWS",
+      onInput: console.log,
+    },
+  })
+}
 
 // Surfingkeys-specific actions
 // ----------------------------
@@ -564,31 +595,33 @@ actions.gh.openCommit = () => util.createHintsFiltered((a) => actions.gh.isCommi
 actions.gh.openIssue = () => util.createHintsFiltered((a) => actions.gh.isIssue(a.href))
 actions.gh.openPull = () => util.createHintsFiltered((a) => actions.gh.isPull(a.href))
 
+actions.gh.openPage = (path) => actions.openLink(`https://github.com/${path}`)
+
 actions.gh.openRepoPage = (repoPath) => {
   const repo = actions.gh.parseRepo()
   if (repo === null) return
-  actions.openLink(`https://github.com/${repo.repoBase}${repoPath}`)
+  actions.gh.openPage(`${repo.repoBase}${repoPath}`)
 }
 
 actions.gh.openRepoOwner = () => {
   const repo = actions.gh.parseRepo()
   if (repo === null) return
-  actions.openLink(`https://github.com/${repo.owner}`)
+  actions.gh.openPage(`${repo.owner}`)
 }
 
 actions.gh.openGithubPagesRepo = () => {
   const user = window.location.hostname.split(".")[0]
   const repo = window.location.pathname.split("/")[1] ?? ""
-  actions.openLink(`https://github.com/${user}/${repo}`)
+  actions.gh.openPage(`${user}/${repo}`)
 }
 
 actions.gh.openSourceFile = () => {
   const p = window.location.pathname.split("/")
-  actions.openLink(`https://github.com/${[...p.slice(1, 3), "tree", ...p.slice(3)].join("/")}`)
+  actions.gh.openPage(`${[...p.slice(1, 3), "tree", ...p.slice(3)].join("/")}`)
 }
 
 actions.gh.openProfile = () =>
-  actions.openLink(`https://github.com/${document.querySelector("meta[name='user-login']").content}`)
+  actions.gh.openPage(`${document.querySelector("meta[name='user-login']").content}`)
 
 actions.gh.toggleLangStats = () =>
   document.querySelector(".repository-lang-stats-graph").click()
@@ -891,7 +924,7 @@ actions.nt.setFan = async (desiredState) => {
     return util.until(query)
   }
 
-  const selectFanTime = async (popover, listbox) => {
+  const selectFanTime = async (listbox) => {
     const query = () => !listbox.isConnected
     const q = query()
     if (q) return q
@@ -920,7 +953,7 @@ actions.nt.setFan = async (desiredState) => {
   const startFan = async () => {
     const popover = await openPopover()
     const listbox = await openFanListbox(popover)
-    await selectFanTime(popover, listbox)
+    await selectFanTime(listbox)
     return startStopFan("start", popover)
   }
 
@@ -982,4 +1015,27 @@ actions.ik.toggleProductReviews = () => {
   if (btn) btn.click()
 }
 
-module.exports = actions
+// youtube.com
+actions.yt = {}
+actions.yt.getCurrentTimestamp = () => {
+  const [ss, mm, hh = 0] = (document
+    .querySelector("#ytd-player .ytp-time-current")
+    ?.innerText
+    ?.split(":")
+    ?.reverse()
+    ?.map(Number)) ?? [0, 0, 0]
+  return (hh * 60 * 60) + (mm * 60) + ss
+}
+
+actions.yt.getShortLink = () => {
+  const params = new URLSearchParams(window.location.search)
+  return `https://youtu.be/${params.get("v")}`
+}
+
+actions.yt.getCurrentTimestampLink = () =>
+  `${actions.yt.getShortLink()}?t=${actions.yt.getCurrentTimestamp()}`
+
+actions.yt.getCurrentTimestampMarkdownLink = () =>
+  actions.getMarkdownLink({ href: actions.yt.getCurrentTimestampLink() })
+
+export default actions

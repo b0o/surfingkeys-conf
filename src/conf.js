@@ -1,16 +1,19 @@
-/* eslint-disable global-require */
+import theme from "./theme.js"
+import keys from "./keys.js"
+import searchEngines from "./search-engines.js"
 
-module.exports = {
-  settings: () => ({
+export default {
+  settings: {
     hintAlign:                "left",
+    hintCharacters:           "qwertasdfgzxcvb",
     omnibarSuggestionTimeout: 500,
     richHintsForKeystroke:    1,
     defaultSearchEngine:      "dd",
-    theme:                    require("./theme.css"),
-  }),
-  keys:           require("./keys"),
-  searchEngines:  require("./search-engines"),
-  hintCharacters: "qwertasdfgzxcvb",
+    theme,
+  },
+
+  keys,
+  searchEngines,
 
   // Leader for site-specific mappings
   siteleader: "<Space>",

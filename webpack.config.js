@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   mode:   "production",
   module: {
     rules: [
@@ -11,5 +11,8 @@ module.exports = {
         type: "asset/source",
       },
     ],
+  },
+  experiments: {
+    topLevelAwait: true,
   },
 }

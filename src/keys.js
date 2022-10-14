@@ -1,11 +1,14 @@
-const actions = require("./actions")
-const util = require("./util")
-const { categories } = require("./help")
+import actions from "./actions.js"
+import util from "./util.js"
+import help from "./help.js"
+import api from "./api.js"
+
+const { categories } = help
 
 const {
   Clipboard,
   Front,
-} = util.api()
+} = api
 
 // Remove undesired default mappings
 const unmaps = {
@@ -28,13 +31,6 @@ const unmaps = {
 }
 
 const maps = {}
-
-// TODO: Make object property names consistent with SurfingKeys
-//   description  -> annotation
-//   callback     -> code
-//   category     -> feature_group
-//   repeatIgnore -> repeatIgnore
-//   alias        -> word
 
 maps.global = [
   {
@@ -96,6 +92,16 @@ maps.global = [
     category:    categories.pageNav,
     description: "View image in new tab",
     callback:    () => util.createHints("img", (i) => actions.openLink(i.src)),
+  },
+  {
+    alias:       "g.",
+    category:    categories.pageNav,
+    description: "Go to parent domain",
+    callback:    () => {
+      const subdomains = window.location.host.split(".")
+      const parentDomain = (subdomains.length > 2 ? subdomains.slice(1) : subdomains).join(".")
+      actions.openLink(`${window.location.protocol}//${parentDomain}`)
+    },
   },
   {
     alias:       "yp",
@@ -233,9 +239,11 @@ maps.global = [
     alias:       "\\cgh",
     category:    categories.clipboard,
     description: "Open clipboard string as GitHub path (e.g. 'torvalds/linux')",
-    callback:    async () => actions.openLink(
-      actions.gh.parseRepo(await navigator.clipboard.readText()).url,
-    ),
+    callback:    async () => {
+      const { url } = actions.gh.parseRepo(await navigator.clipboard.readText())
+      Front.showBanner(`Open ${url}`)
+      actions.openLink(url, { newTab: true })
+    },
   },
   {
     alias:       "F",
@@ -248,6 +256,11 @@ maps.global = [
     category:    categories.omnibar,
     description: "Open URL from history",
     callback:    () => Front.openOmnibar({ type: "History" }),
+  },
+  {
+    alias:       "\\A",
+    description: "Open AWS service",
+    callback:    actions.omnibar.aws,
   },
 ]
 
@@ -304,6 +317,9 @@ const googleSearchResultSelector = [
   ".kno-fv a",
   ".isv-r > a:first-child",
   ".dbsr > a:first-child",
+  ".X5OiLe",
+  ".WlydOe",
+  ".fl",
 ].join(",")
 
 maps["www.google.com"] = [
@@ -372,6 +388,11 @@ maps["duckduckgo.com"] = [
     description: "Search site:github.com",
     callback:    () => actions.dg.siteSearch("github.com"),
   },
+  {
+    alias:       "sre",
+    description: "Search site:reddit.com",
+    callback:    () => actions.dg.siteSearch("reddit.com"),
+  },
 ]
 
 maps["yelp.com"] = [
@@ -408,7 +429,19 @@ maps["youtube.com"] = [
     leader:      "",
     alias:       "F",
     description: "Toggle fullscreen",
-    callback:    () => document.querySelector(".ytp-fullscreen-button.ytp-button").click(),
+    callback:    () => actions.dispatchMouseEvents(document.querySelector("#movie_player.ytp-fullscreen-button"), "mousedown", "click"),
+  },
+  {
+    leader:      "",
+    alias:       "Yt",
+    description: "Copy YouTube video link for current time",
+    callback:    () => Clipboard.write(actions.yt.getCurrentTimestampLink()),
+  },
+  {
+    leader:      "",
+    alias:       "Ym",
+    description: "Copy YouTube video markdown link for current time",
+    callback:    () => Clipboard.write(actions.yt.getCurrentTimestampMarkdownLink()),
   },
 ]
 
@@ -435,6 +468,11 @@ maps["github.com"] = [
     alias:       "I",
     description: "Open repository Issues page",
     callback:    () => actions.gh.openRepoPage("/issues"),
+  },
+  {
+    alias:       "N",
+    description: "Open notifications page",
+    callback:    () => actions.gh.openPage("/notifications"),
   },
   {
     alias:       "P",
@@ -1201,7 +1239,7 @@ const aliases = {
   ],
 }
 
-module.exports = {
+export default {
   unmaps,
   maps,
   aliases,

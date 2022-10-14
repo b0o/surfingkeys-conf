@@ -35,4 +35,4 @@ const keys = {
   google_cx_gg: "", // godoc.org/*, golang.org/pkg/*
 }
 
-module.exports = { keys }
+export default { keys }

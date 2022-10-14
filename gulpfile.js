@@ -12,6 +12,7 @@ import express from "express"
 import gulpNotify from "gulp-notify"
 import fs from "fs/promises"
 import url, { fileURLToPath } from "url"
+
 import webpackConfig from "./webpack.config.js"
 
 const requireJson = async (f) => JSON.parse(await fs.readFile(f))
@@ -26,6 +27,28 @@ const {
 } = gulp
 
 const gulpfilePath = fileURLToPath(import.meta.url)
+
+const escapeHTML = (text) =>
+  String(text).replace(/[&<>"'`=/]/g, (s) => ({
+    "&":  "&amp;",
+    "<":  "&lt;",
+    ">":  "&gt;",
+    "\"": "&quot;",
+    "'":  "&#39;",
+    "/":  "&#x2F;",
+    "`":  "&#x60;",
+    "=":  "&#x3D;",
+  }[s]))
+
+const { WEBPACK_MODE } = process.env
+if (WEBPACK_MODE) {
+  if (!["production", "development"].includes(WEBPACK_MODE)) {
+    log(`ERROR: Invalid WEBPACK_MODE: ${WEBPACK_MODE}`)
+    process.exit(1)
+  }
+  webpackConfig.mode = WEBPACK_MODE
+  log(`Using webpack mode: ${WEBPACK_MODE}`)
+}
 
 const paths = {
   assets:           "assets",
@@ -44,6 +67,7 @@ const paths = {
   screenshots:      "assets/screenshots",
 
   sources: {
+    api:           "api.js",
     actions:       "actions.js",
     conf:          "conf.js",
     confPriv:      "conf.priv.js",
@@ -144,7 +168,7 @@ const parseContributor = (contributor) => {
 
 task("docs", parallel(async () => {
   const {
-    searchEngines, conf, keys, util,
+    searchEngines, conf, keys,
   } = await getSources()
   await loadFaviconsManifest()
 
@@ -184,7 +208,7 @@ task("docs", parallel(async () => {
     if (screens[c.alias]) {
       screens[c.alias].forEach((ss, i) => {
         const num = (i > 0) ? ` ${i + 1}` : ""
-        s += `<a href="#${c.name}${num.replace(" ", "-")}">:framed_picture:</a>`
+        s += `<a href="#${c.name.toLowerCase()}${num.replace(" ", "-")}">:framed_picture:</a>`
         screenshotList += `##### ${c.name}${num}\n`
         screenshotList += `![${c.name} screenshot](./${ss})\n\n`
       })
@@ -210,13 +234,13 @@ task("docs", parallel(async () => {
     const maps = c.reduce((acc2, map) => {
       let leader = ""
       if (typeof map.leader !== "undefined") {
-        leader = map.leader // eslint-disable-line prefer-destructuring
+        leader = map.leader
       } else if (domain === "global") {
         leader = ""
       } else {
         leader = conf.siteleader
       }
-      const mapStr = util.escape(`${leader}${map.alias}`.replace(" ", "<space>"))
+      const mapStr = escapeHTML(`${leader}${map.alias}`.replace(" ", "<space>"))
       return `${acc2}<tr><td><code>${mapStr}</code></td><td>${map.description}</td></tr>\n`
     }, "")
     let domainStr = "<strong>global</strong>"
@@ -288,7 +312,7 @@ task("favicons", series("clean-favicons", async () => {
         const domain = new URL(v.domain ? `https://${v.domain}` : v.search).hostname
         return {
           domain,
-          favicon: getDuckduckgoFaviconUrl(domain),
+          favicon: v.favicon ?? getDuckduckgoFaviconUrl(domain),
         }
       }),
 
@@ -362,15 +386,15 @@ task("install", series("build", () => src(getPath(paths.buildDir, paths.output))
 const watch = (g, t) => () =>
   gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)
 
-const srcWatchPat = getSrcPath("*.js")
+const srcWatchPat = getSrcPath("*.(js|mjs|css)")
 
 task("watch-build", watch(srcWatchPat, series("build")))
 
 task("watch-install", watch(srcWatchPat, series("install")))
 
-task("watch-docs", watch([srcWatchPat, getPath(paths.readme)], series("docs")))
+task("watch-docs", watch([srcWatchPat, getPath(paths.readme), getPath(paths.assets, "**/*")], series("docs")))
 
-task("watch-docs-full", watch([srcWatchPat, getPath(paths.readme)], series("docs-full")))
+task("watch-docs-full", watch([srcWatchPat, getPath(paths.readme), getPath(paths.assets, "**/*")], series("docs-full")))
 
 const serve = (done) => {
   const app = express()
@@ -378,16 +402,17 @@ const serve = (done) => {
   const handler = (allowedOrigin) => async (req, res) => {
     log(`${new Date().toISOString()} ${req.method} ${req.url}`)
     try {
-      res.sendFile(getPath(paths.buildDir, paths.output), {
+      // TODO: remove timeout (testing)
+      setTimeout(() => res.sendFile(getPath(paths.buildDir, paths.output), {
         headers: {
           "Content-Type":                "text/javascript; charset=UTF-8",
           "Access-Control-Allow-Origin": allowedOrigin,
         },
         maxAge: 2000,
-      })
+      }), parseInt(req.query.delay ?? 0, 10))
     } catch (e) {
       log(e)
-      res.status(500).send("Error reading config file.\n")
+      res.status(500).send("Error retrieving config file.\n")
     }
   }
 

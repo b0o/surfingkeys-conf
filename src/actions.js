@@ -100,35 +100,35 @@ actions.getWappalyzerUrl = ({ hostname = window.location.hostname } = {}) =>
 actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
   `https://discussions.xojoc.pw/?${(new URLSearchParams({ url: href }))}`
 
-// Custom Omnibar interfaces
-// ------------------------
-actions.omnibar = {}
-
-// AWS Services
-actions.omnibar.aws = () => {
-  // const services = [
-  //   {
-  //     title: "EC2",
-  //     url:   "https://cn-northwest-1.console.amazonaws.cn/ec2/v2/home?region=cn-northwest-1",
-  //   },
-  //   {
-  //     title: "Elastic Beanstalk",
-  //     url:   "https://cn-northwest-1.console.amazonaws.cn/elasticbeanstalk/home?region=cn-northwest-1",
-  //   },
-  //   {
-  //     title: "Batch",
-  //     url:   "https://cn-northwest-1.console.amazonaws.cn/batch/home?region=cn-northwest-1",
-  //   },
-  // ]
-  // Front.openOmnibar({ type: "UserURLs", extra: services })
-  Front.openOmnibar({
-    type:  "Custom",
-    extra: {
-      prompt:  "AWS",
-      onInput: console.log,
-    },
-  })
-}
+// // Custom Omnibar interfaces
+// // ------------------------
+// actions.omnibar = {}
+//
+// // AWS Services
+// actions.omnibar.aws = () => {
+//   // const services = [
+//   //   {
+//   //     title: "EC2",
+//   //     url:   "https://cn-northwest-1.console.amazonaws.cn/ec2/v2/home?region=cn-northwest-1",
+//   //   },
+//   //   {
+//   //     title: "Elastic Beanstalk",
+//   //     url:   "https://cn-northwest-1.console.amazonaws.cn/elasticbeanstalk/home?region=cn-northwest-1",
+//   //   },
+//   //   {
+//   //     title: "Batch",
+//   //     url:   "https://cn-northwest-1.console.amazonaws.cn/batch/home?region=cn-northwest-1",
+//   //   },
+//   // ]
+//   // Front.openOmnibar({ type: "UserURLs", extra: services })
+//   Front.openOmnibar({
+//     type:  "Custom",
+//     extra: {
+//       prompt:  "AWS",
+//       onInput: console.log,
+//     },
+//   })
+// }
 
 // Surfingkeys-specific actions
 // ----------------------------

@@ -6,7 +6,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [187 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [186 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
 - [Omnibar integration with 56 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
@@ -58,7 +58,6 @@ It includes:
 <tr><td><code>\cgh</code></td><td>Open clipboard string as GitHub path (e.g. 'torvalds/linux')</td></tr>
 <tr><td><code>F</code></td><td>Open a link in non-active new tab</td></tr>
 <tr><td><code>oh</code></td><td>Open URL from history</td></tr>
-<tr><td><code>\A</code></td><td>Open AWS service</td></tr>
 <tr><th colspan="2"><a href="//algolia.com"><img src="./assets/favicons/algolia.com.ico" width="16px"> algolia.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><th colspan="2"><a href="//amazon.com"><img src="./assets/favicons/amazon.com.ico" width="16px"> amazon.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>

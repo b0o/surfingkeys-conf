@@ -257,11 +257,11 @@ maps.global = [
     description: "Open URL from history",
     callback:    () => Front.openOmnibar({ type: "History" }),
   },
-  {
-    alias:       "\\A",
-    description: "Open AWS service",
-    callback:    actions.omnibar.aws,
-  },
+  // {
+  //   alias:       "\\A",
+  //   description: "Open AWS service",
+  //   callback:    actions.omnibar.aws,
+  // },
 ]
 
 maps["amazon.com"] = [

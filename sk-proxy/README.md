@@ -41,7 +41,7 @@ Requirements:
 
 1. Install Node Packages
 	```
-	$ cd surfingkeys-conf/lambda
+	$ cd surfingkeys-conf/sk-proxy
 	$ npm install
 	```
 

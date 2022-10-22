@@ -1034,7 +1034,10 @@ actions.yt.getCurrentTimestampSeconds = () => {
 
 actions.yt.getCurrentTimestampHuman = () => {
   const [ss, mm, hh] = actions.yt.getCurrentTimestamp()
-  return `${hh > 0 ? `${hh}:` : ""}${mm}:${ss}`
+  const pad = (n) => `${n}`.padStart(2, "0")
+  return hh > 0
+    ? `${hh}:${pad(mm)}:${pad(ss)}`
+    : `${mm}:${pad(ss)}`
 }
 
 actions.yt.getShortLink = () => {

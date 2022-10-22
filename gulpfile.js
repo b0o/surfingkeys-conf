@@ -6,7 +6,7 @@ import replace from "gulp-replace"
 import rename from "gulp-rename"
 import file from "gulp-file"
 import path from "path"
-import del from "del"
+import { deleteAsync } from "del"
 import platforms from "platform-folders"
 import express from "express"
 import gulpNotify from "gulp-notify"
@@ -132,8 +132,8 @@ notify.onError = (opts, ...args) => gulpNotify.onError({
   ...opts,
 }, ...args)
 
-task("clean", () => del(["build", ".cache", ".tmp-gulp-compile-*"]))
-task("clean-favicons", () => del([paths.favicons]))
+task("clean", () => deleteAsync(["build", ".cache", ".tmp-gulp-compile-*"]))
+task("clean-favicons", () => deleteAsync([paths.favicons]))
 
 task("check-priv", async () => {
   try {

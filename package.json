@@ -39,5 +39,8 @@
     "to-string-loader": "^1.2.0",
     "webpack": "^5.74.0",
     "webpack-stream": "^7.0.0"
+  },
+  "peerDependencies": {
+    "object-assign": "^4.1.1"
   }
 }

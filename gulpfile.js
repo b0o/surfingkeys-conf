@@ -381,7 +381,7 @@ task(
 task("dist", parallel("docs-full", "build-full"))
 
 task("install", series("build", () => src(getPath(paths.buildDir, paths.output))
-  .pipe(dest(getPath(paths.installDir)))))
+  .pipe(dest(paths.installDir))))
 
 const watch = (g, t) => () =>
   gulp.watch(g, { ignoreInitial: false, usePolling: true }, t)

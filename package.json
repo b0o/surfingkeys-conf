@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "node --loader=node-esm-loader ./node_modules/gulp-cli/bin/gulp.js $@",
     "lint": "eslint src gulpfile.js webpack.config.js"
   },
   "repository": {
@@ -30,7 +29,6 @@
     "eslint": "8.26.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "esm-loader-css": "^1.0.3",
     "express": "^4.18.2",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",

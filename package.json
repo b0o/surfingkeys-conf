@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "node --loader=node-esm-loader ./node_modules/gulp-cli/bin/gulp.js $@"
+    "gulp": "node --loader=node-esm-loader ./node_modules/gulp-cli/bin/gulp.js $@",
+    "lint": "eslint src gulpfile.js webpack.config.js"
   },
   "repository": {
     "type": "git",

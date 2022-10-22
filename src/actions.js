@@ -1024,7 +1024,17 @@ actions.yt.getCurrentTimestamp = () => {
     ?.split(":")
     ?.reverse()
     ?.map(Number)) ?? [0, 0, 0]
+  return [ss, mm, hh]
+}
+
+actions.yt.getCurrentTimestampSeconds = () => {
+  const [ss, mm, hh] = actions.yt.getCurrentTimestamp()
   return (hh * 60 * 60) + (mm * 60) + ss
+}
+
+actions.yt.getCurrentTimestampHuman = () => {
+  const [ss, mm, hh] = actions.yt.getCurrentTimestamp()
+  return `${hh > 0 ? `${hh}:` : ""}${mm}:${ss}`
 }
 
 actions.yt.getShortLink = () => {
@@ -1033,9 +1043,12 @@ actions.yt.getShortLink = () => {
 }
 
 actions.yt.getCurrentTimestampLink = () =>
-  `${actions.yt.getShortLink()}?t=${actions.yt.getCurrentTimestamp()}`
+  `${actions.yt.getShortLink()}?t=${actions.yt.getCurrentTimestampSeconds()}`
 
 actions.yt.getCurrentTimestampMarkdownLink = () =>
-  actions.getMarkdownLink({ href: actions.yt.getCurrentTimestampLink() })
+  actions.getMarkdownLink({
+    title: `${document.querySelector("#ytd-player .ytp-title").innerText} @ ${actions.yt.getCurrentTimestampHuman()} - YouTube`,
+    href:  actions.yt.getCurrentTimestampLink(),
+  })
 
 export default actions

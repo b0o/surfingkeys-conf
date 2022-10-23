@@ -255,7 +255,7 @@ completions.se = {
   compl:  "https://duckduckgo.com/ac/?q=!stackexchange%20",
 }
 
-completions.tw.callback = (response) => JSON.parse(response.text).map((r) => r.phrase.replace(/^!stackexchange /, ""))
+completions.se.callback = (response) => JSON.parse(response.text).map((r) => r.phrase.replace(/^!stackexchange /, ""))
 
 // DockerHub repo search
 completions.dh = {

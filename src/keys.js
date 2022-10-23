@@ -395,7 +395,7 @@ maps["duckduckgo.com"] = [
   },
 ]
 
-maps["yelp.com"] = [
+maps["www.yelp.com"] = [
   {
     alias:       "fs",
     description: "Fakespot",

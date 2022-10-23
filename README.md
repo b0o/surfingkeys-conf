@@ -227,7 +227,7 @@ It includes:
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open search result</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>Open search result (new tab)</td></tr>
 <tr><td><code>&lt;Space&gt;d</code></td><td>Open search in DuckDuckGo</td></tr>
-<tr><th colspan="2"><a href="//yelp.com"><img src="./assets/favicons/yelp.com.ico" width="16px"> yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><th colspan="2"><a href="//www.yelp.com"><img src="./assets/favicons/www.yelp.com.ico" width="16px"> www.yelp.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;fs</code></td><td>Fakespot</td></tr>
 <tr><th colspan="2"><a href="//youtube.com"><img src="./assets/favicons/youtube.com.ico" width="16px"> youtube.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>A</code></td><td>Open video</td></tr>

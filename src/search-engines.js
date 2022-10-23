@@ -1033,16 +1033,16 @@ completions.ci = {
 completions.ci.getData = async () => {
   const storageKey = "completions.ci.data"
   const storedData = await localStorage.get(storageKey)
-  // if (storedData) {
+  if (storedData) {
   //   console.log("data found in localStorage", { storedData })
-  //   return JSON.parse(storedData)
-  // }
-  console.log("data not found in localStorage", { storedData })
+    return JSON.parse(storedData)
+  }
+  // console.log("data not found in localStorage", { storedData })
   const data = JSON.parse(await runtimeHttpRequest("https://caniuse.com/data.json"))
   // console.log({ dataRes })
   // const data = await dataRes.json()
   //
-  console.log({ data })
+  // console.log({ data })
   localStorage.set(storageKey, JSON.stringify(data))
   return data
 }
@@ -1050,8 +1050,8 @@ completions.ci.getData = async () => {
 completions.ci.callback = async (response) => {
   const { featureIds } = JSON.parse(response.text)
   const allData = await completions.ci.getData()
-  console.log("featureIds", featureIds)
-  console.log("allData", allData)
+  // console.log("featureIds", featureIds)
+  // console.log("allData", allData)
   return featureIds.map((featId) => {
     const feat = allData.data[featId]
     return feat

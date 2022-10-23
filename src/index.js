@@ -80,7 +80,6 @@ const registerSearchEngines = (searchEngines, searchleader) =>
 
 const main = () => {
   window.surfingKeys = api
-  console.log({ window, surfingKeys: window.surfingKeys })
   if (conf.settings) {
     Object.assign(
       settings,

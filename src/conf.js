@@ -4,11 +4,11 @@ import searchEngines from "./search-engines.js"
 
 export default {
   settings: {
-    hintAlign:                "left",
-    hintCharacters:           "qwertasdfgzxcvb",
+    hintAlign: "left",
+    hintCharacters: "qwertasdfgzxcvb",
     omnibarSuggestionTimeout: 500,
-    richHintsForKeystroke:    1,
-    defaultSearchEngine:      "dd",
+    richHintsForKeystroke: 1,
+    defaultSearchEngine: "dd",
     theme,
   },
 
@@ -20,4 +20,11 @@ export default {
 
   // Leader for OmniBar searchEngines
   searchleader: "a",
+
+  // Array containing zero or more log levels to enable: log, warn, error
+  logLevels: [
+    // "log",
+    // "warn",
+    "error",
+  ],
 }

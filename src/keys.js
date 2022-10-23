@@ -13,8 +13,8 @@ const {
 // Remove undesired default mappings
 const unmaps = {
   mappings: [
-    "sb", "sw", "ob",
-    "ow", "cp", ";cp",
+    "sb", "sw", "ob", "oe",
+    "ow", "oy", "cp", ";cp",
     ";ap", "spa", "spb",
     "spd", "sps", "spc",
     "spi", "sfr", "zQ",
@@ -25,8 +25,10 @@ const unmaps = {
     "<Ctrl-j>", "<Ctrl-h>",
   ],
   searchAliases: {
-    s: ["g", "d", "b",
-      "w", "s", "h"],
+    s: [
+      "g", "d", "b", "e",
+      "w", "s", "h", "y",
+    ],
   },
 }
 

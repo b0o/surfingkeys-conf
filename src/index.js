@@ -56,12 +56,13 @@ const registerSearchEngines = (searchEngines, searchleader) =>
   Object.values(searchEngines).forEach((s) => {
     const options = {
       favicon_url: s.favicon,
+      skipMaps:    true,
     }
     addSearchAlias(
       s.alias,
       s.name,
       s.search,
-      searchleader,
+      "",
       s.compl,
       s.callback,
       undefined,
@@ -73,18 +74,21 @@ const registerSearchEngines = (searchEngines, searchleader) =>
         Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
       })
     })
-    if (searchleader !== "o") {
-      unmap(`o${s.alias}`)
-    }
   })
 
-const main = () => {
+const main = async () => {
   window.surfingKeys = api
   if (conf.settings) {
     Object.assign(
       settings,
       typeof conf.settings === "function" ? conf.settings() : conf.settings,
     )
+  }
+
+  if (conf.logLevels) {
+    await chrome.storage.local.set({
+      logLevels: conf.logLevels,
+    })
   }
 
   if (conf.keys && conf.keys.unmaps) {
@@ -112,9 +116,4 @@ const main = () => {
 
 if (typeof window !== "undefined") {
   main()
-  // try {
-  //   main()
-  // } catch (err) {
-  //   console.trace(err)
-  // }
 }

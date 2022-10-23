@@ -1209,7 +1209,10 @@ completions.tw = {
   alias:  "tw",
   name:   "twitter",
   search: "https://twitter.com/search?q=",
+  compl:  "https://duckduckgo.com/ac/?q=!twitter%20",
 }
+
+completions.tw.callback = (response) => JSON.parse(response.text).map((r) => r.phrase.replace(/^!twitter /, ""))
 
 // Reddit
 completions.re = {

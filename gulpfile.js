@@ -7,12 +7,12 @@ import rename from "gulp-rename"
 import file from "gulp-file"
 import path from "path"
 import { deleteAsync } from "del"
-import platforms from "platform-folders"
 import express from "express"
 import gulpNotify from "gulp-notify"
 import fs from "fs/promises"
-import url, { fileURLToPath } from "url"
+import url from "url"
 
+import paths, { getPath, getSrcPath } from "./paths.js"
 import webpackConfig from "./webpack.config.js"
 
 const requireJson = async (f) => JSON.parse(await fs.readFile(f))
@@ -25,8 +25,6 @@ const { URL } = url
 const {
   task, src, dest, parallel, series,
 } = gulp
-
-const gulpfilePath = fileURLToPath(import.meta.url)
 
 const escapeHTML = (text) =>
   String(text).replace(/[&<>"'`=/]/g, (s) => ({
@@ -49,37 +47,6 @@ if (WEBPACK_MODE) {
   webpackConfig.mode = WEBPACK_MODE
   log(`Using webpack mode: ${WEBPACK_MODE}`)
 }
-
-const paths = {
-  assets:           "assets",
-  buildDir:         "build/",
-  confPrivExample:  "conf.priv.example.js",
-  dirname:          path.dirname(gulpfilePath),
-  favicons:         "assets/favicons",
-  faviconsManifest: "favicons.json",
-  gulpfile:         path.basename(gulpfilePath),
-  installDir:       platforms.getConfigHome(),
-  srcDir:           "src",
-  output:           "surfingkeys.js",
-  pkgJson:          "package.json",
-  readme:           "README.tmpl.md",
-  readmeOut:        "README.md",
-  screenshots:      "assets/screenshots",
-
-  sources: {
-    api:           "api.js",
-    actions:       "actions.js",
-    conf:          "conf.js",
-    confPriv:      "conf.priv.js",
-    entrypoint:    "index.js",
-    keys:          "keys.js",
-    searchEngines: "search-engines.js",
-    util:          "util.js",
-  },
-}
-
-const getPath = (...f) => path.join(paths.dirname, ...f)
-const getSrcPath = (...s) => getPath(paths.srcDir, ...s)
 
 const pkg = await requireJson(getPath(paths.pkgJson))
 

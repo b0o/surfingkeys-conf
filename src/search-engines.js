@@ -17,6 +17,8 @@ const cbDefaultIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAA
 
 const locale = typeof navigator !== "undefined" ? navigator.language : ""
 
+const localServer = "http://localhost:9919"
+
 const completions = {}
 
 const googleCustomSearch = (opts) => {
@@ -393,6 +395,22 @@ completions.yp.callback = (response) => {
 }
 
 // ****** General References, Calculators & Utilities ****** //
+completions.un = {
+  alias:  "un",
+  name:   "unicode",
+  search: "https://unicode-table.com/en/search/?q=",
+  compl:  `${localServer}/s/unicode?q=`,
+}
+
+completions.un.callback = (response) => {
+  const res = JSON.parse(response.text).slice(0, 20)
+  const titleCase = (s) => s.split(" ")
+    .map((word) => `${word[0]?.toUpperCase() ?? ""}${word.length > 1 ? word.slice(1) : ""}`)
+    .join(" ")
+  return res.map(({ symbol, name, value }) => createSuggestionItem(`
+    <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">${symbol}</span>  ${titleCase(name.toLowerCase())}
+`, { url: `https://unicode-table.com/en/${value}/` }))
+}
 
 const parseDatamuseRes = (res, o = {}) => {
   const opts = {

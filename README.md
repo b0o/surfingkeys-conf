@@ -7,7 +7,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 It includes:
 
 - [186 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 56 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [Omnibar integration with 57 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -599,6 +599,13 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
+    <td><a href="https://unicode-table.com"><img src="./assets/favicons/unicode-table.com.ico" width="16px"> </a></td>
+    <td><code>un</code></td>
+    <td>unicode <a title="requires local web server" href="#running-the-local-web-server">&#8224;</a></td>
+    <td><a href="https://unicode-table.com">unicode-table.com</a></td>
+    <td><a href="#unicode">:framed_picture:</a></td>
+  </tr>
+  <tr>
     <td><a href="https://vim.fandom.com"><img src="./assets/favicons/vim.fandom.com.ico" width="16px"> </a></td>
     <td><code>vw</code></td>
     <td>vimwiki</td>
@@ -831,6 +838,9 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 
 ##### thesaurus
 ![thesaurus screenshot](./assets/screenshots/th.png)
+
+##### unicode
+![unicode screenshot](./assets/screenshots/un.png)
 
 ##### wolframalpha
 ![wolframalpha screenshot](./assets/screenshots/wa-01.png)

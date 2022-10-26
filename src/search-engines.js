@@ -400,6 +400,7 @@ completions.un = {
   name:   "unicode",
   search: "https://unicode-table.com/en/search/?q=",
   compl:  `${localServer}/s/unicode?q=`,
+  local:  true,
 }
 
 completions.un.callback = (response) => {

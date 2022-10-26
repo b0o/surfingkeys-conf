@@ -181,12 +181,13 @@ task("docs", parallel(async () => {
 
     const favicon = faviconsManifest[domain] ? `<img src="./assets/favicons/${faviconsManifest[domain]}" width="16px"> ` : ""
     const privNote = c.priv ? " <a title=\"requires private API key\" href=\"#optional-private-api-key-configuration\">&#8727;</a>" : ""
+    const localNote = c.local ? " <a title=\"requires local web server\" href=\"#running-the-local-web-server\">&#8224;</a>" : ""
 
     return `${acc1}
   <tr>
     <td><a href="${u.protocol}//${domain}">${favicon}</a></td>
     <td><code>${c.alias}</code></td>
-    <td>${c.name}${privNote}</td>
+    <td>${c.name}${privNote}${localNote}</td>
     <td><a href="${u.protocol}//${domain}">${domain}</a></td>
     <td>${s}</td>
   </tr>`

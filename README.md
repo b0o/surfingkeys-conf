@@ -652,6 +652,8 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
 
 <a href="#optional-private-api-key-configuration">&#8727; requires private API key</a>
 
+<a href="#running-the-local-web-server">&#8224; requires local webserver</a>
+
 ## Installation
 
 Requires **`Surfingkeys v1.0.0 or newer`**.
@@ -706,9 +708,9 @@ _Coming soon!_
 
       _Note: you must specify the full, absolute path; the tilde `~` or environment variables like `$HOME` won't work_:
 
-      - __Linux__: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
-      - __macOS__: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
-      - __Windows__: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
+      - **Linux**: `file:///home/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
+      - **macOS**: `file:///Users/{USERNAME}/.config/surfingkeys.js` (replace `{USERNAME}` with your username)
+      - **Windows**: `file://%Homedrive%%Homepath%/surfingkeys.js` (This is a guess, please correct me if I'm wrong)
 
     - **IV.** Repeat these steps after you make any changes to your configuration files. Your new configuration will be automatically loaded by SurfingKeys.
 
@@ -718,11 +720,7 @@ _Coming soon!_
 
     - **I.** Run the configuration file server:
 
-      ```shell
-      $ gulp serve-simple
-      ```
-
-      Alternatively, you can use the `gulp serve` task, which automatically rebuilds the configuration file whenever a source file is modified.
+      See [Running the Local Web Server](#running-the-local-web-server)
 
     - **II.** Open the SurfingKeys configuration page:
 
@@ -740,10 +738,6 @@ _Coming soon!_
 
     - **V.** Repeat the `npm run gulp build` command from step 4 above after you make any changes to your configuration files.
       Your new configuration will be automatically loaded by the web server and SurfingKeys will pick it up the next time you load a webpage.
-
-    - **Note:** This method starts a local web server on `localhost:9919` which serves your built configuration file. Depending on your firewall configuration,
-      other devices on your network may be able to read your configuration file, including any private API keys or other secrets you have configured in `conf.priv.js`.
-      Proceed with caution.
 
     </details></blockquote>
     </details>
@@ -781,6 +775,27 @@ $ cp ./src/conf.priv.example.js ./src/conf.priv.js
 ```shell
 $ vim ./src/conf.priv.js
 ```
+
+### Running the Local Web Server
+
+This project provides a local web server which:
+
+- Serves your configuration file via HTTP
+- Serves additional API routes for certain search engines, like the `unicode` search engine.
+
+To run the local web server, follow steps 1-3 in the [installation instructions above](#procedure), then run:
+
+```shell
+$ gulp serve-simple
+```
+
+Alternatively, you can use the `gulp serve` task, which also automatically rebuilds the configuration file whenever a source file is modified.
+
+If you wish to use the local web server, you will likely want it to start automatically with your PC.
+If you run Linux with systemd, an [example user service](./extra/surfingkeys-conf.service) is provided for this purpose.
+You will need to modify it to contain the proper path to your `surfingkeys-conf` repo.
+
+**Note:** This starts a local web server on `localhost:9919` which serves your built configuration file and additional API endpoints. Depending on your firewall configuration, other devices on your network may be able to read your configuration file, including any private API keys or other secrets you have configured in `conf.priv.js`. Proceed with caution.
 
 ## Screenshots
 

@@ -25,6 +25,7 @@
 // import Zp from "unicode/category/Zp.js" // Separator, paragraph
 
 // TODO: Use https://github.com/iLib-js/UCD/blob/main/json/NamesList.json instead
+// OR: Just use unicode-table API
 import unicode from "unicode/category/index.js"
 
 const chars = Object.values(unicode).flatMap((cat) => Object.values(cat))

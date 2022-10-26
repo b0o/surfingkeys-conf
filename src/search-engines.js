@@ -407,8 +407,11 @@ completions.un.callback = (response) => {
   const titleCase = (s) => s.split(" ")
     .map((word) => `${word[0]?.toUpperCase() ?? ""}${word.length > 1 ? word.slice(1) : ""}`)
     .join(" ")
+  const codeSpan = (text) => `<span style="font-family: monospace; background-color: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.4); border-radius: 5px; padding: 2px 4px; opacity: 70%">${text}</span>`
   return res.map(({ symbol, name, value }) => createSuggestionItem(`
-    <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">${symbol}</span>  ${titleCase(name.toLowerCase())}
+    <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">
+      ${symbol}
+    </span> ${codeSpan(`U+${value}`)} ${codeSpan(`&amp;#${parseInt(value, 16)};`)} ${titleCase(name.toLowerCase())}
 `, { url: `https://unicode-table.com/en/${value}/` }))
 }
 

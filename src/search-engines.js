@@ -413,7 +413,7 @@ completions.un.callback = (response) => {
     <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">
       ${symbol}
     </span> ${codeSpan(`U+${value}`)} ${codeSpan(`&amp;#${parseInt(value, 16)};`)} ${titleCase(name.toLowerCase())}
-`, { url: `https://unicode-table.com/en/${value}/` }))
+`, { url: `https://unicode-table.com/en/${value}/`, copy: symbol }))
 }
 
 const parseDatamuseRes = (res, o = {}) => {

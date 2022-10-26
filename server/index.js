@@ -39,6 +39,7 @@ app.get("/s/unicode", (req, res) => {
   const { q } = req.query
   if (!q) {
     res.json([])
+    return
   }
   const chars = unicodeSearch(q)
   res.json(chars)

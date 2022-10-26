@@ -7,11 +7,11 @@ import rename from "gulp-rename"
 import file from "gulp-file"
 import path from "path"
 import { deleteAsync } from "del"
-import express from "express"
 import gulpNotify from "gulp-notify"
 import fs from "fs/promises"
 import url from "url"
 
+import serve from "./server/index.js"
 import paths, { getPath, getSrcPath } from "./paths.js"
 import webpackConfig from "./webpack.config.js"
 
@@ -83,8 +83,6 @@ const loadFaviconsManifest = async () => {
     faviconsManifest = {}
   }
 }
-
-const servePort = 9919
 
 const notify = Object.assign((opts, ...args) => gulpNotify({
   icon:    null,
@@ -356,49 +354,13 @@ const watch = (g, t) => () =>
 const srcWatchPat = getSrcPath("*.(js|mjs|css)")
 
 task("watch-build", watch(srcWatchPat, series("build")))
-
 task("watch-install", watch(srcWatchPat, series("install")))
-
 task("watch-docs", watch([srcWatchPat, getPath(paths.readme), getPath(paths.assets, "**/*")], series("docs")))
-
 task("watch-docs-full", watch([srcWatchPat, getPath(paths.readme), getPath(paths.assets, "**/*")], series("docs-full")))
-
-const serve = (done) => {
-  const app = express()
-
-  const handler = (allowedOrigin) => async (req, res) => {
-    log(`${new Date().toISOString()} ${req.method} ${req.url}`)
-    try {
-      // TODO: remove timeout (testing)
-      setTimeout(() => res.sendFile(getPath(paths.buildDir, paths.output), {
-        headers: {
-          "Content-Type":                "text/javascript; charset=UTF-8",
-          "Access-Control-Allow-Origin": allowedOrigin,
-        },
-        maxAge: 2000,
-      }), parseInt(req.query.delay ?? 0, 10))
-    } catch (e) {
-      log(e)
-      res.status(500).send("Error retrieving config file.\n")
-    }
-  }
-
-  app.get("/", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
-  app.get("/chrome", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
-  app.get("/firefox", handler("moz-extension://a7b04efeb-0b36-47f6-9f57-70293e5ee7b2"))
-
-  app.listen(servePort)
-  log(`web server is listening on port ${servePort}`)
-  app.on("close", () => {
-    log("web server is closing...")
-    done()
-  })
-}
+task("watch", series("watch-install"))
 
 task("serve-simple", serve)
-
 task("serve-build", parallel("watch-build", "serve-simple"))
-
 task("serve", series("serve-build"))
-task("watch", series("watch-install"))
+
 task("default", series("build"))

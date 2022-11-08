@@ -63,7 +63,6 @@ completions.au = {
   name:    "AUR",
   search:  "https://aur.archlinux.org/packages/?O=0&SeB=nd&outdated=&SB=v&SO=d&PP=100&do_Search=Go&K=",
   compl:   "https://aur.archlinux.org/rpc?v=5&type=suggest&arg=",
-  favicon: cbDefaultIcon,
 }
 
 completions.au.callback = (response) => {

@@ -1234,10 +1234,18 @@ completions.tw = {
   alias:  "tw",
   name:   "twitter",
   search: "https://twitter.com/search?q=",
-  compl:  "https://duckduckgo.com/ac/?q=!twitter%20",
+  compl:  "https://duckduckgo.com/ac/?q=twitter%20",
 }
 
-completions.tw.callback = (response) => JSON.parse(response.text).map((r) => r.phrase.replace(/^!twitter /, ""))
+completions.tw.callback = (response, {query}) => {
+  const results = JSON.parse(response.text).map((r) => {
+    const q = r.phrase.replace(/^twitter /, "")
+    return createURLItem(q, `https://twitter.com/search?q=${q}`)})
+  if (query.length >= 2 && query.match(/^@/)) {
+    results.unshift(createURLItem(query, `https://twitter.com/${query.replace(/^@/, "")}`))
+  }
+  return results
+}
 
 // Reddit
 completions.re = {

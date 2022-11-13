@@ -67,7 +67,7 @@ completions.au = {
 
 completions.au.callback = (response) => {
   const res = JSON.parse(response.text)
-  return res.map((s) => createURLItem(s, `https://aur.archlinux.org/packages/${s}`))
+  return res.map((s) => createURLItem(s, `https://aur.archlinux.org/packages/${encodeURIComponent(s)}`))
 }
 
 // Arch Linux Wiki
@@ -125,8 +125,7 @@ completions.at = {
 completions.at.callback = async (response) => {
   const res = JSON.parse(response.text)
   return res.hits.map((s) => {
-    const name = escapeHTML(s.Name)
-    let title = name
+    let title = s.Name
     let prefix = ""
     if (s._highlightResult) {
       if (s._highlightResult.Name) {
@@ -134,28 +133,16 @@ completions.at.callback = async (response) => {
       }
     }
     if (s.Likes) {
-      prefix += `[↑${s.Likes}] `
+      prefix += `[↑${parseInt(s.Likes, 10)}] `
     }
-    let tagline = ""
-    if (s.TagLine) {
-      tagline = escapeHTML(s.TagLine)
-    }
-    const desc = s.Description ? `<div class="title">${escapeHTML(s.Description)}</div>` : ""
-
-    let icUrl = wpDefaultIcon
-    if (s.HasIcon) {
-      const icBase = "https://d2.alternativeto.net/dist/icons/"
-      const icQuery = "?width=100&height=100&mode=crop&upscale=false"
-      const icName = s.UrlName
-      icUrl = encodeURI(`${icBase}${icName}_${s.IconId}${s.IconExtension}${icQuery}`)
-    }
+    const icon = s.HasIcon ? `https://d2.alternativeto.net/dist/icons/${s.UrlName}_${s.IconId}${s.IconExtension}?width=100&height=100&mode=crop&upscale=false` : wpDefaultIcon
 
     return createSuggestionItem(`
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
-        <img style="width:60px" src="${icUrl}" alt="${escapeHTML(s.Name)}">
+        <img style="width:60px" src="${encodeURI(icon)}" alt="${escapeHTML(s.Name)}">
         <div>
-          <div class="title"><strong>${prefix}${title}</strong> ${tagline}</div>
-          ${desc}
+          <div class="title"><strong>${(prefix)}${(title)}</strong></div>
+          <span>${escapeHTML(s.TagLine || s.Description || "")}</span>
         </div>
       </div>
     `, { url: `https://${s.InternalUrl}` })
@@ -193,9 +180,9 @@ const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.ma
 
   return createSuggestionItem(`
     <div style="padding:5px;display:grid;grid-template-columns:2em 1fr;grid-gap:15px">
-        <img style="width:2em" src="${s.icon_url}" alt="${name}">
+        <img style="width:2em" src="${encodeURI(s.icon_url)}">
         <div>
-          <div class="title"><strong>${prefix}${name}</strong></div>
+          <div class="title"><strong>${escapeHTML(prefix)}${escapeHTML(name)}</strong></div>
         </div>
       </div>
     `, { url: s.url })
@@ -280,7 +267,7 @@ completions.dh.callback = (response) => JSON.parse(response.text).results.map((s
         <div>${meta}</div>
         <div>${escapeHTML(s.short_description)}</div>
       </div>
-    `, { url: `https://hub.docker.com/r/${repo}` })
+    `, { url: `https://hub.docker.com/r/${encodeURIComponent(repo)}` })
 })
 
 // GitHub
@@ -294,7 +281,7 @@ completions.gh = {
 completions.gh.callback = (response) => JSON.parse(response.text).items.map((s) => {
   let prefix = ""
   if (s.stargazers_count) {
-    prefix += `[★${s.stargazers_count}] `
+    prefix += `[★${parseInt(s.stargazers_count, 10)}] `
   }
   return createURLItem(prefix + s.full_name, s.html_url, { query: s.full_name, desc: s.description })
 })
@@ -324,7 +311,7 @@ completions.do.callback = (response) => Object.entries(JSON.parse(response.text)
     }
     return createSuggestionItem(
       `<div><div class="title" style="color:${color}"><strong>${symbol}${escapeHTML(domain)}</strong></div></div>`,
-      { url: `https://domainr.com/${domain}` },
+      { url: `https://domainr.com/${encodeURIComponent(domain)}` },
     )
   })
 
@@ -337,7 +324,7 @@ completions.vw = {
 }
 
 completions.vw.callback = (response) => JSON.parse(response.text)[1]
-  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${r}`, { query: false }))
+  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${encodeURIComponent(r)}`, { query: false }))
 
 // ****** Shopping & Food ****** //
 
@@ -407,12 +394,12 @@ completions.un.callback = (response) => {
   const titleCase = (s) => s.split(" ")
     .map((word) => `${word[0]?.toUpperCase() ?? ""}${word.length > 1 ? word.slice(1) : ""}`)
     .join(" ")
-  const codeSpan = (text) => `<span style="font-family: monospace; background-color: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.4); border-radius: 5px; padding: 2px 4px; opacity: 70%">${text}</span>`
+  const codeSpan = (text) => `<span style="font-family: monospace; background-color: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.4); border-radius: 5px; padding: 2px 4px; opacity: 70%">${escapeHTML(text)}</span>`
   return res.map(({ symbol, name, value }) => createSuggestionItem(`
     <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">
       ${symbol}
-    </span> ${codeSpan(`U+${value}`)} ${codeSpan(`&amp;#${parseInt(value, 16)};`)} ${titleCase(name.toLowerCase())}
-`, { url: `https://unicode-table.com/en/${value}/`, copy: symbol }))
+    </span> ${codeSpan(`U+${parseInt(value, 10)}`)} ${codeSpan(`&#${parseInt(value, 16)};`)} ${escapeHTML(titleCase(name.toLowerCase()))}
+`, { url: `https://unicode-table.com/en/${encodeURIComponent(value)}/`, copy: symbol }))
 }
 
 const parseDatamuseRes = (res, o = {}) => {
@@ -492,15 +479,14 @@ completions.wp = {
 
 completions.wp.callback = (response) => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => {
-    const img = p.thumbnail ? p.thumbnail.source : wpDefaultIcon
-    const desc = p.description ? p.description : ""
+    const img = p.thumbnail ? encodeURI(p.thumbnail.source) : wpDefaultIcon
     return createSuggestionItem(
       `
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
-        <img style="width:60px" src="${img}" alt="${p.title}">
+        <img style="width:60px" src="${img}">
         <div>
-          <div class="title"><strong>${p.title}</strong></div>
-          <div class="title">${desc}</div>
+          <div class="title"><strong>${escapeHTML(p.title)}</strong></div>
+          <div class="title">${escapeHTML(p.description ?? "")}</div>
         </div>
       </div>
     `,
@@ -585,7 +571,7 @@ completions.wa.callback = (response, { query }) => {
       p.subpods.forEach((sp) => {
         let v = ""
         if (sp.title) {
-          v = `${v}<strong>${escapeHTML(sp.title)}</strong>: `
+          v = `<strong>${escapeHTML(sp.title)}</strong>: `
         }
         if (sp.img) {
           v = `
@@ -633,15 +619,15 @@ const parseCrunchbase = (response, parse) => {
   }
   const objs = res.map((obj) => parse(obj))
   return objs.map((p) => {
-    const domain = p.domain ? ` | <a href="https://${p.domain}" target="_blank">${p.domain}</a>` : ""
-    const location = p.loc ? ` located in <em>${p.loc}</em>` : ""
+    const domain = p.domain ? ` | <a href="${encodeURI(`https://${p.domain}`)}" target="_blank">${escapeHTML(p.domain)}</a>` : ""
+    const location = p.loc ? ` located in <em>${escapeHTML(p.loc)}</em>` : ""
     return createSuggestionItem(`
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
-        <img style="width:60px" src="${p.img}" alt="${p.name}">
+        <img style="width:60px" src="${encodeURI(p.img)}">
         <div style="display:grid;grid-template-rows:1fr 1fr 0.8fr">
-          <div class="title"><strong style="font-size: 1.2em">${p.name}</strong></div>
-          <div class="title" style="font-size: 1.2em">${p.desc}</div>
-          <div class="title"><em>${p.role}</em>${location}${domain}</div>
+          <div class="title"><strong style="font-size: 1.2em">${escapeHTML(p.name)}</strong></div>
+          <div class="title" style="font-size: 1.2em">${escapeHTML(p.desc)}</div>
+          <div class="title"><em>${escapeHTML(p.role)}</em>${location}${domain}</div>
         </div>
       </div>`, { url: p.url })
   })
@@ -665,7 +651,7 @@ completions.co.callback = (response) => parseCrunchbase(response, (org) => {
     role:   escapeHTML(r.primary_role),
     img:    cbDefaultIcon,
     loc:    "",
-    url:    `https://www.crunchbase.com/${r.web_path}`,
+    url:    `https://www.crunchbase.com/${encodeURIComponent(r.web_path)}`,
   }
 
   p.loc += (r.city_name !== null) ? escapeHTML(r.city_name) : ""
@@ -677,7 +663,7 @@ completions.co.callback = (response) => parseCrunchbase(response, (org) => {
   if (r.profile_image_url !== null) {
     const u = r.profile_image_url
     const img = u.slice(u.indexOf("t_api_images") + "t_api_images".length + 1)
-    p.img = `https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_100,w_100,f_auto,b_white,q_auto:eco/${img}`
+    p.img = `https://res-4.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_100,w_100,f_auto,b_white,q_auto:eco/${encodeURIComponent(img)}`
   }
 
   return p
@@ -700,7 +686,7 @@ completions.cp.callback = (response) => parseCrunchbase(response, (person) => {
     img:  cbDefaultIcon,
     role: "",
     loc:  "",
-    url:  `https://www.crunchbase.com/${r.web_path}`,
+    url:  `https://www.crunchbase.com/${encodeURIComponent(r.web_path)}`,
   }
 
   p.desc += (r.title !== null) ? escapeHTML(r.title) : ""
@@ -1042,13 +1028,13 @@ completions.ho = {
 
 completions.ho.callback = (response) => JSON.parse(response.text).map((s) => {
   const pkgInfo = s.package.name && s.module.name
-    ? `<div style="font-size:0.8em; margin-bottom: 0.8em; margin-top: 0.8em">[${s.package.name}] ${s.module.name}</div>`
+    ? `<div style="font-size:0.8em; margin-bottom: 0.8em; margin-top: 0.8em">[${escapeHTML(s.package.name)}] ${escapeHTML(s.module.name)}</div>`
     : ""
   return createSuggestionItem(`
       <div>
-        <div class="title" style="font-size: 1.1em; font-weight: bold">${s.item}</div>
+        <div class="title" style="font-size: 1.1em; font-weight: bold">${escapeHTML(s.item)}</div>
         ${pkgInfo}
-        <div style="padding: 0.5em">${s.docs}</div>
+        <div style="padding: 0.5em">${escapeHTML(s.docs)}</div>
       </div>
     `, { url: s.url })
 })
@@ -1101,8 +1087,8 @@ completions.ci.callback = async (response) => {
     return feat
       ? createSuggestionItem(`
           <div>
-            <div class="title"><strong>${feat.title}</strong></div>
-            <div>${feat.description}</div>
+            <div class="title"><strong>${escapeHTML(feat.title)}</strong></div>
+            <div>${escapeHTML(feat.description)}</div>
           </div>
         `, { url: "https://caniuse.com/?search=" })
       : null
@@ -1156,7 +1142,7 @@ completions.md.callback = (response) => {
         <div style="font-size:0.8em"><em>${escapeHTML(s.slug)}</em></div>
         <div>${escapeHTML(s.summary)}</div>
       </div>
-    `, { url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}` }))
+    `, { url: `https://developer.mozilla.org/${encodeURLComponent(s.locale)}/docs/${encodeURIComponent(s.slug)}` }))
 }
 
 // NPM registry search
@@ -1193,7 +1179,7 @@ completions.np.callback = (response) => JSON.parse(response.text)
         </style>
         <div>
           <span class="title">${s.highlight}</span>
-          <span style="font-size: 0.8em">v${s.package.version}</span>
+          <span style="font-size: 0.8em">v${escapeHTML(s.package.version)}</span>
         </div>
         <div>
           <span>${date}</span>
@@ -1221,10 +1207,10 @@ completions.hn.callback = (response) => {
     let title = ""
     let prefix = ""
     if (s.points) {
-      prefix += `[↑${s.points}] `
+      prefix += `[↑${escapeHTML(s.points)}] `
     }
     if (s.num_comments) {
-      prefix += `[↲${s.num_comments}] `
+      prefix += `[↲${escapeHTML(s.num_comments)}] `
     }
     switch (s._tags[0]) {
     case "story":
@@ -1236,13 +1222,11 @@ completions.hn.callback = (response) => {
     default:
       title = s.objectID
     }
-    const re = new RegExp(`(${res.query.split(" ").join("|")})`, "ig")
-    title = title.replace(re, "<strong>$&</strong>")
-    const url = `https://news.ycombinator.com/item?id=${s.objectID}`
+    const url = `https://news.ycombinator.com/item?id=${encodeURIComponent(s.objectID)}`
     return createSuggestionItem(`
       <div>
-        <div class="title">${prefix + title}</div>
-        <div class="url">${url}</div>
+        <div class="title">${prefix}${escapeHTML(title)}</div>
+        <div class="url">${encodeURI(url)}</div>
       </div>
     `, { url })
   })
@@ -1259,9 +1243,9 @@ completions.tw = {
 completions.tw.callback = (response, {query}) => {
   const results = JSON.parse(response.text).map((r) => {
     const q = r.phrase.replace(/^twitter /, "")
-    return createURLItem(q, `https://twitter.com/search?q=${q}`)})
+    return createURLItem(q, `https://twitter.com/search?q=${encodeURIComponent(q)}`)})
   if (query.length >= 2 && query.match(/^@/)) {
-    results.unshift(createURLItem(query, `https://twitter.com/${query.replace(/^@/, "")}`))
+    results.unshift(createURLItem(query, `https://twitter.com/${encodeURIComponent(query.replace(/^@/, ""))}`))
   }
   return results
 }
@@ -1286,27 +1270,28 @@ completions.re.callback = async (response, {query}) => {
   const [_, sub, __, q = ""] = query.match(/^\s*\/?(r\/[a-zA-Z0-9]+)(\s+(.*))?/) ?? [null, null, null, query]
   if (sub && q) {
     response = {
-      text: await runtimeHttpRequest(`https://api.reddit.com/${sub}/search?syntax=plain&sort=relevance&restrict_sr=on&limit=20&q=${q}`)
+      text: await runtimeHttpRequest(`https://api.reddit.com/${encodeURIComponent(sub)}/search?syntax=plain&sort=relevance&restrict_sr=on&limit=20&q=${encodeURIComponent(q)}`)
     }
   } else if (sub) {
-    const res = await runtimeHttpRequest(`https://www.reddit.com/api/search_reddit_names.json?typeahead=true&exact=false&query=${sub}`)
-    return JSON.parse(res).names.map((name) => createURLItem(`r/${name}`, `https://reddit.com/r/${name}`, { query: `r/${name}` }))
+    const res = await runtimeHttpRequest(`https://www.reddit.com/api/search_reddit_names.json?typeahead=true&exact=false&query=${encodeURIComponent(sub)}`)
+    return JSON.parse(res).names.map((name) => createURLItem(`r/${name}`, `https://reddit.com/r/${encodeURIComponent(name)}`, { query: `r/${name}` }))
   }
   return JSON.parse(response.text).data.children.map(({ data }) => {
       const thumb = data.thumbnail?.match(/^https?:\/\//) ? data.thumbnail : completions.re.thumbs[data.thumbnail] ?? completions.re.thumbs["default"]
+      const relDate = prettyDate(new Date(parseInt(data.created, 10) * 1000))
       return createSuggestionItem(`
         <div style="display: flex; flex-direction: row">
-          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${thumb}">
+          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb)}">
           <div>
             <div>
-              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${data.score}</strong> ${escapeHTML(data.title)} <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${data.domain})</span>
+              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${escapeHTML(data.score)}</strong> ${escapeHTML(data.title)} <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${escapeHTML(data.domain)})</span>
             </div>
             <div>
-              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${data.subreddit}</span> • <span style="color: rgba(0,0,0,0.7)">${data.num_comments}</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted 1 month ago by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(data.author)}</span></span>
+              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${escapeHTML(data.subreddit)}</span> • <span style="color: rgba(0,0,0,0.7)">${parseInt(data.num_comments, 10) ?? "unknown"}</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted ${relDate} by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(data.author)}</span></span>
             </div>
           </div>
         </div>
-      `, { url: `https://reddit.com${data.permalink}` }) })
+      `, { url: `https://reddit.com${encodeURIComponent(data.permalink)}` }) })
 }
 
 // YouTube

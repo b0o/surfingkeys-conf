@@ -246,7 +246,7 @@ completions.so = {
   compl:  "https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=",
 }
 
-completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => createURLItem(`[${s.score}] ${s.title}`, s.link))
+completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => createURLItem(`[${s.score}] ${s.title}`, s.link, { query: false }))
 
 // StackExchange - all sites
 completions.se = {
@@ -296,7 +296,7 @@ completions.gh.callback = (response) => JSON.parse(response.text).items.map((s) 
   if (s.stargazers_count) {
     prefix += `[★${s.stargazers_count}] `
   }
-  return createURLItem(prefix + s.full_name, s.html_url)
+  return createURLItem(prefix + s.full_name, s.html_url, { query: s.full_name, desc: s.description })
 })
 
 // Domainr domain search
@@ -337,7 +337,7 @@ completions.vw = {
 }
 
 completions.vw.callback = (response) => JSON.parse(response.text)[1]
-  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${r}`))
+  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${r}`, { query: false }))
 
 // ****** Shopping & Food ****** //
 
@@ -1262,15 +1262,9 @@ completions.yt.callback = (response) => JSON.parse(response.text).items
   .map((s) => {
     switch (s.id.kind) {
     case "youtube#channel":
-      return createURLItem(
-        `${s.snippet.channelTitle}: ${s.snippet.description}`,
-        `https://youtube.com/channel/${s.id.channelId}`,
-      )
+      return createURLItem(`${s.snippet.channelTitle}: ${s.snippet.description}`, `https://youtube.com/channel/${s.id.channelId}`, { query: false })
     case "youtube#video":
-      return createURLItem(
-        ` ▶ ${s.snippet.title}`,
-        `https://youtu.be/${s.id.videoId}`,
-      )
+        return createURLItem(` ▶ ${s.snippet.title}`, `https://youtu.be/${s.id.videoId}`, { query: false })
     default:
       return null
     }

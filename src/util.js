@@ -98,17 +98,20 @@ util.createSuggestionItem = (html, props = {}) => {
   return { html: li.outerHTML, props }
 }
 
-util.createURLItem = (title, url, sanitize = true) => {
-  let t = title
-  let u = url
-  if (sanitize) {
-    t = util.escapeHTML(t)
-    u = new URL(u).toString()
+util.createURLItem = (title, url, { desc = null, query = null } = {}) => {
+  const e = {
+    title: util.escapeHTML(title),
+    url: new URL(url).toString(),
+    desc: null,
+  }
+  if (desc && desc.length > 0) {
+    e.desc = (Array.isArray(desc) ? desc : [desc]).map((d) => `<div>${util.escapeHTML(d)}</div>`).join("")
   }
   return util.createSuggestionItem(`
-      <div class="title">${t}</div>
-      <div class="url">${u}</div>
-    `, { url: u })
+      <div style="font-weight: bold">${e.title}</div>
+      ${e.desc ?? ""}
+      <div style="opacity: 0.7; line-height: 1.3em">${e.url}</div>
+    `, { url: e.url, query: query ?? e.title })
 }
 
 util.defaultSelector = "a[href]:not([href^=javascript])"

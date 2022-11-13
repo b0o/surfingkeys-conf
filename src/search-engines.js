@@ -1255,8 +1255,40 @@ completions.re = {
   compl:  "https://api.reddit.com/search?syntax=plain&sort=relevance&limit=20&q=",
 }
 
-completions.re.callback = (response) => JSON.parse(response.text).data.children
-  .map((s) => createURLItem(`[${s.data.score}] ${s.data.title}`, `https://reddit.com${s.data.permalink}`))
+completions.re.thumbs = {
+  default: "https://i.imgur.com/VCm94xa.png",
+  image: "https://i.imgur.com/OaAUUaQ.png",
+  nsfw: "https://i.imgur.com/lnmJrXP.png",
+  self: "https://i.imgur.com/KQ8uYZz.png",
+  spoiler: "https://i.imgur.com/gx2tGsv.png",
+}
+
+completions.re.callback = async (response, {query}) => {
+  const [_, sub, __, q = ""] = query.match(/^\s*\/?(r\/[a-zA-Z0-9]+)(\s+(.*))?/) ?? [null, null, null, query]
+  if (sub && q) {
+    response = {
+      text: await runtimeHttpRequest(`https://api.reddit.com/${sub}/search?syntax=plain&sort=relevance&restrict_sr=on&limit=20&q=${q}`)
+    }
+  } else if (sub) {
+    const res = await runtimeHttpRequest(`https://www.reddit.com/api/search_reddit_names.json?typeahead=true&exact=false&query=${sub}`)
+    return JSON.parse(res).names.map((name) => createURLItem(`r/${name}`, `https://reddit.com/r/${name}`, { query: `r/${name}` }))
+  }
+  return JSON.parse(response.text).data.children.map(({ data }) => {
+      const thumb = data.thumbnail?.match(/^https?:\/\//) ? data.thumbnail : completions.re.thumbs[data.thumbnail] ?? completions.re.thumbs["default"]
+      return createSuggestionItem(`
+        <div style="display: flex; flex-direction: row">
+          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${thumb}">
+          <div>
+            <div>
+              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${data.score}</strong> ${escapeHTML(data.title)} <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${data.domain})</span>
+            </div>
+            <div>
+              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${data.subreddit}</span> • <span style="color: rgba(0,0,0,0.7)">${data.num_comments}</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted 1 month ago by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(data.author)}</span></span>
+            </div>
+          </div>
+        </div>
+      `, { url: `https://reddit.com${data.permalink}` }) })
+}
 
 // YouTube
 completions.yt = {

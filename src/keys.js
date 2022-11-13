@@ -118,6 +118,12 @@ maps.global = [
     callback:    () => util.createHints("img", (i) => Clipboard.write(i.src)),
   },
   {
+    alias:       "yA",
+    category:    categories.clipboard,
+    description: "Copy link as Markdown",
+    callback:    () => util.createHints("a[href]", (a) => Clipboard.write(`[${a.innerText}](${a.href})`)),
+  },
+  {
     alias:       "yO",
     category:    categories.clipboard,
     description: "Copy page URL/Title as Org-mode link",

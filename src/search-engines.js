@@ -1320,11 +1320,43 @@ completions.yt = {
 
 completions.yt.callback = (response) => JSON.parse(response.text).items
   .map((s) => {
+    const thumb = s.snippet.thumbnails.default
     switch (s.id.kind) {
     case "youtube#channel":
-      return createURLItem(`${s.snippet.channelTitle}: ${s.snippet.description}`, `https://youtube.com/channel/${s.id.channelId}`, { query: false })
+        return createSuggestionItem(`
+          <div style="display: flex; flex-direction: row">
+            <img style="width: ${parseInt(thumb.width ?? 120, 10)}px; height: ${parseInt(thumb.height ?? 90, 10)}px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb.url)}">
+            <div>
+              <div>
+                <strong>${escapeHTML(s.snippet.channelTitle)}</strong>
+              </div>
+              <div>
+                <span>${escapeHTML(s.snippet.description)}</span>
+              </div>
+              <div>
+                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">channel</span></span>
+              </div>
+            </div>
+          </div>
+        `, { url: `https://youtube.com/channel/${s.id.channelId}` })
     case "youtube#video":
-        return createURLItem(` ▶ ${s.snippet.title}`, `https://youtu.be/${s.id.videoId}`, { query: false })
+        const relDate = prettyDate(new Date(s.snippet.publishTime))
+        return createSuggestionItem(`
+          <div style="display: flex; flex-direction: row">
+            <img style="width: ${parseInt(thumb.width ?? 120, 10)}px; height: ${parseInt(thumb.height ?? 90, 10)}px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb.url)}">
+            <div>
+              <div>
+                <strong>${escapeHTML(s.snippet.title)}</strong>
+              </div>
+              <div>
+                <span>${escapeHTML(s.snippet.description)}</span>
+              </div>
+              <div>
+                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">video</span> <span style="color: rgba(0,0,0,0.5)">by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(s.snippet.channelTitle)}</span> • <span style="color: rgba(0,0,0,0.7)">${escapeHTML(relDate)}</span></span>
+              </div>
+            </div>
+          </div>
+        `, { url: `https://youtu.be/${encodeURIComponent(s.id.videoId)}` })
     default:
       return null
     }

@@ -1,9 +1,6 @@
 export default `
-  * {
-    font-family: "Input Mono", "DejaVu Sans Mono", DejaVu, Arial, sans-serif;
-  }
-
   body {
+    font-family: "Input Mono", "DejaVu Sans Mono", DejaVu, Arial, sans-serif;
     font-size: 12pt;
   }
 

@@ -22,8 +22,6 @@ export default `
 
   #sk_omnibarSearchResult {
     margin: 0 !important;
-    max-height: unset;
-    /* overflow-y: scroll; */
   }
 
   #sk_omnibar li {

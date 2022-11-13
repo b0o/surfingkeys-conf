@@ -533,11 +533,11 @@ completions.wa = {
   alias:  "wa",
   name:   "wolframalpha",
   search: "http://www.wolframalpha.com/input/?i=",
-  compl:  `http://api.wolframalpha.com/v2/query?appid=${priv.keys.wolframalpha}&format=plaintext&output=json&reinterpret=true&input=%s`,
+  compl:  `http://api.wolframalpha.com/v2/query?appid=${priv.keys.wolframalpha}&format=plaintext,image&output=json&reinterpret=true&input=%s`,
   priv:   true,
 }
 
-completions.wa.callback = (response) => {
+completions.wa.callback = (response, { query }) => {
   const res = JSON.parse(response.text).queryresult
 
   if (res.error) {
@@ -575,18 +575,37 @@ completions.wa.callback = (response) => {
     const result = {
       title:  escapeHTML(p.title),
       values: [],
-      url:    "http://www.wolframalpha.com/input/?i=",
+      url:    `http://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`,
     }
     if (p.numsubpods > 0) {
-      result.url += encodeURIComponent(p.subpods[0].plaintext)
+      if (p.subpods[0].plaintext) {
+        result.url = encodeURIComponent(p.subpods[0].plaintext)
+        result.copy = p.subpods[0].plaintext
+      }
       p.subpods.forEach((sp) => {
-        if (!sp.plaintext) return
         let v = ""
         if (sp.title) {
-          v += `<strong>${escapeHTML(sp.title)}</strong>: `
+          v = `${v}<strong>${escapeHTML(sp.title)}</strong>: `
         }
-        v += escapeHTML(sp.plaintext)
-        result.values.push(`<div class="title">${v}</div>`)
+        if (sp.img) {
+          v = `
+            <div>${v}</div>
+            <div>
+              <img
+                src="${encodeURI(sp.img.src)}"
+                width="${parseInt(sp.img.width, 10) ?? ""}"
+                height="${parseInt(sp.img.height, 10) ?? ""}"
+                style="margin-top: 6px; padding: 12px; border-radius: 12px; background: white"
+              >
+            </div>
+          `
+        } else if (sp.plaintext) {
+          v = `${v}${escapeHTML(sp.plaintext)}`
+        }
+        if (v) {
+          v = `<div class="title">${v}</div>`
+        }
+        result.values.push(v)
       })
     }
     if (result.values.length > 0) {
@@ -598,7 +617,7 @@ completions.wa.callback = (response) => {
     <div>
       <div class="title"><strong>${r.title}</strong></div>
       ${r.values.join("\n")}
-    </div>`, { url: r.url }))
+    </div>`, { url: r.url, copy: r.copy, query: r.query }))
 }
 
 // ****** Business Utilities & References ****** //

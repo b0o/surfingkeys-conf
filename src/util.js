@@ -154,7 +154,7 @@ util.getDuckduckgoFaviconUrl = (url) => {
   return (new URL(`https://icons.duckduckgo.com/ip3/${u.hostname}.ico`).href)
 }
 
-// Based on JavaScript Pretty Date
+// Originally based on JavaScript Pretty Date
 // https://johnresig.com/blog/javascript-pretty-date/
 // Copyright (c) 2011 John Resig (ejohn.org)
 // Licensed under the MIT and GPL licenses.
@@ -162,22 +162,17 @@ util.prettyDate = (date) => {
   const diff = (((new Date()).getTime() - date.getTime()) / 1000)
   const dayDiff = Math.floor(diff / 86400)
   if (Number.isNaN(dayDiff) || dayDiff < 0) return ""
-  /* eslint-disable no-mixed-operators */
-  return dayDiff === 0 && (
-    diff < 60 && "just now"
-      || diff < 120 && "1 minute ago"
-      || diff < 3600 && `${Math.floor(diff / 60)} minutes ago`
-      || diff < 7200 && "1 hour ago"
-      || diff < 86400 && `${Math.floor(diff / 3600)} hours ago`
-  ) || dayDiff === 1 && "yesterday"
-    || dayDiff < 7 && `${dayDiff} days ago`
-    || dayDiff === 7 && "1 week ago"
-    || dayDiff < 30 && `${Math.round(dayDiff / 7)} weeks ago`
-    || dayDiff === 30 && "1 month ago"
-    || dayDiff < 365 && `${Math.round(dayDiff / 30)} months ago`
-    || dayDiff === 365 && "1 year ago"
-    || `${Math.round(dayDiff / 365)} years ago`
-  /* eslint-enable no-mixed-operators */
+  const [count, unit] =
+    dayDiff === 0 && (
+      diff < 60 && [null, "just now"]
+        || diff < 3600 && [Math.floor(diff / 60), "minute"]
+        || diff < 86400 && [Math.floor(diff / 3600), "hour"]
+    ) || dayDiff === 1 && [null, "yesterday"]
+    || dayDiff < 7 && [dayDiff, "day"]
+    || dayDiff < 30 && [Math.round(dayDiff / 7), "week"]
+    || dayDiff < 365 && [Math.round(dayDiff / 30), "month"]
+    || [Math.round(dayDiff / 365), "year"]
+  return `${count ?? ""}${count ? " " : ""}${unit}${(count ?? 0) > 1 ? "s" : ""}${count ?" ago" : ""}`
 }
 
 export default util

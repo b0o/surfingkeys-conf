@@ -980,23 +980,24 @@ completions.gg = googleCustomSearch({
 })
 
 // Godoc
-completions.gd = {
-  alias:  "gd",
-  name:   "godoc",
-  search: "https://godoc.org/?q=",
-  compl:  "https://api.godoc.org/search?q=",
-}
-
-completions.gd.callback = (response) => JSON.parse(response.text).results.map((s) => {
-  let prefix = ""
-  if (s.import_count) {
-    prefix += `[↓${s.import_count}] `
-  }
-  if (s.stars) {
-    prefix += `[★${s.stars}] `
-  }
-  return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
-})
+// TODO: migrate to pkg.go.dev
+// completions.gd = {
+//   alias:  "gd",
+//   name:   "godoc",
+//   search: "https://godoc.org/?q=",
+//   compl:  "https://api.godoc.org/search?q=",
+// }
+//
+// completions.gd.callback = (response) => JSON.parse(response.text).results.map((s) => {
+//   let prefix = ""
+//   if (s.import_count) {
+//     prefix += `[↓${s.import_count}] `
+//   }
+//   if (s.stars) {
+//     prefix += `[★${s.stars}] `
+//   }
+//   return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
+// })
 
 // ****** Haskell ****** //
 

@@ -6,8 +6,8 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [186 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 57 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [187 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [Omnibar integration with 56 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -37,6 +37,7 @@ It includes:
 <tr><td><code>g.</code></td><td>Go to parent domain</td></tr>
 <tr><td><code>yp</code></td><td>Copy URL path of current page</td></tr>
 <tr><td><code>yI</code></td><td>Copy Image URL</td></tr>
+<tr><td><code>yA</code></td><td>Copy link as Markdown</td></tr>
 <tr><td><code>yO</code></td><td>Copy page URL/Title as Org-mode link</td></tr>
 <tr><td><code>yM</code></td><td>Copy page URL/Title as Markdown link</td></tr>
 <tr><td><code>yT</code></td><td>Duplicate current tab (non-active new tab)</td></tr>
@@ -445,13 +446,6 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://godoc.org"><img src="./assets/favicons/godoc.org.ico" width="16px"> </a></td>
-    <td><code>gd</code></td>
-    <td>godoc</td>
-    <td><a href="https://godoc.org">godoc.org</a></td>
-    <td></td>
-  </tr>
-  <tr>
     <td><a href="https://golang.org"><img src="./assets/favicons/golang.org.ico" width="16px"> </a></td>
     <td><code>gg</code></td>
     <td>golang <a title="requires private API key" href="#optional-private-api-key-configuration">&#8727;</a></td>
@@ -568,7 +562,7 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td><code>re</code></td>
     <td>reddit</td>
     <td><a href="https://www.reddit.com">www.reddit.com</a></td>
-    <td></td>
+    <td><a href="#reddit">:framed_picture:</a><a href="#reddit-2">:framed_picture:</a></td>
   </tr>
   <tr>
     <td><a href="https://stackexchange.com"><img src="./assets/favicons/stackexchange.com.ico" width="16px"> </a></td>
@@ -624,7 +618,7 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td><code>wp</code></td>
     <td>wikipedia</td>
     <td><a href="https://en.wikipedia.org">en.wikipedia.org</a></td>
-    <td></td>
+    <td><a href="#wikipedia">:framed_picture:</a></td>
   </tr>
   <tr>
     <td><a href="https://simple.wikipedia.org"><img src="./assets/favicons/simple.wikipedia.org.ico" width="16px"> </a></td>
@@ -836,6 +830,12 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 ##### mdn
 ![mdn screenshot](./assets/screenshots/md.png)
 
+##### reddit
+![reddit screenshot](./assets/screenshots/re-01.png)
+
+##### reddit 2
+![reddit screenshot](./assets/screenshots/re-02.png)
+
 ##### thesaurus
 ![thesaurus screenshot](./assets/screenshots/th.png)
 
@@ -847,6 +847,9 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 
 ##### wolframalpha 2
 ![wolframalpha screenshot](./assets/screenshots/wa-02.png)
+
+##### wikipedia
+![wikipedia screenshot](./assets/screenshots/wp.png)
 
 ##### youtube
 ![youtube screenshot](./assets/screenshots/yt.png)

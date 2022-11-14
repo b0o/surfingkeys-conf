@@ -1267,7 +1267,7 @@ completions.re.thumbs = {
 }
 
 completions.re.callback = async (response, {query}) => {
-  const [_, sub, __, q = ""] = query.match(/^\s*\/?(r\/[a-zA-Z0-9]+)(\s+(.*))?/) ?? [null, null, null, query]
+  const [_, sub, __, q = ""] = query.match(/^\s*\/?(r\/[a-zA-Z0-9_]+)(\s+(.*))?/) ?? [null, null, null, query]
   if (sub && q) {
     response = {
       text: await runtimeHttpRequest(`https://api.reddit.com/${encodeURIComponent(sub)}/search?syntax=plain&sort=relevance&restrict_sr=on&limit=20&q=${encodeURIComponent(q)}`)

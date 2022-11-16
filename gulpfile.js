@@ -156,13 +156,17 @@ task("docs", parallel(async () => {
     return 0
   })
 
-  let keysTable = Object.keys(keys.maps).sort((a, b) => {
-    if (a === "global") return -1
-    if (b === "global") return 1
-    if (a < b) return -1
-    if (a > b) return 1
-    return 0
-  })
+  let keysTable = Object.entries(keys.maps)
+    .map(([key, maps]) => [key, maps.filter((map) => !map.hide)])
+    .filter(([_, maps]) => maps.length > 0)
+    .map(([key]) => key)
+    .sort((a, b) => {
+      if (a === "global") return -1
+      if (b === "global") return 1
+      if (a < b) return -1
+      if (a > b) return 1
+      return 0
+    })
 
   searchEnginesTable = await searchEnginesTable.reduce(async (acc1p, k) => {
     const acc1 = await acc1p
@@ -282,11 +286,12 @@ task("favicons", series("clean-favicons", async () => {
         }
       }),
 
-    Object.keys(keys.maps)
-      .filter((k) => k !== "global")
-      .map((k) => ({
-        domain:  k,
-        favicon: getDuckduckgoFaviconUrl(new URL(`https://${k}`).hostname),
+    Object.entries(keys.maps)
+      .map(([key, maps]) => [key, maps.filter((map) => !map.hide)])
+      .filter(([key, maps]) => key !== "global" && maps.length > 0)
+      .map(([key]) => ({
+        domain:  key,
+        favicon: getDuckduckgoFaviconUrl(new URL(`https://${key}`).hostname),
       })),
   ).filter((e, i, arr) => i === arr.indexOf(e))
 

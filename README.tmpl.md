@@ -27,6 +27,8 @@ It includes:
 </tbody>
 </table>
 
+There are also mappings to open academic papers from 70+ publishers using a DOI handler.
+
 ### Omnibar Search Engine Integrations
 
 To open the omnibar integration for a search engine, press the search leader key (`a` by default) followed by the alias for the desired search engine, as found in the table below.

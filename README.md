@@ -6,7 +6,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [187 key mappings for 27 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [261 key mappings for 101 unique websites](#site-specific-key-mappings) which **automate many common actions**.
 - [Omnibar integration with 56 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
@@ -240,6 +240,8 @@ It includes:
 
 </tbody>
 </table>
+
+There are also mappings to open academic papers from 70+ publishers using a DOI handler.
 
 ### Omnibar Search Engine Integrations
 

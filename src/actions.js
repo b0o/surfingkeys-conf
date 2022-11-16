@@ -1,7 +1,8 @@
 import ghReservedNames from "github-reserved-names"
 
-import util from "./util.js"
 import api from "./api.js"
+import priv from "./conf.priv.js"
+import util from "./util.js"
 
 const {
   tabOpenLink,
@@ -1053,5 +1054,24 @@ actions.yt.getCurrentTimestampMarkdownLink = () =>
     title: `${document.querySelector("#ytd-player .ytp-title").innerText} @ ${actions.yt.getCurrentTimestampHuman()} - YouTube`,
     href:  actions.yt.getCurrentTimestampLink(),
   })
+
+// DOI
+actions.doi = {}
+actions.doi.providers = {}
+actions.doi.providers.meta_citation_doi = () => document.querySelector("meta[name=citation_doi]")?.content
+actions.doi.providers.meta_dcIdentifier_doi = () => document.querySelector("meta[name='dc.Identifier'][scheme=doi]")?.content
+
+actions.doi.getLink = (provider) => {
+  if (!priv.doi_handler) {
+    Front.showBanner("DOI Handler not confingured (see conf.priv.example.js)")
+    return
+  }
+  const doi = provider()
+  if (!doi) {
+    Front.showBanner("DOI not found")
+    return
+  }
+  return priv.doi_handler(doi)
+}
 
 export default actions

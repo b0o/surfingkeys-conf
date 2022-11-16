@@ -35,4 +35,9 @@ const keys = {
   google_cx_gg: "", // godoc.org/*, golang.org/pkg/*
 }
 
-export default { keys }
+// A function which accepts a Digital Object Identifier (DOI) and returns a URL,
+// used for accessing academic papers.
+// Hint: You probably want to use the service created by Alexandra Elbakyan
+const doi_handler = (doi) =>  `https://doi.org/${doi}`
+
+export default { keys, doi_handler }

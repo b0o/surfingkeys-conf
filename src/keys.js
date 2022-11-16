@@ -1,7 +1,8 @@
 import actions from "./actions.js"
-import util from "./util.js"
-import help from "./help.js"
 import api from "./api.js"
+import help from "./help.js"
+import priv from "./conf.priv.js"
+import util from "./util.js"
 
 const { categories } = help
 
@@ -1218,6 +1219,100 @@ maps["ikea.com"] = [
     callback:    () => actions.openLink("/us/en/customer-service/track-manage-order/"),
   },
 ]
+
+const registerDOI = (domain, provider = actions.doi.providers.meta_citation_doi) => {
+  if (!maps[domain]) {
+    maps[domain] = []
+  }
+  maps[domain].push({
+    alias:       "O",
+    description: "Open DOI",
+    callback:    () => {
+      const url = actions.doi.getLink(provider)
+      if (url) {
+        actions.openLink(url, { newTab: true })
+      }
+    },
+    hide: true,
+  })
+}
+
+if (priv.doi_handler) {
+  registerDOI("aaai.org")
+  registerDOI("academic.oup.com")
+  registerDOI("aeaweb.org")
+  registerDOI("aging-us.com")
+  registerDOI("ahajournals.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("ajnr.org")
+  registerDOI("annualreviews.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("apa.org", () => document.querySelector(".citation a")?.innerText?.replace(/^https:\/\/doi\.org\//, ""))
+  registerDOI("ashpublications.org")
+  registerDOI("asnjournals.org")
+  registerDOI("biomedcentral.com")
+  registerDOI("bmj.com")
+  registerDOI("brill.com")
+  registerDOI("cambridge.org")
+  registerDOI("cell.com")
+  registerDOI("cmaj.ca")
+  registerDOI("cochranelibrary.com")
+  registerDOI("diabetesjournals.org")
+  registerDOI("direct.mit.edu")
+  registerDOI("dl.acm.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("elifesciences.org", () => document.querySelector("meta[name='dc.identifier']")?.content?.replace(/^doi:/, ""))
+  registerDOI("embopress.org")
+  registerDOI("emerald.com", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("episciences.org")
+  registerDOI("epubs.siam.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("ersjournals.com")
+  registerDOI("europepmc.org")
+  registerDOI("frontiersin.org")
+  registerDOI("future-science.com", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("go.gale.com")
+  registerDOI("ieee.org", () => document.querySelector(".stats-document-abstract-doi a")?.innerText)
+  registerDOI("ingentaconnect.com", () => document.querySelector("meta[name='DC.identifier']")?.content?.replace(/^info:doi\//, ""))
+  registerDOI("jacc.or", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("jamanetwork.com")
+  registerDOI("jci.org")
+  registerDOI("jfdc.cnic.cn")
+  registerDOI("jlr.org")
+  registerDOI("jneurosci.org")
+  registerDOI("journals.lww.com")
+  registerDOI("journals.physiology.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("journals.plos.org")
+  registerDOI("journals.sagepub.com", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("journals.uchicago.edu", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("jst.go.jp")
+  registerDOI("karger.com")
+  registerDOI("koreascience.kr")
+  registerDOI("koreascience.or.kr")
+  registerDOI("liebertpub.com", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("mdpi.com")
+  registerDOI("msp.org", () => document.querySelector(".paper-doi a")?.innerText)
+  registerDOI("nature.com")
+  registerDOI("nejm.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("nowpublishers.com")
+  registerDOI("nsf.gov")
+  registerDOI("ocl-journal.org")
+  registerDOI("onlinelibrary.wiley.com")
+  registerDOI("pnas.org")
+  registerDOI("pubmed.ncbi.nlm.nih.gov")
+  registerDOI("pubs.acs.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("pubs.geoscienceworld.org")
+  registerDOI("pubs.rsna.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("research.manchester.ac.uk")
+  registerDOI("royalsocietypublishing.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("rupress.org")
+  registerDOI("science.org", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("sciencedirect.com")
+  registerDOI("scitation.org")
+  registerDOI("spandidos-publications.com")
+  registerDOI("spiedigitallibrary.org")
+  registerDOI("springer.com")
+  registerDOI("synapse.koreamed.org")
+  registerDOI("tandfonline.com", actions.doi.providers.meta_dcIdentifier_doi)
+  registerDOI("thelancet.com")
+  registerDOI("worldscientific.com", actions.doi.providers.meta_dcIdentifier_doi)
+}
 
 const aliases = {
   "wikipedia.org": [

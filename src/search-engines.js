@@ -436,7 +436,7 @@ completions.un.callback = (response) => {
       })`
       <div>
         <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">${symbol}</span>
-        <span style="${codeSpanStyle}">U+${parseInt(value, 10)}</span>
+        <span style="${codeSpanStyle}">U+${value}</span>
         <span style="${codeSpanStyle}">&amp;#${parseInt(value, 16)};</span>
         <span>${titleCase(name.toLowerCase())}</span>
       </div>

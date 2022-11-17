@@ -2,18 +2,19 @@ import priv from "./conf.priv.js"
 import util from "./util.js"
 
 const {
-  escapeHTML,
-  createSuggestionItem,
-  createURLItem,
+  htmlPurify,
+  htmlNode,
+  htmlForEach,
+  suggestionItem,
+  urlItem,
   prettyDate,
   getDuckduckgoFaviconUrl,
   localStorage,
   runtimeHttpRequest,
 } = util
 
-// TODO: use a Babel loader to import these images
+// TODO: use a Babel loader to import this image
 const wpDefaultIcon = "data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2056%2056%22%20enable-background%3D%22new%200%200%2056%2056%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23eee%22%20d%3D%22M0%200h56v56h-56z%22%2F%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23999%22%20d%3D%22M36.4%2013.5h-18.6v24.9c0%201.4.9%202.3%202.3%202.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2%203.5h5.1v6.4h-5.1v-6.4zm-8.8%200h6v1.8h-6v-1.8zm0%204.6h6v1.8h-6v-1.8zm0%2015.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22%2F%3E%0A%3C%2Fsvg%3E%0A"
-const cbDefaultIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAAOwwAADsMBx2+oZAAAAAd0SU1FB+EICxEMErRVWUQAAABOdEVYdFJhdyBwcm9maWxlIHR5cGUgZXhpZgAKZXhpZgogICAgICAyMAo0NTc4Njk2NjAwMDA0OTQ5MmEwMDA4MDAwMDAwMDAwMDAwMDAwMDAwCnwMkD0AAAGXSURBVEjH1ZRvc4IwDMb7/T8dbVr/sEPlPJQd3g22GzJdmxVOHaQa8N2WN7wwvyZ5Eh/hngzxTwDr0If/TAK67POxbqxnpgCIx9dkrkEvswYnAFiutFSgtQapS4ejwFYqbXQXBmC+QxawuI/MJb0LiCq0DICNHoZRKQdYLKQZEhATcQmwDYD5GR8DDtfqaYAMActvTiVMaUvqhZPVYhYAK2SBAwGMTHngnc4wVmFPW9L6k1PJxbSCkfvhqolKSQhsWSClizNyxwAWdzIADixQRXRmdWSHthsg+TknaztFMZgC3vh/nG/qo68TLAKrCSrUg1ulp3cH+BpItBp3DZf0lFXVOIDnBdwKkLO4D5Q3QMO6HJ+hUb1NKNWMGJn3jf4ejPKn99CXOtsuyab95obGL/rpdZ7oIJK87iPiumG01drbdggoCZuq/f0XaB8/FbG62Ta5cD97XJwuZUT7ONbZTIK5m94hBuQs8535MsL5xxPw6ZoNj0DiyzhhcyMf9BJ0Jk1uRRpNyb4y0UaM9UI7E8+kt/EHgR/R6042JzmiwgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0xMVQxNzoxMjoxOC0wNDowMLy29LgAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMTFUMTc6MTI6MTgtMDQ6MDDN60wEAAAAAElFTkSuQmCC"
 
 const locale = typeof navigator !== "undefined" ? navigator.language : ""
 
@@ -34,15 +35,12 @@ const googleCustomSearch = (opts) => {
     favicon,
     compl:    `https://www.googleapis.com/customsearch/v1?key=${priv.keys.google_cs}&cx=${priv.keys[`google_cx_${opts.alias}`]}&q=`,
     search:   `https://cse.google.com/cse/publicurl?cx=${priv.keys[`google_cx_${opts.alias}`]}&q=`,
-    callback: (response) => {
-      const res = JSON.parse(response.text).items
-      return res.map((s) => createSuggestionItem(`
+    callback: (response) => JSON.parse(response.text).items.map((s) => suggestionItem({ url: s.link })`
         <div>
-          <div class="title"><strong>${s.htmlTitle}</strong></div>
-          <div>${s.htmlSnippet}</div>
+          <div class="title"><strong>${htmlPurify(s.htmlTitle)}</strong></div>
+          <div>${htmlPurify(s.htmlSnippet)}</div>
         </div>
-      `, { url: s.link }))
-    },
+      `),
     priv: true,
     ...opts,
   }
@@ -67,7 +65,7 @@ completions.au = {
 
 completions.au.callback = (response) => {
   const res = JSON.parse(response.text)
-  return res.map((s) => createURLItem(s, `https://aur.archlinux.org/packages/${encodeURIComponent(s)}`))
+  return res.map((s) => urlItem(s, `https://aur.archlinux.org/packages/${s}`))
 }
 
 // Arch Linux Wiki
@@ -137,15 +135,15 @@ completions.at.callback = async (response) => {
     }
     const icon = s.HasIcon ? `https://d2.alternativeto.net/dist/icons/${s.UrlName}_${s.IconId}${s.IconExtension}?width=100&height=100&mode=crop&upscale=false` : wpDefaultIcon
 
-    return createSuggestionItem(`
+    return suggestionItem({ url: `https://${s.InternalUrl}` })`
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
-        <img style="width:60px" src="${encodeURI(icon)}" alt="${escapeHTML(s.Name)}">
+        <img style="width:60px" src="${icon}" alt="${s.Name}">
         <div>
-          <div class="title"><strong>${(prefix)}${(title)}</strong></div>
-          <span>${escapeHTML(s.TagLine || s.Description || "")}</span>
+          <div class="title"><strong>${(prefix)}${htmlPurify(title)}</strong></div>
+          <span>${htmlPurify(s.TagLine || s.Description || "")}</span>
         </div>
       </div>
-    `, { url: `https://${s.InternalUrl}` })
+    `
   })
 }
 
@@ -156,6 +154,8 @@ completions.cs = googleCustomSearch({
   search: "https://chrome.google.com/webstore/search/",
 })
 
+// Firefox
+
 const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.map((s) => {
   let { name } = s
   if (typeof name === "object") {
@@ -165,7 +165,6 @@ const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.ma
       [name] = Object.values(name)
     }
   }
-  name = escapeHTML(name)
   let prefix = ""
   switch (s.type) {
   case "extension":
@@ -178,14 +177,14 @@ const parseFirefoxAddonsRes = (response) => JSON.parse(response.text).results.ma
     break
   }
 
-  return createSuggestionItem(`
+  return suggestionItem({ url: s.url })`
     <div style="padding:5px;display:grid;grid-template-columns:2em 1fr;grid-gap:15px">
-        <img style="width:2em" src="${encodeURI(s.icon_url)}">
+        <img style="width:2em" src="${s.icon_url}">
         <div>
-          <div class="title"><strong>${escapeHTML(prefix)}${escapeHTML(name)}</strong></div>
+          <div class="title"><strong>${prefix}${name}</strong></div>
         </div>
       </div>
-    `, { url: s.url })
+    `
 })
 
 // Firefox Addons
@@ -233,7 +232,7 @@ completions.so = {
   compl:  "https://api.stackexchange.com/2.2/search/advanced?pagesize=10&order=desc&sort=relevance&site=stackoverflow&q=",
 }
 
-completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => createURLItem(`[${s.score}] ${s.title}`, s.link, { query: false }))
+completions.so.callback = (response) => JSON.parse(response.text).items.map((s) => urlItem(`[${s.score}] ${s.title}`, s.link, { query: false }))
 
 // StackExchange - all sites
 completions.se = {
@@ -256,18 +255,18 @@ completions.dh = {
 completions.dh.callback = (response) => JSON.parse(response.text).results.map((s) => {
   let meta = ""
   let repo = s.repo_name
-  meta += `[★${escapeHTML(s.star_count)}] `
-  meta += `[↓${escapeHTML(s.pull_count)}] `
+  meta += `[★${s.star_count}] `
+  meta += `[↓${s.pull_count}] `
   if (repo.indexOf("/") === -1) {
     repo = `_/${repo}`
   }
-  return createSuggestionItem(`
+  return suggestionItem({ url: `https://hub.docker.com/r/${repo}` })`
       <div>
-        <div class="title"><strong>${escapeHTML(repo)}</strong></div>
+        <div class="title"><strong>${repo}</strong></div>
         <div>${meta}</div>
-        <div>${escapeHTML(s.short_description)}</div>
+        <div>${s.short_description}</div>
       </div>
-    `, { url: `https://hub.docker.com/r/${encodeURIComponent(repo)}` })
+    `
 })
 
 // GitHub
@@ -283,7 +282,7 @@ completions.gh.callback = (response) => JSON.parse(response.text).items.map((s) 
   if (s.stargazers_count) {
     prefix += `[★${parseInt(s.stargazers_count, 10)}] `
   }
-  return createURLItem(prefix + s.full_name, s.html_url, { query: s.full_name, desc: s.description })
+  return urlItem(prefix + s.full_name, s.html_url, { query: s.full_name, desc: s.description })
 })
 
 // Domainr domain search
@@ -296,23 +295,13 @@ completions.do = {
 
 completions.do.callback = (response) => Object.entries(JSON.parse(response.text))
   .map(([domain, data]) => {
-    let color = "inherit"
-    let symbol = "<strong>?</strong> "
-    switch (data.summary) {
-    case "inactive":
-      color = "#23b000"
-      symbol = "✔ "
-      break
-    case "unknown":
-      break
-    default:
-      color = "#ff4d00"
-      symbol = "✘ "
-    }
-    return createSuggestionItem(
-      `<div><div class="title" style="color:${color}"><strong>${symbol}${escapeHTML(domain)}</strong></div></div>`,
-      { url: `https://domainr.com/${encodeURIComponent(domain)}` },
-    )
+    const [color = "inherit", symbol = "?"] = ({
+      inactive: ["#23b000",  "✔"],
+      active: ["#ff4d00",  "✘"],
+    })[data.summary] ?? []
+    return suggestionItem({ url: `https://domainr.com/${domain}` })`
+      <div class="title" style="${`color: ${color}`}"><strong>${symbol} ${domain}</strong></div>
+    `
   })
 
 // Vim Wiki
@@ -324,7 +313,7 @@ completions.vw = {
 }
 
 completions.vw.callback = (response) => JSON.parse(response.text)[1]
-  .map((r) => createURLItem(r, `https://vim.fandom.com/wiki/${encodeURIComponent(r)}`, { query: false }))
+  .map((r) => urlItem(r, `https://vim.fandom.com/wiki/${encodeURIComponent(r)}`, { query: false }))
 
 // ****** Shopping & Food ****** //
 
@@ -394,29 +383,33 @@ completions.un.callback = (response) => {
   const titleCase = (s) => s.split(" ")
     .map((word) => `${word[0]?.toUpperCase() ?? ""}${word.length > 1 ? word.slice(1) : ""}`)
     .join(" ")
-  const codeSpan = (text) => `<span style="font-family: monospace; background-color: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.4); border-radius: 5px; padding: 2px 4px; opacity: 70%">${escapeHTML(text)}</span>`
-  return res.map(({ symbol, name, value }) => createSuggestionItem(`
-    <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">
-      ${symbol}
-    </span> ${codeSpan(`U+${parseInt(value, 10)}`)} ${codeSpan(`&#${parseInt(value, 16)};`)} ${escapeHTML(titleCase(name.toLowerCase()))}
-`, { url: `https://unicode-table.com/en/${encodeURIComponent(value)}/`, copy: symbol }))
+  const codeSpanStyle = "font-family: monospace; background-color: rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.4); border-radius: 5px; padding: 2px 4px; opacity: 70%"
+  return res.map(({ symbol, name, value }) =>
+    suggestionItem({ url: `https://unicode-table.com/en/${value}`, copy: symbol })`
+      <div>
+        <span style="font-size: 2em; font-weight: bold; min-width: 1em; margin-left: 0.5em; display: inline-block">${symbol}</span>
+        <span style="${codeSpanStyle}">U+${parseInt(value, 10)}</span>
+        <span style="${codeSpanStyle}">&amp;#${parseInt(value, 16)};</span>
+        <span>${titleCase(name.toLowerCase())}</span>
+      </div>
+    `
+  )
 }
 
 const parseDatamuseRes = (res, o = {}) => {
   const opts = {
     maxDefs:  -1,
     ellipsis: false,
+    ...o
   }
-  Object.assign(opts, o)
-
   return res.map((r) => {
     const defs = []
     let defsHtml = ""
     if ((opts.maxDefs <= -1 || opts.maxDefs > 0) && r.defs && r.defs.length > 0) {
       for (const d of r.defs.slice(0, opts.maxDefs <= -1 ? undefined : opts.maxDefs)) {
         const ds = d.split("\t")
-        const partOfSpeech = `(${escapeHTML(ds[0])})`
-        const def = escapeHTML(ds[1])
+        const partOfSpeech = `(${ds[0]})`
+        const def = ds[1]
         defs.push(`<span><em>${partOfSpeech}</em> ${def}</span>`)
       }
       if (opts.ellipsis && r.defs.length > opts.maxDefs) {
@@ -424,12 +417,12 @@ const parseDatamuseRes = (res, o = {}) => {
       }
       defsHtml = `<div>${defs.join("<br />")}</div>`
     }
-    return createSuggestionItem(`
-        <div>
-          <div class="title"><strong>${escapeHTML(r.word)}</strong></div>
-          ${defsHtml}
-        </div>
-    `, { url: `${opts.wordBaseURL}${r.word}` })
+    return suggestionItem({ url: `${opts.wordBaseURL}${r.word}` })`
+      <div>
+        <div class="title"><strong>${r.word}</strong></div>
+        ${htmlPurify(defsHtml)}
+      </div>
+    `
   })
 }
 
@@ -479,19 +472,16 @@ completions.wp = {
 
 completions.wp.callback = (response) => Object.values(JSON.parse(response.text).query.pages)
   .map((p) => {
-    const img = p.thumbnail ? encodeURI(p.thumbnail.source) : wpDefaultIcon
-    return createSuggestionItem(
-      `
+    const img = p.thumbnail ? p.thumbnail.source : wpDefaultIcon
+    return suggestionItem({ url: p.fullurl })`
       <div style="padding:5px;display:grid;grid-template-columns:60px 1fr;grid-gap:15px">
         <img style="width:60px" src="${img}">
         <div>
-          <div class="title"><strong>${escapeHTML(p.title)}</strong></div>
-          <div class="title">${escapeHTML(p.description ?? "")}</div>
+          <div class="title"><strong>${p.title}</strong></div>
+          <div class="title">${p.description ?? ""}</div>
         </div>
       </div>
-    `,
-      { url: p.fullurl },
-    )
+    `
   })
 
 // Wikipedia - Simple English version
@@ -527,39 +517,51 @@ completions.wa.callback = (response, { query }) => {
   const res = JSON.parse(response.text).queryresult
 
   if (res.error) {
-    return [createSuggestionItem(`
-      <div>
-        <div class="title"><strong>Error</strong> (Code ${escapeHTML(res.error.code)})</div>
-        <div class="title">${escapeHTML(res.error.msg)}</div>
-      </div>`, { url: "https://www.wolframalpha.com/" })]
+    return [
+      suggestionItem({ url: "https://www.wolframalpha.com/" })`
+        <div>
+          <div class="title"><strong>Error</strong> (Code ${res.error.code})</div>
+          <div class="title">${res.error.msg}</div>
+        </div>
+      `
+    ]
   }
 
   if (!res.success) {
     if (res.tips) {
-      return [createSuggestionItem(`
-        <div>
-          <div class="title"><strong>No Results</strong></div>
-          <div class="title">${escapeHTML(res.tips.text)}</div>
-        </div>`, { url: "https://www.wolframalpha.com/" })]
+      return [
+        suggestionItem({ url: "https://www.wolframalpha.com/" })`
+          <div>
+            <div class="title"><strong>No Results</strong></div>
+            <div class="title">${res.tips.text}</div>
+          </div>
+        `
+      ]
     }
     if (res.didyoumeans) {
-      return res.didyoumeans.map((s) => createSuggestionItem(`
-        <div>
+      return res.didyoumeans.map((s) =>
+        suggestionItem({ url: "https://www.wolframalpha.com/" })`
+          <div>
             <div class="title"><strong>Did you mean...?</strong></div>
-            <div class="title">${escapeHTML(s.val)}</div>
-        </div>`, { url: "https://www.wolframalpha.com/" }))
+            <div class="title">${s.val}</div>
+          </div>
+        `
+      )
     }
-    return [createSuggestionItem(`
-      <div>
-        <div class="title"><strong>Error</strong></div>
-        <div class="title">An unknown error occurred.</div>
-      </div>`, { url: "https://www.wolframalpha.com/" })]
+    return [
+      suggestionItem({ url: "https://www.wolframalpha.com/" })`
+        <div>
+          <div class="title"><strong>Error</strong></div>
+          <div class="title">An unknown error occurred.</div>
+        </div>
+      `
+    ]
   }
 
   const results = []
   res.pods.forEach((p) => {
     const result = {
-      title:  escapeHTML(p.title),
+      title:  p.title,
       values: [],
       url:    `http://www.wolframalpha.com/input/?i=${encodeURIComponent(query)}`,
     }
@@ -571,25 +573,25 @@ completions.wa.callback = (response, { query }) => {
       p.subpods.forEach((sp) => {
         let v = ""
         if (sp.title) {
-          v = `<strong>${escapeHTML(sp.title)}</strong>: `
+          v = htmlNode`<strong>${sp.title}</strong>: `
         }
         if (sp.img) {
-          v = `
+          v = htmlNode`
             <div>${v}</div>
             <div>
               <img
-                src="${encodeURI(sp.img.src)}"
-                width="${parseInt(sp.img.width, 10) ?? ""}"
-                height="${parseInt(sp.img.height, 10) ?? ""}"
+                src="${sp.img.src}"
+                width="${sp.img.width}"
+                height="${sp.img.height}"
                 style="margin-top: 6px; padding: 12px; border-radius: 12px; background: white"
               >
             </div>
           `
         } else if (sp.plaintext) {
-          v = `${v}${escapeHTML(sp.plaintext)}`
+          v = `${v}${sp.plaintext}`
         }
         if (v) {
-          v = `<div class="title">${v}</div>`
+          v = htmlNode`<div class="title">${v}</div>`
         }
         result.values.push(v)
       })
@@ -599,11 +601,11 @@ completions.wa.callback = (response, { query }) => {
     }
   })
 
-  return results.map((r) => createSuggestionItem(`
+  return results.map((r) => suggestionItem({ url: r.url, copy: r.copy, query: r.query })`
     <div>
       <div class="title"><strong>${r.title}</strong></div>
-      ${r.values.join("\n")}
-    </div>`, { url: r.url, copy: r.copy, query: r.query }))
+      ${htmlForEach(r.values)}
+    </div>`)
 }
 
 // ****** Search Engines ****** //
@@ -720,27 +722,15 @@ completions.ka = {
     if (r.goto) {
       u.href = r.goto
     }
-
-    const thumbImg = document.createElement("img")
-    thumbImg.style = "width: 32px"
-    thumbImg.src = r.img ? new URL(r.img, "https://kagi.com") : wpDefaultIcon
-
-    const txtNode = document.createElement("div")
-    txtNode.className = "title"
-    txtNode.innerText = r.txt ?? ""
-
-    return createSuggestionItem(
-      `
+    return suggestionItem({ url: u.href })`
       <div style="padding: 5px; display: grid; grid-template-columns: 32px 1fr; grid-gap: 15px">
-        ${thumbImg.outerHTML}
+        <img style="width: 32px" src="${r.img ? new URL(r.img, "https://kagi.com") : wpDefaultIcon}" />
         <div>
           <div class="title"><strong>${r.t}</strong></div>
-          ${txtNode.outerHTML}
+          <div class="title">${r.txt ?? ""}</div>
         </div>
       </div>
-    `,
-      { url: u.href },
-    )
+    `
   }),
 }
 
@@ -754,31 +744,15 @@ completions.hx = {
   compl:  "https://hex.pm/api/packages?sort=downloads&hx&search=",
 }
 
-completions.hx.callback = (response) => JSON.parse(response.text).map((s) => {
-  let dls = ""
-  let desc = ""
-  let liscs = ""
-  if (s.downloads && s.downloads.all) {
-    dls = `[↓${escapeHTML(s.downloads.all)}] `
-  }
-  if (s.meta) {
-    if (s.meta.description) {
-      desc = escapeHTML(s.meta.description)
-    }
-    if (s.meta.licenses) {
-      s.meta.licenses.forEach((l) => {
-        liscs += `[&copy;${escapeHTML(l)}] `
-      })
-    }
-  }
-  return createSuggestionItem(`
+completions.hx.callback = (response) => JSON.parse(response.text).map((s) =>
+  suggestionItem({ url: s.html_url })`
     <div>
-      <div class="title">${escapeHTML(s.repository)}/<strong>${escapeHTML(s.name)}</strong></div>
-      <div>${dls}${liscs}</div>
-      <div>${desc}</div>
+      <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+      <div>${s.downloads?.all ? `[↓${s.downloads.all}]` : ""}</div>
+      <div>${s.meta?.description ?? ""}</div>
     </div>
-  `, { url: s.html_url })
-})
+  `
+)
 
 // hexdocs
 // Same as hex but links to documentation pages
@@ -789,28 +763,15 @@ completions.hd = {
   compl:  "https://hex.pm/api/packages?sort=downloads&hd&search=",
 }
 
-completions.hd.callback = (response) => JSON.parse(response.text).map((s) => {
-  let dls = ""
-  let desc = ""
-  if (s.downloads && s.downloads.all) {
-    dls = `[↓${escapeHTML(s.downloads.all)}]`
-  }
-  if (s.meta) {
-    if (s.meta.description) {
-      desc = escapeHTML(s.meta.description)
-    }
-  }
-  return createSuggestionItem(`
-      <div>
-        <div class="title">${escapeHTML(s.repository)}/<strong>${escapeHTML(s.name)}</strong>${dls}</div>
-        <div></div>
-        <div>${desc}</div>
-      </div>
-    `, { url: `https://hexdocs.pm/${encodeURIComponent(s.name)}` })
-})
-
-// Exdocs
-// Similar to `hd` but searches inside docs using Google Custom Search
+completions.hd.callback = (response) => JSON.parse(response.text).map((s) =>
+  suggestionItem({ url: `https://hexdocs.pm/${encodeURIComponent(s.name)}` })`
+    <div>
+      <div class="title">${s.repository}/<strong>${s.name}</strong></div>
+      <div>${s.downloads?.all ? `[↓${s.downloads.all}]` : ""}</div>
+      <div>${s.meta?.description ?? ""}</div>
+    </div>
+  `
+)
 
 // ****** Golang ****** //
 
@@ -838,7 +799,7 @@ completions.gg = googleCustomSearch({
 //   if (s.stars) {
 //     prefix += `[★${s.stars}] `
 //   }
-//   return createURLItem(prefix + s.path, `https://godoc.org/${s.path}`)
+//   return urlItem(prefix + s.path, `https://godoc.org/${s.path}`)
 // })
 
 // ****** Haskell ****** //
@@ -853,7 +814,7 @@ completions.gg = googleCustomSearch({
 // }
 //
 // completions.ha.callback = (response) => JSON.parse(response.text)
-//   .map((s) => createURLItem(s.name, `https://hackage.haskell.org/package/${s.name}`))
+//   .map((s) => urlItem(s.name, `https://hackage.haskell.org/package/${s.name}`))
 
 // Hoogle
 completions.ho = {
@@ -865,15 +826,15 @@ completions.ho = {
 
 completions.ho.callback = (response) => JSON.parse(response.text).map((s) => {
   const pkgInfo = s.package.name && s.module.name
-    ? `<div style="font-size:0.8em; margin-bottom: 0.8em; margin-top: 0.8em">[${escapeHTML(s.package.name)}] ${escapeHTML(s.module.name)}</div>`
+    ? htmlNode`<div style="font-size:0.8em; margin-bottom: 0.8em; margin-top: 0.8em">[${s.package.name}] ${s.module.name}</div>`
     : ""
-  return createSuggestionItem(`
-      <div>
-        <div class="title" style="font-size: 1.1em; font-weight: bold">${escapeHTML(s.item)}</div>
-        ${pkgInfo}
-        <div style="padding: 0.5em">${escapeHTML(s.docs)}</div>
-      </div>
-    `, { url: s.url })
+  return suggestionItem({ url: s.url })`
+    <div>
+      <div class="title" style="font-size: 1.1em; font-weight: bold">${htmlPurify(s.item)}</div>
+      ${pkgInfo}
+      <div style="padding: 0.5em">${htmlPurify(s.docs)}</div>
+    </div>
+  `
 })
 
 // Haskell Wiki
@@ -901,15 +862,9 @@ completions.ci.getData = async () => {
   const storageKey = "completions.ci.data"
   const storedData = await localStorage.get(storageKey)
   if (storedData) {
-  //   console.log("data found in localStorage", { storedData })
     return JSON.parse(storedData)
   }
-  // console.log("data not found in localStorage", { storedData })
   const data = JSON.parse(await runtimeHttpRequest("https://caniuse.com/data.json"))
-  // console.log({ dataRes })
-  // const data = await dataRes.json()
-  //
-  // console.log({ data })
   localStorage.set(storageKey, JSON.stringify(data))
   return data
 }
@@ -917,34 +872,17 @@ completions.ci.getData = async () => {
 completions.ci.callback = async (response) => {
   const { featureIds } = JSON.parse(response.text)
   const allData = await completions.ci.getData()
-  // console.log("featureIds", featureIds)
-  // console.log("allData", allData)
   return featureIds.map((featId) => {
     const feat = allData.data[featId]
     return feat
-      ? createSuggestionItem(`
+      ? suggestionItem({ url: `https://caniuse.com/${featId}` })`
           <div>
-            <div class="title"><strong>${escapeHTML(feat.title)}</strong></div>
-            <div>${escapeHTML(feat.description)}</div>
+            <div class="title"><strong>${feat.title}</strong></div>
+            <div>${feat.description}</div>
           </div>
-        `, { url: "https://caniuse.com/?search=" })
+        `
       : null
-  })
-    .filter(Boolean)
-
-  // const [allDataRes, featureDataRes] = await Promise.all([
-  //   completions.ci.getData(),
-  //   fetch(`https://caniuse.com/process/get_feat_data.php?type=support-data&feat=${featureIds.join(",")}`),
-  // ])
-  // const featureData = await featureDataRes.json()
-  // console.log("featureIds", featureIds)
-  // console.log("featureData", featureData)
-  // return featureData.map((feat) =>
-  //   createSuggestionItem(`
-  //     <div>
-  //       <span>${feat.description ?? feat.title ?? ""}</span>
-  //     </div>
-  //   `, { url: "https://caniuse.com/?search=" }))
+  }).filter(item => !!item)
 }
 
 // jQuery API documentation
@@ -970,16 +908,17 @@ completions.md = {
 }
 
 completions.md.callback = (response) => {
-  // console.log({response})
   const res = JSON.parse(response.text)
   return res.documents.map((s) =>
-    createSuggestionItem(`
+    suggestionItem({
+      url: `https://developer.mozilla.org/${encodeURIComponent(s.locale)}/docs/${encodeURIComponent(s.slug)}`
+    })`
       <div>
-        <div class="title"><strong>${escapeHTML(s.title)}</strong></div>
-        <div style="font-size:0.8em"><em>${escapeHTML(s.slug)}</em></div>
-        <div>${escapeHTML(s.summary)}</div>
+        <div class="title"><strong>${s.title}</strong></div>
+        <div style="font-size:0.8em"><em>${s.slug}</em></div>
+        <div>${s.summary}</div>
       </div>
-    `, { url: `https://developer.mozilla.org/${encodeURLComponent(s.locale)}/docs/${encodeURIComponent(s.slug)}` }))
+    `)
 }
 
 // NPM registry search
@@ -993,38 +932,22 @@ completions.np = {
 
 completions.np.callback = (response) => JSON.parse(response.text)
   .map((s) => {
-    let flags = ""
-    let desc = ""
-    let date = ""
-    if (s.package.description) {
-      desc = escapeHTML(s.package.description)
-    }
-    if (s.flags) {
-      Object.keys(s.flags).forEach((f) => {
-        flags += `[<span style='color:#ff4d00'>⚑</span> ${escapeHTML(f)}] `
-      })
-    }
-    if (s.package.date) {
-      date = prettyDate(new Date(s.package.date))
-    }
-    return createSuggestionItem(`
+    const desc = s.package?.description ? s.package.description : ""
+    const date = s.package?.date ? prettyDate(new Date(s.package.date)) : ""
+    const flags = s.flags ? Object.keys(s.flags).map((f) => htmlNode`[<span style='color:#ff4d00'>⚑</span> ${f}] `) : []
+    return suggestionItem({ url: s.package.links.npm })`
       <div>
-        <style>
-          .title > em {
-            font-weight: bold;
-          }
-        </style>
         <div>
-          <span class="title">${s.highlight}</span>
-          <span style="font-size: 0.8em">v${escapeHTML(s.package.version)}</span>
+          <span class="title">${htmlPurify(s.highlight)}</span>
+          <span style="font-size: 0.8em">v${s.package.version}</span>
         </div>
         <div>
-          <span>${date}</span>
-          <span>${flags}</span>
+          <i style="alpha: 0.7; font-size: 0.8em">${date}</i>
+          <span>${htmlForEach(flags)}</span>
         </div>
         <div>${desc}</div>
       </div>
-    `, { url: s.package.links.npm })
+    `
   })
 
 // ****** Social Media & Entertainment ****** //
@@ -1044,10 +967,10 @@ completions.hn.callback = (response) => {
     let title = ""
     let prefix = ""
     if (s.points) {
-      prefix += `[↑${escapeHTML(s.points)}] `
+      prefix += `[↑${s.points}] `
     }
     if (s.num_comments) {
-      prefix += `[↲${escapeHTML(s.num_comments)}] `
+      prefix += `[↲${s.num_comments}] `
     }
     switch (s._tags[0]) {
     case "story":
@@ -1060,12 +983,12 @@ completions.hn.callback = (response) => {
       title = s.objectID
     }
     const url = `https://news.ycombinator.com/item?id=${encodeURIComponent(s.objectID)}`
-    return createSuggestionItem(`
+    return suggestionItem({ url })`
       <div>
-        <div class="title">${prefix}${escapeHTML(title)}</div>
-        <div class="url">${encodeURI(url)}</div>
+        <div class="title">${prefix}${title}</div>
+        <div class="url">${url}</div>
       </div>
-    `, { url })
+    `
   })
 }
 
@@ -1080,9 +1003,9 @@ completions.tw = {
 completions.tw.callback = (response, {query}) => {
   const results = JSON.parse(response.text).map((r) => {
     const q = r.phrase.replace(/^twitter /, "")
-    return createURLItem(q, `https://twitter.com/search?q=${encodeURIComponent(q)}`)})
+    return urlItem(q, `https://twitter.com/search?q=${encodeURIComponent(q)}`)})
   if (query.length >= 2 && query.match(/^@/)) {
-    results.unshift(createURLItem(query, `https://twitter.com/${encodeURIComponent(query.replace(/^@/, ""))}`))
+    results.unshift(urlItem(query, `https://twitter.com/${encodeURIComponent(query.replace(/^@/, ""))}`))
   }
   return results
 }
@@ -1111,24 +1034,25 @@ completions.re.callback = async (response, {query}) => {
     }
   } else if (sub) {
     const res = await runtimeHttpRequest(`https://www.reddit.com/api/search_reddit_names.json?typeahead=true&exact=false&query=${encodeURIComponent(sub)}`)
-    return JSON.parse(res).names.map((name) => createURLItem(`r/${name}`, `https://reddit.com/r/${encodeURIComponent(name)}`, { query: `r/${name}` }))
+    return JSON.parse(res).names.map((name) => urlItem(`r/${name}`, `https://reddit.com/r/${encodeURIComponent(name)}`, { query: `r/${name}` }))
   }
   return JSON.parse(response.text).data.children.map(({ data }) => {
       const thumb = data.thumbnail?.match(/^https?:\/\//) ? data.thumbnail : completions.re.thumbs[data.thumbnail] ?? completions.re.thumbs["default"]
       const relDate = prettyDate(new Date(parseInt(data.created, 10) * 1000))
-      return createSuggestionItem(`
+      return suggestionItem({ url: encodeURI(`https://reddit.com${data.permalink}`) })`
         <div style="display: flex; flex-direction: row">
-          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb)}">
+          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${thumb}">
           <div>
             <div>
-              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${escapeHTML(data.score)}</strong> ${escapeHTML(data.title)} <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${escapeHTML(data.domain)})</span>
+              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${data.score}</strong> ${data.title} <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${data.domain})</span>
             </div>
             <div>
-              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${escapeHTML(data.subreddit)}</span> • <span style="color: rgba(0,0,0,0.7)">${parseInt(data.num_comments, 10) ?? "unknown"}</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted ${relDate} by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(data.author)}</span></span>
+              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${data.subreddit}</span> • <span style="color: rgba(0,0,0,0.7)">${data.num_comments ?? "unknown"}</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted ${relDate} by</span> <span style="color: rgba(0,0,0,0.7)">${data.author}</span></span>
             </div>
           </div>
         </div>
-      `, { url: `https://reddit.com${encodeURIComponent(data.permalink)}` }) })
+      `
+  })
 }
 
 // YouTube
@@ -1145,43 +1069,43 @@ completions.yt.callback = (response) => JSON.parse(response.text).items
     const thumb = s.snippet.thumbnails.default
     switch (s.id.kind) {
     case "youtube#channel":
-        return createSuggestionItem(`
+        return suggestionItem({ url: `https://youtube.com/channel/${s.id.channelId}` })`
           <div style="display: flex; flex-direction: row">
-            <img style="width: ${parseInt(thumb.width ?? 120, 10)}px; height: ${parseInt(thumb.height ?? 90, 10)}px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb.url)}">
+            <img style="${`width: ${thumb.width ?? 120}px; height: ${thumb.height ?? 90}px; margin-right: 0.8em`}" alt="thumbnail" src="${thumb.url}">
             <div>
               <div>
-                <strong>${escapeHTML(s.snippet.channelTitle)}</strong>
+                <strong>${s.snippet.channelTitle}</strong>
               </div>
               <div>
-                <span>${escapeHTML(s.snippet.description)}</span>
+                <span>${s.snippet.description}</span>
               </div>
               <div>
                 <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">channel</span></span>
               </div>
             </div>
           </div>
-        `, { url: `https://youtube.com/channel/${s.id.channelId}` })
+        `
     case "youtube#video":
         const relDate = prettyDate(new Date(s.snippet.publishTime))
-        return createSuggestionItem(`
+        return suggestionItem({ url: `https://youtu.be/${encodeURIComponent(s.id.videoId)}` })`
           <div style="display: flex; flex-direction: row">
-            <img style="width: ${parseInt(thumb.width ?? 120, 10)}px; height: ${parseInt(thumb.height ?? 90, 10)}px; margin-right: 0.8em" alt="thumbnail" src="${encodeURI(thumb.url)}">
+            <img style="${`width: ${thumb.width ?? 120}px; height: ${thumb.height ?? 90}px; margin-right: 0.8em`}" alt="thumbnail" src="${thumb.url}">
             <div>
               <div>
-                <strong>${escapeHTML(s.snippet.title)}</strong>
+                <strong>${s.snippet.title}</strong>
               </div>
               <div>
-                <span>${escapeHTML(s.snippet.description)}</span>
+                <span>${s.snippet.description}</span>
               </div>
               <div>
-                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">video</span> <span style="color: rgba(0,0,0,0.5)">by</span> <span style="color: rgba(0,0,0,0.7)">${escapeHTML(s.snippet.channelTitle)}</span> • <span style="color: rgba(0,0,0,0.7)">${escapeHTML(relDate)}</span></span>
+                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">video</span> <span style="color: rgba(0,0,0,0.5)">by</span> <span style="color: rgba(0,0,0,0.7)">${s.snippet.channelTitle}</span> • <span style="color: rgba(0,0,0,0.7)">${relDate}</span></span>
               </div>
             </div>
           </div>
-        `, { url: `https://youtu.be/${encodeURIComponent(s.id.videoId)}` })
+        `
     default:
       return null
     }
-  }).filter((s) => s !== null)
+  }).filter((s) => !!s)
 
 export default completions

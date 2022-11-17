@@ -1,3 +1,6 @@
+import { html } from "uhtml"
+import DOMPurify from 'dompurify'
+
 import api from "./api.js"
 
 const { Hints, RUNTIME } = api
@@ -36,7 +39,7 @@ util.getMap = (mode, keys) =>
   keys.split("").reduce((acc, c) => acc[c] || acc, mode.mappings).meta || null
 
 util.escapeHTML = (text) => {
-  const el = document.createElement("a")
+  const el = document.createElement("span")
   el.textContent = text
   return el.innerHTML
 }
@@ -92,26 +95,30 @@ util.localStorage.set = async (key, val) => {
   return localStorageSet(storageObj)
 }
 
-util.createSuggestionItem = (html, props = {}) => {
-  const li = document.createElement("li")
-  li.innerHTML = html
-  return { html: li.outerHTML, props }
-}
+util.htmlUnsafe = (content) => html.node([content])
 
-util.createURLItem = (title, url, { desc = null, query = null } = {}) => {
-  const e = {
-    title: util.escapeHTML(title),
-    url: new URL(url).toString(),
-    desc: null,
-  }
-  if (desc && desc.length > 0) {
-    e.desc = (Array.isArray(desc) ? desc : [desc]).map((d) => `<div>${util.escapeHTML(d)}</div>`).join("")
-  }
-  return util.createSuggestionItem(`
-      <div style="font-weight: bold">${e.title}</div>
-      ${e.desc ?? ""}
-      <div style="opacity: 0.7; line-height: 1.3em">${e.url}</div>
-    `, { url: e.url, query: query ?? e.title })
+util.htmlPurify = (content, config = { USE_PROFILES: { html: true } }) => util.htmlUnsafe(DOMPurify.sanitize(content, config))
+
+util.htmlNode = (template, ...values) => html.node(template, ...values)
+
+util.htmlForEach = (items) => items.map((item) => html.for(item)`${item}`)
+
+util.html = (template, ...values) => util.htmlNode(template, ...values).outerHTML
+
+util.suggestionItem = (props = {}) => (template, ...values) => ({
+  html: util.html(template, ...values),
+  props,
+})
+
+util.urlItem = (title, url, { desc = null, query = null } = {}) => {
+  const descItems = desc && desc.length > 0 ? (Array.isArray(desc) ? desc : [desc]).map((d) => util.htmlNode`<div>${d}</div>`) : []
+  return util.suggestionItem({ url: url, query: query ?? title })`
+    <div>
+      <div style="font-weight: bold">${title}</div>
+      ${util.htmlForEach(descItems)}
+      <div style="opacity: 0.7; line-height: 1.3em">${url}</div>
+    </div>
+  `
 }
 
 util.defaultSelector = "a[href]:not([href^=javascript])"

@@ -1159,30 +1159,28 @@ completions.re.callback = async (response, { query }) => {
     return suggestionItem({
       url: encodeURI(`https://reddit.com${data.permalink}`),
     })`
-        <div style="display: flex; flex-direction: row">
-          <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${thumb}">
+      <div style="display: flex; flex-direction: row">
+        <img style="width: 70px; height: 50px; margin-right: 0.8em" alt="thumbnail" src="${thumb}">
+        <div>
           <div>
-            <div>
-              <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${
-                data.score
-              }</strong> ${
+            <strong><span style="font-size: 1.2em; margin-right: 0.2em">↑</span>${
+              data.score
+            }</strong> ${
       data.title
-    } <span style="font-size: 0.8em; color: rgba(0,0,0,0.5)">(${
-      data.domain
-    })</span>
-            </div>
-            <div>
-              <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">r/${
-                data.subreddit
-              }</span> • <span style="color: rgba(0,0,0,0.7)">${
+    } <span style="font-size: 0.8em; opacity: 60%">(${data.domain})</span>
+          </div>
+          <div>
+            <span style="font-size: 0.8em"><span style="color: opacity: 70%">r/${
+              data.subreddit
+            }</span> • <span style="color: opacity: 70%">${
       data.num_comments ?? "unknown"
-    }</span> <span style="color: rgba(0,0,0,0.5)">comments</span> • <span style="color: rgba(0,0,0,0.5)">submitted ${relDate} by</span> <span style="color: rgba(0,0,0,0.7)">${
+    }</span> <span style="opacity: 60%">comments</span> • <span style="opacity: 60%">submitted ${relDate} by</span> <span style="color: opacity: 70%">${
       data.author
     }</span></span>
-            </div>
           </div>
         </div>
-      `
+      </div>
+    `
   })
 }
 
@@ -1216,7 +1214,7 @@ completions.yt.callback = (response) =>
                 <span>${s.snippet.description}</span>
               </div>
               <div>
-                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">channel</span></span>
+                <span style="font-size: 0.8em"><span style="opacity: 70%">channel</span></span>
               </div>
             </div>
           </div>
@@ -1238,9 +1236,9 @@ completions.yt.callback = (response) =>
                 <span>${s.snippet.description}</span>
               </div>
               <div>
-                <span style="font-size: 0.8em"><span style="color: rgba(0,0,0,0.7)">video</span> <span style="color: rgba(0,0,0,0.5)">by</span> <span style="color: rgba(0,0,0,0.7)">${
+                <span style="font-size: 0.8em"><span style="opacity: 70%">video</span> <span style="opacity: 60%">by</span> <span style="opacity: 70%">${
                   s.snippet.channelTitle
-                }</span> • <span style="color: rgba(0,0,0,0.7)">${relDate}</span></span>
+                }</span> • <span style="opacity: 70%">${relDate}</span></span>
               </div>
             </div>
           </div>

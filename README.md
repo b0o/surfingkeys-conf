@@ -7,7 +7,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 It includes:
 
 - [261 key mappings for 101 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 56 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [Omnibar integration with 53 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -329,20 +329,6 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://www.crunchbase.com"><img src="./assets/favicons/www.crunchbase.com.ico" width="16px"> </a></td>
-    <td><code>co</code></td>
-    <td>crunchbase-orgs <a title="requires private API key" href="#optional-private-api-key-configuration">&#8727;</a></td>
-    <td><a href="https://www.crunchbase.com">www.crunchbase.com</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><a href="https://www.crunchbase.com"><img src="./assets/favicons/www.crunchbase.com.ico" width="16px"> </a></td>
-    <td><code>cp</code></td>
-    <td>crunchbase-people <a title="requires private API key" href="#optional-private-api-key-configuration">&#8727;</a></td>
-    <td><a href="https://www.crunchbase.com">www.crunchbase.com</a></td>
-    <td></td>
-  </tr>
-  <tr>
     <td><a href="https://chrome.google.com"><img src="./assets/favicons/chrome.google.com.ico" width="16px"> </a></td>
     <td><code>cs</code></td>
     <td>chromestore <a title="requires private API key" href="#optional-private-api-key-configuration">&#8727;</a></td>
@@ -410,13 +396,6 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td><code>eb</code></td>
     <td>ebay</td>
     <td><a href="https://www.ebay.com">www.ebay.com</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td><a href="https://hex.pm"><img src="./assets/favicons/hex.pm.ico" width="16px"> </a></td>
-    <td><code>ex</code></td>
-    <td>exdocs <a title="requires private API key" href="#optional-private-api-key-configuration">&#8727;</a></td>
-    <td><a href="https://hex.pm">hex.pm</a></td>
     <td></td>
   </tr>
   <tr>

@@ -13,11 +13,11 @@
 // These are private API keys which are required for certain search completions.
 // You can obtain them all for free at the supplied links.
 const keys = {
-  crunchbase:    "", // https://about.crunchbase.com/crunchbase-basic-access/
-  google_cs:     "", // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
-  google_yt:     "", // https://developers.google.com/youtube/v3/docs/
-  wolframalpha:  "", // https://products.wolframalpha.com/api/
-  domainr:       "", // https://market.mashape.com/domainr/domainr
+  crunchbase: "", // https://about.crunchbase.com/crunchbase-basic-access/
+  google_cs: "", // https://developers.google.com/custom-search/json-api/v1/overview?hl=en_US
+  google_yt: "", // https://developers.google.com/youtube/v3/docs/
+  wolframalpha: "", // https://products.wolframalpha.com/api/
+  domainr: "", // https://market.mashape.com/domainr/domainr
   alternativeTo: "", // Extract the x-algolia-api-key sent with requests when typing in search box on alternativeto.net
 
   // ****** Google Custom Search Engines ****** //
@@ -38,6 +38,6 @@ const keys = {
 // A function which accepts a Digital Object Identifier (DOI) and returns a URL,
 // used for accessing academic papers.
 // Hint: You probably want to use the service created by Alexandra Elbakyan
-const doi_handler = (doi) =>  `https://doi.org/${doi}`
+const doi_handler = (doi) => `https://doi.org/${doi}`
 
 export default { keys, doi_handler }

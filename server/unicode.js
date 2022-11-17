@@ -46,8 +46,10 @@ export default function search(q) {
     const val = char.value.toLowerCase()
     const valDec = parseInt(val, 16).toString()
     return terms.reduce(
-      (acc, word) => acc && (name.indexOf(word) !== -1 || val.startsWith(word) || word === valDec),
-      true,
+      (acc, word) =>
+        acc &&
+        (name.indexOf(word) !== -1 || val.startsWith(word) || word === valDec),
+      true
     )
   })
 }

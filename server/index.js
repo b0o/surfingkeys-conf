@@ -18,13 +18,17 @@ app.use((req, _, next) => {
 const handler = (allowedOrigin) => async (req, res) => {
   try {
     // TODO: remove timeout (testing)
-    setTimeout(() => res.sendFile(getPath(paths.buildDir, paths.output), {
-      headers: {
-        "Content-Type":                "text/javascript; charset=UTF-8",
-        "Access-Control-Allow-Origin": allowedOrigin,
-      },
-      maxAge: 2000,
-    }), parseInt(req.query.delay ?? 0, 10))
+    setTimeout(
+      () =>
+        res.sendFile(getPath(paths.buildDir, paths.output), {
+          headers: {
+            "Content-Type": "text/javascript; charset=UTF-8",
+            "Access-Control-Allow-Origin": allowedOrigin,
+          },
+          maxAge: 2000,
+        }),
+      parseInt(req.query.delay ?? 0, 10)
+    )
   } catch (e) {
     log(e)
     res.status(500).send("Error retrieving config file.\n")
@@ -32,8 +36,14 @@ const handler = (allowedOrigin) => async (req, res) => {
 }
 
 app.get("/", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
-app.get("/chrome", handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid"))
-app.get("/firefox", handler("moz-extension://a7b04efeb-0b36-47f6-9f57-70293e5ee7b2"))
+app.get(
+  "/chrome",
+  handler("chrome-extension://mffcegbjcdejldmihkogmcnkgbbhioid")
+)
+app.get(
+  "/firefox",
+  handler("moz-extension://a7b04efeb-0b36-47f6-9f57-70293e5ee7b2")
+)
 // app.get("/s/echo", (req, res) => res.json({ q: req.query.q?.toString() ?? "" }))
 app.get("/s/unicode", (req, res) => {
   const { q } = req.query

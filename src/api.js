@@ -2,11 +2,14 @@
 const getBrowserName = () => {
   if (window.navigator.userAgent.indexOf("Chrome") !== -1) {
     return "Chrome"
-  } if (window.navigator.vendor.indexOf("Apple Computer, Inc.") === 0) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.platform)
-            || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  }
+  if (window.navigator.vendor.indexOf("Apple Computer, Inc.") === 0) {
+    const isIOS =
+      /iPad|iPhone|iPod/.test(navigator.platform) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
     return isIOS ? "Safari-iOS" : "Safari"
-  } if (window.navigator.userAgent.indexOf("Firefox") !== -1) {
+  }
+  if (window.navigator.userAgent.indexOf("Firefox") !== -1) {
     return "Firefox"
   }
   return "Chrome"
@@ -38,7 +41,7 @@ const getApi = () => {
     Visual,
     Front,
 
-    insertJS:       Normal.insertJS,
+    insertJS: Normal.insertJS,
     addSearchAlias: addSearchAliasX,
 
     aceVimMap,

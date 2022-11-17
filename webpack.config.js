@@ -1,7 +1,7 @@
-import TerserPlugin from 'terser-webpack-plugin'
+import TerserPlugin from "terser-webpack-plugin"
 
 export default {
-  mode:   "production",
+  mode: "production",
   module: {
     rules: [
       {

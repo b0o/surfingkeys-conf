@@ -25,10 +25,13 @@ app.get("/domainr", async (req, res) => {
       res.status(500).send({ error: "Error querying Domainr" })
       return
     }
-    Object.assign(domains, data.results.reduce((acc, d) => {
-      acc[d.domain] = { status: ["unknown"], summary: "unknown" }
-      return acc
-    }, {}))
+    Object.assign(
+      domains,
+      data.results.reduce((acc, d) => {
+        acc[d.domain] = { status: ["unknown"], summary: "unknown" }
+        return acc
+      }, {})
+    )
   } catch (e) {
     res.status(500).send({ error: "domainr search error" })
     return
@@ -44,13 +47,18 @@ app.get("/domainr", async (req, res) => {
     const subRes = await fetch(`${baseURL}status/?${key}&domain=${domainsStr}`)
     const data = await subRes.json()
     if (!Array.isArray(data.status)) {
-      res.status(500).send({ error: "domainr status: unexpected empty response" })
+      res
+        .status(500)
+        .send({ error: "domainr status: unexpected empty response" })
       return
     }
-    Object.assign(domains, data.status.reduce((acc, d) => {
-      acc[d.domain] = { status: d.status.split(" "), summary: d.summary }
-      return acc
-    }, {}))
+    Object.assign(
+      domains,
+      data.status.reduce((acc, d) => {
+        acc[d.domain] = { status: d.status.split(" "), summary: d.summary }
+        return acc
+      }, {})
+    )
   } catch (e) {
     res.status(500).send({ error: "domainr status error" })
     return

@@ -17,7 +17,7 @@ const registerKey = (domain, mapObj, siteleader) => {
   const {
     alias,
     callback,
-    leader = (domain === "global") ? "" : siteleader,
+    leader = domain === "global" ? "" : siteleader,
     category = categories.misc,
     description = "",
     path = "(/.*)?",
@@ -41,22 +41,24 @@ const registerKey = (domain, mapObj, siteleader) => {
 }
 
 const registerKeys = (maps, aliases, siteleader) => {
-  const hydratedAliases = Object.entries(aliases)
-    .flatMap(([baseDomain, aliasDomains]) =>
-      aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] })))
+  const hydratedAliases = Object.entries(
+    aliases
+  ).flatMap(([baseDomain, aliasDomains]) =>
+    aliasDomains.flatMap((a) => ({ [a]: maps[baseDomain] }))
+  )
 
   const mapsAndAliases = Object.assign({}, maps, ...hydratedAliases)
 
   Object.entries(mapsAndAliases).forEach(([domain, domainMaps]) =>
-    domainMaps.forEach((mapObj) =>
-      registerKey(domain, mapObj, siteleader)))
+    domainMaps.forEach((mapObj) => registerKey(domain, mapObj, siteleader))
+  )
 }
 
 const registerSearchEngines = (searchEngines, searchleader) =>
   Object.values(searchEngines).forEach((s) => {
     const options = {
       favicon_url: s.favicon,
-      skipMaps:    true,
+      skipMaps: true,
     }
     addSearchAlias(
       s.alias,
@@ -66,14 +68,24 @@ const registerSearchEngines = (searchEngines, searchleader) =>
       s.compl,
       s.callback,
       undefined,
-      options,
+      options
     )
-    mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () => Front.openOmnibar({ type: "SearchEngine", extra: s.alias }))
-    mapkey(`c${searchleader}${s.alias}`, `#8Search ${s.name} with clipboard contents`, () => {
-      Clipboard.read((c) => {
-        Front.openOmnibar({ type: "SearchEngine", pref: c.data, extra: s.alias })
-      })
-    })
+    mapkey(`${searchleader}${s.alias}`, `#8Search ${s.name}`, () =>
+      Front.openOmnibar({ type: "SearchEngine", extra: s.alias })
+    )
+    mapkey(
+      `c${searchleader}${s.alias}`,
+      `#8Search ${s.name} with clipboard contents`,
+      () => {
+        Clipboard.read((c) => {
+          Front.openOmnibar({
+            type: "SearchEngine",
+            pref: c.data,
+            extra: s.alias,
+          })
+        })
+      }
+    )
   })
 
 const main = async () => {
@@ -81,7 +93,7 @@ const main = async () => {
   if (conf.settings) {
     Object.assign(
       settings,
-      typeof conf.settings === "function" ? conf.settings() : conf.settings,
+      typeof conf.settings === "function" ? conf.settings() : conf.settings
     )
   }
 

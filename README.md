@@ -241,7 +241,7 @@ It includes:
 </tbody>
 </table>
 
-There are also mappings to open academic papers from 70+ publishers using a DOI handler.
+There are also mappings to open academic papers from [70+ publishers](https://github.com/b0o/surfingkeys-conf/blob/4263985b12b2acd126a70988de4db8a39e118144/src/keys.js#L1240) using a [DOI handler](https://github.com/b0o/surfingkeys-conf/blob/4263985b12b2acd126a70988de4db8a39e118144/src/conf.priv.example.js#L38-L41).
 
 ### Omnibar Search Engine Integrations
 

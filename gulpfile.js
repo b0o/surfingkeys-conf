@@ -56,6 +56,16 @@ const getSources = (() => {
     if (sources !== null) {
       return sources
     }
+    // Create stubs for document methods which are used by uhtml
+    const oldDocument = global.document
+    global.document = {
+      createDocumentFragment: function() {},
+      createElement: function() {},
+      createElementNS: function() {},
+      createTextNode: function() {},
+      createTreeWalker: function() {},
+      importNode: function() {},
+    }
     sources = await Object.fromEntries(
       await Promise.all(Object.entries(paths.sources).map(
         async ([name, srcPath]) =>
@@ -65,6 +75,7 @@ const getSources = (() => {
           ],
       )),
     )
+    global.document = oldDocument
     return sources
   }
 })()

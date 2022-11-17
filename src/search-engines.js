@@ -811,66 +811,6 @@ completions.hd.callback = (response) => JSON.parse(response.text).map((s) => {
 
 // Exdocs
 // Similar to `hd` but searches inside docs using Google Custom Search
-completions.ex = googleCustomSearch({
-  alias:  "ex",
-  name:   "exdocs",
-  search: "https://hex.pm/packages?sort=downloads&ex&search=",
-})
-
-completions.ex.callback = (response) => JSON.parse(response.text).items.map((s) => {
-  let hash = ""
-
-  const snippet = s.htmlSnippet
-  const openTag = "<b>"
-  const closeTag = "</b>"
-  const openArgs = "("
-  const closeArgs = ")"
-
-  let f1 = snippet.indexOf(openTag)
-  if (f1 === -1) {
-    return null
-  }
-  const f2 = snippet.indexOf(closeTag)
-  if (f2 === -1) {
-    return null
-  }
-
-  f1 += openTag.length
-  const f3 = f2 + closeTag.length
-  const fname = snippet.slice(f1, f2)
-  const snippetEnd = snippet.slice(f3)
-
-  const a1 = snippetEnd.indexOf(openArgs)
-  if (a1 !== 0) {
-    return null
-  }
-  let a2 = snippetEnd.indexOf(closeArgs)
-  if (a2 === -1) {
-    return null
-  }
-
-  a2 += closeArgs.length
-  const fargs = snippetEnd.slice(a1, a2)
-  const fary = fargs.replace(new RegExp(openArgs + closeArgs), "").split(",").length
-  hash = escapeHTML(`${fname}/${fary}`)
-
-  const moduleName = escapeHTML(s.title).split(" –")[0]
-
-  let subtitle = ""
-  if (hash) {
-    subtitle = `
-        <div style="font-size:1.1em; line-height:1.25em">
-          <em>${moduleName}</em>.<strong>${hash}</strong>
-        </div>`
-  }
-  return createSuggestionItem(`
-      <div>
-        <div class="title"><strong>${s.htmlTitle}</strong></div>
-        ${subtitle}
-        <div>${s.htmlSnippet}</div>
-      </div>
-    `, { url: `${s.link}#${hash}` })
-}).filter((s) => s !== null)
 
 // ****** Golang ****** //
 

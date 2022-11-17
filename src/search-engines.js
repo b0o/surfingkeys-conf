@@ -995,9 +995,7 @@ completions.md.callback = (response) => {
   return res.documents.map(
     (s) =>
       suggestionItem({
-        url: `https://developer.mozilla.org/${encodeURIComponent(
-          s.locale
-        )}/docs/${encodeURIComponent(s.slug)}`,
+        url: `https://developer.mozilla.org/${s.locale}/docs/${s.slug}`,
       })`
       <div>
         <div class="title"><strong>${s.title}</strong></div>

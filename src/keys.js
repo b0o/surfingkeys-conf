@@ -1295,7 +1295,7 @@ if (priv.doi_handler) {
   registerDOI("ocl-journal.org")
   registerDOI("onlinelibrary.wiley.com")
   registerDOI("pnas.org")
-  registerDOI("pubmed.ncbi.nlm.nih.gov")
+  registerDOI("ncbi.nlm.nih.gov")
   registerDOI("pubs.acs.org", actions.doi.providers.meta_dcIdentifier_doi)
   registerDOI("pubs.geoscienceworld.org")
   registerDOI("pubs.rsna.org", actions.doi.providers.meta_dcIdentifier_doi)

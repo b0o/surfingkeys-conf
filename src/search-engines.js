@@ -1230,10 +1230,10 @@ completions.yt.callback = (response) =>
             }px; margin-right: 0.8em`}" alt="thumbnail" src="${thumb.url}">
             <div>
               <div>
-                <strong>${s.snippet.title}</strong>
+                <strong>${htmlPurify(s.snippet.title)}</strong>
               </div>
               <div>
-                <span>${s.snippet.description}</span>
+                <span>${htmlPurify(s.snippet.description)}</span>
               </div>
               <div>
                 <span style="font-size: 0.8em"><span style="opacity: 70%">video</span> <span style="opacity: 60%">by</span> <span style="opacity: 70%">${

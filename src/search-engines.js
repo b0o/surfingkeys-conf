@@ -1275,7 +1275,7 @@ completions.hf.callback = (response) => {
     ...res.datasets.map(
       (d) =>
         suggestionItem({
-          url: `https://huggingface.co/${d.id}`,
+          url: `https://huggingface.co/datasets/${d.id}`,
         })`
         <div>
           <div><strong>${d.id}</strong></div>

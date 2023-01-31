@@ -7,7 +7,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 It includes:
 
 - [261 key mappings for 101 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 53 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [Omnibar integration with 54 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -469,6 +469,13 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
+    <td><a href="https://huggingface.co"><img src="./assets/favicons/huggingface.co.ico" width="16px"> </a></td>
+    <td><code>hf</code></td>
+    <td>huggingface</td>
+    <td><a href="https://huggingface.co">huggingface.co</a></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><a href="https://news.ycombinator.com"><img src="./assets/favicons/news.ycombinator.com.ico" width="16px"> </a></td>
     <td><code>hn</code></td>
     <td>hackernews</td>
@@ -839,4 +846,4 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 
 ## Copyright
 
-<p><h4>Author</h4>&copy; 2017-2022 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>
+<p><h4>Author</h4>&copy; 2017-2023 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>

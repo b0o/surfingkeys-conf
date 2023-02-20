@@ -1277,6 +1277,19 @@ maps["ikea.com"] = [
   },
 ]
 
+maps["chat.openai.com"] = [
+  {
+    alias: "n",
+    description: "New chat",
+    callback: () => actions.cg.newChat(),
+  },
+  {
+    alias: "a",
+    description: "Open chat",
+    callback: () => util.createHints([...actions.cg.getChatLinks()]),
+  },
+]
+
 const registerDOI = (
   domain,
   provider = actions.doi.providers.meta_citation_doi

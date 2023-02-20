@@ -1204,4 +1204,14 @@ actions.doi.getLink = (provider) => {
   return priv.doi_handler(doi)
 }
 
+// ChatGPT
+actions.cg = {}
+actions.cg.getNewChatLink = () =>
+  [...document.querySelectorAll("a")].find((a) => a.innerText === "New chat")
+
+actions.cg.newChat = () => actions.cg.getNewChatLink().click()
+
+actions.cg.getChatLinks = () =>
+  actions.cg.getNewChatLink().nextSibling.querySelectorAll("a")
+
 export default actions

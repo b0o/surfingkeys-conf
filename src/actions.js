@@ -111,6 +111,11 @@ actions.getWappalyzerUrl = ({ hostname = window.location.hostname } = {}) =>
 actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
   `https://discussions.xojoc.pw/?${new URLSearchParams({ url: href })}`
 
+actions.getSummaryUrl = ({ href = window.location.href } = {}) =>
+  `https://kagi.com/summarizer/index.html?${new URLSearchParams({
+    url: href,
+  })}`
+
 // // Custom Omnibar interfaces
 // // ------------------------
 // actions.omnibar = {}
@@ -143,11 +148,10 @@ actions.getDiscussionsUrl = ({ href = window.location.href } = {}) =>
 
 // Surfingkeys-specific actions
 // ----------------------------
-actions.openAnchor = ({
-  newTab = false,
-  active = true,
-  prop = "href",
-} = {}) => (a) => actions.openLink(a[prop], { newTab, active })
+actions.openAnchor =
+  ({ newTab = false, active = true, prop = "href" } = {}) =>
+  (a) =>
+    actions.openLink(a[prop], { newTab, active })
 
 actions.openLink = (url, { newTab = false, active = true } = {}) => {
   if (newTab) {
@@ -379,61 +383,63 @@ actions.dg.siteSearch = (site) => {
 // GitHub
 // ------
 actions.gh = {}
-actions.gh.star = ({ toggle = false } = {}) => async () => {
-  const hasDisplayNoneParent = (e) =>
-    window.getComputedStyle(e).display === "none" ||
-    (e.parentElement ? hasDisplayNoneParent(e.parentElement) : false)
+actions.gh.star =
+  ({ toggle = false } = {}) =>
+  async () => {
+    const hasDisplayNoneParent = (e) =>
+      window.getComputedStyle(e).display === "none" ||
+      (e.parentElement ? hasDisplayNoneParent(e.parentElement) : false)
 
-  const starContainers = Array.from(
-    document.querySelectorAll("div.starring-container")
-  ).filter((e) => !hasDisplayNoneParent(e))
+    const starContainers = Array.from(
+      document.querySelectorAll("div.starring-container")
+    ).filter((e) => !hasDisplayNoneParent(e))
 
-  let container
-  switch (starContainers.length) {
-    case 0:
-      return
-    case 1:
-      ;[container] = starContainers
-      break
-    default:
-      try {
-        container = await util.createHints(starContainers, { action: null })
-      } catch (_) {
+    let container
+    switch (starContainers.length) {
+      case 0:
         return
-      }
+      case 1:
+        ;[container] = starContainers
+        break
+      default:
+        try {
+          container = await util.createHints(starContainers, { action: null })
+        } catch (_) {
+          return
+        }
+    }
+
+    const repoUrl = container.parentElement.parentElement?.matches(
+      "ul.pagehead-actions"
+    )
+      ? window.location.pathname
+      : new URL(container.parentElement.querySelector("form").action).pathname
+
+    const status = container.classList.contains("on")
+    const repo = repoUrl.slice(1).split("/").slice(0, 2).join("/")
+
+    let star = "★"
+    let statusMsg = "starred"
+    let copula = "is"
+
+    if ((status && toggle) || (!status && !toggle)) {
+      statusMsg = `un${statusMsg}`
+      star = "☆"
+    }
+
+    if (toggle) {
+      copula = "has been"
+      container
+        .querySelector(
+          status
+            ? ".starred button, button.starred"
+            : ".unstarred button, button.unstarred"
+        )
+        .click()
+    }
+
+    Front.showBanner(`${star} Repository ${repo} ${copula} ${statusMsg}!`)
   }
-
-  const repoUrl = container.parentElement.parentElement?.matches(
-    "ul.pagehead-actions"
-  )
-    ? window.location.pathname
-    : new URL(container.parentElement.querySelector("form").action).pathname
-
-  const status = container.classList.contains("on")
-  const repo = repoUrl.slice(1).split("/").slice(0, 2).join("/")
-
-  let star = "★"
-  let statusMsg = "starred"
-  let copula = "is"
-
-  if ((status && toggle) || (!status && !toggle)) {
-    statusMsg = `un${statusMsg}`
-    star = "☆"
-  }
-
-  if (toggle) {
-    copula = "has been"
-    container
-      .querySelector(
-        status
-          ? ".starred button, button.starred"
-          : ".unstarred button, button.unstarred"
-      )
-      .click()
-  }
-
-  Front.showBanner(`${star} Repository ${repo} ${copula} ${statusMsg}!`)
-}
 
 actions.gh.parseRepo = (url = window.location.href, rootOnly = false) => {
   let u
@@ -1209,7 +1215,14 @@ actions.cg = {}
 actions.cg.getNewChatLink = () =>
   [...document.querySelectorAll("a")].find((a) => a.innerText === "New chat")
 
-actions.cg.newChat = () => actions.cg.getNewChatLink().click()
+actions.cg.newChat = () => {
+  const a = actions.cg.getNewChatLink()
+  if (a) {
+    a.click()
+    return
+  }
+  location.assign("/chat")
+}
 
 actions.cg.getChatLinks = () =>
   actions.cg.getNewChatLink().nextSibling.querySelectorAll("a")

@@ -232,6 +232,12 @@ maps.global = [
       actions.openLink(actions.getDiscussionsUrl(), { newTab: true }),
   },
   {
+    alias: "=S",
+    category: categories.misc,
+    description: "View summary for page",
+    callback: () => actions.openLink(actions.getSummaryUrl(), { newTab: true }),
+  },
+  {
     alias: "=o",
     category: categories.misc,
     description: "Show outline.com version of page",

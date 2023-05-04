@@ -758,6 +758,12 @@ actions.gh.viewSourceGraph = () => {
   actions.openLink(url.href, { newTab: true })
 }
 
+actions.gh.openInDev = ({ newTab = false } = {}) => {
+  const url = new URL(window.location.href)
+  url.hostname = "github.dev"
+  actions.openLink(url.href, { newTab })
+}
+
 actions.gh.selectFile = async ({ files = true, directories = true } = {}) => {
   if (!(files || directories))
     throw new Error("At least one of 'files' or 'directories' must be true")

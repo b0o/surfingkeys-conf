@@ -624,8 +624,13 @@ maps["github.com"] = [
   },
   {
     alias: "D",
-    description: "View GoDoc for Project",
-    callback: actions.viewGodoc,
+    description: "Open in github.dev (new tab)",
+    callback: () => actions.gh.openInDev({ newTab: true }),
+  },
+  {
+    alias: "dd",
+    description: "Open in github.dev",
+    callback: actions.gh.openInDev,
   },
   {
     alias: "G",

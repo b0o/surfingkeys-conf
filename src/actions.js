@@ -1221,16 +1221,24 @@ actions.cg = {}
 actions.cg.getNewChatLink = () =>
   [...document.querySelectorAll("a")].find((a) => a.innerText === "New chat")
 
-actions.cg.newChat = () => {
+actions.cg.newChat = async () => {
+  const clickNewChat = async (newChatLink) => {
+    newChatLink.click()
+    const gpt4LinkQuery = () => [...document.querySelectorAll('li[class*="group/toggle"]')].find((li) => li.innerText === "GPT-4")
+    return await util.until(gpt4LinkQuery)
+  }
+
   const a = actions.cg.getNewChatLink()
   if (a) {
-    a.click()
+    const gpt4Link = await clickNewChat(a)
+    gpt4Link.querySelector("button>div").click()
     return
   }
-  location.assign("/chat")
+
+  location.assign("https://chat.openai.com/?model=gpt-4")
 }
 
 actions.cg.getChatLinks = () =>
-  actions.cg.getNewChatLink().nextSibling.querySelectorAll("a")
+  actions.cg.getNewChatLink().parentElement.nextSibling.nextSibling.querySelectorAll("a")
 
 export default actions

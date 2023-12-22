@@ -115,9 +115,8 @@ maps.global = [
     description: "Go to parent domain",
     callback: () => {
       const subdomains = window.location.host.split(".")
-      const parentDomain = (subdomains.length > 2
-        ? subdomains.slice(1)
-        : subdomains
+      const parentDomain = (
+        subdomains.length > 2 ? subdomains.slice(1) : subdomains
       ).join(".")
       actions.openLink(`${window.location.protocol}//${parentDomain}`)
     },

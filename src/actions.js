@@ -4,7 +4,7 @@ import api from "./api.js"
 import priv from "./conf.priv.js"
 import util from "./util.js"
 
-const { tabOpenLink, Front, Hints, Normal, RUNTIME } = api
+const { tabOpenLink, Front, Hints, Normal, RUNTIME, Clipboard } = api
 
 const actions = {}
 
@@ -862,6 +862,23 @@ actions.tw.openUser = () =>
       )
     )
   )
+
+// Bsky
+// ----
+actions.by = {}
+actions.by.copyDID = () => {
+  util.createHints("img[src*='/did:plc:']", (e) => {
+    const [_, did] = e.src.match("/(did:.*)/")
+    if (did) Clipboard.write(did)
+  })
+}
+
+actions.by.copyPostID = () => {
+  util.createHints('a[href*="/post/"]', (e) => {
+    const [_, postID] = e.pathname.match(/^\/profile\/[^/]+\/post\/(\w+)/)
+    if (postID) Clipboard.write(postID)
+  })
+}
 
 // Reddit
 // ------

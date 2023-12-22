@@ -759,6 +759,20 @@ maps["twitter.com"] = [
   },
 ]
 
+maps["bsky.app"] = [
+  {
+    alias: "d",
+    description: "Copy user DID",
+    callback: actions.by.copyDID,
+  },
+  {
+    alias: "p",
+    description: "Copy user post ID",
+    callback: actions.by.copyPostID,
+  },
+]
+
+
 maps["reddit.com"] = [
   {
     alias: "x",

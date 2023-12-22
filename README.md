@@ -6,8 +6,8 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [261 key mappings for 101 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 54 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [267 key mappings for 103 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [Omnibar integration with 55 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -50,6 +50,7 @@ It includes:
 <tr><td><code>&#x3D;a</code></td><td>Show Archive.org Wayback Machine for page</td></tr>
 <tr><td><code>&#x3D;A</code></td><td>Show Alexa.com info for domain</td></tr>
 <tr><td><code>&#x3D;s</code></td><td>View social discussions for page</td></tr>
+<tr><td><code>&#x3D;S</code></td><td>View summary for page</td></tr>
 <tr><td><code>&#x3D;o</code></td><td>Show outline.com version of page</td></tr>
 <tr><td><code>&#x3D;bw</code></td><td>Show BuiltWith report for page</td></tr>
 <tr><td><code>&#x3D;wa</code></td><td>Show Wappalyzer report for page</td></tr>
@@ -77,6 +78,12 @@ It includes:
 <tr><td><code>&lt;Space&gt;b</code></td><td>Add project to collection</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View project</td></tr>
 <tr><td><code>&lt;Space&gt;A</code></td><td>View project (non-active new tab)</td></tr>
+<tr><th colspan="2"><a href="//bsky.app"><img src="./assets/favicons/bsky.app.ico" width="16px"> bsky.app</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;d</code></td><td>Copy user DID</td></tr>
+<tr><td><code>&lt;Space&gt;p</code></td><td>Copy user post ID</td></tr>
+<tr><th colspan="2"><a href="//chat.openai.com"><img src="./assets/favicons/chat.openai.com.ico" width="16px"> chat.openai.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>&lt;Space&gt;n</code></td><td>New chat</td></tr>
+<tr><td><code>&lt;Space&gt;a</code></td><td>Open chat</td></tr>
 <tr><th colspan="2"><a href="//craigslist.org"><img src="./assets/favicons/craigslist.org.ico" width="16px"> craigslist.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View listing</td></tr>
 <tr><th colspan="2"><a href="//devdocs.io"><img src="./assets/favicons/devdocs.io.ico" width="16px"> devdocs.io</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
@@ -124,7 +131,8 @@ It includes:
 <tr><td><code>&lt;Space&gt;yy</code></td><td>Copy Project Path</td></tr>
 <tr><td><code>&lt;Space&gt;Y</code></td><td>Copy Project Path (including domain)</td></tr>
 <tr><td><code>&lt;Space&gt;l</code></td><td>Toggle repo language stats</td></tr>
-<tr><td><code>&lt;Space&gt;D</code></td><td>View GoDoc for Project</td></tr>
+<tr><td><code>&lt;Space&gt;D</code></td><td>Open in github.dev (new tab)</td></tr>
+<tr><td><code>&lt;Space&gt;dd</code></td><td>Open in github.dev</td></tr>
 <tr><td><code>&lt;Space&gt;G</code></td><td>View on SourceGraph</td></tr>
 <tr><td><code>&lt;Space&gt;r</code></td><td>View live raw version of file</td></tr>
 <tr><td><code>&lt;Space&gt;yr</code></td><td>Copy raw link to file</td></tr>
@@ -572,6 +580,13 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td>thesaurus</td>
     <td><a href="https://www.onelook.com">www.onelook.com</a></td>
     <td><a href="#thesaurus">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://www.typescriptlang.org"><img src="./assets/favicons/www.typescriptlang.org.ico" width="16px"> </a></td>
+    <td><code>ts</code></td>
+    <td>typescript</td>
+    <td><a href="https://www.typescriptlang.org">www.typescriptlang.org</a></td>
+    <td></td>
   </tr>
   <tr>
     <td><a href="https://twitter.com"><img src="./assets/favicons/twitter.com.ico" width="16px"> </a></td>

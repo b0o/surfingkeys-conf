@@ -1039,6 +1039,56 @@ completions.np.callback = (response) =>
     `
   })
 
+// TypeScript docs
+completions.ts = {
+  alias: "ts",
+  name: "typescript",
+  search: "https://duckduckgo.com/?q=site%3Awww.typescriptlang.org+",
+  compl: `https://bgcdyoiyz5-dsn.algolia.net/1/indexes/typescriptlang?x-algolia-application-id=BGCDYOIYZ5&x-algolia-api-key=37ee06fa68db6aef451a490df6df7c60&query=`,
+  favicon: "https://www.typescriptlang.org/favicon-32x32.png",
+  priv: true,
+}
+
+completions.ts.callback = async (response) => {
+  const res = JSON.parse(response.text)
+  return Object.entries(res.hits.reduce((acc, hit) => {
+    const lvl0 = hit.hierarchy.lvl0
+    if (!acc[lvl0]) {
+      acc[lvl0] = []
+    }
+    acc[lvl0].push(hit)
+    return acc
+  }, {}))
+    .sort(([lvl0A], [lvl0B]) => lvl0A.localeCompare(lvl0B))
+    .flatMap(([lvl0, hits]) => {
+      return hits.map((hit) => {
+        console.log(hit)
+        const lvl = hit.type
+        const hierarchy = Object.entries(hit.hierarchy).reduce(
+          (acc, [lvl, name]) => {
+            if (!name || lvl === hit.type) {
+              return acc
+            }
+            return `${acc ? acc + " > " : ""}${name}`
+          },
+          ""
+        )
+        const title = hit.hierarchy[lvl]
+        const desc = hit.content
+        return suggestionItem({ url: hit.url })`
+          <div>
+            <div style="font-weight: bold">
+              <span style="opacity: 0.6">${htmlPurify(hierarchy)}${title ? " > " : ""}</span>
+              <span style="">${htmlPurify(title)}</span>
+            </div>
+            <div>${htmlPurify(desc)}</div>
+            <div style="opacity: 0.6; line-height: 1.3em">${htmlPurify(hit.url)}</div>
+          </div>
+        `
+      })
+    })
+}
+
 // ****** Social Media & Entertainment ****** //
 
 // Hacker News (YCombinator)

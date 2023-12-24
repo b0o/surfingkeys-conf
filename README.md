@@ -32,7 +32,6 @@ It includes:
 <tr><td><code>J</code></td><td>Scroll half page down</td></tr>
 <tr><td><code>gh</code></td><td>Scroll to element targeted by URL hash</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
-<tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gI</code></td><td>View image in new tab</td></tr>
 <tr><td><code>g.</code></td><td>Go to parent domain</td></tr>
 <tr><td><code>yp</code></td><td>Copy URL path of current page</td></tr>

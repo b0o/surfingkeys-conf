@@ -596,10 +596,10 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://unicode-table.com"><img src="./assets/favicons/unicode-table.com.ico" width="16px"> </a></td>
+    <td><a href="https://symbl.cc"><img src="./assets/favicons/unicode-table.com.ico" width="16px"> </a></td>
     <td><code>un</code></td>
     <td>unicode <a title="requires local web server" href="#running-the-local-web-server">&#8224;</a></td>
-    <td><a href="https://unicode-table.com">unicode-table.com</a></td>
+    <td><a href="https://symbl.cc">symbl.cc</a></td>
     <td><a href="#unicode">:framed_picture:</a></td>
   </tr>
   <tr>

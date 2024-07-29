@@ -6,7 +6,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [267 key mappings for 103 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [268 key mappings for 104 unique websites](#site-specific-key-mappings) which **automate many common actions**.
 - [Omnibar integration with 55 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
@@ -84,6 +84,8 @@ It includes:
 <tr><th colspan="2"><a href="//chat.openai.com"><img src="./assets/favicons/chat.openai.com.ico" width="16px"> chat.openai.com</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;n</code></td><td>New chat</td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>Open chat</td></tr>
+<tr><th colspan="2"><a href="//claude.ai"><img src="./assets/favicons/claude.ai.ico" width="16px"> claude.ai</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
+<tr><td><code>i</code></td><td>Focus input</td></tr>
 <tr><th colspan="2"><a href="//craigslist.org"><img src="./assets/favicons/craigslist.org.ico" width="16px"> craigslist.org</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
 <tr><td><code>&lt;Space&gt;a</code></td><td>View listing</td></tr>
 <tr><th colspan="2"><a href="//devdocs.io"><img src="./assets/favicons/devdocs.io.ico" width="16px"> devdocs.io</a></th></tr><tr><td><strong>Mapping</strong></td><td><strong>Description</strong></td></tr>
@@ -345,7 +347,7 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
   </tr>
   <tr>
     <td><a href="https://duckduckgo.com"><img src="./assets/favicons/duckduckgo.com.ico" width="16px"> </a></td>
-    <td><code>dd</code></td>
+    <td><code>du</code></td>
     <td>duckduckgo</td>
     <td><a href="https://duckduckgo.com">duckduckgo.com</a></td>
     <td></td>
@@ -596,10 +598,10 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
-    <td><a href="https://unicode-table.com"><img src="./assets/favicons/unicode-table.com.ico" width="16px"> </a></td>
+    <td><a href="https://symbl.cc"><img src="./assets/favicons/symbl.cc.ico" width="16px"> </a></td>
     <td><code>un</code></td>
     <td>unicode <a title="requires local web server" href="#running-the-local-web-server">&#8224;</a></td>
-    <td><a href="https://unicode-table.com">unicode-table.com</a></td>
+    <td><a href="https://symbl.cc">symbl.cc</a></td>
     <td><a href="#unicode">:framed_picture:</a></td>
   </tr>
   <tr>
@@ -861,4 +863,4 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 
 ## Copyright
 
-<p><h4>Author</h4>&copy; 2017-2023 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>
+<p><h4>Author</h4>&copy; 2017-2024 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>

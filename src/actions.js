@@ -988,7 +988,8 @@ actions.wp.viewWikiRank = () => {
 }
 
 actions.wp.markdownSummary = () =>
-  `> ${[
+  `> [!wiki]
+> ${[
     (acc) => [...acc.querySelectorAll("sup")].map((e) => e.remove()),
     (acc) =>
       [...acc.querySelectorAll("b")].forEach((e) => {
@@ -1006,8 +1007,8 @@ actions.wp.markdownSummary = () =>
         .cloneNode(true)
     )
     .innerText.trim()}
-
-— ${actions.getMarkdownLink()}`
+>
+> — ${actions.getMarkdownLink()}`
 
 // Nest Thermostat Controller
 // --------------------------

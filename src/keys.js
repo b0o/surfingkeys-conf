@@ -6,7 +6,7 @@ import util from "./util.js"
 
 const { categories } = help
 
-const { Clipboard, Front } = api
+const { Clipboard, Front, Hints } = api
 
 // Remove undesired default mappings
 const unmaps = {
@@ -1311,6 +1311,15 @@ maps["chat.openai.com"] = [
     alias: "a",
     description: "Open chat",
     callback: () => util.createHints([...actions.cg.getChatLinks()]),
+  },
+]
+
+maps["claude.ai"] = [
+  {
+    alias: "i",
+    leader: "",
+    description: "Focus input",
+    callback: () => setTimeout(() => Hints.dispatchMouseClick(document.querySelector(".ProseMirror[contenteditable=true]")), 0),
   },
 ]
 

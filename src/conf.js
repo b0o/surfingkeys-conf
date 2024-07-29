@@ -9,6 +9,7 @@ export default {
     omnibarSuggestionTimeout: 500,
     richHintsForKeystroke: 1,
     defaultSearchEngine: "dd",
+    stealFocusOnLoad: false,
     theme,
   },
 

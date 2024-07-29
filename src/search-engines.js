@@ -409,7 +409,7 @@ completions.yp.callback = (response) => {
 completions.un = {
   alias: "un",
   name: "unicode",
-  search: "https://unicode-table.com/en/search/?q=",
+  search: "https://symbl.cc/en/search/?q=",
   compl: `${localServer}/s/unicode?q=`,
   local: true,
 }
@@ -431,7 +431,7 @@ completions.un.callback = (response) => {
   return res.map(
     ({ symbol, name, value }) =>
       suggestionItem({
-        url: `https://unicode-table.com/en/${value}`,
+        url: `https://symbl.cc/en/${value}`,
         copy: symbol,
       })`
       <div>

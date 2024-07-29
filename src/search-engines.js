@@ -673,7 +673,7 @@ completions.wa.callback = (response, { query }) => {
 
 // DuckDuckGo
 completions.dd = {
-  alias: "dd",
+  alias: "du",
   name: "duckduckgo",
   search: "https://duckduckgo.com/?q=",
   compl: "https://duckduckgo.com/ac/?q=",

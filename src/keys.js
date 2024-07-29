@@ -98,12 +98,6 @@ maps.global = [
     callback: actions.vimEditURL,
   },
   {
-    alias: "gi",
-    category: categories.pageNav,
-    description: "Edit current URL with vim editor",
-    callback: actions.vimEditURL,
-  },
-  {
     alias: "gI",
     category: categories.pageNav,
     description: "View image in new tab",

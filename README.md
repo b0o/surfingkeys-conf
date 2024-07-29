@@ -6,7 +6,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 
 It includes:
 
-- [268 key mappings for 104 unique websites](#site-specific-key-mappings) which **automate many common actions**.
+- [267 key mappings for 104 unique websites](#site-specific-key-mappings) which **automate many common actions**.
 - [Omnibar integration with 55 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
@@ -31,7 +31,6 @@ It includes:
 <tr><td><code>K</code></td><td>Scroll half page up</td></tr>
 <tr><td><code>J</code></td><td>Scroll half page down</td></tr>
 <tr><td><code>gh</code></td><td>Scroll to element targeted by URL hash</td></tr>
-<tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gi</code></td><td>Edit current URL with vim editor</td></tr>
 <tr><td><code>gI</code></td><td>View image in new tab</td></tr>
 <tr><td><code>g.</code></td><td>Go to parent domain</td></tr>

@@ -463,7 +463,7 @@ maps["youtube.com"] = [
     description: "Toggle fullscreen",
     callback: () =>
       actions.dispatchMouseEvents(
-        document.querySelector("#movie_player.ytp-fullscreen-button"),
+        document.querySelector("#movie_player .ytp-fullscreen-button"),
         "mousedown",
         "click"
       ),

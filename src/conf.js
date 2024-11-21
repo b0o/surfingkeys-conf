@@ -8,7 +8,7 @@ export default {
     hintCharacters: "qwertasdfgzxcvb",
     omnibarSuggestionTimeout: 500,
     richHintsForKeystroke: 1,
-    defaultSearchEngine: "dd",
+    defaultSearchEngine: "ka",
     stealFocusOnLoad: false,
     theme,
   },

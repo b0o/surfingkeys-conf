@@ -151,6 +151,6 @@ const darkTheme = `
   }
 `;
 
-const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+const isDarkMode = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 export default commonStyles + (isDarkMode ? darkTheme : lightTheme);

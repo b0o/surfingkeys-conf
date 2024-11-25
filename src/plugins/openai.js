@@ -55,14 +55,25 @@ export default function(
 
   return () => {
     omnibar.open({
+      multiline: true,
       autocomplete: () => {
         // No autocompletion, predictions are generated only when the user presses Enter
         return []
       },
 
-      onEnter: (item) => {
-        // It requires the Showdown library to convert Markdown to HTML:
-        //  npm install showdown
+      onEnter: (item, { ctrlKey, listSelect }) => {
+        if (listSelect) {
+          // If the user selected a result, copy it to the clipboard
+          Clipboard.write(item.text)
+          return ""
+        }
+
+        if (!ctrlKey) {
+          // If the user did not press Ctrl, do not open the result
+          // (multi-line input, the user may want to add more text)
+          return ""
+        }
+
         const markdown = new showdown.Converter()
         _context.push({ role: "user", content: item.text })
 
@@ -100,7 +111,7 @@ export default function(
       },
 
       onResultClick: (e, item) => {
-        e.preventDefault()
+        e?.preventDefault()
         Clipboard.write(item.text)
       },
     })

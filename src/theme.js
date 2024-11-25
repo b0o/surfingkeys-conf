@@ -53,6 +53,21 @@ const commonStyles = `
     padding-left: 8px !important;
   }
 
+  #sk_omnibar textarea {
+    width: 100%;
+    max-height: 20vh;
+    overflow: auto;
+    border: none;
+    outline: none;
+    font-size: 1.1em;
+    tab-size: 2;
+  }
+
+  #sk_omnibar input.loading,
+  #sk_omnibar textarea.loading {
+    opacity: 0.5;
+  }
+
   /* Disable RichHints CSS animation */
   .expandRichHints {
     animation: none;

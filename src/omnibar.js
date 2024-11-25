@@ -11,9 +11,9 @@ const omnibar = {}
  *   It can return a string to display as a message, or a list of strings, or a list of objects
  *   having `text` and `url` properties. The default function opens the selected URL in a new tab
  *   if it has a URL property. Its arguments are the selected item (an object with `text` and `url`)
- *   and the options object, containing `newTab` and `active` properties.
- * @param {function} options.onShiftEnter - The function to call when an item is selected with Shift+Enter.
- *   By default, it points to the same function as `onEnter`.
+ *   and the options object, containing `newTab` and `active` properties and the `shiftKey` and `ctrlKey`
+ *   modifier flags. It also includes a `listSelect` property to indicate if the item was clicked/selected
+ *   from the list or it comes from the input field.
  * @param {function} options.onResultClick - The function to call when a result is clicked.
  *   It takes two parameters: the click event and the result object.
  *   By default, it points to `null`, meaning that the `onEnter` function will be called for the clicked result.
@@ -22,6 +22,7 @@ const omnibar = {}
  *   having `text` and `url` properties. Its argument is an object with `text` and `url` properties.
  * @param {boolean} options.newTab - Whether to open the selected item in a new tab (default: false).
  * @param {boolean} options.active - Whether the new tab should be active (default: true).
+ * @param {boolean} options.multiline - Whether the input field should be a textarea (default: false).
  * @param {string} options.placeholder - The placeholder text for the input field (default: "").
  * @param {number} options.autocompleteStartTimeout - The timeout in milliseconds to wait before
  *   calling the autocomplete function (default: 1000).
@@ -35,11 +36,11 @@ omnibar.open = (
 
       actions.openLink(item.url, props)
     },
-    onShiftEnter = onEnter,
     onResultClick = null,
     autocomplete = () => [],
     newTab = false,
     active = true,
+    multiline = false,
     placeholder = "",
     autocompleteStartTimeout = 1000,
   } = {}
@@ -54,7 +55,17 @@ omnibar.open = (
       originalHandlers = {}
 
   var iframe, input, list, cachedPromise, omnibar
-  const _onResultClick = onResultClick || ((_, result) => onEnter(result, { newTab, active }))
+  const _onResultClick = onResultClick || (
+    (e, result) => {
+      onEnter(result, {
+        newTab,
+        active,
+        shiftKey: e.shiftKey,
+        ctrlKey: e.ctrlKey,
+        listSelect: true,
+      })
+    }
+  )
 
   /**
    * Creates the custom Omnibar UI.
@@ -74,7 +85,10 @@ omnibar.open = (
 
     const body = iframe.contentWindow.document.body
     omnibar = body.querySelector('#sk_omnibar')
-    input = body.querySelector('#sk_omnibarSearchArea input')
+    input = (
+      body.querySelector('#sk_omnibarSearchArea input') ||
+      body.querySelector('#sk_omnibarSearchArea textarea')
+    )
     list = body.querySelector('#sk_omnibarSearchResult')
 
     if (!(omnibar && input && list)) {
@@ -86,6 +100,27 @@ omnibar.open = (
       return
     }
 
+    // If it's a multiline input, but the Omnibar input element is not a textarea,
+    // we need to create a new textarea element and replace the input element.
+    if (multiline) {
+      let textarea = input
+      if (input.tagName !== "TEXTAREA") {
+        textarea = document.createElement("textarea")
+        input.parentNode.replaceChild(textarea, input)
+      }
+
+      input = textarea
+      input.spellcheck = false
+    } else {
+      // Otherwise, if it's not a multiline input, make sure it's an input element.
+      if (input.tagName !== "INPUT") {
+        let newInput = document.createElement("input")
+        input.parentNode.replaceChild(newInput, input)
+        input = newInput
+      }
+    }
+
+    setTimeout(() => input.focus(), 100)
     originalHandlers = {
       onkeydown: input.onkeydown,
       onkeyup: input.onkeyup,
@@ -149,23 +184,24 @@ omnibar.open = (
    *  - If a result is focused, selects that result.
    *  - Otherwise, selects the default result.
    */
-  const select = (result, { shiftKey = false } = {}) => {
+  const select = (result, { shiftKey = false, ctrlKey = false, listSelect = false } = {}) => {
     if (!result) {
       result = (focusedResult >= 0 && focusedResult < results.length)
         ? results[focusedResult] : { text: inputText, url: inputUrl }
     }
 
-    const fun = shiftKey ? onShiftEnter : onEnter
-    const ret = fun(result, { newTab, active })
+    const ret = onEnter(result, { newTab, active, shiftKey, ctrlKey, listSelect })
     const reset = () => {
       results = []
       focusedResult = -1
     }
 
     if (ret == null) {
+      // If the onEnter function returns null, close the Omnibar.
       close()
     } else if (ret instanceof Promise) {
       reset()
+      input?.classList?.add("loading")
       ret.then((response) => {
         if (response == null) {
           close()
@@ -178,6 +214,8 @@ omnibar.open = (
 
         results = response
         _renderResults(response)
+      }).finally(() => {
+        input?.classList?.remove("loading")
       })
     } else {
       reset()
@@ -195,6 +233,10 @@ omnibar.open = (
   const _renderResults = (results) => {
     list.innerHTML = ""
     listItems = []
+
+    if (!results?.length) {
+      results = []
+    }
 
     results.forEach((result) => {
       const ul = document.createElement('ul')
@@ -264,6 +306,13 @@ omnibar.open = (
   const _onKeyDown = (e) => {
     if (e.key === "Escape") {
       close()
+      return
+    }
+
+    // Adjust the height of the textarea to fit the content.
+    if (multiline) {
+      e.target.style.height = ""
+      e.target.style.height = e.target.scrollHeight + "px"
     }
   }
 
@@ -286,7 +335,11 @@ omnibar.open = (
 
       _focusResult((focusedResult - 1 + results.length) % results.length)
     } else if (e.key === "Enter") {
-      select(results[focusedResult], { shiftKey: e.shiftKey })
+      select(results[focusedResult], {
+        shiftKey: e.shiftKey,
+        ctrlKey: e.ctrlKey,
+        listSelect: focusedResult >= 0,
+      })
     }
   }
 

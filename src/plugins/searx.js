@@ -87,40 +87,40 @@ export default function({
         })
       },
 
-      onEnter: (item) => {
+      onEnter: (item, { shiftKey }) => {
+        if (shiftKey) {
+          return new Promise((resolve, reject) => {
+            fetch(
+              `${searxUrl}/search?q=${encodeURIComponent(item.text)}&categories=general&pageno=1&safesearch=0&format=rss`,
+            ).then((response) => {
+              response.text().then((data) => {
+                const parser = new DOMParser()
+                const xml = parser.parseFromString(data, "text/xml")
+                const items = Array.from(xml.querySelectorAll("item"))
+                const results = items
+                  .filter((item) => item.querySelector("link") && item.querySelector("title"))
+                  .map((item) => ({
+                    url: item.querySelector("link").textContent,
+                    html: `<b>${item.querySelector("title").textContent}</b><br>${item.querySelector("description")?.textContent}`,
+                  }))
+
+                resolve(results)
+              }).catch((error) => {
+                console.error('Could not parse RSS results', error)
+                reject(error)
+              })
+            }).catch((error) => {
+              console.error('Could not fetch RSS results', error)
+              reject(error)
+            })
+          })
+        }
+
         if (!item.url) {
           item.url = `${searxUrl}/search?q=${encodeURIComponent(item.text)}`
         }
 
         actions.openLink(item.url, { newTab })
-      },
-
-      onShiftEnter: (item) => {
-        return new Promise((resolve, reject) => {
-          fetch(
-            `${searxUrl}/search?q=${encodeURIComponent(item.text)}&categories=general&pageno=1&safesearch=0&format=rss`,
-          ).then((response) => {
-            response.text().then((data) => {
-              const parser = new DOMParser()
-              const xml = parser.parseFromString(data, "text/xml")
-              const items = Array.from(xml.querySelectorAll("item"))
-              const results = items
-                .filter((item) => item.querySelector("link") && item.querySelector("title"))
-                .map((item) => ({
-                  url: item.querySelector("link").textContent,
-                  html: `<b>${item.querySelector("title").textContent}</b><br>${item.querySelector("description")?.textContent}`,
-                }))
-
-              resolve(results)
-            }).catch((error) => {
-              console.error('Could not parse RSS results', error)
-              reject(error)
-            })
-          }).catch((error) => {
-            console.error('Could not fetch RSS results', error)
-            reject(error)
-          })
-        })
       },
     })
   }

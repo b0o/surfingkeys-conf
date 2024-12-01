@@ -21,9 +21,26 @@ const commonStyles = `
     margin: 0 !important;
   }
 
+  #sk_omnibarSearchResult > ul {
+    /*
+     * Make the Omnibar search result list scrollable
+     * by making it as high as the parent container.
+     * display: flex would make things easier, but I
+     * don't want to change too much of the original
+     * styling.
+     */
+    max-height: 60vh !important;
+  }
+
   #sk_omnibar li {
     background: none !important;
     padding: 0.35rem 0.5rem !important;
+  }
+
+  #sk_omnibar li,
+  #sk_omnibar li > .text-container {
+    max-height: 60vh !important;
+    overflow: auto !important;
   }
 
   #sk_omnibarSearchResult > ul:nth-child(1) {
@@ -34,6 +51,21 @@ const commonStyles = `
 
   #sk_omnibar .separator {
     padding-left: 8px !important;
+  }
+
+  #sk_omnibar textarea {
+    width: 100%;
+    max-height: 20vh;
+    overflow: auto;
+    border: none;
+    outline: none;
+    font-size: 1.1em;
+    tab-size: 2;
+  }
+
+  #sk_omnibar input.loading,
+  #sk_omnibar textarea.loading {
+    opacity: 0.5;
   }
 
   /* Disable RichHints CSS animation */

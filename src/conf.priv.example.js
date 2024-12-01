@@ -19,6 +19,7 @@ const keys = {
   wolframalpha: "", // https://products.wolframalpha.com/api/
   domainr: "", // https://market.mashape.com/domainr/domainr
   alternativeTo: "", // Extract the x-algolia-api-key sent with requests when typing in search box on alternativeto.net
+  openai: "", // https://platform.openai.com/api-keys
 
   // ****** Google Custom Search Engines ****** //
   // Can be created at https://cse.google.com/cse

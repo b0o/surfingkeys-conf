@@ -1,6 +1,8 @@
 import actions from "./actions.js"
+import utils from "./util.js"
 
 const { Front } = api
+const { htmlPurify } = utils
 const omnibar = {}
 
 /**
@@ -248,7 +250,7 @@ omnibar.open = (
       text.classList.add('text')
 
       if (result.html) {
-        text.innerHTML = result.html
+        text.innerHTML = htmlPurify(result.html)
       } else {
         text.innerText = result.text || result
       }

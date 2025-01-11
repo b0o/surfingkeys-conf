@@ -1399,7 +1399,6 @@ completions.rr.callback = (response) => {
     return suggestionItem({ url })`
       <div>
         <div class="title"><strong>${title}</strong></div>
-        <div>${s.description}</div>
       </div>
     `
   })

@@ -7,7 +7,7 @@ This is my configuration for the [SurfingKeys](https://github.com/brookhong/Surf
 It includes:
 
 - [265 key mappings for 104 unique websites](#site-specific-key-mappings) which **automate many common actions**.
-- [Omnibar integration with 55 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
+- [Omnibar integration with 58 Search Engines and Knowledge Sources](#omnibar-search-engine-integrations), many of which include **inline images** and **instant answers**.
 
 ## Table of Contents
 
@@ -553,11 +553,32 @@ For example, to open the Wikipedia omnibar integration, type `awp`.
     <td></td>
   </tr>
   <tr>
+    <td><a href="https://crates.io"><img src="./assets/favicons/crates.io.ico" width="16px"> </a></td>
+    <td><code>rc</code></td>
+    <td>crates</td>
+    <td><a href="https://crates.io">crates.io</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="https://docs.rs"><img src="./assets/favicons/docs.rs.ico" width="16px"> </a></td>
+    <td><code>rd</code></td>
+    <td>crates-docs</td>
+    <td><a href="https://docs.rs">docs.rs</a></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><a href="https://www.reddit.com"><img src="./assets/favicons/www.reddit.com.ico" width="16px"> </a></td>
     <td><code>re</code></td>
     <td>reddit</td>
     <td><a href="https://www.reddit.com">www.reddit.com</a></td>
     <td><a href="#reddit">:framed_picture:</a><a href="#reddit-2">:framed_picture:</a></td>
+  </tr>
+  <tr>
+    <td><a href="https://query.rs"><img src="./assets/favicons/query.rs.ico" width="16px"> </a></td>
+    <td><code>rr</code></td>
+    <td>query-rs</td>
+    <td><a href="https://query.rs">query.rs</a></td>
+    <td></td>
   </tr>
   <tr>
     <td><a href="https://stackexchange.com"><img src="./assets/favicons/stackexchange.com.ico" width="16px"> </a></td>
@@ -860,4 +881,4 @@ You will need to modify it to contain the proper path to your `surfingkeys-conf`
 
 ## Copyright
 
-<p><h4>Author</h4>&copy; 2017-2024 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>
+<p><h4>Author</h4>&copy; 2017-2025 <a href="https://github.com/b0o">Maddison Hellstrom</a></p><p><h4>License</h4>Released under the <a href="./LICENSE">MIT License</a></p>

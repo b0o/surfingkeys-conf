@@ -24,8 +24,9 @@
   "contributors": [],
   "license": "MIT",
   "dependencies": {
-    "dompurify": "^2.4.1",
-    "github-reserved-names": "^2.0.4",
+    "dompurify": "^3.2.0",
+    "github-reserved-names": "^2.0.7",
+    "showdown": "^2.1.0",
     "uhtml": "^3.1.0"
   },
   "devDependencies": {
